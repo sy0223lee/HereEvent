@@ -1,10 +1,7 @@
 package com.multi.hereevent.event;
 
 import com.multi.hereevent.category.CategoryDAO;
-import com.multi.hereevent.dto.CategoryDTO;
-import com.multi.hereevent.dto.EventDTO;
-import com.multi.hereevent.dto.FourEventByCategoryDTO;
-import com.multi.hereevent.dto.ReserveDTO;
+import com.multi.hereevent.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,16 +21,21 @@ public class EventServiceImpl implements EventService {
         return dao.insertEvent(event);
     }
 
+
     @Override
     public int updateEvent(EventDTO event) {
         return dao.updateEvent(event);
+
+    }
+    @Override
+    public List<EventDTO> selectAll() {
+        return dao.selectAll();
     }
 
     @Override
-    public int deleteEvent(int event_no) {
-        return dao.deleteEvent(event_no);
+    public int deleteEvent(int id) {
+        return dao.deleteEvent(id);
     }
-
     @Override
     public List<EventDTO> searchEvent(String keyword) {
         return dao.searchEvent(keyword);

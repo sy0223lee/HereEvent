@@ -186,7 +186,7 @@
     background: none;
     padding: 5px 10px;
     border: none;
-    color: --default-color;
+    color: var(--default-color);
     text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
 }
 
@@ -213,26 +213,4 @@ input.edit-img{
 textarea.edit-content:focus, input.edit-img:focus{
     box-shadow: none;
     border-color: var(--accent-color);
-}
-.btn-primary {
-    border-radius: 4px;
-    padding: 10px 20px;
-    border: 0;
-    background-color: var(--accent-color);
-    color: var(--contrast-color);
-}
-.btn-primary:hover {
-    color: var(--contrast-color);
-    background-color: color-mix(in srgb, var(--accent-color), transparent 20%);
-}
-.btn-secondary {
-    border-radius: 4px;
-    padding: 10px 20px;
-    border: 0;
-    background-color: var(--default-color);
-    color: var(--contrast-color);
-}
-.btn-secondary:hover {
-    color: var(--contrast-color);
-    background-color: color-mix(in srgb, var(--default-color), transparent 20%);
 }

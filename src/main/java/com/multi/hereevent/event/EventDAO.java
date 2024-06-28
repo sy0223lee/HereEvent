@@ -3,6 +3,7 @@ package com.multi.hereevent.event;
 import com.multi.hereevent.dto.EventDTO;
 import com.multi.hereevent.dto.ReserveDTO;
 
+
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
@@ -11,10 +12,12 @@ public interface EventDAO {
     //관리자페이지
     //행사 등록
     int insertEvent(EventDTO event);
-    //행사 수정
+    //업데이트
     int updateEvent(EventDTO event);
-    //행사 삭제
+    //삭제
     int deleteEvent(int event_no);
+    //이벤트 전체조회
+    List<EventDTO> selectAll();
 
     //행사이름 검색
     List<EventDTO> searchEvent(String keyword);

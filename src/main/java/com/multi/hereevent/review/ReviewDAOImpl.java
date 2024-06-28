@@ -4,6 +4,8 @@ import com.multi.hereevent.dto.ReviewDTO;
 import com.multi.hereevent.dto.ReviewImgDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -71,5 +73,10 @@ public  class ReviewDAOImpl implements ReviewDAO{
     @Override
     public List<ReviewImgDTO> selectReviewImgs(int review_no) {
         return sqlSession.selectList("com.multi.hereevent.review.selectReviewImgs", review_no);
+    }
+
+    @Override
+    public Page<Map<String, Object>> selectReviewPaging(Map<String, Object> params) {
+        return null;
     }
 }

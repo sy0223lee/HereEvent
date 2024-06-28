@@ -2,18 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.multi.hereevent.event">
     <select id="insertEvent" parameterType="event">
-        insert into event(name,start_date,end_date,addr,info,homepage,sns,type,reserve_limit,wait_limit)
-        value(#{name},#{start_date},#{end_date},#{addr},#{info},#{homepage},#{sns},#{type},#{reserve_limit},#{wait_limit})
+        insert into events (category_no, name, start_date, end_date, addr, info, homepage, sns, img_path, type, reserve_limit, wait_limit)
+        values (#{category_no}, #{name}, #{start_date}, #{end_date}, #{addr}, #{info}, #{homepage}, #{sns}, #{img_path}, #{type}, #{reserve_limit}, #{wait_limit})
     </select>
-    <select id="deleteEvent" parameterType="String">
+    <select id="deleteEvent" parameterType="int">
         delete from event where event_no = #{event_no}
     </select>
-    <select id="updateEvent" parameterType="event">
-        UPDATE event
-        set name = #{name}, start_date = #{start_date}, end_date = #{end_date},
-        addr = #{addr}, info = #{info}, reserve_limit = #{reserve_limit},wait_limit = #{wait_limit}
-        WHERE event_no = #{event_no}
-    </select>
+
     <select id="searchEvent" parameterType="String" resultType="event">
         SELECT *
         FROM event
@@ -133,4 +128,28 @@
         from event e inner join event_interest i on e.event_no = i.event_no
         where i.member_no = #{member_no}
     </select>
+
+    <!-- 이벤트 수정-->
+    <update id="updateEvent" parameterType="event">
+        update event
+        set category_no = #{category_no},
+            name = #{name},
+            start_date = #{start_date},
+            end_date = #{end_date},
+            addr = #{addr},
+            info = #{info},
+            homepage = #{homepage},
+            sns = #{sns},
+            img_path = #{img_path},
+            type = #{type},
+            reserve_limit = #{reserve_limit},
+            wait_limit = #{wait_limit}
+            WHERE id = #{id}
+
+    </update>
+    <!-- 이벤트 전체조회-->
+    <select id="selectAll" resultType="event">
+        SELECT * FROM event
+    </select>
+
 </mapper>

@@ -3,10 +3,13 @@ package com.multi.hereevent.review;
 import com.multi.hereevent.dto.ReviewDTO;
 import com.multi.hereevent.dto.ReviewImgDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -81,5 +84,14 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public List<ReviewImgDTO> selectReviewImgs(int review_no) {
         return dao.selectReviewImgs(review_no);
+    }
+
+    @Override
+    public Page<Map<String, Object>> selectReviewPaging(Map<String, Object> params, Pageable page) {
+        params.put("offset", page.getOffset());
+        params.put("pageSize", page.getPageSize());
+//        List<Map<String, Object>> reviewList = dao.selectReviewPaging(params);
+
+        return null;
     }
 }

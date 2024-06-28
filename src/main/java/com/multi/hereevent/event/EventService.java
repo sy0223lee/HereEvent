@@ -4,6 +4,7 @@ import com.multi.hereevent.dto.EventDTO;
 import com.multi.hereevent.dto.FourEventByCategoryDTO;
 import com.multi.hereevent.dto.ReserveDTO;
 
+
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
@@ -12,11 +13,10 @@ public interface EventService {
     //관리자페이지
     //행사 등록
     int insertEvent(EventDTO event);
-    //행사 수정
     int updateEvent(EventDTO event);
-    //행사 삭제
     int deleteEvent(int event_no);
-
+    //모든 이벤트 가져오기
+    List<EventDTO> selectAll();
     //행사이름 검색
     List<EventDTO> searchEvent(String keyword);
     //전체 팝업 조회

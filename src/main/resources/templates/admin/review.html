@@ -11,10 +11,25 @@
     <link href="/hereevent/common/css/starRate.css" rel="stylesheet">
     <!-- js File -->
     <script type="text/javascript" src="/hereevent/common/js/starRate.js"></script>
+    <script type="text/javascript" src="/hereevent/common/js/admin.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-
-
+            $('.review-detail-btn').each(function(){
+                $(this).click(function(){
+                    let reviewNo = $(this).val();
+                    if($(this).hasClass('active')){
+                        $('#'+reviewNo).hide();
+                        $(this).removeClass('active');
+                        $(this).addClass('default');
+                        $(this).text('상세보기');
+                    }else if($(this).hasClass('default')){
+                        $('#'+reviewNo).show();
+                        $(this).removeClass('default');
+                        $(this).addClass('active');
+                        $(this).text('닫기');
+                    }
+                });
+            });
         });
     </script>
 </head>
@@ -39,10 +54,30 @@
     <section id="review-section" class="section">
 
         <div class="container review-container">
+
+            <div class="d-flex align-items-center justify-content-between review-search">
+                <button type="button" class="btn btn-primary">선택 삭제</button>
+                <div class="search-widget">
+                    <form action="#" method="post" class="d-flex justify-content-start">
+                        <select name="tag">
+                            <option value="all">전체</option>
+                            <option value="id">이벤트</option>
+                            <option value="title">작성자</option>
+                            <option value="content">카테고리</option>
+                            <option value="write_date">작성일</option>
+                        </select>
+                        <input type="text" name="query" placeholder="검색어를 입력하세요">
+                        <button type="submit"><i class="bi bi-search"></i></button>
+                    </form>
+                </div>
+            </div>
+
             <div class="review-table container">
                 <div class="row align-items-center text-center table-title">
-                    <div class="choose">선택</div>
-                    <div class="event-img">이벤트 사진</div>
+                    <div class="select">
+                        <input type="checkbox" name="select-all" onclick="selectAll(this)">
+                    </div>
+                    <div class="event-img">사진</div>
                     <div class="event-name">이벤트명</div>
                     <div class="writer">작성자</div>
                     <div class="star">별점</div>
@@ -52,8 +87,12 @@
                 </div>
 
                 <div class="table-row" th:each="review : ${reviewList}">
+
+                    <!-- 이벤트 정보, 후기 작성 정보 -->
                     <div class="row align-items-center">
-                        <div class="choose text-center"><input type="checkbox" name="delete-review" th:value="${review.review_no}"></div>
+                        <div class="select text-center">
+                            <input type="checkbox" name="select" th:value="${review.review_no}" onclick="checkSelectAll()">
+                        </div>
                         <div class="event-img text-center event-image">
                             <a href="#">
                                 <img th:src="|@{/download/event/}${review.img_path}|" th:alt="${review.img_path}"></a>
@@ -120,20 +159,35 @@
                         <div class="write-date text-center" th:text="${review.write_date}"></div>
                         <div class="update-date text-center" th:text="${review.update_date}"></div>
                         <div class="show-detail text-center">
-                            <button type="button" class="review-detail-btn off" th:value="${review.review_no}">상세보기</button>
+                            <!-- 후기 상세보기 버튼 -->
+                            <button type="button" class="review-detail-btn btn btn-secondary default" th:value="${review.review_no}">상세보기</button>
                         </div>
                     </div>
-                    <div class="review-detail" th:id="${review.review_no}">
-                        <div class="review-detail image">
-                            <img th:each="">
+
+                    <!-- 후기 이미지, 내용 -->
+                    <div class="review-detail container" th:id="${review.review_no}" style="display: none">
+                        <div class="review-img row justify-content-center" th:if="${review.review_imgs.size() != 0}">
+                            <label>후기 사진</label>
+                            <div>
+                                <img th:each="image : ${review.review_imgs}"
+                                     th:src="|@{/download/review/}${image.img_path}|" th:alt="${image.img_path}">
+                            </div>
                         </div>
-                        <div class="review-detail content">
+                        <div class="review-content row">
+                            <label>후기 내용</label>
                             <p th:text="${review.content}"></p>
                         </div>
+                        <div class="review-btn text-end">
+                            <button type="button" class="btn btn-primary">삭제</button>
+                        </div>
                     </div>
+
                 </div>
 
             </div>
+
+            <h1>페이지네이션 추가 필요</h1>
+
         </div>
 
     </section><!-- End Review Section -->

@@ -13,9 +13,11 @@
 
     <script th:inline="javascript">
         $(document).ready(function() {
+            let member = /*[[${session.member}]]*/;
+
+            // 관심 이벤트 등록
             $(".default").click(function () {
-                let member = $(".member").val();
-                if(member === ""){ // 로그인 하지 않은 상태인 경우
+                if(member == null){ // 로그인 하지 않은 상태인 경우
                     alert("로그인을 해주세요.");
                 }else {
                     location.href = "/hereevent/event/interest/insert?event_no=" + $(this).val();
@@ -29,10 +31,9 @@
 
             // 후기 관련 js
             // 로그인한 멤버가 후기를 이미 작성했으면 작성 form 숨기기
-            let member = /*[[${session.member}]]*/;
             if(member != null) {
                 $('.write-member-no').each(function () {
-                    if(member.member_no == $(this).val()){ // 타입이 달라서 == tkdyd
+                    if(member.member_no == $(this).val()){ // 타입이 달라서 == 사용
                         $('.reply-form').hide();
                     }
                 });
@@ -92,6 +93,9 @@
             <div id="blog-details" class="col-lg-8 blog-details section">
                 <div class="container">
                     <article class="article">
+
+
+
                         <div class="post-img">
                             <div th:each="imgPath : ${event.img_path}" class="image-container">
                                 <img th:src="|@{/download/event/}${imgPath}|" th:alt="${imgPath}" alt="Event Image" />
@@ -100,7 +104,11 @@
                                 <button class="default interest-btn" th:if="${event.event_interest_no == 0}" th:value="${event.event_no}">♡</button>
                                 <button class="picked interest-btn" th:unless="${event.event_interest_no == 0}" th:value="${event.event_no}">♥</button>
                             </div>
+
                         </div>
+
+
+
 
                         <h2 class="title"><span th:text="${event.name}"></span></h2>
                         <div class="container">

@@ -38,8 +38,7 @@ public class MemberController {
     }
     @GetMapping("/logout")
     public String logout(SessionStatus status) {
-        System.out.println("스프링이 제공하는 @SessionAttribute를 이용해서 로그아웃");
-        status.setComplete();//세션에 있는 객체를 제거
+        status.setComplete(); // 세션에 있는 객체를 제거
         return "redirect:/main";
     }
     @GetMapping("/register")

@@ -2,6 +2,7 @@ package com.multi.hereevent.event;
 
 import com.multi.hereevent.dto.EventDTO;
 import com.multi.hereevent.dto.ReserveDTO;
+import com.multi.hereevent.dto.ReviewDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -27,7 +28,10 @@ public class EventDAOImpl implements EventDAO{
     public int updateEvent(EventDTO event) {
         return sqlSession.update("com.multi.hereevent.event.updateEvent", event);
     }
-
+    @Override
+    public List<EventDTO> selectAll() {
+        return sqlSession.selectList("com.multi.hereevent.event.selectAll");
+    }
     @Override
     public int deleteEvent(int event_no) {
         return sqlSession.delete("com.multi.hereevent.event.deleteEvent", event_no);

@@ -105,16 +105,17 @@
     font-weight: bold;
     text-decoration: underline;
 }
-.post-img {
-    margin: 0 auto 20px auto; /* 상단 마진 10px 추가 */
+.blog-details .post-img {
+    margin: 0px auto 20px auto; /* 상단 마진 10px 추가 */
     overflow: hidden;
     display: block;
     max-width: 100%;
 }
+
 .post-img img {
     width: 100%;
     height: auto;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 /* 관심 이벤트 버튼 */

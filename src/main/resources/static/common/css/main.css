@@ -51,7 +51,7 @@
 body {
   color: var(--default-color);
   background-color: var(--background-color);
-  font-family: var(--default-font);
+  font-family: var(--default-font), sans-serif;
 }
 
 a {
@@ -72,7 +72,32 @@ h4,
 h5,
 h6 {
   color: var(--heading-color);
-  font-family: var(--heading-font);
+  font-family: var(--heading-font), sans-serif;
+}
+
+.btn-primary {
+  border-radius: 4px;
+  padding: 10px 20px;
+  border: 0;
+  background-color: var(--accent-color);
+  color: var(--contrast-color);
+}
+
+.btn-primary:hover {
+  color: var(--contrast-color);
+  background-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+}
+
+.btn-secondary {
+  border-radius: 4px;
+  padding: 10px 20px;
+  border: 0;
+  background-color: var(--default-color);
+  color: var(--contrast-color);
+}
+.btn-secondary:hover {
+  color: var(--contrast-color);
+  background-color: color-mix(in srgb, var(--default-color), transparent 20%);
 }
 
 /*--------------------------------------------------------------
@@ -2182,19 +2207,6 @@ section,
   margin-bottom: 25px;
 }
 
-.blog-comments .reply-form .btn-primary {
-  border-radius: 4px;
-  padding: 10px 20px;
-  border: 0;
-  background-color: var(--accent-color);
-  color: var(--contrast-color);
-}
-
-.blog-comments .reply-form .btn-primary:hover {
-  color: var(--contrast-color);
-  background-color: color-mix(in srgb, var(--accent-color), transparent 20%);
-}
-
 /*--------------------------------------------------------------
 # Portfolio Details Section
 --------------------------------------------------------------*/
@@ -2420,8 +2432,15 @@ section,
 .search-widget form {
   background: var(--background-color);
   border: 1px solid color-mix(in srgb, var(--default-color), transparent 70%);
+  border-right: none;
+  border-radius: 4px;
   padding: 3px 10px;
   position: relative;
+}
+
+.search-widget form:focus-within {
+  border-right: none;
+  border-color: var(--default-color);
 }
 
 .search-widget form input[type=text] {

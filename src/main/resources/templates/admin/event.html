@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HereEvent-Admin</title>
+    <!-- CSS File -->
+    <link href="/hereevent/common/css/admin.css" rel="stylesheet">
+    <link href="/hereevent/common/css/starRate.css" rel="stylesheet">
+    <!-- js File -->
+    <script type="text/javascript" src="/hereevent/common/js/starRate.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+
+        });
+    </script>
+</head>
+<body>
+<main layout:fragment="main" class="main">
+
+
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="/hereevent/main">Home</a></li>
+                    <li><a href="/hereevent/admin">관리</a></li>
+                    <li class="current">이벤트</li>
+                </ol>
+            </nav>
+            <h1>이벤트 관리</h1>
+        </div>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- Event Form Section -->
+    <section id="event-form-section" class="section">
+        <section id="review-section" class="section">
+
+            <div class="container review-container">
+                <div class="review-table container">
+                    <div class="row align-items-center text-center table-title">
+                        <div class="choose">선택</div>
+                        <div class="event-img">이벤트 사진</div>
+                        <div class="event-name">이벤트명</div>
+                        <div class="update-popup">수정하기</div>
+                        <div class="show-detail">상세보기</div>
+                    </div>
+
+                    <div class="table-row" th:each="event : ${eventDetails}">
+                        <div class="row align-items-center">
+                            <div class="choose text-center"><input type="checkbox" name="delete-event" th:value="${event.event_no}"></div>
+                            <div class="event-img text-center event-image">
+                                <a href="#">
+                                    <img th:src="|@{/download/event/}${event.img_path}|" th:alt="${event.img_path}"></a>
+                            </div>
+                            <div class="event-name">
+                                <a href="#">
+                                    [[${event.name}]]</a>
+                            </div>
+                            <div class="show-detail text-center">
+                                <button type="button" class="event-update-btn off" th:value="${event.event_no}">수정하기</button>
+                            </div>
+                            <div class="show-detail text-center">
+                                <button type="button" class="review-detail-btn off" th:value="${event.event_no}">상세보기</button>
+                            </div>
+                        </div>
+                        <div class="event" th:id="${event.event_no}">
+                            <div class="event-detail image">
+                                <img th:src="@{'/download/event/' + ${event.img_path}}" th:alt="${firstImgPath}" alt="Event Image" />
+                            </div>
+                            <div class="event-detail content">
+                                <p th:text="${event.content}"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </section><!-- End Review Section -->
+    </section>
+    <!-- End Event List Section -->
+</main>
+</body>
+</html>
