@@ -29,7 +29,7 @@ public class EventTimeServiceimpl implements EventTimeService{
         for(int i=openTimeInt;i<=closeTimeInt;i++){
             timeList.add(String.valueOf(i)+":"+openTime[1]+":"+openTime[2]);
         }
-        System.out.println(timeList);
+        System.out.println("timeList===>"+timeList);
        return timeList;
     }
 

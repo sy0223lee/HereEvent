@@ -7,17 +7,16 @@
 </head>
 <body>
 <div th:fragment="reservation" >
-
     <h2 class="title">이벤트 예약페이지</h2>
     <div class="reservation">
         <form action="/hereevent/event/reservation" method="post">
-
             <input type="hidden" name="event_no" th:value="${event.event_no}">
             <input type="hidden" name="member_no" th:if="${session.member != null}" th:value="${session.member.member_no}">
 
             <input type="date" id="reserve_date" name="reserve_date" placeholder="예약날짜를 입력하세요">
-            <select name="reserve_time" >
-                <option th:each="times:${eventTime}">[[${times}]]</option>
+
+            <select id="eventTimes" name="times">
+                <!-- 시간이 서버로부터 업데이트될 예정 -->
             </select>
             <button type="submit">예약</button>
             <button type="button">대기</button>
@@ -30,15 +29,15 @@
             </div>
             <table id="calendar">
                 <thead>
-                    <tr>
-                        <th>일</th>
-                        <th>월</th>
-                        <th>화</th>
-                        <th>수</th>
-                        <th>목</th>
-                        <th>금</th>
-                        <th>토</th>
-                    </tr>
+                <tr>
+                    <th>일</th>
+                    <th>월</th>
+                    <th>화</th>
+                    <th>수</th>
+                    <th>목</th>
+                    <th>금</th>
+                    <th>토</th>
+                </tr>
                 </thead>
                 <tbody id="calBody">
                 </tbody>
@@ -53,28 +52,27 @@
             let date = today.getDate();
             let selectedDate = null;
 
-            <!--이벤트 시작일과 종료일 가져오기-->
+            let eventNo = /*[[${event.event_no}]]*/ 0;
+
+            // 이벤트 시작일과 종료일 가져오기
             let eventStartDate = new Date(/*[[${event.start_date}]]*/);
             let eventEndDate = new Date(/*[[${event.end_date}]]*/);
-            <!--달력 렌더링 함수-->
+
             function renderCalendar(year, month) {
-                <!--윤년 계산-->
                 if (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) {
                     lastDate[1] = 29;
                 } else {
                     lastDate[1] = 28;
                 }
-                <!--연도와 월을 표시-->
+
                 document.getElementById("yearmonth").innerText = `${year}년 ${month + 1}월`;
 
                 const calBody = document.getElementById("calBody");
                 calBody.innerHTML = "";
 
-                <!--해당 월의 첫번째 날짜의 요일을 계산-->
                 let firstDay = new Date(year, month, 1).getDay();
                 let i = 1;
 
-                <!--날짜 렌더링-->
                 while (i <= lastDate[month]) {
                     let newTr = document.createElement("tr");
                     calBody.appendChild(newTr);
@@ -103,82 +101,102 @@
                                 newTr.appendChild(newTd);
                             })(i);
                             i++;
+                        }
                     }
                 }
             }
-        }
-    <!--날짜 선택했을때 호출-->
-    function selectDate(td, d) {
-        if (selectedDate) {
-            selectedDate.classList.remove("selected");
-        }
-        selectedDate = td;
-        selectedDate.classList.add("selected");
 
-        let selectedDateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-        document.getElementById('reserve_date').value = selectedDateString;
+           // 날짜 선택 시 호출되는 함수
+            function selectDate(td, d) {
+                // 이전에 선택된 날짜 표시 제거
+                if (selectedDate) {
+                    selectedDate.classList.remove("selected");
+                }
+                // 새로 선택된 날짜 표시 추가
+                selectedDate = td;
+                selectedDate.classList.add("selected");
 
-        let selectedDayOfWeek = new Date(year, month, d).getDay(); <!--요일 계산 (0: 일요일, 1: 월요일, ..., 6: 토요일)-->
+                // 선택된 날짜를 'reserve_date' 입력 필드에 설정
+                let selectedDateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                document.getElementById('reserve_date').value = selectedDateString;
 
-        <!--요일과 날짜를 서버로 전송 (AJAX 요청)-->
-        fetch('/reservation/times', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                eventNo: eventNo,
-                date: selectedDateString,
-                day: selectedDay
-            })
-        }).then(response => {
-            if (response.ok) {
-                return response.json();
+                // 선택된 날짜의 요일 계산 (0: 일요일, 1: 월요일, ..., 6: 토요일)
+                let dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+                let selectedDayOfWeek = dayNames[new Date(year, month, d).getDay()];
+
+                // 요일과 날짜를 서버로 전송 (AJAX 요청)
+                console.log('Sending request to server with:', {
+                    eventNo: eventNo,
+                    day: selectedDayOfWeek
+                });
+
+                fetch('http://localhost:9090/hereevent/reservation/times', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        eventNo: eventNo,
+                        day: selectedDayOfWeek
+                    })
+                }).then(response => {
+                    console.log('Server response:', response);
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Network response was not ok.');
+                }).then(data => {
+                    console.log('Data received:', data);
+                    if (data.times.length === 0) {
+                        // 서버에서 받은 운영 시간이 없는 경우 해당 날짜를 클릭할 수 없게 처리
+                        td.classList.remove("selected");
+                        td.classList.add("disabled");
+                        alert("해당 날짜는 예약이 불가능합니다.");
+                    } else {
+                        // 서버에서 받은 운영 시간을 'select' 옵션으로 업데이트
+                        updateTimeOptions(data.times);
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
             }
-            throw new Error('Network response was not ok.');
-        }).then(data => {
-            updateTimeOptions(data.times);
-        }).catch(error => {
-            console.error('Error:', error);
-        });
-    }
-    <!--운영 시간 업데이트 -->
-     function updateTimeOptions(times) {
-            const select = document.querySelector('select[name="reserve_time"]');
-            select.innerHTML = ''; // 기존 옵션을 비움
-            times.forEach(time => {
-                const option = document.createElement('option');
-                option.value = time;
-                option.text = time;
-                select.appendChild(option);
-            });
-        }
-    <!--이전 달로 이동-->
-    function prevMonth() {
-        if (month === 0) {
-            month = 11;
-            year--;
-        } else {
-            month--;
-        }
-        renderCalendar(year, month);
-    }
-    <!--다음 달로 이동-->
-    function nextMonth() {
-        if (month === 11) {
-            month = 0;
-            year++;
-        } else {
-            month++;
-        }
-        renderCalendar(year, month);
-    }
-    <!--초기 달력 렌더링-->
-    renderCalendar(year, month);
+
+            // 운영 시간을 'select' 옵션으로 업데이트하는 함수
+            function updateTimeOptions(times) {
+                const select = document.querySelector('select[name="times"]');
+                select.innerHTML = ''; // 기존 옵션을 비움
+
+                times.forEach(time => {
+                    const option = document.createElement('option');
+                    option.value = time;
+                    option.text = time;
+                    select.appendChild(option);
+                });
+            }
+
+            function prevMonth() {
+                if (month === 0) {
+                    month = 11;
+                    year--;
+                } else {
+                    month--;
+                }
+                renderCalendar(year, month);
+            }
+
+            function nextMonth() {
+                if (month === 11) {
+                    month = 0;
+                    year++;
+                } else {
+                    month++;
+                }
+                renderCalendar(year, month);
+            }
+
+            renderCalendar(year, month);
         </script>
-
     </div>
-
 </div>
 </body>
 </html>
