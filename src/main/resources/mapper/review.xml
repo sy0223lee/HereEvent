@@ -59,4 +59,68 @@
 		from review_img
 		where review_no = #{review_no}
 	</select>
+	<select id="countReviewWithPage" parameterType="map" resultType="int">
+		select count(r.review_no)
+		from review r
+		<choose>
+			<when test="type == null">
+
+			</when>
+			<when test='type == "event"'>
+				where r.event_no in (
+					select e.event_no
+					from event e
+					where e.name like concat('%', #{keyword}, '%'))
+			</when>
+			<when test='type == "nick"'>
+				where r.member_no in (
+					select m.member_no
+					from member m
+					where m.nick like concat('%', #{keyword}, '%'))
+			</when>
+			<when test='type == "category"'>
+				where r.event_no in (
+					select e.event_no
+					from event e left join category c on e.category_no = c.category_no
+					where c.name like concat('%', #{keyword}, '%') or c.value like concat('%', #{keyword}, '%'))
+			</when>
+			<when test='type == "write_date"'>
+				where write_date >= #{keyword} and write_date &lt; date_add(#{keyword}, interval 1 day)
+			</when>
+		</choose>
+	</select>
+	<select id="selectReviewWithPage" parameterType="map" resultType="review">
+		select r.*, e.img_path, e.name, m.nick
+		from review r
+			inner join member m on r.member_no = m.member_no
+			inner join event e on r.event_no = e.event_no
+		<choose>
+			<when test="type == null">
+
+			</when>
+			<when test='type == "event"'>
+				where r.event_no in (
+				select e.event_no
+				from event e
+				where e.name like concat('%', #{keyword}, '%'))
+			</when>
+			<when test='type == "nick"'>
+				where r.member_no in (
+				select m.member_no
+				from member m
+				where m.nick like concat('%', #{keyword}, '%'))
+			</when>
+			<when test='type == "category"'>
+				where r.event_no in (
+					select e.event_no
+					from event e left join category c on e.category_no = c.category_no
+					where c.name like concat('%', #{keyword}, '%') or c.value like concat('%', #{keyword}, '%'))
+			</when>
+			<when test='type == "write_date"'>
+				where write_date >= #{keyword} and write_date &lt; date_add(#{keyword}, interval 1 day)
+			</when>
+		</choose>
+		order by r.review_no desc
+		limit ${offset}, ${pageSize}
+	</select>
 </mapper>

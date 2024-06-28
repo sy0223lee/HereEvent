@@ -76,7 +76,12 @@ public  class ReviewDAOImpl implements ReviewDAO{
     }
 
     @Override
-    public Page<Map<String, Object>> selectReviewPaging(Map<String, Object> params) {
-        return null;
+    public int countReviewWithPage(Map<String, Object> params) {
+        return sqlSession.selectOne("com.multi.hereevent.review.countReviewWithPage", params);
+    }
+
+    @Override
+    public List<ReviewDTO> selectReviewWithPage(Map<String, Object> params) {
+        return sqlSession.selectList("com.multi.hereevent.review.selectReviewWithPage", params);
     }
 }

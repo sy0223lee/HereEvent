@@ -13,7 +13,7 @@
 
     <script th:inline="javascript">
         $(document).ready(function() {
-            let member = /*[[${session.member}]]*/;
+            let member = [[${session.member}]];
 
             // 관심 이벤트 등록
             $(".default").click(function () {
