@@ -43,17 +43,14 @@ public class EventController {
     }
 
     //행사검색(프론트 아직)
-    @GetMapping("/event/searchlist")
-    public String searchPage() {
-        return "main/search";
+    @GetMapping("/search")
+    public String search(@RequestParam("keyword") String keyword, Model model) {
+        List<EventDTO> searchlist = eventService.search(keyword);
+        model.addAttribute("events", searchlist);
+        model.addAttribute("keyword", keyword);
+        return "search/searchResults";
     }
-    @PostMapping("/event/searchlist")
-    public String searchlist(@RequestParam("keyword") String keyword, Model model) {
-        List<EventDTO> searchlist = eventService.searchEvent(keyword);
-        model.addAttribute("searchlist",searchlist);
-        return "main/search";
-    }
-
+  
     // 세부페이지
     @GetMapping("/event/{event_no}")
     public String getEventDetails(@PathVariable("event_no") int event_no, Model model) {
@@ -180,8 +177,5 @@ public class EventController {
 //        eventService.deleteEvent(event_no);
 //        return "redirect:/admin/event";
 //    }
-
-
-
 }
 

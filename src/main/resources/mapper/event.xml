@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.multi.hereevent.event">
+    <select id="search" parameterType="string" resultType="event">
+        SELECT *
+        FROM event
+        WHERE name LIKE CONCAT('%', #{keyword}, '%')
+    </select>
     <select id="insertEvent" parameterType="event">
         insert into events (category_no, name, start_date, end_date, addr, info, homepage, sns, img_path, type, reserve_limit, wait_limit)
         values (#{category_no}, #{name}, #{start_date}, #{end_date}, #{addr}, #{info}, #{homepage}, #{sns}, #{img_path}, #{type}, #{reserve_limit}, #{wait_limit})

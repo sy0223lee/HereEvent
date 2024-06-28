@@ -138,6 +138,10 @@ public class EventServiceImpl implements EventService {
     public int selectEventNoByEventName(String eventName) {
         return Integer.parseInt(dao.selectEventNoByEventName(eventName));
     }
-
+    //검색
+    @Override
+    public List<EventDTO> search(String keyword) {
+        return dao.search(keyword);
+    }
 
 }
