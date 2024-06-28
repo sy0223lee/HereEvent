@@ -10,6 +10,7 @@
     <h2 class="title">이벤트 예약페이지</h2>
     <div class="reservation">
         <form action="/hereevent/event/reservation" method="post">
+          
             <input type="hidden" name="event_no" th:value="${event.event_no}">
             <input type="hidden" name="member_no" th:if="${session.member != null}" th:value="${session.member.member_no}">
 

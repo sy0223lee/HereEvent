@@ -128,4 +128,10 @@ public class EventDAOImpl implements EventDAO{
     public List<EventDTO> selectFourEventByCategory(int category_no) {
         return sqlSession.selectList("com.multi.hereevent.event.fourEventByCategory", category_no);
     }
+
+    //검색
+    @Override
+    public List<EventDTO> search(String keyword) {
+        return sqlSession.selectList("com.multi.hereevent.event.search", keyword);
+    }
 }
