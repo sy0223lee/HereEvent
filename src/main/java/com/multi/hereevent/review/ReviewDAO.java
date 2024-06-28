@@ -3,7 +3,6 @@ package com.multi.hereevent.review;
 import com.multi.hereevent.dto.ReviewDTO;
 import com.multi.hereevent.dto.ReviewImgDTO;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Map;
@@ -22,5 +21,6 @@ public interface ReviewDAO {
     List<ReviewImgDTO> selectReviewImgs(int review_no);
 
     // 페이징 처리
-    Page<Map<String, Object>> selectReviewPaging(Map<String, Object> params);
+    int countReviewWithPage(Map<String, Object> params);
+    List<ReviewDTO> selectReviewWithPage(Map<String, Object> params);
 }

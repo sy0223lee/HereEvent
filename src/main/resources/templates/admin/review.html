@@ -12,8 +12,11 @@
     <!-- js File -->
     <script type="text/javascript" src="/hereevent/common/js/starRate.js"></script>
     <script type="text/javascript" src="/hereevent/common/js/admin.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript" th:inline="javascript">
         $(document).ready(function() {
+            pageBtn([[${totalPages}]], [[${pageNumber}]], [[${totalElements}]]);
+
+            // 상세보기 버튼
             $('.review-detail-btn').each(function(){
                 $(this).click(function(){
                     let reviewNo = $(this).val();
@@ -73,15 +76,16 @@
             <div class="d-flex align-items-center justify-content-between review-search">
                 <button type="button" class="btn btn-primary">선택 삭제</button>
                 <div class="search-widget">
-                    <form action="#" method="post" class="d-flex justify-content-start">
-                        <select name="tag">
-                            <option value="all">전체</option>
-                            <option value="id">이벤트</option>
-                            <option value="title">작성자</option>
-                            <option value="content">카테고리</option>
-                            <option value="write_date">작성일</option>
+                    <form action="/hereevent/admin/review" method="get" class="d-flex justify-content-start">
+                        <select name="type">
+                            <option value="all" th:selected="${type == 'all'}">--</option>
+                            <option value="event" th:selected="${type == 'event'}">이벤트</option>
+                            <option value="nick" th:selected="${type == 'nick'}">닉네임</option>
+                            <option value="category" th:selected="${type == 'category'}">카테고리</option>
+                            <option value="write_date" th:selected="${type == 'write_date'}">작성일</option>
                         </select>
-                        <input type="text" name="query" placeholder="검색어를 입력하세요">
+                        <input type="text" name="keyword" placeholder="검색어를 입력하세요" th:if="${keyword == null}">
+                        <input type="text" name="keyword" placeholder="검색어를 입력하세요" th:unless="${keyword == null}" th:value="${keyword}">
                         <button type="submit"><i class="bi bi-search"></i></button>
                     </form>
                 </div>
@@ -201,7 +205,12 @@
 
             </div>
 
-            <h1>페이지네이션 추가 필요</h1>
+            <!-- 페이지네이션-->
+            <nav>
+                <ul class="pagination justify-content-center">
+
+                </ul>
+            </nav>
 
         </div>
 

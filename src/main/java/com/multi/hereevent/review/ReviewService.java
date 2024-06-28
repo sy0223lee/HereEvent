@@ -20,5 +20,5 @@ public interface ReviewService {
     List<ReviewImgDTO> selectReviewImgs(int review_no);
 
     // 페이징 처리
-    Page<Map<String, Object>> selectReviewPaging(Map<String, Object> params, Pageable page);
+    Page<ReviewDTO> selectReviewWithPage(Map<String, Object> params, Pageable page);
 }

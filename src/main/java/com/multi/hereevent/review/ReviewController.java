@@ -5,13 +5,19 @@ import com.multi.hereevent.dto.ReviewDTO;
 import com.multi.hereevent.dto.ReviewImgDTO;
 import com.multi.hereevent.fileupload.FileUploadService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -94,12 +100,15 @@ public class ReviewController {
 
     /***** 관리자 페이지 *****/
     @GetMapping("/admin/review")
-    public String adminReviewPage(Model model){
-        List<ReviewDTO> reviewList = reviewService.selectAll();
-        for(ReviewDTO review : reviewList){
-            review.setReview_imgs(reviewService.selectReviewImgs(review.getReview_no()));
-        }
-        model.addAttribute("reviewList", reviewList);
+    public String selectReviewWithPage(@RequestParam Map<String, Object> params,
+                                       @PageableDefault(value = 10) Pageable page, Model model){
+        Page<ReviewDTO> result = reviewService.selectReviewWithPage(params, page);
+        model.addAttribute("type", params.get("type"));
+        model.addAttribute("keyword", params.get("keyword"));
+        model.addAttribute("reviewList", result.getContent());
+        model.addAttribute("totalPages", result.getTotalPages());
+        model.addAttribute("totalElements", result.getTotalElements());
+        model.addAttribute("pageNumber", page.getPageNumber());
         return "admin/review";
     }
     @PostMapping("/admin/review/delete")

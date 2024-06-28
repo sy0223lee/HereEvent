@@ -1,3 +1,37 @@
+/* 페이징 버튼 */
+.pagination{
+    margin: 30px;
+}
+
+.pagination .page-item .page-btn{
+    background: none;
+    border: none;
+    color: var(--default-color);
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 4px;
+}
+
+.pagination .page-item .page-btn:hover{
+    color: var(--contrast-color);
+    background-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+}
+
+.pagination .page-item.active .page-btn,
+.pagination .page-item.active .page-btn:hover{
+    color: var(--accent-color);
+    background: none;
+    cursor: default;
+}
+
+.pagination .page-item.disabled .page-btn,
+.pagination .page-item.disabled .page-btn:hover{
+    color: var(--default-color);
+    background: none;
+    opacity: 0.3;
+    cursor: default;
+}
+
 /* 후기 관리 페이지 */
 .review-search{
     margin-bottom: 20px;

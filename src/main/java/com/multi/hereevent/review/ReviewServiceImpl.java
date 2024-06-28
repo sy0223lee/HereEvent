@@ -4,6 +4,7 @@ import com.multi.hereevent.dto.ReviewDTO;
 import com.multi.hereevent.dto.ReviewImgDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,11 +88,14 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
-    public Page<Map<String, Object>> selectReviewPaging(Map<String, Object> params, Pageable page) {
+    public Page<ReviewDTO> selectReviewWithPage(Map<String, Object> params, Pageable page) {
+        int count = dao.countReviewWithPage(params);
         params.put("offset", page.getOffset());
         params.put("pageSize", page.getPageSize());
-//        List<Map<String, Object>> reviewList = dao.selectReviewPaging(params);
-
-        return null;
+        List<ReviewDTO> reviewList = dao.selectReviewWithPage(params);
+        for(ReviewDTO review : reviewList){
+            review.setReview_imgs(dao.selectReviewImgs(review.getReview_no()));
+        }
+        return new PageImpl<>(reviewList, page, count);
     }
 }

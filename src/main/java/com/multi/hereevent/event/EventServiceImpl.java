@@ -59,7 +59,7 @@ public class EventServiceImpl implements EventService {
     public List<FourEventByCategoryDTO> selectFourEventByCategory() {
         // list로 카테고리번호를 가져옴
         List<CategoryDTO> categoryList = categoryDAO.getListCategory();
-        System.out.println("catelist=====>"+categoryList);
+        //System.out.println("catelist=====>"+categoryList);
 
         List<FourEventByCategoryDTO> fourList = new ArrayList<>();
 
