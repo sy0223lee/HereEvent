@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.multi.hereevent.event">
     <select id="insertEvent" parameterType="event">
-        insert into events (category_no, name, start_date, end_date, addr, info, homepage, sns, img_path, type, reserve_limit, wait_limit)
+        insert into event (category_no, name, start_date, end_date, addr, info, homepage, sns, img_path, type, reserve_limit, wait_limit)
         values (#{category_no}, #{name}, #{start_date}, #{end_date}, #{addr}, #{info}, #{homepage}, #{sns}, #{img_path}, #{type}, #{reserve_limit}, #{wait_limit})
     </select>
     <select id="deleteEvent" parameterType="int">
@@ -178,5 +178,49 @@
         where ci.member_no = #{member_no})
         order by start_date
     </select>
+    <select id="countEventWithPage" parameterType="map" resultType="int">
+        select count(e.event_no)
+        from event e
+        <choose>
+            <when test="type == null">
 
+            </when>
+            <when test='type == "event"'>
+                where e.name like concat('%', #{keyword}, '%')
+            </when>
+            <when test='type == "addr"'>
+                where e.addr like concat('%', #{keyword}, '%')
+            </when>
+            <when test='type == "category"'>
+                where e.event_no in (
+                select e.event_no
+                from event e left join category c on e.category_no = c.category_no
+                where c.name like concat('%', #{keyword}, '%') or c.value like concat('%', #{keyword}, '%'))
+            </when>
+        </choose>
+    </select>
+    <select id="selectEventWithPage" parameterType="map" resultType="event">
+        select e.*
+        from event e
+        <choose>
+            <when test="type == null">
+
+            </when>
+            <when test='type == "event"'>
+                where e.name like concat('%', #{keyword}, '%')
+            </when>
+            <when test='type == "addr"'>
+                where e.addr like concat('%', #{keyword}, '%')
+            </when>
+            <when test='type == "category"'>
+                where e.event_no in (
+                select e.event_no
+                from event e left join category c on e.category_no = c.category_no
+                where c.name like concat('%', #{keyword}, '%') or c.value like concat('%', #{keyword}, '%'))
+            </when>
+
+        </choose>
+        order by e.event_no desc
+        limit ${offset}, ${pageSize}
+    </select>
 </mapper>

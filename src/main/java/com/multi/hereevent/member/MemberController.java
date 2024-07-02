@@ -44,12 +44,24 @@ public class MemberController {
     }
     @PostMapping("/insert")
     public String register(MemberDTO member, Model model){
-        memberService.insertMember(member);
-        MemberDTO findmem = memberService.findMemberByEmail(member.getEmail());
-        List<CategoryInterestDTO> categoryList = categoryService.selectCategoryInterestByMemberNo(findmem.getMember_no());
-        model.addAttribute("categoryList", categoryList);
-        model.addAttribute("member",findmem);
-        return "login/interestCategory";
+
+        MultipartFile profileImg = member.getProfile_img();
+        String storeFilename = null;
+        try {
+            storeFilename = fileService.uploadProfileImg(profileImg);
+            member.setImg_path(storeFilename);
+            System.out.println(member);
+            memberService.insertMember(member);
+            MemberDTO findmem = memberService.findMemberByEmail(member.getEmail());
+            List<CategoryInterestDTO> categoryList = categoryService.selectCategoryInterestByMemberNo(findmem.getMember_no());
+            model.addAttribute("categoryList", categoryList);
+            model.addAttribute("member",findmem);
+            return "login/interestCategory";
+        } catch (IOException e) {
+            new RuntimeException();
+            return "common/errorPage";
+        }
+
     }
     //관심 카테고리 설정
     @GetMapping("/interestCategory")

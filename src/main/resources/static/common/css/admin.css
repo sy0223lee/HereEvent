@@ -96,6 +96,9 @@
 .review-table .update-date{width: 10%;}
 .review-table .show-detail{width: 10%;}
 
+.review-table .event-no{width: 8%;}
+.review-table .event-update{width: 15%;}
+.review-table .event-detail{width: 15%;}
 .review-img {
     width: 87%;
     overflow: hidden;
