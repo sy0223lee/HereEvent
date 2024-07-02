@@ -139,4 +139,13 @@ public class EventDAOImpl implements EventDAO{
     public List<EventDTO> selectFourEventByCategory(int category_no) {
         return sqlSession.selectList("com.multi.hereevent.event.fourEventByCategory", category_no);
     }
+    @Override
+    public int countEventWithPage(Map<String, Object> params) {
+        return sqlSession.selectOne("com.multi.hereevent.event.countEventWithPage", params);
+    }
+
+    @Override
+    public List<EventDTO> selectEventWithPage(Map<String, Object> params) {
+        return sqlSession.selectList("com.multi.hereevent.event.selectEventWithPage", params);
+    }
 }

@@ -5,8 +5,8 @@
 		select * from member
 	</select>
 	<insert id="insert" parameterType="member" >
-		insert into member (email, pass, name, nick, tel, birth, mgr)
-		values(#{email},#{pass},#{name},#{nick},#{tel},#{birth},0)
+		insert into member (email, pass, name, nick, tel, birth,img_path, mgr)
+		values(#{email},#{pass},#{name},#{nick},#{tel},#{birth},#{img_path},0)
 	</insert>
 	<select id="login" parameterType="member" resultType="member">
 		select *
