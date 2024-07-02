@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/mainLayout}">
+      layout:decorate="~{layout/mainLayout}">>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -69,23 +69,44 @@
     </style>
 </head>
 <body>
-    <h1>Search Results</h1>
     <main layout:fragment="main" class="main">
         <!-- Page Title -->
         <div class="page-title">
             <div class="container">
                 <nav class="breadcrumbs">
                     <ol>
-                        <li><a href="#">Home</a></li>
-                        <li class="current" th:text="${keyword} + '의 검색결과'"></li>
+                        <li><a href="/hereevent/main">Home</a></li>
+                        <li class="current">카테고리별 목록</li>
                     </ol>
                 </nav>
-                <h1>팝업 세부정보</h1>
+                <div>
+                    <h1>[[${categoryName}]]</h1>
+                </div>
+                <!--<h1 th:if="${category_no == 1}">캐릭터</h1>
+                <h1 th:if="${category_no == 2}">뷰티</h1>
+                <h1 th:if="${category_no == 3}">웹툰</h1>
+                <h1 th:if="${category_no == 4}">생필품</h1>
+                <h1 th:if="${category_no == 5}">가구</h1>
+                <h1 th:if="${category_no == 6}">패션</h1>
+                <h1 th:if="${category_no == 7}">유튜브</h1>
+                <h1 th:if="${category_no == 8}">식품</h1>
+                <h1 th:if="${category_no == 9}">영화</h1>
+                <h1 th:if="${category_no == 10}">기타</h1>
+                <h1 th:if="${category_no == 20}">애니메이션</h1>
+                <h1 th:if="${category_no == 21}">드라마</h1>
+                <h1 th:if="${category_no == 22}">예술</h1>
+                <h1 th:if="${category_no == 23}">게임</h1>
+                <h1 th:if="${category_no == 24}">연예인</h1>
+                <h1 th:if="${category_no == 25}">스포츠</h1>
+                <h1 th:if="${category_no == 26}">지역</h1>
+                <h1 th:if="${category_no == 27}">식물</h1>-->
             </div>
-        </div><!-- End Page Title -->
+        </div>
+        <!-- End Page Title -->
+
         <div id="listbox" class="container">
-            <div th:each="event : ${events}" class="card" style="width: 18rem;">
-                <img th:src="@{/download/event/{img_path}(img_path=${event.img_path})}" class="card-img-top">
+            <div th:each="event : ${eventlist}" class="card" style="width: 18rem;">
+               <img  th:src="|@{/download/event/}${event.img_path}|" class="card-img-top">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${event.name}"></h5>
                     <p class="card-text"><span th:text="${event.start_date}" class="overlay-text"/> ~ <span th:text="${event.end_date}" class="overlay-text"/></p>
@@ -95,6 +116,5 @@
             </div>
         </div>
     </main>
-<!--    <a href="/search">Back to search</a>-->
 </body>
 </html>

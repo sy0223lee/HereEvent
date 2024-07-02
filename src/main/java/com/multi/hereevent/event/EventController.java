@@ -1,5 +1,6 @@
 package com.multi.hereevent.event;
 
+import com.multi.hereevent.category.CategoryService;
 import com.multi.hereevent.dto.*;
 import com.multi.hereevent.event.interest.EventInterestService;
 import com.multi.hereevent.event.time.EventTimeService;
@@ -28,6 +29,8 @@ public class EventController {
     private final EventInterestService interestService;
     private final EventTimeService eventTimeService;
     private  final WaitService WaitService;
+    private final CategoryService categoryService;
+
     @GetMapping("/main")
     public String mainPage(Model model) {
         List<FourEventByCategoryDTO> fourlist = eventService.selectFourEventByCategory();
@@ -42,8 +45,31 @@ public class EventController {
         model.addAttribute("popularlist",popularlist);
         return "main/mainPage";
     }
-
-    //행사검색(프론트 아직)
+    //종류별 목록페이지
+    @GetMapping("/list")
+    public String listpage(@RequestParam("type") String type, Model model){
+        model.addAttribute("type", type);
+        if(type.equals("star")){
+            model.addAttribute("eventList", eventService.getListByStarRank());
+        }else if(type.equals("popular")){
+            model.addAttribute("eventList", eventService.getPopularEvent());
+        }else if(type.equals("open")){
+            model.addAttribute("eventList", eventService.getOpenEvent());
+        }else if(type.equals("all")){
+            model.addAttribute("eventList", eventService.getAllEvent());
+        }
+        return "main/listPage";
+    }
+    //카테고리별 리스트
+    @GetMapping("/event/list/{category_no}")
+    public String listCategory(@PathVariable("category_no") int category_no, Model model){
+        List<EventDTO> eventlist = eventService.selectEventByCategoryNo(category_no);
+        String categoryName = categoryService.selectCategoryName(category_no);
+        model.addAttribute("eventlist",eventlist);
+        model.addAttribute("categoryName", categoryName);
+        return "main/categoryListPage";
+    }
+    //행사검색
     @GetMapping("/search")
     public String search(@RequestParam("keyword") String keyword, Model model) {
         List<EventDTO> searchlist = eventService.search(keyword);
@@ -118,13 +144,6 @@ public class EventController {
         return eventService.getEventImage(event_no);
     }
 
-    //카테고리별 리스트
-    @GetMapping("/event/list/{category_no}")
-    public String listCategory(@PathVariable("category_no") int category_no, Model model){
-        List<EventDTO> eventlist = eventService.selectEventByCategoryNo(category_no);
-        model.addAttribute("eventlist",eventlist);
-        return "event/eventCategoryList";
-    }
 
     // 관심 이벤트 등록, 해제
     @GetMapping("/event/interest/insert")

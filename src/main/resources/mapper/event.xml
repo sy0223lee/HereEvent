@@ -13,30 +13,65 @@
     <select id="deleteEvent" parameterType="int">
         delete from event where event_no = #{event_no}
     </select>
-
     <select id="searchEvent" parameterType="String" resultType="event">
         SELECT *
         FROM event
         WHERE name Like CONCAT('%' , #{name} , '%')
     </select>
     <select id="getAllEvent" resultType="event">
-        SELECT *
-        FROM event
+        SELECT e.event_no, e.category_no, e.name, e.start_date, e.end_date, e.addr, e.info,
+        e.homepage, e.sns, e.img_path, e.type, e.reserve_limit, e.wait_limit,
+        AVG(r.star) AS avg_star
+        FROM event e
+        LEFT JOIN review r ON e.event_no = r.event_no
+        GROUP BY e.event_no, e.category_no, e.name, e.start_date, e.end_date, e.addr,
+        e.info, e.homepage, e.sns, e.img_path, e.type, e.reserve_limit, e.wait_limit
     </select>
     <select id="getOpenEvent" resultType="event">
-        SELECT event_no, category_no, name, start_date, end_date, addr, info, homepage, sns, img_path, type, reserve_limit, wait_limit
-        FROM event
-        WHERE start_date > now()
-        ORDER BY start_date
+        SELECT e.event_no, e.category_no, e.name, e.start_date, e.end_date, e.addr, e.info,
+        e.homepage, e.sns, e.img_path, e.type, e.reserve_limit, e.wait_limit,
+        AVG(r.star) AS avg_star
+        FROM event e
+        LEFT JOIN review r ON e.event_no = r.event_no
+        WHERE e.start_date > NOW()
+        GROUP BY e.event_no, e.category_no, e.name, e.start_date, e.end_date, e.addr,
+        e.info, e.homepage, e.sns, e.img_path, e.type, e.reserve_limit, e.wait_limit
+        ORDER BY e.start_date;
     </select>
     <select id="getPopularEvent" resultType="event">
-        SELECT e.event_no,e.name,e.start_date,e.end_date,e.addr, e.img_path,
-        COUNT(DISTINCT r.member_no) + COUNT(DISTINCT w.email) AS total_count
+        SELECT e.event_no, e.name, e.start_date, e.end_date, e.addr, e.img_path,
+        COUNT(DISTINCT r.member_no) + COUNT(DISTINCT w.email) AS total_count,
+        AVG(rev.star) AS avg_star
         FROM event e
         LEFT JOIN reserve r ON e.event_no = r.event_no
         LEFT JOIN wait w ON e.event_no = w.event_no
+        LEFT JOIN review rev ON e.event_no = rev.event_no
+        GROUP BY e.event_no, e.name, e.start_date, e.end_date, e.addr, e.img_path
+        ORDER BY total_count DESC
+        LIMIT 10;
+    </select>
+    <!--별점순 이벤트 조회-->
+    <select id="getEventByStarRank" resultType="event">
+        SELECT e.event_no, e.name, e.addr, e.start_date, e.end_date, e.img_path, AVG(r.star) AS avg_star
+        FROM event AS e
+        JOIN review AS r
+        ON e.event_no = r.event_no
         GROUP BY e.event_no
-        ORDER BY total_count desc limit 10
+        ORDER BY avg_star DESC limit 10
+    </select>
+    <!--카테고리별 이벤트 조회-->
+    <select id="selectEventByCategory" resultType="event">
+        SELECT e.*, c.name AS cname
+        FROM event AS e
+        JOIN category AS c ON e.category_no = c.category_no
+        WHERE e.category_no = #{category_no}
+    </select>
+    <!--카테고리별 이벤트 4개씩 조회-->
+    <select id="fourEventByCategory" resultType="event">
+        SELECT *
+        FROM event
+        WHERE category_no =#{category_no} AND end_date > NOW()
+        LIMIT 4
     </select>
 
     <select id="getEventDetails" resultType="event">
@@ -78,28 +113,7 @@
         where event_no = #{event_no}
     </update>
 
-    <!--카테고리별 이벤트 조회-->
-    <select id="selectEventByCategory" resultType="event">
-        select *
-        from event
-        where category_no=#{category_no}
-    </select>
-    <!--카테고리별 이벤트 4개씩 조회-->
-    <select id="fourEventByCategory" resultType="event">
-        SELECT *
-        FROM event
-        WHERE category_no =#{category_no} AND end_date > NOW()
-        LIMIT 4
-    </select>
-    <!--별점순 이벤트 조회-->
-    <select id="getEventByStarRank" resultType="event">
-        SELECT e.event_no, e.name, e.img_path, AVG(r.star) AS avg_star
-        FROM event AS e
-        JOIN review AS r
-        ON e.event_no = r.event_no
-        GROUP BY e.event_no
-        ORDER BY avg_star DESC limit 10
-    </select>
+
     <!--예약하기-->
     <insert id="insertReserve" parameterType="reserve">
         insert into reserve (event_no,member_no, reserve_date, reserve_time,state,reserve_order)
