@@ -31,26 +31,24 @@
 
         <div class="container">
             <div class="submenu">
-                <a class="on" href="/hereevent/mypage"><h2>내 정보</h2></a>
-                <a href="/hereevent/myinterest"><h2>관심 내역</h2></a>
-                <a href="/hereevent/myreview"><h2>후기 관리</h2></a>
-                <a href="/hereevent/myevent"><h2>행사 내역</h2></a>
+                <a class="on" href="/hereevent/mypage"><h5>프로필</h5></a>
+                <a href="/hereevent/myinterest"><h5>관심</h5></a>
+                <a href="/hereevent/myreview"><h5>후기</h5></a>
+                <a href="/hereevent/myevent"><h5>이벤트</h5></a>
             </div>
         </div>
 
         <!-- Section Title -->
         <div class="container section-title">
-            <h2>Starter Section</h2>
-            <div class="profile-img-area">
-                <div id="profile-img">
-                    <img th:if="${session.member.img_path == null}"
-                         th:src="@{/images/profile/default_profile.svg}" alt="default_profile">
-                    <img th:unless="${session.member.img_path == null}"
-                         th:src="|@{/download/profile/}${session.member.img_path}|" alt="member_profile">
-                </div>
+            <h2>프로필 수정</h2>
+            <div class="profile-img-area" id="profile-img">
+                <img th:if="${session.member.img_path == null}"
+                     th:src="@{/images/default_img.png}" alt="default_profile">
+                <img th:unless="${session.member.img_path == null}"
+                     th:src="|@{/download/profile/}${session.member.img_path}|" alt="member_profile">
             </div>
             <button onclick="location.href='/hereevent/mypage/edit-profile-img'"
-                    type="button" class="edit-img-btn">수정</button>
+                    class="edit-img-btn btn-primary">수정</button>
         </div><!-- End Section Title -->
 
         <div class="container">
@@ -61,7 +59,7 @@
                 <li><span>닉네임</span>
                     <p>[[${session.member.nick}]]
                         <button onclick="location.href='/hereevent/mypage/edit-nick'"
-                                type="button" class="edit-btn">수정</button></p></li>
+                                class="edit-btn btn-primary">수정</button></p></li>
                 <li><span>이메일</span>
                     <p th:text="${session.member.email}"></p></li>
                 <li><span>연락처</span>
@@ -69,12 +67,17 @@
                 <li><span>생일</span>
                     <p th:if="${session.member.birth != null}">[[${session.member.birth}]]
                         <button onclick="location.href='/hereevent/mypage/edit-birth'"
-                                type="button" class="edit-btn">수정</button></p>
+                                class="edit-btn btn-primary">수정</button></p>
                     <p th:unless="${session.member.birth != null}">&nbsp
                         <button onclick="location.href='/hereevent/mypage/edit-birth'"
-                                type="button" class="edit-btn">등록</button></p>
+                                class="edit-btn btn-primary">등록</button></p>
                 </li>
             </ul>
+
+            <div class="profile-btn-area d-flex justify-content-end">
+                <button class="edit-btn edit-btn btn-primary">비밀번호 변경</button>
+                <button class="edit-btn btn-secondary">회원 탈퇴</button>
+            </div>
         </div>
 
     </section>

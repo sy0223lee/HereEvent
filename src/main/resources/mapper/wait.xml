@@ -33,6 +33,12 @@
     <select id="selectall" resultType="wait" >
         select * from wait
     </select>
+    <!-- 전체 선택 후 정렬-->
+    <select id="getAllWaitingList" resultType="wait">
+        SELECT *
+        FROM wait
+        ORDER BY wait_no
+    </select>
     <!-- 삭제 -->
     <delete id="delete" parameterType="Integer">
         delete from wait where wait_no = #{wait_no}

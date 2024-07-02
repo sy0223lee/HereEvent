@@ -2,6 +2,7 @@ package com.multi.hereevent.event;
 
 import com.multi.hereevent.dto.EventDTO;
 import com.multi.hereevent.dto.FourEventByCategoryDTO;
+import com.multi.hereevent.dto.MemberEventDTO;
 import com.multi.hereevent.dto.ReserveDTO;
 
 
@@ -39,17 +40,21 @@ public interface EventService {
     EventDTO getEventDetails(int event_no, int category_no); // 이벤트 상세 정보 + 회원 관심 여부 조회
     //event image
     EventDTO getEventImage(int event_no);
-  
+
     //예약하기
     int insertReserve(ReserveDTO reservation);
     //예약 순서 체크
     ReserveDTO checkReserveOrder(int event_no, Date reserve_date, Time reserve_time);
     //예약 인원 체크
     int checkReserveLimit(int event_no);
+
     // 크롤링
     int insertCrawlingEvent(EventDTO event);
     int updateEventImg(int event_no, String img_path);
     int selectEventNoByEventName(String eventName);
-    //검색
-    List<EventDTO> search(String keyword);
+
+    // 특정 멤버 이벤트 내역 조회
+    List<MemberEventDTO> selectMemberEvent(int member_no);
+    // 오늘로부터 2주 내에 오픈 예정인 관심 카테고리 이벤트 조회
+    List<EventDTO> selectNewEvent(int member_no);
 }

@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 
@@ -28,8 +27,8 @@ public class EventController {
     private final ReviewService reviewService;
     private final EventInterestService interestService;
     private final EventTimeService eventTimeService;
-    private  final WaitService WaitService;
     private final CategoryService categoryService;
+    private final WaitService waitService;
 
     @GetMapping("/main")
     public String mainPage(Model model) {
@@ -45,6 +44,7 @@ public class EventController {
         model.addAttribute("popularlist",popularlist);
         return "main/mainPage";
     }
+
     //종류별 목록페이지
     @GetMapping("/list")
     public String listpage(@RequestParam("type") String type, Model model){
@@ -60,6 +60,7 @@ public class EventController {
         }
         return "main/listPage";
     }
+  
     //카테고리별 리스트
     @GetMapping("/event/list/{category_no}")
     public String listCategory(@PathVariable("category_no") int category_no, Model model){
@@ -69,10 +70,11 @@ public class EventController {
         model.addAttribute("categoryName", categoryName);
         return "main/categoryListPage";
     }
+
     //행사검색
     @GetMapping("/search")
     public String search(@RequestParam("keyword") String keyword, Model model) {
-        List<EventDTO> searchlist = eventService.search(keyword);
+        List<EventDTO> searchlist = eventService.searchEvent(keyword);
         model.addAttribute("events", searchlist);
         model.addAttribute("keyword", keyword);
         return "search/searchResults";
@@ -96,11 +98,12 @@ public class EventController {
         model.addAttribute("reviewList", reviewList);
         return "detailedPage/detailedPage";
     }
+  
     //대기 현황 확인 페이지
     @GetMapping("/event/waitSituation")
     public String waitSituation(@RequestParam("event_no") int event_no, Model model) {
 
-        int waitingCount = WaitService.getWaitingCount(event_no);
+        int waitingCount = waitService.getWaitingCount(event_no);
         EventDTO eventDetails = eventService.getEventDetails(event_no);
         model.addAttribute("waitingCount", waitingCount);
         model.addAttribute("event", eventDetails);
@@ -119,6 +122,7 @@ public class EventController {
             reserve.setReserve_order(order);
         }
         MemberDTO member = (MemberDTO) model.getAttribute("member");
+        assert member != null;
         reserve.setReserve_no(member.getMember_no());
         eventService.insertReserve(reserve);
         return "redirect:/main";
@@ -143,7 +147,6 @@ public class EventController {
         model.addAttribute("event", eventDetails);
         return eventService.getEventImage(event_no);
     }
-
 
     // 관심 이벤트 등록, 해제
     @GetMapping("/event/interest/insert")
@@ -175,6 +178,17 @@ public class EventController {
             return "redirect:/myinterest";
         }
         return "common/errorPage";
+    }
+
+    /***** 마이페이지 이벤트 내역 *****/
+    @GetMapping("/myevent")
+    public String myevent(Model model) {
+        MemberDTO member = (MemberDTO) model.getAttribute("member");
+        assert member != null;
+        List<MemberEventDTO> eventList = eventService.selectMemberEvent(member.getMember_no());
+        model.addAttribute("eventList", eventList);
+        return "mypage/myevent";
+
     }
 
     /***** 관리자 페이지 *****/

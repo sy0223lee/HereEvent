@@ -36,17 +36,17 @@
                     <input type="hidden" th:name="member_no" th:value="${session.member.member_no}">
                     <div id="profile-img">
                         <img th:if="${session.member.img_path == null}"
-                             th:src="@{/images/profile/default_profile.svg}" alt="default_profile">
+                             th:src="@{/images/default_img.png}" alt="default_profile">
                         <img th:unless="${session.member.img_path == null}"
                              th:src="|@{/download/profile/}${session.member.img_path}|" alt="member_profile">
                     </div>
                 </div>
-                <label class="edit-img-btn" for="select-img">
+                <label class="edit-img-btn btn-secondary" for="select-img">
                     이미지 선택
                     <input type="file" name="profile_img" id="select-img" accept="image/*"
                            onchange="document.querySelector('#profile-img img').src = window.URL.createObjectURL(this.files[0])">
                 </label>
-                <button type="submit" class="edit-img-btn">수정</button>
+                <button type="submit" class="edit-img-btn btn-primary">수정</button>
             </div>
         </form>
     </section><!-- End Section -->

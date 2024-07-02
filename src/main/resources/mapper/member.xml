@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.multi.hereevent.member">
+	<select id="selectAllMember" resultType="member">
+		select * from member
+	</select>
 	<insert id="insert" parameterType="member" >
-		insert into member (email, pass, name, nick, tel, birth,mgr)
+		insert into member (email, pass, name, nick, tel, birth, mgr)
 		values(#{email},#{pass},#{name},#{nick},#{tel},#{birth},0)
 	</insert>
-  	<select id="login" parameterType="member" resultType="member">
+	<select id="login" parameterType="member" resultType="member">
 		select *
 		from member
 		where email = #{email} and pass = #{pass}
@@ -43,10 +46,4 @@
 		from member
 		where email = #{email}
 	</select>
-	<insert id="setInterestCategory" parameterType="categoryInterest">
-		INSERT INTO category_interest (member_no, category1,category2,category3)
-		SELECT m.member_no, #{category1},#{category2},#{category3}
-		FROM member m
-		WHERE m.member_no = #{member_no};
-	</insert>
 </mapper>

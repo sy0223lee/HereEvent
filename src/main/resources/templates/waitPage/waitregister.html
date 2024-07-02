@@ -15,7 +15,8 @@
 
         <div class="post-img">
             <div th:each="imgPath : ${event.img_path}">
-                <img th:src="|@{/download/event/}${imgPath}|" th:alt="${imgPath}" alt="Event Image" />
+                <img th:if="${imgPath != null}" th:src="|@{/download/event/}${imgPath}|" th:alt="${imgPath}"/>
+                <img th:unless="${imgPath != null}" th:src="@{/images/default_img.png}" alt="default_img"/>
             </div>
         </div>
         <h2 class="title"><span th:text="${event.name}"></span></h2>

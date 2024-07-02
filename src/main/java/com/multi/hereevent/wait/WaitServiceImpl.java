@@ -5,6 +5,7 @@ import com.multi.hereevent.dto.MemberDTO;
 import com.multi.hereevent.dto.WaitDTO;
 import com.multi.hereevent.event.EventDAO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -79,7 +80,7 @@ public class WaitServiceImpl implements WaitService {
     }
 
     @Override
-    public int updateStateToVisit(WaitDTO wait) {
+    public int updateState(WaitDTO wait) {
         return dao.updateState(wait);
     }
 
@@ -91,10 +92,8 @@ public class WaitServiceImpl implements WaitService {
     }
     @Override
     public String getEntranceWaitTime(int event_no, int wait_no) {
-        EventDTO event = eventDAO.getEventDetails(event_no);
-        int waitLimit = event.getWait_limit();
-
         List<WaitDTO> waitingList = dao.getWaitingListByEventNo(event_no);
+        waitingList.removeIf(wait -> !"wait".equals(wait.getState()));
         waitingList.sort((w1, w2) -> Integer.compare(w1.getWait_no(), w2.getWait_no()));
 
         int position = -1;
@@ -109,21 +108,24 @@ public class WaitServiceImpl implements WaitService {
             throw new IllegalArgumentException("Invalid wait_no: " + wait_no);
         }
 
-        if (position < waitLimit) {
-            return "즉시 입장 가능합니다.";
-        }
+        int waitGroups = position / 3;
+        int waitMinutes = waitGroups * 3;
 
-        for (int i = position - waitLimit; i >= 0; i -= waitLimit) {
-            if ("visit".equals(waitingList.get(i).getState())) {
-                LocalDateTime visitTime = waitingList.get(i).getWait_date().plusMinutes(30 * ((position - i) / waitLimit));
-                return visitTime.format(DateTimeFormatter.ofPattern("HH:mm"));
-            }
-        }
-
-        return "입장 가능 시간을 계산할 수 없습니다."; // default value if no valid visit state found
+        return "예상 대기 시간: " + waitMinutes + "분";
     }
 
 
+    @Override
+    @Scheduled(fixedRate = 60000)  // 1분
+    public void checkAndUpdateWaitStatus() {
+        List<WaitDTO> waitingList = dao.getAllWaitingList();
+        LocalDateTime now = LocalDateTime.now();
 
-
+        for (WaitDTO wait : waitingList) {
+            if ("visit".equals(wait.getState()) && Duration.between(wait.getWait_date(), now).toMinutes() >= 20) {
+                wait.setState("cancel");
+                dao.updateState(wait);
+            }
+        }
+    }
 }

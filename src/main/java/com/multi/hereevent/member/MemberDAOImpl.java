@@ -25,7 +25,7 @@ public class MemberDAOImpl implements MemberDAO {
 
     @Override
     public List<MemberDTO> selectAllMember() {
-        return List.of();
+        return sqlSession.selectList("com.multi.hereevent.member.selectAllMember");
     }
 
     @Override
@@ -70,8 +70,4 @@ public class MemberDAOImpl implements MemberDAO {
         return sqlSession.selectOne("com.multi.hereevent.member.findByEmail", email);
     }
 
-    @Override
-    public int setInterestCategory(CategoryInterestDTO ci) {
-        return sqlSession.insert("com.multi.hereevent.member.setInterestCategory",ci);
-    }
 }

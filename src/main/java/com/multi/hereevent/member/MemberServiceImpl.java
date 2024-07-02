@@ -67,8 +67,4 @@ public class MemberServiceImpl implements MemberService{
         return dao.findMemberByEmail(email);
     }
 
-    @Override
-    public int setInterestCategory(CategoryInterestDTO ci) {
-        return dao.setInterestCategory(ci);
-    }
 }

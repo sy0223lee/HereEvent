@@ -74,7 +74,7 @@
         <div class="container review-container">
 
             <div class="d-flex align-items-center justify-content-between review-search">
-                <button type="button" class="btn btn-primary">선택 삭제</button>
+                <button class="btn btn-primary">선택 삭제</button>
                 <div class="search-widget">
                     <form action="/hereevent/admin/review" method="get" class="d-flex justify-content-start">
                         <select name="type">
@@ -114,7 +114,9 @@
                         </div>
                         <div class="event-img text-center event-image">
                             <a th:href="|@{/event/}${review.event_no}|">
-                                <img th:src="|@{/download/event/}${review.img_path}|" th:alt="${review.img_path}"></a>
+                                <img th:if="${review.img_path != null}" th:src="|@{/download/event/}${review.img_path}|" th:alt="${review.img_path}">
+                                <img th:unless="${review.img_path != null}" th:src="@{/images/default_img.png}" th:alt="default_img">
+                            </a>
                         </div>
                         <div class="event-name">
                             <a th:href="|@{/event/}${review.event_no}|">
@@ -179,7 +181,7 @@
                         <div class="update-date text-center" th:text="${review.update_date}"></div>
                         <div class="show-detail text-center">
                             <!-- 후기 상세보기 버튼 -->
-                            <button type="button" class="review-detail-btn btn btn-secondary default" th:value="${review.review_no}">상세보기</button>
+                            <button class="review-detail-btn btn btn-secondary default" th:value="${review.review_no}">상세보기</button>
                         </div>
                     </div>
 
@@ -197,7 +199,7 @@
                             <p th:text="${review.content}"></p>
                         </div>
                         <div class="review-btn text-end">
-                            <button type="button" id="deleteOne" class="btn btn-primary" th:value="${review.review_no}">삭제</button>
+                            <button id="deleteOne" class="btn btn-primary" th:value="${review.review_no}">삭제</button>
                         </div>
                     </div>
 

@@ -117,8 +117,10 @@
                 <div class="swiper-wrapper align-items-center">
                     <div th:each="four:${fourlist}" class="swiper-slide">
                         <div class="cate-screen1" th:each="event : ${four.eventList}">
-                            <img th:src="|@{/download/event/}${event.img_path}|" class="img-fluid"
-                                 th:onclick="|location.href='@{/event/list/}${four.category_no}'|">
+                            <img class="img-fluid" th:onclick="|location.href='@{/event/list/}${four.category_no}'|"
+                                 th:if="${event.img_path != null}" th:src="|@{/download/event/}${event.img_path}|" th:alt="${event.img_path}">
+                            <img class="img-fluid" th:onclick="|location.href='@{/event/list/}${four.category_no}'|"
+                                 th:unless="${event.img_path != null}" th:src="@{/images/default_img.png}" alt="default_img">
                         </div>
                     </div>
                 </div>
@@ -167,8 +169,13 @@
                     }
                 </script>
                 <div class="swiper-wrapper align-items-center">
+
                     <div th:each="star,i : ${starlist}" class="swiper-slide">
-                        <img th:src="|@{/download/event/}${star.img_path}|" class="img-fluid" th:alt="${star.img_path}">
+                        <img th:if="${star.img_path != null}" th:src="|@{/download/event/}${star.img_path}|" class="img-fluid"
+                             th:alt="${star.img_path}" th:onclick="|location.href='@{/event/}${star.event_no}'|">
+                        <img th:unless="${star.img_path != null}" th:src="@{/images/default_img.png}" class="img-fluid"
+                             alt="default_img" th:onclick="|location.href='@{/event/}${star.event_no}'|">
+                  
                         <div class="overlay" th:onclick="|location.href='@{/event/}${star.event_no}'|">
                             <div class="text-box">
                                 <p th:text="${i.index+1}+위" class="overlay-name"></p>
@@ -230,6 +237,7 @@
                                 </div>
                             </div>
                         </div><!--overay end-->
+                    
                     </div>
                 </div>
             </div>
@@ -279,8 +287,13 @@
                     }
                 </script>
                 <div class="swiper-wrapper align-items-center">
-                    <div th:each="popular,i : ${popularlist}" class="swiper-slide">
-                        <img th:src="|@{/download/event/}${popular.img_path}|" class="img-fluid" th:alt="${popular.img_path}">
+                  
+                    <div th:each="popular : ${popularlist}" class="swiper-slide">
+                        <img th:if="${popular.img_path != null}" th:src="|@{/download/event/}${popular.img_path}|" class="img-fluid"
+                             th:alt="${popular.img_path}" th:onclick="|location.href='@{/event/}${popular.event_no}'|">
+                        <img th:unless="${popular.img_path != null}" th:src="@{/images/default_img.png}" class="img-fluid"
+                             alt="default_img" th:onclick="|location.href='@{/event/}${popular.event_no}'|">
+                  
                         <div class="overlay" th:onclick="|location.href='@{/event/}${popular.event_no}'|">
                             <div class="text-box">
                                 <p th:text="${i.index+1}+위" class="overlay-name"></p>
@@ -342,6 +355,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -391,8 +405,13 @@
                     }
                 </script>
                 <div class="swiper-wrapper align-items-center">
+                  
                     <div th:each="open : ${openlist}" class="swiper-slide">
-                        <img th:src="|@{/download/event/}${open.img_path}|" class="img-fluid" th:alt="${open.img_path}">
+                        <img th:if="${open.img_path != null}" th:src="|@{/download/event/}${open.img_path}|" class="img-fluid"
+                             th:alt="${open.img_path}" th:onclick="|location.href='@{/event/}${open.event_no}'|">
+                        <img th:unless="${open.img_path != null}" th:src="@{/images/default_img.png}" class="img-fluid"
+                             alt="default_img" th:onclick="|location.href='@{/event/}${open.event_no}'|">
+                      
                         <div class="overlay" th:onclick="|location.href='@{/event/}${open.event_no}'|">
                             <div class="text-box">
                                 <p th:text="${open.name}" class="overlay-name"/><br/>
@@ -454,6 +473,7 @@
                             </div>
                         </div><!--overay end-->
                     </div>
+                
                 </div>
             </div>
 
@@ -502,8 +522,13 @@
                     }
                 </script>
                 <div class="swiper-wrapper align-items-center">
+                  
                     <div th:each="all : ${alleventlist}" class="swiper-slide">
-                        <img th:src="|@{/download/event/}${all.img_path}|" class="img-fluid" th:alt="${all.img_path}">
+                        <img th:if="${all.img_path != null}" th:src="|@{/download/event/}${all.img_path}|" class="img-fluid"
+                             th:alt="${all.img_path}" th:onclick="|location.href='@{/event/}${all.event_no}'|">
+                        <img th:unless="${all.img_path != null}" th:src="@{/images/default_img.png}" class="img-fluid"
+                             alt="default_img" th:onclick="|location.href='@{/event/}${all.event_no}'|">
+                      
                         <div class="overlay" th:onclick="|location.href='@{/event/}${all.event_no}'|">
                             <div class="text-box">
                                 <p th:text="${all.name}" class="overlay-name"/><br/>

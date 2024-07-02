@@ -414,6 +414,7 @@ h6 {
   color: var(--default-color);
   background-color: var(--background-color);
   font-size: 14px;
+  margin-top: 50px;
   padding-bottom: 50px;
   position: relative;
 }
@@ -750,7 +751,6 @@ section,
 --------------------------------------------------------------*/
 .section-title {
   text-align: center;
-  padding-bottom: 20px;
   position: relative;
 }
 
@@ -2111,7 +2111,8 @@ section,
 }
 
 .blog-comments .comment {
-  margin-top: 30px;
+  margin-top: 15px;
+  margin-bottom: 15px;
   position: relative;
 }
 
@@ -2422,7 +2423,7 @@ section,
 }
 
 .widget-button[type="submit"], button[type="button"] {
-  margin-top: 10px;
+  margin: 10px;
   padding: 10px 20px;
   border: none;
   border-radius: 4px;

@@ -56,7 +56,9 @@
                             <div class="choose text-center"><input type="checkbox" name="delete-event" th:value="${event.event_no}"></div>
                             <div class="event-img text-center event-image">
                                 <a href="#">
-                                    <img th:src="|@{/download/event/}${event.img_path}|" th:alt="${event.img_path}"></a>
+                                    <img th:if="${event.img_path != null}" th:src="|@{/download/event/}${event.img_path}|" th:alt="${event.img_path}">
+                                    <img th:unless="${event.img_path != null}" th:src="@{/images/default_img.png}" alt="default_img">
+                                </a>
                             </div>
                             <div class="event-name">
                                 <a href="#">

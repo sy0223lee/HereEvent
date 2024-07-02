@@ -51,11 +51,6 @@ public  class ReviewDAOImpl implements ReviewDAO{
     }
 
     @Override
-    public List<ReviewDTO> selectAll() {
-        return sqlSession.selectList("com.multi.hereevent.review.selectAll");
-    }
-
-    @Override
     public ReviewDTO selectReviewWithEventImg(int review_no) {
         return sqlSession.selectOne("com.multi.hereevent.review.selectReviewWithEventImg", review_no);
     }

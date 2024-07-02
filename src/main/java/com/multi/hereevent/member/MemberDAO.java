@@ -17,6 +17,4 @@ public interface MemberDAO {
     boolean checkMemberNick(String nick);
     boolean checkMemberEmail(String email);
     MemberDTO findMemberByEmail(String email);
-
-    int setInterestCategory(CategoryInterestDTO ci);
 }

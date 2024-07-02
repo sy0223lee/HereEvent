@@ -19,13 +19,15 @@
     border-bottom: 2px solid #e14533;
     font-weight: 900;
 }
-.submenu > a h2 {
-    font-size: 16px;
+.submenu > a h5 {
     margin: 0;
     font-weight: 600;
 }
 
 /* mypage.html 내 정보 */
+.profile-img-area{
+    padding-bottom: 20px;
+}
 .profile-img-area img {
     width: 80px;
     height: 80px;
@@ -36,8 +38,8 @@
 }
 .profile-text-area {
     display: flex;
-    width: 100%;
-    margin: 10px auto 50px;
+    width: 60%;
+    margin: 10px auto;
     padding: 0 20px;
     flex-direction: row;
     flex-wrap: wrap;
@@ -51,79 +53,67 @@
     padding: 10px 0;
 }
 .profile-text-area li span {
-    font-size: 12px;
-    color: #999;
+    font-size: 14px;
+    color: color-mix(in srgb, var(--default-color), transparent 20%);
     margin-bottom: 4px;
 }
 .profile-text-area li p {
     width: 100%;
     padding: 5px 0 8px;
     border-bottom: 2px solid #2c2c2c;
-    font-size: 14px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
 .edit-btn {
-    border: 1px solid #767676;
-    background: none;
-    color: #000000;
-    font-size: 15px;
     padding: 4px 10px;
-    border-radius: 5px;
 }
 .edit-img-btn, .edit-nick-btn, .edit-birth-btn {
-    border: 1px solid #767676;
-    background: none;
-    color: #000000;
-    font-size: 15px;
     padding: 4px 10px;
-    margin: 10px 4px;
-    border-radius: 5px;
+}
+.profile-btn-area{
+    width: 60%;
+    margin: 10px auto;
+}
+.profile-btn-area button{
+    margin-right: 10px;
 }
 
 /* myinterest.html 관심 내역 */
-.interest-category h3 {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+.interest-category {
+    padding-bottom: 40px;
 }
 .category-select {
-    width: 100%;
-    flex-direction: row !important;
-    justify-content: flex-start;
-    align-items: center;
-    flex-wrap: wrap;
-    column-gap: 10px;
-    row-gap: 10px;
+    width: 80%;
 }
 .category-select button {
     width: fit-content;
-    border: 1px solid #2c2c2c;
+    border: 1px solid var(--default-color);
     border-radius: 25px;
     background: none;
-    color: #000000;
+    color: var(--default-color);
     padding: 8px 15px;
     white-space: nowrap;
     margin: 8px 5px;
-    font-size: 13px;
 }
 .category-select button.picked {
-    background: #e14533;
+    background: var(--accent-color);
     color: #fff;
-    border-color: #e14533;
+    border-color: var(--accent-color);
     font-weight: 700;
 }
 .interest-btn{
     background: none;
-    padding: 5px 10px;
+    padding-right: 10px;
     border: none;
     font-size: 28px;
     font-weight: bolder;
-    color: #e14533;
+    color: var(--accent-color);
     text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
+}
+.interest-event .blog-comments .comment{
+    padding-left: 0;
 }
 .interest-event-img {
     position: relative;
@@ -137,15 +127,21 @@
     height: 100%;
     object-fit: cover;
 }
+.interest-event h5.event-name{
+    font-size: 20px;
+}
+.interest-event h6.d-flex{
+    margin-bottom: 0;
+}
 
 /* myreview.html 후기 내역 */
-.event-img {
+.review-event-img {
     position: relative;
     width: 16%;
     padding-bottom: 16%;
     margin-right: 20px;
 }
-.event-img img {
+.review-event-img img {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -153,7 +149,6 @@
 }
 .review-img {
     overflow: hidden;
-    margin: 0;
 }
 .review-img img {
     float: left;
@@ -162,19 +157,57 @@
     object-fit: cover;
     margin: 5px;
 }
-.blog-comments .comment h5 .edit-review-btn,
-.blog-comments .comment h5 .delete-review-btn {
+.review-content .event-name,
+.review-content .buttons,
+.review-content .rating,
+.review-content .review-date,
+.review-content .review-img,
+.review-content .comment-content{
+    margin-bottom: 12px;
+}
+.review-comments .comment{
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--default-color);
+}
+.review-comments .comment:last-child{
+    border: none;
+}
+
+.comment h6 a {
+    padding: 1px 6px;
+    font-weight: bold;
+    color: color-mix(in srgb, var(--default-color), transparent 20%);
+    transition: 0.3s;
+}
+.comment h6 a:hover {
+    color: var(--accent-color);
+}
+
+
+.review-comments .comment h6 .edit-review-btn,
+.review-comments .comment h6 .delete-review-btn {
     background: none;
     border: none;
     font-weight: bold;
     transition: 0.3s;
+    color: color-mix(in srgb, var(--default-color), transparent 20%);
 }
-.blog-comments .comment h5 .edit-review-btn:hover,
-.blog-comments .comment h5 .delete-review-btn:hover {
+
+.review-comments .comment h6 .edit-review-btn:hover,
+.review-comments .comment h6 .delete-review-btn:hover {
     color: var(--accent-color);
 }
 
 /* editReview.html 후기 수정 */
+.edit-review{
+    width: 80%;
+    margin: 20px auto;
+}
+.review-content{
+    padding: 0 20px;
+}
 .review-img-container {
     position: relative;
     display: inline-block;
@@ -213,4 +246,53 @@ input.edit-img{
 textarea.edit-content:focus, input.edit-img:focus{
     box-shadow: none;
     border-color: var(--accent-color);
+}
+
+/* myevent.html 이벤트 내역 */
+.event-container{
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--default-color);
+}
+.event-container:last-child{
+    border: none;
+}
+.event-img{
+    padding-left: 12px;
+    padding-bottom: 25%;
+    position: relative;
+}
+.event-img img{
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
+}
+.event-info.title{
+    font-weight: bold;
+    margin-top: 10px;
+    opacity: 0.7;
+}
+.enter-date{
+    margin-right: 10px;
+}
+.event-state div{
+    border: 2px solid var(--default-color);
+    border-radius: 25px;
+    text-align: center;
+    font-weight: bold;
+}
+.event-btn button {
+    margin: 10px;
+}
+
+.event-name, .event-addr{
+    /* 글자가 넘어가면 숨기고 말줄임표 표시 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+h5.event-name{
+    font-weight: bold;
 }
