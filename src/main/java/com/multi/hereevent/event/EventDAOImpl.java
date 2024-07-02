@@ -136,15 +136,6 @@ public class EventDAOImpl implements EventDAO{
     }
 
     @Override
-    public List<EventDTO> selectEventWithMap(String location, List<String> state, List<String> type) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("location", location);
-        params.put("state", state);
-        params.put("type", type);
-        return sqlSession.selectList("com.multi.hereevent.event.selectEventWithMap", params);
-    }
-
-    @Override
     public List<EventDTO> selectFourEventByCategory(int category_no) {
         return sqlSession.selectList("com.multi.hereevent.event.fourEventByCategory", category_no);
     }

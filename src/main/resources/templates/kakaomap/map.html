@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mainLayout}">
+<head>
+    <meta charset="utf-8">
+    <title>HereEvent-Map</title>
+    <style>
+        #map {
+            width:70%;
+            height:600px;
+            margin: auto;
+            text-align: center;
+            box-shadow: 0 0 5px;
+        }
+        #listbox {
+           display: flex;
+           flex-wrap: wrap;
+           justify-content: center;
+           gap: 3rem; /* 카드 사이의 간격 */
+           justify-content: center; /* 카드들을 가운데 정렬 */
+        }
+        .card {
+           width: 18rem;
+           height: 25rem;
+           display: flex;
+           flex-direction: column;
+           justify-content: space-between; /* 카드 내용 사이에 공간을 분배하여 균형을 맞춤 */
+           box-shadow: 2px 2px 3px;
+        }
+        .card img {
+           width: 100%;
+           height: 50%;
+        }
+        .card-body {
+           display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1; /* 카드 내용이 가변적으로 높이를 차지하도록 설정 */
+        }
+
+        #listbox .btn-primary {
+            background-color: #d0513d;
+            border-color: #d0513d;
+            color: #fff;
+            width: 50%; /* 버튼을 가득 채우도록 너비 설정 */
+            text-align: center;
+            transition: background-color 0.3s, border-color 0.3s; /* 색상 변경 시 부드러운 전환 효과 */
+        }
+        #listbox .btn-primary:hover {
+            background-color: #d76b5a; /* 호버 시 배경 색상 변경 */
+        }
+        #listbox .btn-primary:focus, #listbox .btn-primary:active {
+            background-color: #d76b5a; /* 클릭 시 배경 색상 변경 */
+            border-color: #d76b5a; /* 클릭 시 테두리 색상 변경 */
+            outline: none; /* 클릭 시 기본 포커스 테두리 제거 */
+            box-shadow: 0 0 0 0.1rem rgba(255, 99, 132, 0.5); /* 클릭 시 테두리 그림자 효과 */
+        }
+
+        #statebox{
+            width:70%;
+            justify-content: center;
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* 버튼 사이의 간격 설정 */
+            margin: auto;
+            padding: 30px;
+        }
+        #placebox{
+            width:70%;
+            justify-content: center;
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* 버튼 사이의 간격 설정 */
+            margin: auto;
+            padding: 30px;
+        }
+
+        /* 마커 css */
+       .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+       .wrap * {padding: 0;margin: 0;}
+       .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+       .wrap .info:nth-child(1) {border: 0;box-shadow: 0 1px 2px #888;}
+       .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+       .info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+       .info .close:hover {cursor: pointer;}
+       .info .body {position: relative;overflow: hidden;}
+       .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+       .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+       .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+       .info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+       .info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+       .info .link {color: #5085BB;}
+    </style>
+</head>
+<body>
+<main layout:fragment="main" class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="/hereevent">Home</a></li>
+                    <li class="current">지도</li>
+                </ol>
+            </nav>
+            <h1>지도</h1>
+        </div>
+    </div><!-- End Page Title -->
+
+    <div id="placebox">
+        <!--radio 버튼-->
+        <div id="hot">
+            핫플
+            <input type="radio" class="btn-check" name="map" id="seongsu" value="seongsu" autocomplete="off" checked>
+            <label class="btn btn-outline-danger" for="seongsu">성수</label>
+
+            <input type="radio" class="btn-check" name="map" id="hongdae" value="hongdae" autocomplete="off">
+            <label class="btn btn-outline-danger" for="hongdae">홍대</label>
+
+            <input type="radio" class="btn-check" name="map" id="gangnam" value="gangnam" autocomplete="off">
+            <label class="btn btn-outline-danger" for="gangnam">강남</label>
+
+            <input type="radio" class="btn-check" name="map" id="yeouido" value="yeouido" autocomplete="off">
+            <label class="btn btn-outline-danger" for="yeouido">여의도</label>
+
+            <input type="radio" class="btn-check" name="map" id="myeongdong" value="myeongdong" autocomplete="off">
+            <label class="btn btn-outline-danger" for="myeongdong">명동</label>
+
+            <input type="radio" class="btn-check" name="map" id="jamsil" value="jamsil" autocomplete="off">
+            <label class="btn btn-outline-danger" for="jamsil">잠실</label>
+        </div>
+        <div id="region">
+            지역
+            <input type="radio" class="btn-check" name="map" id="seoul" value="seoul" autocomplete="off">
+            <label class="btn btn-outline-danger" for="seoul">서울</label>
+
+            <input type="radio" class="btn-check" name="map" id="gyeonggi" value="gyeonggi" autocomplete="off">
+            <label class="btn btn-outline-danger" for="gyeonggi">경기</label>
+
+            <input type="radio" class="btn-check" name="map" id="busan" value="busan" autocomplete="off">
+            <label class="btn btn-outline-danger" for="busan">부산</label>
+        </div>
+        <div id="myloc">
+            내 위치
+            <input type="button" class="btn-check" name="my-location" id="my-location" value="my-location">
+            <label class="btn btn-outline-success" for="my-location">내 위치</label>
+        </div>
+    </div>
+    <div id="mapbox">
+        <div id="map"></div>
+    </div>
+    <div id="statebox">
+        <!--체크박스 버튼-->
+        <div id="state">
+            상태
+            <input value="still" type="checkbox" class="btn-check" name="state" id="still" autocomplete="off" checked>
+            <label class="btn" for="still">진행중</label>
+
+            <input value="open" type="checkbox" class="btn-check" name="state" id="open" autocomplete="off">
+            <label class="btn" for="open">오픈예정</label>
+
+            <input value="end" type="checkbox" class="btn-check" name="state" id="end" autocomplete="off">
+            <label class="btn" for="end">종료</label>
+        </div>
+        <div id="type">
+            방식
+            <input value="reserve" type="checkbox" class="btn-check" name="type" id="reserve" autocomplete="off">
+            <label class="btn" for="reserve">사전예약</label>
+
+            <input value="wait" type="checkbox" class="btn-check" name="type" id="wait" autocomplete="off">
+            <label class="btn" for="wait">현장대기</label>
+
+            <input value="both" type="checkbox" class="btn-check" name="type" id="both" autocomplete="off">
+            <label class="btn" for="both">사전예약+현장대기</label>
+        </div>
+    </div>
+
+    <div id="listbox" class="container">
+
+    </div>
+
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1c7411c7e9cd13cdaac33d749ab11436&libraries=services"></script>
+    <script th:inline="javascript">
+        let map;
+        let markers = [];
+        const mapContainer = document.getElementById('map');
+        const mapOption = {
+            center: new kakao.maps.LatLng(37.544577, 127.055991), // 초기 중심 좌표(성수)
+            level: 5 // 초기 확대 레벨
+        };
+
+        // 지도 생성
+        map = new kakao.maps.Map(mapContainer, mapOption);
+
+        // 마커 이미지 생성
+        const imgSrc = "http://localhost:9090/hereevent/images/map/icon-gps.png";
+        const imgSize = new kakao.maps.Size(35, 35);
+        let markerImg = new kakao.maps.MarkerImage(imgSrc, imgSize);
+
+        function locationLoadSuccess(pos){
+            // 현재 위치 받아오기
+            let currentPos = new kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+            map.setCenter(currentPos);
+            map.setLevel(5); // 원하는 확대 레벨로 설정
+        }
+
+        function locationLoadError(){
+            alert('위치 정보를 가져오는데 실패했습니다.');
+        }
+
+        function getCurrentPos(){
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                locationLoadSuccess(pos);
+            }, locationLoadError);
+        }
+
+        function changeMapLocation(lat, lng, level) {
+            map.setCenter(new kakao.maps.LatLng(lat, lng));
+            map.setLevel(level); // 필요한 경우에만 확대 레벨 설정
+        }
+
+        // 각 버튼 클릭 시 지도 중심 좌표 변경
+        document.getElementById('seongsu').addEventListener('click', function() {
+            changeMapLocation(37.544577, 127.055991, 5);
+        });
+        document.getElementById('hongdae').addEventListener('click', function() {
+            changeMapLocation(37.557527, 126.9244669, 5);
+        });
+        document.getElementById('gangnam').addEventListener('click', function() {
+            changeMapLocation(37.497952, 127.027619, 6);
+        });
+        document.getElementById('yeouido').addEventListener('click', function() {
+            changeMapLocation(37.521625, 126.924079, 5);
+        });
+        document.getElementById('myeongdong').addEventListener('click', function() {
+            changeMapLocation(37.5665851, 126.9782038, 6);
+        });
+        document.getElementById('jamsil').addEventListener('click', function() {
+            changeMapLocation(37.5132612, 127.1001336, 5);
+        });
+        document.getElementById('seoul').addEventListener('click', function() {
+            changeMapLocation(37.53814735887608, 126.99898167513268, 8);
+        });
+        document.getElementById('gyeonggi').addEventListener('click', function() {
+            changeMapLocation(37.369188031896265, 127.01776935446426, 10);
+        });
+        document.getElementById('busan').addEventListener('click', function() {
+            changeMapLocation(35.137294960653996, 129.1042017597341, 9);
+        });
+        document.getElementById('my-location').addEventListener('click', function() {
+            getCurrentPos();
+        });
+
+        $(document).ready(function() {
+            // 페이지 로딩 시 기본 이벤트 출력
+            let location;
+            let stateList = [];
+            let typeList = [];
+
+            $('input[name=map]:checked').each(function () {
+                location = $(this).val();
+            });
+            $('input[name=state]:checked').each(function () {
+                stateList.push($(this).val());
+            });
+            $('input[name=type]:checked').each(function () {
+                typeList.push($(this).val());
+            });
+
+            console.log(location);
+            console.log(stateList);
+            console.log(typeList);
+
+            let data = {'location': location, 'state': stateList, 'type': typeList};
+            console.log(data);
+
+            $.ajax({
+                url: '/hereevent/map/list',
+                method: 'post',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (result) {
+                    let printData = "";
+                    result.forEach(event => {
+                        printData = printData
+                            + '<div class="card" style="width: 18rem;">'
+                            + '  <img src="/hereevent/download/event/' + event.img_path + '"class="card-img-top">'
+                            + '  <div class="card-body">'
+                            + '     <h5 class="card-title">' + event.name + '</h5>'
+                            + '     <p class="card-text">' + event.addr + '</p>'
+                            + '     <a href="/hereevent/event/' + event.event_no + '" class="btn btn-primary">상세페이지</a>'
+                            + '  </div>'
+                            + '</div>'
+                    })
+                    $("#listbox").empty(); // <tr>태그 모두 지우기
+                    $("#listbox").append(printData);
+
+                    // 기존 마커 제거
+                    for(let i=0; i<markers.length; i++){
+                        markers[i].setMap(null);
+                    }
+                    markers.length = 0;
+
+                    result.forEach(event => {
+                        <!--주소로 검색해서 마커-->
+
+                        // 주소-좌표 변환 객체를 생성합니다
+                        let geocoder = new kakao.maps.services.Geocoder();
+
+                        // 주소로 좌표를 검색합니다
+                        geocoder.addressSearch(event.addr, function (result, status) {
+
+                            // 정상적으로 검색이 완료됐으면
+                            if (status === kakao.maps.services.Status.OK) {
+
+                                let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                                // 결과값으로 받은 위치를 마커로 표시합니다
+                                let marker = new kakao.maps.Marker({
+                                    map: map,
+                                    position: coords,
+                                    title: event.name, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                                    image: markerImg
+                                });
+
+                                markers.push(marker); // 마커 배열에 마커 추가
+
+                                // 커스텀 오버레이에 표시할 컨텐츠 입니다
+                                // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
+                                // 별도의 이벤트 메소드를 제공하지 않습니다
+                                let content = '<div class="wrap">' +
+                                    '    <div class="info">' +
+                                    '        <div class="title">' +
+                                    event.name +
+                                    '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
+                                    '        </div>' +
+                                    '        <div class="body">' +
+                                    '            <div class="img">' +
+                                    '                <img src="/hereevent/download/event/' + event.img_path + '" width="73" height="70">' +
+                                    '           </div>' +
+                                    '            <div class="desc">' +
+                                    '                <div class="ellipsis">' + event.addr + '</div>' +
+                                    '                <div><a href="/hereevent/event/' + event.event_no + '" class="link"> 상세페이지 </a></div>' +
+                                    '                <div>' + event.type + '</div>' +
+                                    '            </div>' +
+                                    '        </div>' +
+                                    '    </div>' +
+                                    '</div>';
+
+                                // 마커 위에 커스텀오버레이를 표시합니다
+                                // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS 를 이용해 위치를 설정했습니다
+                                let overlay = new kakao.maps.CustomOverlay({
+                                    content: content,
+                                    position: marker.getPosition()
+                                });
+
+                                // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다
+                                function closeOverlay() {
+                                    overlay.setMap(null);
+                                }
+
+                                // 닫기 버튼에 클릭 이벤트를 추가합니다
+                                $(document).on('click', '.close', closeOverlay);
+
+                                // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+                                kakao.maps.event.addListener(marker, 'click', function () {
+                                    overlay.setMap(map);
+                                });
+                            }
+                        });
+                    })//end foreach
+                },
+                error: function (obj, msg) {
+                    console.log("요청 실패: " + obj + ", " + msg);
+                }
+            });
+
+            // state 버튼 클릭 시 해당 이벤트 출력
+            $(".btn-check").each(function () {
+                $(this).click(function () {
+                    let location;
+                    let stateList = [];
+                    let typeList = [];
+
+                    $('input[name=map]:checked').each(function () {
+                        location = $(this).val();
+                    });
+                    $('input[name=state]:checked').each(function () {
+                        stateList.push($(this).val());
+                    });
+                    $('input[name=type]:checked').each(function () {
+                        typeList.push($(this).val());
+                    });
+
+                    console.log(location);
+                    console.log(stateList);
+                    console.log(typeList);
+
+                    let data = {'location': location, 'state': stateList, 'type': typeList};
+                    console.log(data);
+
+                    $.ajax({
+                        url: '/hereevent/map/list',
+                        method: 'post',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        success: function (result) {
+                            let printData = "";
+                            result.forEach(event => {
+                                printData = printData
+                                    + '<div class="card" style="width: 18rem;">'
+                                    + '  <img src="/hereevent/download/event/' + event.img_path + '"class="card-img-top">'
+                                    + '  <div class="card-body">'
+                                    + '     <h5 class="card-title">' + event.name + '</h5>'
+                                    + '     <p class="card-text">' + event.addr + '</p>'
+                                    + '     <a href="/hereevent/event/' + event.event_no + '" class="btn btn-primary">상세페이지</a>'
+                                    + '  </div>'
+                                    + '</div>'
+                            })
+                            $("#listbox").empty(); // <tr>태그 모두 지우기
+                            $("#listbox").append(printData);
+
+                            // 기존 마커 제거
+                            for(let i=0; i<markers.length; i++){
+                                markers[i].setMap(null);
+                            }
+                            markers.length = 0;
+
+                            result.forEach(event => {
+                                <!--주소로 검색해서 마커-->
+
+                                // 주소-좌표 변환 객체를 생성합니다
+                                let geocoder = new kakao.maps.services.Geocoder();
+
+                                // 주소로 좌표를 검색합니다
+                                geocoder.addressSearch(event.addr, function (result, status) {
+
+                                    // 정상적으로 검색이 완료됐으면
+                                    if (status === kakao.maps.services.Status.OK) {
+
+                                        let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                                        // 결과값으로 받은 위치를 마커로 표시합니다
+                                        let marker = new kakao.maps.Marker({
+                                            map: map,
+                                            position: coords,
+                                            title: event.name, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                                            image: markerImg
+                                        });
+
+                                        markers.push(marker); // 마커 배열에 마커 추가
+
+                                        // 커스텀 오버레이에 표시할 컨텐츠 입니다
+                                        // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
+                                        // 별도의 이벤트 메소드를 제공하지 않습니다
+                                        let content = '<div class="wrap">' +
+                                            '    <div class="info">' +
+                                            '        <div class="title">' +
+                                            event.name +
+                                            '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
+                                            '        </div>' +
+                                            '        <div class="body">' +
+                                            '            <div class="img">' +
+                                            '                <img src="/hereevent/download/event/' + event.img_path + '" width="73" height="70">' +
+                                            '           </div>' +
+                                            '            <div class="desc">' +
+                                            '                <div class="ellipsis">' + event.addr + '</div>' +
+                                            '                <div><a href="/hereevent/event/' + event.event_no + '" class="link"> 상세페이지 </a></div>' +
+                                            '                <div>' + event.type + '</div>' +
+                                            '            </div>' +
+                                            '        </div>' +
+                                            '    </div>' +
+                                            '</div>';
+
+                                        // 마커 위에 커스텀오버레이를 표시합니다
+                                        // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS 를 이용해 위치를 설정했습니다
+                                        let overlay = new kakao.maps.CustomOverlay({
+                                            content: content,
+                                            position: marker.getPosition()
+                                        });
+
+                                        // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다
+                                        function closeOverlay() {
+                                            overlay.setMap(null);
+                                        }
+
+                                        // 닫기 버튼에 클릭 이벤트를 추가합니다
+                                        $(document).on('click', '.close', closeOverlay);
+
+                                        // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+                                        kakao.maps.event.addListener(marker, 'click', function () {
+                                            overlay.setMap(map);
+                                        });
+                                    }
+                                });
+                            })//end foreach
+                        },
+                        error: function (obj, msg) {
+                            console.log("요청 실패: " + obj + ", " + msg);
+                        }
+                    });
+                });
+            });
+        });
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+</main>
+</body>
+</html>

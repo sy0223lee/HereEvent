@@ -149,9 +149,4 @@ public class EventServiceImpl implements EventService {
         return dao.selectNewEvent(member_no);
     }
 
-    @Override
-    public List<EventDTO> selectEventWithMap(String location, List<String> state, List<String> type) {
-        return dao.selectEventWithMap(location, state, type);
-    }
-
 }
