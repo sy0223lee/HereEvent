@@ -170,7 +170,7 @@
                 </script>
                 <div class="swiper-wrapper align-items-center">
 
-                    <div th:each="star,i : ${starlist}" class="swiper-slide">
+                    <div th:each="star, i : ${starlist}" class="swiper-slide">
                         <img th:if="${star.img_path != null}" th:src="|@{/download/event/}${star.img_path}|" class="img-fluid"
                              th:alt="${star.img_path}" th:onclick="|location.href='@{/event/}${star.event_no}'|">
                         <img th:unless="${star.img_path != null}" th:src="@{/images/default_img.png}" class="img-fluid"
@@ -288,7 +288,7 @@
                 </script>
                 <div class="swiper-wrapper align-items-center">
                   
-                    <div th:each="popular : ${popularlist}" class="swiper-slide">
+                    <div th:each="popular, i : ${popularlist}" class="swiper-slide">
                         <img th:if="${popular.img_path != null}" th:src="|@{/download/event/}${popular.img_path}|" class="img-fluid"
                              th:alt="${popular.img_path}" th:onclick="|location.href='@{/event/}${popular.event_no}'|">
                         <img th:unless="${popular.img_path != null}" th:src="@{/images/default_img.png}" class="img-fluid"
