@@ -167,7 +167,7 @@
     <select id="selectAll" resultType="event">
         SELECT * FROM event
     </select>
-
+    <!-- 회원별 관심 카테고리 오픈 예정 이벤트 조회 -->
     <select id="selectNewEvent" resultType="event">
         select * from event e
         where start_date &lt; date_add(curdate(), interval 2 week) and
@@ -178,5 +178,4 @@
         where ci.member_no = #{member_no})
         order by start_date
     </select>
-
 </mapper>

@@ -57,4 +57,7 @@ public interface EventService {
     List<MemberEventDTO> selectMemberEvent(int member_no);
     // 오늘로부터 2주 내에 오픈 예정인 관심 카테고리 이벤트 조회
     List<EventDTO> selectNewEvent(int member_no);
+
+    // 지도에서 가져온 값으로 이벤트 조회
+    List<EventDTO> selectEventWithMap(String location, List<String> state, List<String> type);
 }
