@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/mainLayout}">
+      layout:decorate="~{layout/mainLayout}">>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -9,32 +9,38 @@
     <link href="/hereevent/common/css/card.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Search Results</h1>
     <main layout:fragment="main" class="main">
         <!-- Page Title -->
         <div class="page-title">
             <div class="container">
                 <nav class="breadcrumbs">
                     <ol>
-                        <li><a href="#">Home</a></li>
-                        <li class="current" th:text="${keyword} + '의 검색결과'"></li>
+                        <li><a href="/hereevent/main">Home</a></li>
+                        <li th:if="${type == 'star'}" class="current">별점 순</li>
+                        <li th:if="${type == 'popular'}" class="current">인기 순</li>
+                        <li th:if="${type == 'open'}" class="current">오픈 예정 이벤트</li>
+                        <li th:if="${type == 'all'}" class="current">전체 이벤트</li>
                     </ol>
                 </nav>
-                <h1>팝업 세부정보</h1>
+                <h1 th:if="${type == 'star'}">별점이 높은 이벤트 TOP 10</h1>
+                <h1 th:if="${type == 'popular'}">인기가 많은 이벤트 TOP 10</h1>
+                <h1 th:if="${type == 'open'}">오픈 예정 이벤트</h1>
+                <h1 th:if="${type == 'all'}">전체 이벤트</h1>
             </div>
-        </div><!-- End Page Title -->
+        </div>
+        <!-- End Page Title -->
+
         <div id="listbox" class="container">
-            <div th:each="event : ${events}" class="card" style="width: 18rem;">
-                <img th:src="@{/download/event/{img_path}(img_path=${event.img_path})}" class="card-img-top">
+            <div th:each="event : ${eventList}" class="card" style="width: 18rem;">
+               <img th:src="@{/download/event/{img_path}(img_path=${event.img_path})}" class="card-img-top">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${event.name}"></h5>
                     <p class="card-text"><span th:text="${event.start_date}" class="overlay-text"/> ~ <span th:text="${event.end_date}" class="overlay-text"/></p>
                     <p class="card-text" th:text="${event.addr}"></p>
                     <a th:href="@{/event/{event_no}(event_no=${event.event_no})}" class="btn btn-primary">상세페이지</a>
-                </div>
-            </div>
+                </div>'
+            </div>'
         </div>
     </main>
-<!--    <a href="/search">Back to search</a>-->
 </body>
 </html>

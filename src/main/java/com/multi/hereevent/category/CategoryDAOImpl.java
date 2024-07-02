@@ -41,4 +41,9 @@ public class CategoryDAOImpl implements CategoryDAO{
     public List<CategoryDTO> getListCategory() {
         return sqlSession.selectList("com.multi.hereevent.category.list");
     }
+
+    @Override
+    public String selectCategoryName(int category_no) {
+        return sqlSession.selectOne("com.multi.hereevent.category.selectCategoryName", category_no);
+    }
 }
