@@ -29,6 +29,6 @@ public interface WaitDAO {
     int updateState(WaitDTO wait);
     //event_no로 기다리는 순서 추출
     List<WaitDTO> whenIgetInNo(int event_no);
-
+    List<WaitDTO> getAllWaitingList();
     List<WaitDTO> getWaitingListByEventNo(int event_no);
 }

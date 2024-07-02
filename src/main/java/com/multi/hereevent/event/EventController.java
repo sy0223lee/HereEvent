@@ -31,8 +31,8 @@ public class EventController {
     private final ReviewService reviewService;
     private final EventInterestService interestService;
     private final EventTimeService eventTimeService;
-    private  final WaitService waitService;
     private final CategoryService categoryService;
+    private final WaitService waitService;
 
     @GetMapping("/main")
     public String mainPage(Model model) {
@@ -47,6 +47,32 @@ public class EventController {
         List<EventDTO> popularlist = eventService.getPopularEvent();
         model.addAttribute("popularlist",popularlist);
         return "main/mainPage";
+    }
+
+    //종류별 목록페이지
+    @GetMapping("/list")
+    public String listpage(@RequestParam("type") String type, Model model){
+        model.addAttribute("type", type);
+        if(type.equals("star")){
+            model.addAttribute("eventList", eventService.getListByStarRank());
+        }else if(type.equals("popular")){
+            model.addAttribute("eventList", eventService.getPopularEvent());
+        }else if(type.equals("open")){
+            model.addAttribute("eventList", eventService.getOpenEvent());
+        }else if(type.equals("all")){
+            model.addAttribute("eventList", eventService.getAllEvent());
+        }
+        return "main/listPage";
+    }
+  
+    //카테고리별 리스트
+    @GetMapping("/event/list/{category_no}")
+    public String listCategory(@PathVariable("category_no") int category_no, Model model){
+        List<EventDTO> eventlist = eventService.selectEventByCategoryNo(category_no);
+        String categoryName = categoryService.selectCategoryName(category_no);
+        model.addAttribute("eventlist",eventlist);
+        model.addAttribute("categoryName", categoryName);
+        return "main/categoryListPage";
     }
 
     //행사검색
@@ -76,6 +102,7 @@ public class EventController {
         model.addAttribute("reviewList", reviewList);
         return "detailedPage/detailedPage";
     }
+  
     //대기 현황 확인 페이지
     @GetMapping("/event/waitSituation")
     public String waitSituation(@RequestParam("event_no") int event_no, Model model) {
@@ -123,14 +150,6 @@ public class EventController {
         EventDTO eventDetails = eventService.getEventDetails(event_no);
         model.addAttribute("event", eventDetails);
         return eventService.getEventImage(event_no);
-    }
-
-    //카테고리별 리스트
-    @GetMapping("/event/list/{category_no}")
-    public String listCategory(@PathVariable("category_no") int category_no, Model model){
-        List<EventDTO> eventlist = eventService.selectEventByCategoryNo(category_no);
-        model.addAttribute("eventlist",eventlist);
-        return "event/eventCategoryList";
     }
 
     // 관심 이벤트 등록, 해제

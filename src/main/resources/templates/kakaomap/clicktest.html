@@ -24,7 +24,6 @@
            .card {
                width: 18rem;
                height: 25rem;
-               display: flex;
                flex-direction: column;
                justify-content: space-between; /* 카드 내용 사이에 공간을 분배하여 균형을 맞춤 */
                box-shadow: 2px 2px 3px;
@@ -34,10 +33,9 @@
                height: 50%;
            }
            .card-body {
-               display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                flex-grow: 1; /* 카드 내용이 가변적으로 높이를 차지하도록 설정 */
+               flex-direction: column;
+               justify-content: space-between;
+               text-align: right;
            }
 
             #listbox .btn-primary {
@@ -47,17 +45,34 @@
                 width: 50%; /* 버튼을 가득 채우도록 너비 설정 */
                 text-align: center;
                 transition: background-color 0.3s, border-color 0.3s; /* 색상 변경 시 부드러운 전환 효과 */
+                margin-top: 15px;
+                margin-bottom: 15px;
             }
            #listbox .btn-primary:hover {
                 background-color: #d76b5a; /* 호버 시 배경 색상 변경 */
             }
-            #listbox .btn-primary:focus, #listbox .btn-primary:active {
+           #listbox .btn-primary:focus, #listbox .btn-primary:active {
                 background-color: #d76b5a; /* 클릭 시 배경 색상 변경 */
                 border-color: #d76b5a; /* 클릭 시 테두리 색상 변경 */
                 outline: none; /* 클릭 시 기본 포커스 테두리 제거 */
                 box-shadow: 0 0 0 0.1rem rgba(255, 99, 132, 0.5); /* 클릭 시 테두리 그림자 효과 */
-            }
-
+           }
+           #listbox .card-title{
+                font-weight: bold;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                text-align: left;
+           }
+            #listbox .card-text{
+                font-size: 15px;
+                margin-top: 20px;
+                margin-bottom: 10px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                text-align: left;
+           }
             #statebox{
                 width:70%;
                 justify-content: center;
@@ -82,8 +97,27 @@
            .wrap * {padding: 0;margin: 0;}
            .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
            .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
-           .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
-           .info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+           .info .title {
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                padding: 5px 30px 0 10px;
+                height: 30px;
+                background: #eee;
+                border-bottom: 1px solid #ddd;
+                font-size: 18px;
+                font-weight: bold;
+                position: relative;
+          }
+           .info .close {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                color: #888;
+                width: 17px;
+                height: 17px;
+                background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');
+           }
            .info .close:hover {cursor: pointer;}
            .info .body {position: relative;overflow: hidden;}
            .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
@@ -97,6 +131,19 @@
     </head>
     <body>
     <main layout:fragment="main" class="main">
+        <!-- Page Title -->
+        <div class="page-title">
+            <div class="container">
+                <nav class="breadcrumbs">
+                    <ol>
+                        <li><a href="/hereevent/main">Home</a></li>
+                        <li class="current">지도</li>
+                    </ol>
+                </nav>
+                <h1>위치별 이벤트 조회</h1>
+            </div>
+        </div>
+        <!-- End Page Title -->
         <div id="placebox">
             <!--radio 버튼-->
             <div id="hot">
@@ -198,7 +245,8 @@
                                     + '  <img src="/hereevent/download/event/' + event.img_path + '"class="card-img-top">'
                                     + '  <div class="card-body">'
                                     + '     <h5 class="card-title">' + event.name + '</h5>'
-                                    + '     <p class="card-text">' + event.addr + '</p>'
+                                    + '     <p class="card-text">' + event.start_date +' ~ '+ event.end_date + '</p>'
+                                    + '     <p class="card-text">' + event.addr +'</p>'
                                     + '     <a href="/hereevent/event/' + event.event_no + '" class="btn btn-primary">상세페이지</a>'
                                     + '  </div>'
                                     + '</div>'
@@ -293,7 +341,7 @@
                                     + '  <img src="/hereevent/download/event/' + event.img_path + '"class="card-img-top">'
                                     + '  <div class="card-body">'
                                     + '     <h5 class="card-title">' + event.name + '</h5>'
-                                    + '     <p class="card-text">' + event.addr + '</p>'
+                                    + '     <p class="card-text">' + event.start_date +' ~ '+ event.end_date + '</p>'
                                     + '     <a href="/hereevent/event/' + event.event_no + '" class="btn btn-primary">상세페이지</a>'
                                     + '  </div>'
                                     + '</div>'
