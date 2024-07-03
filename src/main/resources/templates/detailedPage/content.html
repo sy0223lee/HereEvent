@@ -8,14 +8,24 @@
 </head>
 
 <body>
-<div th:fragment="content">
+
+<div th:fragment="content(eventtimes,data)">
+
     <h2 class="title">상세정보</h2>
     <div>
-        <p>장소: <span th:text="${event.addr}"></span></p>
-        <p>시작 날짜: <span th:text="${event.start_date}"></span></p>
-        <p>종료 날짜: <span th:text="${event.end_date}"></span></p>
-        <p>설명: <span th:text="${event.info}"></span></p>
-
+        <p><strong>장소</strong></p><p><span th:text="${event.addr}"></span></p><br>
+        <p><strong>운영 기간</strong></p><p> <span th:text="${event.start_date} + ' ~ ' + ${event.end_date}"></span></p><br>
+        <p><strong>운영 시간</strong></p>
+        <div>
+            <ul class='runningtime'>
+                <li th:each="eventtime : ${eventtimes}">
+                    <strong><span th:text="${eventtime.day} +' '"></span></strong>
+                    <span th:text="${#strings.substring(eventtime.open_time, 0, 5)}"></span> -
+                    <span th:text="${#strings.substring(eventtime.close_time, 0, 5)}"></span>
+                </li>
+            </ul>
+        </div><br>
+        <p><strong>설명</strong></p><p> <span style="white-space:pre;" th:utext="${#strings.replace(event.info, '\n', '<br/>')}"></span></p>
     </div>
 </div>
 </body>

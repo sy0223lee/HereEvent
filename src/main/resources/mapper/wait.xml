@@ -10,7 +10,7 @@
     <select id="login" parameterType="wait" resultType="wait">
         select *
         from wait
-        where wait_tel = #{wait_tel}
+        where wait_tel = #{wait_tel} and state ='wait'
     </select>
 
     <!-- waitDTO가져오기 wait 면서 tel이 같은 것 -->
@@ -47,21 +47,21 @@
     <!-- wait_no로 이벤트 details 가져오기-->
     <select id="EventDetails" resultType="wait">
         select
-            w.wait_no,
-            w.wait_tel,
-            w.email,
-            w.wait_date,
-            w.state,
-            e.event_no,
-            e.addr,
-            e.name,
-            e.img_path
+        w.wait_no,
+        w.wait_tel,
+        w.email,
+        w.wait_date,
+        w.state,
+        e.event_no,
+        e.addr,
+        e.name,
+        e.img_path
         from
-            wait w
+        wait w
         join
-            event e ON w.event_no = e.event_no
+        event e ON w.event_no = e.event_no
         where
-            w.wait_no = #{wait_no};
+        w.wait_no = #{wait_no};
     </select>
     <!--  이벤트 details 가져오기  -->
     <select id="getEventDetails" resultType="event">

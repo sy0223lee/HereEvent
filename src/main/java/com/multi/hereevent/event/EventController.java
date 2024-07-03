@@ -88,12 +88,14 @@ public class EventController {
         model.addAttribute("keyword", keyword);
         return "search/searchResults";
     }
-  
+
     // 세부페이지
     @GetMapping("/event/{event_no}")
     public String getEventDetails(@PathVariable("event_no") int event_no, Model model) {
         MemberDTO member = (MemberDTO) model.getAttribute("member");
         EventDTO eventDetails;
+        List<EventTimeDTO> eventTime;
+        List<CategoryDTO> category;
         if(member != null){
             // 로그인 되어 있는 경우 사용자가 관심 있는 이벤트인지 같이 넘겨주기
             eventDetails = eventService.getEventDetails(event_no, member.getMember_no());
@@ -101,8 +103,19 @@ public class EventController {
             // 로그인이 안 되어 있는 경우 이벤트 정보만 넘겨주기
             eventDetails = eventService.getEventDetails(event_no);
         }
+
+        eventTime= eventTimeService.getEventTime(event_no);
+        category= categoryService.getListCategory();
+        System.out.println("=====================================");
+        System.out.println(category);
+        System.out.println("=====================================");
         System.out.println("시작일===>"+eventDetails.getStart_date());
         List<ReviewDTO> reviewList = reviewService.selectReviewByEventNo(event_no);
+        System.out.println(eventTime);
+
+        model.addAttribute("category",category);
+
+        model.addAttribute("eventtime",eventTime);
         model.addAttribute("event", eventDetails);
         model.addAttribute("reviewList", reviewList);
         return "detailedPage/detailedPage";

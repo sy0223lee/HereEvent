@@ -9,17 +9,17 @@
     <update id="updateEvent" parameterType="event">
         update event
         set category_no = #{category_no},
-        name = #{name},
-        start_date = #{start_date},
-        end_date = #{end_date},
-        addr = #{addr},
-        info = #{info},
-        homepage = #{homepage},
-        sns = #{sns},
-        img_path = #{img_path},
-        type = #{type},
-        reserve_limit = #{reserve_limit},
-        wait_limit = #{wait_limit}
+          name = #{name},
+          start_date = #{start_date},
+          end_date = #{end_date},
+          addr = #{addr},
+          info = #{info},
+          homepage = #{homepage},
+          sns = #{sns},
+          img_path = #{img_path},
+          type = #{type},
+          reserve_limit = #{reserve_limit},
+          wait_limit = #{wait_limit}
         WHERE event_no=#{event_no}
     </update>
     <delete id="deleteEvent">
@@ -39,7 +39,7 @@
         e.homepage, e.sns, e.img_path, e.type, e.reserve_limit, e.wait_limit,
         AVG(r.star) AS avg_star
         FROM event e
-        LEFT JOIN review r ON e.event_no = r.event_no
+            LEFT JOIN review r ON e.event_no = r.event_no
         GROUP BY e.event_no, e.category_no, e.name, e.start_date, e.end_date, e.addr,
         e.info, e.homepage, e.sns, e.img_path, e.type, e.reserve_limit, e.wait_limit
     </select>
@@ -48,7 +48,7 @@
         e.homepage, e.sns, e.img_path, e.type, e.reserve_limit, e.wait_limit,
         AVG(r.star) AS avg_star
         FROM event e
-        LEFT JOIN review r ON e.event_no = r.event_no
+            LEFT JOIN review r ON e.event_no = r.event_no
         WHERE e.start_date > NOW()
         GROUP BY e.event_no, e.category_no, e.name, e.start_date, e.end_date, e.addr,
         e.info, e.homepage, e.sns, e.img_path, e.type, e.reserve_limit, e.wait_limit
@@ -59,9 +59,9 @@
         COUNT(DISTINCT r.member_no) + COUNT(DISTINCT w.email) AS total_count,
         AVG(rev.star) AS avg_star
         FROM event e
-        LEFT JOIN reserve r ON e.event_no = r.event_no
-        LEFT JOIN wait w ON e.event_no = w.event_no
-        LEFT JOIN review rev ON e.event_no = rev.event_no
+            LEFT JOIN reserve r ON e.event_no = r.event_no
+            LEFT JOIN wait w ON e.event_no = w.event_no
+            LEFT JOIN review rev ON e.event_no = rev.event_no
         GROUP BY e.event_no, e.name, e.start_date, e.end_date, e.addr, e.img_path
         ORDER BY total_count DESC
         LIMIT 10;
@@ -70,8 +70,8 @@
     <select id="getEventByStarRank" resultType="event">
         SELECT e.event_no, e.name, e.addr, e.start_date, e.end_date, e.img_path, AVG(r.star) AS avg_star
         FROM event AS e
-        JOIN review AS r
-        ON e.event_no = r.event_no
+            JOIN review AS r
+            ON e.event_no = r.event_no
         GROUP BY e.event_no
         ORDER BY avg_star DESC limit 10
     </select>
@@ -114,9 +114,9 @@
         insert into event  (name, start_date, end_date, addr, info, homepage, sns)
         select #{name}, #{start_date}, #{end_date}, #{addr}, #{info}, #{homepage}, #{sns}
         from dual where not exists (
-        select event_no
-        from event
-        where name=#{name} and start_date=#{start_date} and end_date=#{end_date})
+            select event_no
+            from event
+            where name=#{name} and start_date=#{start_date} and end_date=#{end_date})
     </insert>
     <select id="selectEventNoByEventName" parameterType="String" resultType="String">
         select event_no
@@ -167,14 +167,14 @@
     <select id="selectMemberEvent" resultType="memberEvent">
         select r.reserve_no as index_no, e.event_no, e.name, e.addr, e.img_path, r.state, m.member_no, r.reserve_date as enter_date, r.reserve_time as enter_time
         from reserve r
-        left join member m on r.member_no = m.member_no
-        left join event e on r.event_no = e.event_no
+            left join member m on r.member_no = m.member_no
+            left join event e on r.event_no = e.event_no
         where m.member_no = #{member_no}
         union
         select w.wait_no as index_no, e.event_no, e.name, e.addr, e.img_path, w.state, m.member_no, w.wait_date as enter_date, null as enter_time
         from wait w
-        left join member m on w.email = m.email
-        left join event e on w.event_no = e.event_no
+            left join member m on w.email = m.email
+            left join event e on w.event_no = e.event_no
         where m.member_no = #{member_no}
         order by enter_date desc
     </select>
@@ -183,15 +183,15 @@
     <select id="selectAll" resultType="event">
         SELECT * FROM event
     </select>
-
+    <!-- 회원별 관심 카테고리 오픈 예정 이벤트 조회 -->
     <select id="selectNewEvent" resultType="event">
         select * from event e
         where start_date &lt; date_add(curdate(), interval 2 week) and
-        start_date >= curdate() and
-        e.category_no in (
-        select ci.category_no
-        from category_interest ci
-        where ci.member_no = #{member_no})
+            start_date >= curdate() and
+            e.category_no in (
+                select ci.category_no
+                from category_interest ci
+                where ci.member_no = #{member_no})
         order by start_date
     </select>
     <select id="countEventWithPage" parameterType="map" resultType="int">
@@ -209,9 +209,9 @@
             </when>
             <when test='type == "category"'>
                 where e.event_no in (
-                select e.event_no
-                from event e left join category c on e.category_no = c.category_no
-                where c.name like concat('%', #{keyword}, '%') or c.value like concat('%', #{keyword}, '%'))
+                    select e.event_no
+                    from event e left join category c on e.category_no = c.category_no
+                    where c.name like concat('%', #{keyword}, '%') or c.value like concat('%', #{keyword}, '%'))
             </when>
         </choose>
     </select>

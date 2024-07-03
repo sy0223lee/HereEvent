@@ -6,11 +6,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSS File -->
-
-    <link href="/hereevent/common/css/detailedPage.css" rel="stylesheet">
     <link href="/hereevent/common/css/mywait.css" rel="stylesheet">
 
     <title>MyWait</title>
+    <script>
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const status = params.get('status');
+            // alert(status)
+            if (status === 'visit') {
+                alert('입장되었습니다');
+            } else if (status === 'cancel') {
+                alert('취소되었습니다');
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -21,10 +31,10 @@
             <nav class="breadcrumbs">
                 <ol>
                     <li><a href="/hereevent">Home</a></li>
-                    <li class="current">현재 대기 현황</li>
+                    <li class="current">wait statement</li>
                 </ol>
             </nav>
-            <h1>현재 대기 현황</h1>
+            <h1>대기현황</h1>
         </div>
     </div><!-- End Page Title -->
 
@@ -32,42 +42,37 @@
 
     <div class="container">
         <div class="submenu">
-            <h2>현재 대기 현황</h2>
+
 
         </div>
     </div>
     <!-- Section Title -->
     <div class="container section-title">
-        <h2>팝업스토어</h2>
+        <h2>대기현황</h2>
 
-            <input type="hidden" th:name="event_no" th:value="${event.event_no}">
-
-
-            <section class="event-details">
-                <div class="event-info">
-                    <div class="post-img">
-
+        <section class="event-details">
+            <div class="event-info">
+                <div class="event-image">
+                    <img th:src="@{'/download/event/' + ${event.img_path}}" th:alt="${firstImgPath}" alt="Event Image" />
                 </div>
-                    <div class="post-img">
-                    <div class="event-image">
-                        <img th:src="@{'/download/event/' + ${event.img_path}}" th:alt="${firstImgPath}" alt="Event Image" />
-                    </div>
-                    </div>
-                    <div class="event-details-text">
-                        <p>행사 제목: <span th:text="${event.name}"></span></p>
+                <div class="event-details-text">
+                    <p><strong>이벤트 제목</strong> <span th:text="${event.name}"></span></p>
 
-                        <p>주소: <span th:text="${event.addr}"></span></p>
-                    </div>
+                    <p><strong>이벤트 위치</strong> <span th:text="${event.addr}"></span></p>
                 </div>
+            </div>
 
-                <div class="waiting-info">
-                    <span class="waiting-label">현재 대기 인원</span>
-                    <span class="waiting-count" th:text="${waitingCount} + ' 명'"></span>
-                    <span>팝업스토어 앞에서 대기 등록 가능합니다.</span>
-                </div>
 
-            </section>
 
+
+            <p>
+
+                <span class="waitperson"> 현재 대기 인원 <strong><span th:text="${waitingCount} + '명'"></span></strong></span>
+            </p>
+
+
+        </section>
+        </form>
     </div>
 
 

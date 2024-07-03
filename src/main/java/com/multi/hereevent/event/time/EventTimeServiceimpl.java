@@ -36,4 +36,8 @@ public class EventTimeServiceimpl implements EventTimeService{
     public EventTimeDTO getEventTimeByEventNoAndDay(int event_no, String day){
         return dao.getEventTimeByEventNoAndDay(event_no,day);
     }
+    public List<EventTimeDTO> getEventTime(int event_no){
+        return dao.getEventTime(event_no);
+    }
+
 }
