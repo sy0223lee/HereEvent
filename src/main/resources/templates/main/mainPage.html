@@ -52,6 +52,20 @@
             z-index: 2;
  	    }
     </style>
+    <script>
+	// 대기 관련 입장/취소 함수
+	// 대기 페이지에 있으면 동작을 안하나요?
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const status = params.get('status');
+
+            if (status === 'visit') {
+                alert('입장되었습니다');
+            } else if (status === 'cancel') {
+                alert('취소되었습니다');
+            }
+        }
+    </script>
 </head>
 
 <body class="index-page">

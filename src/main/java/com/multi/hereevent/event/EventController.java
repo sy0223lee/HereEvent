@@ -106,9 +106,6 @@ public class EventController {
 
         eventTime= eventTimeService.getEventTime(event_no);
         category= categoryService.getListCategory();
-        System.out.println("=====================================");
-        System.out.println(category);
-        System.out.println("=====================================");
         System.out.println("시작일===>"+eventDetails.getStart_date());
         List<ReviewDTO> reviewList = reviewService.selectReviewByEventNo(event_no);
         System.out.println(eventTime);
