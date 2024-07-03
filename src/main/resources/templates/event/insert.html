@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>행사 등록</title>
+    <link href="/hereevent/common/css/insertEvent.css" rel="stylesheet">
+    <script>
+        function updateDateRange() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const dateRange = document.getElementById('dateRange');
+            if (startDate && endDate) {
+                dateRange.textContent = `운영기간: ${startDate} ~ ${endDate}`;
+            } else {
+                dateRange.textContent = '';
+            }
+        }
+    </script>
+</head>
+<body class="body">
+<main layout:fragment="main" class="main">
+<form class="form-container" action="/hereevent/admin/event/insert" method="post" enctype="multipart/form-data">
+    <h1 class="form-title">이벤트 등록</h1>
+
+    <label class="form-label" for="category">카테고리:</label>
+    <select class="form-select" id="category" name="category_no">
+        <!-- DB에서 카테고리 목록을 가져와서 option으로 지정 -->
+        <option th:each="category : ${categoryList}" th:value="${category.category_no}" th:text="${category.name}"></option>
+        <!-- 예시: 실제 데이터는 서버에서 동적으로 추가 -->
+    </select>
+
+    <label class="form-label" for="name">*이벤트명:</label>
+    <input class="form-input" type="text" id="name" name="name" required>
+
+    <label class="form-label" for="start_date">*시작 날짜:</label>
+    <input class="form-input" type="date" id="start_date" name="start_date" required onchange="updateDateRange()">
+
+    <label class="form-label" for="end_date">*종료 날짜:</label>
+    <input class="form-input" type="date" id="end_date" name="end_date" required onchange="updateDateRange()">
+
+    <p id="dateRange" class="date-range"></p>
+
+    <label class="form-label" for="addr">*주소:</label>
+    <input class="form-input" type="text" id="addr" name="addr" required>
+
+    <label class="form-label" for="info">*상세 정보: (최대 1000자)</label>
+    <textarea class="form-textarea" id="info" name="info" maxlength="1000" rows="10" required></textarea>
+    <span class="textarea-info">최대 1000자까지 입력 가능합니다.</span>
+
+    <label class="form-label" for="homepage">홈페이지 주소:</label>
+    <input class="form-input" type="url" id="homepage" name="homepage">
+
+    <label class="form-label" for="sns">SNS 주소:</label>
+    <input class="form-input" type="url" id="sns" name="sns">
+
+    <label class="form-label" for="image">대표 이미지:</label>
+    <input class="form-input" type="file" id="image" name="event_img" accept="image/*" required>
+
+    <label class="form-label">참여 방식:</label>
+    <div class="radio-group">
+        <input type="radio" id="reserve" name="type" value="reserve" required>
+        <label class="form-label" for="reserve">사전예약</label>
+        <input type="radio" id="wait" name="type" value="wait" required>
+        <label class="form-label" for="wait">현장대기</label>
+        <input type="radio" id="both" name="type" value="both" required>
+        <label class="form-label" for="both">전체</label>
+    </div>
+
+    <label class="form-label" for="reserve_limit">예약 제한 인원:</label>
+    <select class="form-select" id="reserve_limit" name="reserve_limit">
+        <option th:each="i : ${#numbers.sequence(10, 100, 10)}" th:value="${i}" th:text="${i} + '명'"></option>
+    </select>
+
+    <label class="form-label" for="wait_limit">대기 제한 인원:</label>
+    <select class="form-select" id="wait_limit" name="wait_limit">
+        <option th:each="i : ${#numbers.sequence(10, 100, 10)}" th:value="${i}" th:text="${i} + '명'"></option>
+    </select>
+
+    <button class="form-button" type="submit">행사 등록</button>
+</form>
+</main>
+</body>
+</html>

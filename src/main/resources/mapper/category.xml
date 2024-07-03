@@ -21,4 +21,10 @@
 		delete from category_interest
 		where category_no = #{category_no} and member_no = #{member_no}
 	</delete>
+
+	<select id="selectCategoryName" resultType="String">
+		select name
+		from category
+		where category_no = #{category_no}
+	</select>
 </mapper>

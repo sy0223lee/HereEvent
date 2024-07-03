@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.ibatis.type.Alias;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 
@@ -26,6 +27,7 @@ public class EventDTO {
     private int reserve_limit; //시간당 제한인원(예약)
     private int wait_limit = 10; //시간당 제한인원(대기)
     private float avg_star;
+    private MultipartFile event_img; // 이벤트 이미지 업로드를 위한 멤버변수
 
     // 관심 이벤트 설정 여부 저장을 위한 멤버변수
     private int event_interest_no;

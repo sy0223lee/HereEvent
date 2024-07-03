@@ -40,4 +40,9 @@ public class CategoryServiceImpl implements CategoryService{
     public List<CategoryDTO> getListCategory() {
        return dao.getListCategory();
     }
+
+    @Override
+    public String selectCategoryName(int category_no) {
+        return dao.selectCategoryName(category_no);
+    }
 }

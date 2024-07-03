@@ -9,11 +9,15 @@ import com.multi.hereevent.review.ReviewService;
 import com.multi.hereevent.wait.WaitService;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.List;
@@ -29,6 +33,7 @@ public class EventController {
     private final EventTimeService eventTimeService;
     private  final WaitService waitService;
     private final CategoryService categoryService;
+
     @GetMapping("/main")
     public String mainPage(Model model) {
         List<FourEventByCategoryDTO> fourlist = eventService.selectFourEventByCategory();
@@ -42,6 +47,32 @@ public class EventController {
         List<EventDTO> popularlist = eventService.getPopularEvent();
         model.addAttribute("popularlist",popularlist);
         return "main/mainPage";
+    }
+
+    //종류별 목록페이지
+    @GetMapping("/list")
+    public String listpage(@RequestParam("type") String type, Model model){
+        model.addAttribute("type", type);
+        if(type.equals("star")){
+            model.addAttribute("eventList", eventService.getListByStarRank());
+        }else if(type.equals("popular")){
+            model.addAttribute("eventList", eventService.getPopularEvent());
+        }else if(type.equals("open")){
+            model.addAttribute("eventList", eventService.getOpenEvent());
+        }else if(type.equals("all")){
+            model.addAttribute("eventList", eventService.getAllEvent());
+        }
+        return "main/listPage";
+    }
+  
+    //카테고리별 리스트
+    @GetMapping("/event/list/{category_no}")
+    public String listCategory(@PathVariable("category_no") int category_no, Model model){
+        List<EventDTO> eventlist = eventService.selectEventByCategoryNo(category_no);
+        String categoryName = categoryService.selectCategoryName(category_no);
+        model.addAttribute("eventlist",eventlist);
+        model.addAttribute("categoryName", categoryName);
+        return "main/categoryListPage";
     }
 
     //행사검색
@@ -84,6 +115,7 @@ public class EventController {
         model.addAttribute("reviewList", reviewList);
         return "detailedPage/detailedPage";
     }
+  
     //대기 현황 확인 페이지
     @GetMapping("/event/waitSituation")
     public String waitSituation(@RequestParam("event_no") int event_no, Model model) {
@@ -133,14 +165,6 @@ public class EventController {
         return eventService.getEventImage(event_no);
     }
 
-    //카테고리별 리스트
-    @GetMapping("/event/list/{category_no}")
-    public String listCategory(@PathVariable("category_no") int category_no, Model model){
-        List<EventDTO> eventlist = eventService.selectEventByCategoryNo(category_no);
-        model.addAttribute("eventlist",eventlist);
-        return "event/eventCategoryList";
-    }
-
     // 관심 이벤트 등록, 해제
     @GetMapping("/event/interest/insert")
     public String insertInterest(@RequestParam("event_no") int event_no, Model model){
@@ -186,21 +210,31 @@ public class EventController {
 
     /***** 관리자 페이지 *****/
     @GetMapping("/admin/event")
-    public String adminEventPage(Model model){
-        List<EventDTO> eventList = eventService.selectAll();
-        for(EventDTO event : eventList){
-            EventDTO eventDetails = eventService.getEventDetails(event.getEvent_no());
-            event.setImg_path(eventDetails.getImg_path());
-        }
-        model.addAttribute("event", eventList);
+    public String selectEventWithPage(@RequestParam Map<String, Object> params,
+                                       @PageableDefault(value = 10) Pageable page, Model model){
+        Page<EventDTO> result = eventService.selectEventWithPage(params, page);
+        model.addAttribute("type", params.get("type"));
+        model.addAttribute("keyword", params.get("keyword"));
+        model.addAttribute("eventList", result.getContent());
+        model.addAttribute("totalPages", result.getTotalPages());
+        model.addAttribute("totalElements", result.getTotalElements());
+        model.addAttribute("pageNumber", page.getPageNumber());
         return "admin/event";
     }
     // insert, update, delete 만들어 놨는데 수정해서 쓰시면 될거같습니다.
-//    @PostMapping("/admin/event")
-//    public String createEvent(EventDTO eventDTO) {
-//        eventService.insertEvent(eventDTO);
-//        return "redirect:/admin/event";
-//    }
+    @GetMapping("/admin/event/insert")
+    public String createEventPage(Model model){
+        List<CategoryDTO> categoryList = new ArrayList<>();
+        categoryList = categoryService.getListCategory();
+        model.addAttribute("categoryList",categoryList);
+        return "event/insert";
+    }
+    @PostMapping("/admin/event/insert")
+    public String createEvent(EventDTO eventDTO) {
+        eventService.insertEvent(eventDTO);
+
+        return "redirect:/admin/event";
+    }
 //
 //    @PostMapping("/admin/event/update/{event_no}")
 //    public String updateEvent(@PathVariable("event_no") int event_no, @RequestBody EventDTO eventDTO) {
