@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mainLayout}">
+<head>
+    <meta charset="utf-8">
+    <title>HereEvent-Map</title>
+    <link href="/hereevent/common/css/map.css" rel="stylesheet">
+    <script type="text/javascript" src="/hereevent/common/js/map.js"></script>
+
+    <style>
+        #map {
+            width:70%;
+            height:600px;
+            margin: auto;
+            text-align: center;
+            box-shadow: 0 0 5px;
+        }
+
+        #list-box .btn-primary {
+            background-color: #d0513d;
+            border-color: #d0513d;
+            color: #fff;
+            width: 50%; /* 버튼을 가득 채우도록 너비 설정 */
+            text-align: center;
+            transition: background-color 0.3s, border-color 0.3s; /* 색상 변경 시 부드러운 전환 효과 */
+        }
+        #list-box .btn-primary:hover {
+            background-color: #d76b5a; /* 호버 시 배경 색상 변경 */
+        }
+        #list-box .btn-primary:focus, #list-box .btn-primary:active {
+            background-color: #d76b5a; /* 클릭 시 배경 색상 변경 */
+            border-color: #d76b5a; /* 클릭 시 테두리 색상 변경 */
+            outline: none; /* 클릭 시 기본 포커스 테두리 제거 */
+            box-shadow: 0 0 0 0.1rem rgba(255, 99, 132, 0.5); /* 클릭 시 테두리 그림자 효과 */
+        }
+
+        #state-box{
+            width:70%;
+            justify-content: center;
+            display: flex;
+            gap: 10px; /* 버튼 사이의 간격 설정 */
+            margin: auto;
+            padding: 30px;
+        }
+        #place-box{
+            width:70%;
+            justify-content: center;
+            display: flex;
+            gap: 10px; /* 버튼 사이의 간격 설정 */
+            margin: auto;
+            padding: 30px;
+        }
+
+    </style>
+</head>
+<body>
+<main layout:fragment="main" class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="/hereevent">Home</a></li>
+                    <li class="current">지도</li>
+                </ol>
+            </nav>
+            <h1>지도</h1>
+        </div>
+    </div><!-- End Page Title -->
+
+    <div id="place-box">
+        <!--radio 버튼-->
+        <div id="hot">
+            핫플
+            <input type="radio" class="btn-check" name="map" id="seongsu" value="seongsu" autocomplete="off" checked>
+            <label class="btn btn-outline-danger" for="seongsu">성수</label>
+
+            <input type="radio" class="btn-check" name="map" id="hongdae" value="hongdae" autocomplete="off">
+            <label class="btn btn-outline-danger" for="hongdae">홍대</label>
+
+            <input type="radio" class="btn-check" name="map" id="gangnam" value="gangnam" autocomplete="off">
+            <label class="btn btn-outline-danger" for="gangnam">강남</label>
+
+            <input type="radio" class="btn-check" name="map" id="yeouido" value="yeouido" autocomplete="off">
+            <label class="btn btn-outline-danger" for="yeouido">여의도</label>
+
+            <input type="radio" class="btn-check" name="map" id="myeongdong" value="myeongdong" autocomplete="off">
+            <label class="btn btn-outline-danger" for="myeongdong">명동</label>
+
+            <input type="radio" class="btn-check" name="map" id="jamsil" value="jamsil" autocomplete="off">
+            <label class="btn btn-outline-danger" for="jamsil">잠실</label>
+        </div>
+        <div id="region">
+            지역
+            <input type="radio" class="btn-check" name="map" id="seoul" value="seoul" autocomplete="off">
+            <label class="btn btn-outline-danger" for="seoul">서울</label>
+
+            <input type="radio" class="btn-check" name="map" id="gyeonggi" value="gyeonggi" autocomplete="off">
+            <label class="btn btn-outline-danger" for="gyeonggi">경기</label>
+
+            <input type="radio" class="btn-check" name="map" id="busan" value="busan" autocomplete="off">
+            <label class="btn btn-outline-danger" for="busan">부산</label>
+        </div>
+        <div id="my-loc">
+            내 위치
+            <input type="button" class="btn-check" name="my-location" id="my-location" value="my-location">
+            <label class="btn btn-outline-success" for="my-location">내 위치</label>
+        </div>
+    </div>
+    <div id="mapbox">
+        <div id="map"></div>
+    </div>
+    <div id="state-box">
+        <!--체크박스 버튼-->
+        <div id="state">
+            상태
+            <input value="still" type="checkbox" class="btn-check" name="state" id="still" autocomplete="off" checked>
+            <label class="btn" for="still">진행중</label>
+
+            <input value="open" type="checkbox" class="btn-check" name="state" id="open" autocomplete="off">
+            <label class="btn" for="open">오픈예정</label>
+
+            <input value="end" type="checkbox" class="btn-check" name="state" id="end" autocomplete="off">
+            <label class="btn" for="end">종료</label>
+        </div>
+        <div id="type">
+            방식
+            <input value="reserve" type="checkbox" class="btn-check" name="type" id="reserve" autocomplete="off">
+            <label class="btn" for="reserve">사전예약</label>
+
+            <input value="wait" type="checkbox" class="btn-check" name="type" id="wait" autocomplete="off">
+            <label class="btn" for="wait">현장대기</label>
+
+            <input value="both" type="checkbox" class="btn-check" name="type" id="both" autocomplete="off">
+            <label class="btn" for="both">사전예약+현장대기</label>
+        </div>
+    </div>
+
+    <div id="list-box" class="container">
+
+    </div>
+
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1c7411c7e9cd13cdaac33d749ab11436&libraries=services"></script>
+    <script th:inline="javascript">
+        let map;
+        let markers = [];
+        const mapContainer = document.getElementById('map');
+        const mapOption = {
+            center: new kakao.maps.LatLng(37.544577, 127.055991), // 초기 중심 좌표(성수)
+            level: 5 // 초기 확대 레벨
+        };
+
+        // 지도 생성
+        map = new kakao.maps.Map(mapContainer, mapOption);
+
+        // 마커 이미지 생성
+        const imgSrc = "http://localhost:9090/hereevent/images/map/icon-gps.png";
+        const imgSize = new kakao.maps.Size(35, 35);
+        let markerImg = new kakao.maps.MarkerImage(imgSrc, imgSize);
+
+        function locationLoadSuccess(pos){
+            // 현재 위치 받아오기
+            let currentPos = new kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+            map.setCenter(currentPos);
+            map.setLevel(5); // 원하는 확대 레벨로 설정
+        }
+
+        function locationLoadError(){
+            alert('위치 정보를 가져오는데 실패했습니다.');
+        }
+
+        function getCurrentPos(){
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                locationLoadSuccess(pos);
+            }, locationLoadError);
+        }
+
+        function changeMapLocation(lat, lng, level) {
+            map.setCenter(new kakao.maps.LatLng(lat, lng));
+            map.setLevel(level); // 필요한 경우에만 확대 레벨 설정
+        }
+
+        // 각 버튼 클릭 시 지도 중심 좌표 변경
+        document.getElementById('seongsu').addEventListener('click', function() {
+            changeMapLocation(37.544577, 127.055991, 5);
+        });
+        document.getElementById('hongdae').addEventListener('click', function() {
+            changeMapLocation(37.557527, 126.9244669, 5);
+        });
+        document.getElementById('gangnam').addEventListener('click', function() {
+            changeMapLocation(37.497952, 127.027619, 6);
+        });
+        document.getElementById('yeouido').addEventListener('click', function() {
+            changeMapLocation(37.521625, 126.924079, 5);
+        });
+        document.getElementById('myeongdong').addEventListener('click', function() {
+            changeMapLocation(37.5665851, 126.9782038, 6);
+        });
+        document.getElementById('jamsil').addEventListener('click', function() {
+            changeMapLocation(37.5132612, 127.1001336, 5);
+        });
+        document.getElementById('seoul').addEventListener('click', function() {
+            changeMapLocation(37.53814735887608, 126.99898167513268, 8);
+        });
+        document.getElementById('gyeonggi').addEventListener('click', function() {
+            changeMapLocation(37.369188031896265, 127.01776935446426, 10);
+        });
+        document.getElementById('busan').addEventListener('click', function() {
+            changeMapLocation(35.137294960653996, 129.1042017597341, 9);
+        });
+        document.getElementById('my-location').addEventListener('click', function() {
+            getCurrentPos();
+        });
+
+        $(document).ready(function() {
+            // 페이지 로딩 시 기본 이벤트 출력
+            printList(map, markers, markerImg);
+
+            // state 버튼 클릭 시 해당 이벤트 출력
+            $(".btn-check").each(function () {
+                $(this).click(function () {
+                    printList(map, markers, markerImg);
+                });
+            });
+        });
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+</main>
+</body>
+</html>
