@@ -30,7 +30,7 @@
         </div>
         <!-- End Page Title -->
 
-        <div id="listbox" class="container">
+        <div id="list-box" class="container">
             <div th:each="event : ${eventList}" class="card" style="width: 18rem;">
                <img th:src="@{/download/event/{img_path}(img_path=${event.img_path})}" class="card-img-top">
                 <div class="card-body">

@@ -70,7 +70,7 @@
                 <h1>팝업 세부정보</h1>
             </div>
         </div><!-- End Page Title -->
-        <div id="listbox" class="container">
+        <div id="list-box" class="container">
             <div th:each="event : ${events}" class="card" style="width: 18rem;">
                 <img th:src="@{/download/event/{img_path}(img_path=${event.img_path})}" class="card-img-top">
                 <div class="card-body">

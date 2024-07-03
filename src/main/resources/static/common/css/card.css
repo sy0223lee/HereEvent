@@ -1,7 +1,6 @@
-#listbox {
+#list-box {
    display: flex;
    flex-wrap: wrap;
-   justify-content: center;
    gap: 3rem; /* 카드 사이의 간격 */
    justify-content: center; /* 카드들을 가운데 정렬 */
 }
@@ -22,7 +21,7 @@
    text-align: right;
 }
 
-#listbox .btn-primary {
+#list-box .btn-primary {
     background-color: #d0513d;
     border-color: #d0513d;
     color: #fff;
@@ -32,23 +31,23 @@
     margin-top: 15px;
     margin-bottom: 15px;
 }
-#listbox .btn-primary:hover {
+#list-box .btn-primary:hover {
     background-color: #d76b5a; /* 호버 시 배경 색상 변경 */
 }
-#listbox .btn-primary:focus, #listbox .btn-primary:active {
+#list-box .btn-primary:focus, #list-box .btn-primary:active {
     background-color: #d76b5a; /* 클릭 시 배경 색상 변경 */
     border-color: #d76b5a; /* 클릭 시 테두리 색상 변경 */
     outline: none; /* 클릭 시 기본 포커스 테두리 제거 */
     box-shadow: 0 0 0 0.1rem rgba(255, 99, 132, 0.5); /* 클릭 시 테두리 그림자 효과 */
 }
-#listbox .card-title{
+#list-box .card-title{
     font-weight: bold;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     text-align: left;
 }
-#listbox .card-text{
+#list-box .card-text{
     font-size: 15px;
     margin-top: 20px;
     margin-bottom: 10px;
