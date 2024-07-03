@@ -61,20 +61,21 @@ public class EventController {
         }
         return "main/listPage";
     }
-//    @PostMapping("/list")
-//    @ResponseBody
-//    public List<EventDTO> selectEventWithMap(@RequestBody Map<String, Object> data){
-//        String tag = (String) data.get("tag");
-//        ArrayList<String> state =  (ArrayList<String>) data.get("state");
-//        ArrayList<String> type = (ArrayList<String>) data.get("type");
-//        switch (type) {
-//            case "star" -> eventService.get
-//            case "popular" ->
-//            case "open" ->
-//            case "all" ->
-//        }
-//        return mapService.selectEventWithMap(location, state, type);
-//    }
+    @PostMapping("/list")
+    @ResponseBody
+    public List<EventDTO> selectEventWithMap(@RequestBody Map<String, Object> data){
+        String tag = (String) data.get("tag");
+        ArrayList<String> state =  (ArrayList<String>) data.get("state");
+        ArrayList<String> type = (ArrayList<String>) data.get("type");
+        List<EventDTO> eventlist = new ArrayList<>();
+        switch (tag) {
+            case "star" -> eventlist = eventService.getStarEventWithCondition(state, type);
+            case "popular" -> eventlist = eventService.getPopularEventWithCondition(state, type);
+            case "open" -> eventlist = eventService.getOpenEventWithCondition(type);
+            case "all" -> eventlist = eventService.getAllEventWithCondition(state, type);
+        }
+        return eventlist;
+    }
   
     //카테고리별 리스트
     @GetMapping("/event/list/{category_no}")

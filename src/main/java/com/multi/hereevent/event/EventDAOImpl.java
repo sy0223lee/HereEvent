@@ -42,6 +42,7 @@ public class EventDAOImpl implements EventDAO{
         return sqlSession.selectList("com.multi.hereevent.event.searchEvent", keyword);
     }
 
+    // 메인 페이지 이벤트 조회
     @Override
     public List<EventDTO> getAllEvent() {
         return sqlSession.selectList("com.multi.hereevent.event.getAllEvent");
@@ -67,29 +68,42 @@ public class EventDAOImpl implements EventDAO{
         return sqlSession.selectList("com.multi.hereevent.event.getPopularEvent");
     }
 
+    // 리스트 페이지 이벤트 조회
     @Override
     public List<EventDTO> getAllEventWithCondition(List<String> state, List<String> type) {
-        return List.of();
+        Map<String, List<String>> params = new HashMap<>();
+        params.put("state", state);
+        params.put("type", type);
+        return sqlSession.selectList("com.multi.hereevent.event.getAllEventWithCondition", params);
     }
 
     @Override
     public List<EventDTO> getStarEventWithCondition(List<String> state, List<String> type) {
-        return List.of();
+        Map<String, List<String>> params = new HashMap<>();
+        params.put("state", state);
+        params.put("type", type);
+        return sqlSession.selectList("com.multi.hereevent.event.getStarEventWithCondition", params);
     }
 
     @Override
     public List<EventDTO> getEventByCategoryWithCondition(int category_no, List<String> state, List<String> type) {
-        return List.of();
+        Map<String, List<String>> params = new HashMap<>();
+        params.put("state", state);
+        params.put("type", type);
+        return sqlSession.selectList("com.multi.hereevent.event.getEventByCategoryWithCondition", params);
     }
 
     @Override
     public List<EventDTO> getOpenEventWithCondition(List<String> type) {
-        return List.of();
+        return sqlSession.selectList("com.multi.hereevent.event.getOpenEventWithCondition", type);
     }
 
     @Override
     public List<EventDTO> getPopularEventWithCondition(List<String> state, List<String> type) {
-        return List.of();
+        Map<String, List<String>> params = new HashMap<>();
+        params.put("state", state);
+        params.put("type", type);
+        return sqlSession.selectList("com.multi.hereevent.event.getPopularEventWithCondition", params);
     }
 
 

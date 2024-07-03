@@ -42,6 +42,7 @@ public class EventServiceImpl implements EventService {
         return eventDAO.searchEvent(keyword);
     }
 
+    // 메인 페이지 이벤트 리스트 조회
     @Override
     public List<EventDTO> getAllEvent() {
         return eventDAO.getAllEvent();
@@ -88,25 +89,26 @@ public class EventServiceImpl implements EventService {
         return eventDAO.getPopularEvent();
     }
 
+    // 리스트 페이지 이벤트 리스트 조회
     @Override
     public List<EventDTO> getAllEventWithCondition(List<String> state, List<String> type) {
-        return List.of();
+        return eventDAO.getAllEventWithCondition(state, type);
     }
     @Override
     public List<EventDTO> getStarEventWithCondition(List<String> state, List<String> type) {
-        return List.of();
+        return eventDAO.getStarEventWithCondition(state, type);
     }
     @Override
     public List<EventDTO> getEventByCategoryWithCondition(int category_no, List<String> state, List<String> type) {
-        return List.of();
+        return eventDAO.getEventByCategoryWithCondition(category_no, state, type);
     }
     @Override
     public List<EventDTO> getOpenEventWithCondition(List<String> type) {
-        return List.of();
+        return eventDAO.getOpenEventWithCondition(type);
     }
     @Override
     public List<EventDTO> getPopularEventWithCondition(List<String> state, List<String> type) {
-        return List.of();
+        return eventDAO.getPopularEventWithCondition(state, type);
     }
 
     //세부페이지

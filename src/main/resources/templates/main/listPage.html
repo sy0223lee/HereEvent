@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link href="/hereevent/common/css/cardList.css" rel="stylesheet">
-    <script type="text/javascript" src="/hereevent/common/js/cardList.js"></script>
 </head>
 <body>
     <main layout:fragment="main" class="main">
@@ -38,8 +37,10 @@
                 <input value="still" type="checkbox" class="btn-check" name="state" id="still" checked>
                 <label class="state-btn" for="still">진행중</label> <!-- 기본값 -->
 
-                <input value="open" type="checkbox" class="btn-check" name="state" id="open">
-                <label class="state-btn" for="open">오픈예정</label>
+                <th:block th:unless="${type == 'star'}">
+                    <input value="open" type="checkbox" class="btn-check" name="state" id="open">
+                    <label class="state-btn" for="open">오픈예정</label>
+                </th:block>
 
                 <input value="end" type="checkbox" class="btn-check" name="state" id="end">
                 <label class="state-btn" for="end">종료</label>
@@ -68,6 +69,10 @@
                 </div>
             </div>
         </div>
+
+        <!-- head 태그에 추가 시 동작 X, layout 이 적용되는 태그 내에 추가 시 정상 작동 -->
+        <script type="text/javascript" src="/hereevent/common/js/cardList.js"></script>
     </main>
+
 </body>
 </html>
