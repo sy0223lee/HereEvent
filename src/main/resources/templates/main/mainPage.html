@@ -138,67 +138,64 @@
                         <img th:unless="${star.img_path != null}" th:src="@{/images/default_img.png}" class="img-fluid"
                              alt="default_img" th:onclick="|location.href='@{/event/}${star.event_no}'|">
 
-                        <h2 th:text="${i.index+1}+위" class="overlay-text rank"></h2>
+                        <h2 th:text="${i.index+1}" class="overlay-text rank"></h2>
                         <div class="overlay" th:onclick="|location.href='@{/event/}${star.event_no}'|">
-<!--                            <div class="text-box">-->
-<!--                                <h2 th:text="${i.index+1}+위" class="overlay-text rank"></h2>-->
                                 <h5 th:text="${star.name}" class="overlay-text name"></h5>
                                 <p class="overlay-text date"><span th:text="${star.start_date}"/> ~ <span th:text="${star.end_date}"/></p>
                                 <div class="overlay-text star">
                                     <div class="justify-content-center rating readonly">
                                         <label class="rating-label rating-label-half">
                                             <input type="radio" class="rating-input"
-                                                   th:checked="${star.avg_star <= 0.5} ? true : false">
+                                                   th:checked="${star.avg_star < 1.0} ? true : false">
                                             <span class="star-icon"></span>
                                         </label>
                                         <label class="rating-label rating-label-full">
                                             <input type="radio" class="rating-input"
-                                                   th:checked="${star.avg_star <= 1.0} ? true : false">
+                                                   th:checked="${star.avg_star < 1.5} ? true : false">
                                             <span class="star-icon"></span>
                                         </label>
                                         <label class="rating-label rating-label-half">
                                             <input type="radio" class="rating-input"
-                                                   th:checked="${star.avg_star <= 1.5} ? true : false">
+                                                   th:checked="${star.avg_star < 2.0} ? true : false">
                                             <span class="star-icon"></span>
                                         </label>
                                         <label class="rating-label rating-label-full">
                                             <input type="radio" class="rating-input"
-                                                   th:checked="${star.avg_star <= 2.0} ? true : false">
+                                                   th:checked="${star.avg_star < 2.5} ? true : false">
                                             <span class="star-icon"></span>
                                         </label>
                                         <label class="rating-label rating-label-half">
                                             <input type="radio" class="rating-input"
-                                                   th:checked="${star.avg_star <= 2.5} ? true : false">
+                                                   th:checked="${star.avg_star < 3.0} ? true : false">
                                             <span class="star-icon"></span>
                                         </label>
                                         <label class="rating-label rating-label-full">
                                             <input type="radio" class="rating-input"
-                                                   th:checked="${star.avg_star <= 3.0} ? true : false">
+                                                   th:checked="${star.avg_star < 3.5} ? true : false">
                                             <span class="star-icon"></span>
                                         </label>
                                         <label class="rating-label rating-label-half">
                                             <input type="radio" class="rating-input"
-                                                   th:checked="${star.avg_star <= 3.5} ? true : false">
+                                                   th:checked="${star.avg_star < 4.0} ? true : false">
                                             <span class="star-icon"></span>
                                         </label>
                                         <label class="rating-label rating-label-full">
                                             <input type="radio" class="rating-input"
-                                                   th:checked="${star.avg_star <= 4.0} ? true : false">
+                                                   th:checked="${star.avg_star < 4.5} ? true : false">
                                             <span class="star-icon"></span>
                                         </label>
                                         <label class="rating-label rating-label-half">
                                             <input type="radio" class="rating-input"
-                                                   th:checked="${star.avg_star <= 4.5} ? true : false">
+                                                   th:checked="${star.avg_star < 5.0} ? true : false">
                                             <span class="star-icon"></span>
                                         </label>
                                         <label class="rating-label rating-label-full">
                                             <input type="radio" class="rating-input"
-                                                   th:checked="${star.avg_star <= 5.0} ? true : false">
+                                                   th:checked="${star.avg_star == 5.0} ? true : false">
                                             <span class="star-icon"></span>
                                         </label>
                                     </div>
                                 </div>
-<!--                            </div>-->
                         </div><!--overay end-->
                     
                     </div>
@@ -256,68 +253,66 @@
                              th:alt="${popular.img_path}" th:onclick="|location.href='@{/event/}${popular.event_no}'|">
                         <img th:unless="${popular.img_path != null}" th:src="@{/images/default_img.png}" class="img-fluid"
                              alt="default_img" th:onclick="|location.href='@{/event/}${popular.event_no}'|">
-                  
+
+                        <h2 th:text="${i.index+1}" class="overlay-text rank"></h2>
                         <div class="overlay" th:onclick="|location.href='@{/event/}${popular.event_no}'|">
-                            <div class="text-box">
-                                <p th:text="${i.index+1}+위" class="overlay-name"></p>
-                                <p th:text="${popular.name}" class="overlay-name"/><br/>
-                                <p class="overlay-text card-text"><span th:text="${popular.start_date}" class="overlay-text"/> ~ <span th:text="${popular.end_date}" class="overlay-text"/></p>
-                                <div class="overlay-text star">
-                                    <div class="justify-content-center rating readonly">
-                                        <label class="rating-label rating-label-half">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${popular.avg_star <= 0.5} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-full">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${popular.avg_star <= 1.0} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-half">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${popular.avg_star <= 1.5} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-full">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${popular.avg_star <= 2.0} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-half">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${popular.avg_star <= 2.5} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-full">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${popular.avg_star <= 3.0} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-half">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${popular.avg_star <= 3.5} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-full">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${popular.avg_star <= 4.0} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-half">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${popular.avg_star <= 4.5} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-full">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${popular.avg_star <= 5.0} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                    </div>
+                            <h5 th:text="${popular.name}" class="overlay-text name"></h5>
+                            <p class="overlay-text date"><span th:text="${popular.start_date}"/> ~ <span th:text="${popular.end_date}"/></p>
+                            <div class="overlay-text star">
+                                <div class="justify-content-center rating readonly">
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${popular.avg_star < 1.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${popular.avg_star < 1.5} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${popular.avg_star < 2.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${popular.avg_star < 2.5} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${popular.avg_star < 3.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${popular.avg_star < 3.5} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${popular.avg_star < 4.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${popular.avg_star < 4.5} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${popular.avg_star < 5.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${popular.avg_star == 5.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
                                 </div>
                             </div>
-                        </div>
+                        </div><!--overay end-->
 
                     </div>
                 </div>
@@ -374,67 +369,66 @@
                              th:alt="${open.img_path}" th:onclick="|location.href='@{/event/}${open.event_no}'|">
                         <img th:unless="${open.img_path != null}" th:src="@{/images/default_img.png}" class="img-fluid"
                              alt="default_img" th:onclick="|location.href='@{/event/}${open.event_no}'|">
-                      
+
                         <div class="overlay" th:onclick="|location.href='@{/event/}${open.event_no}'|">
-                            <div class="text-box">
-                                <p th:text="${open.name}" class="overlay-name"/><br/>
-                                <p class="overlay-text card-text"><span th:text="${open.start_date}" class="overlay-text"/> ~ <span th:text="${open.end_date}" class="overlay-text"/></p>
-                                <div class="overlay-text star">
-                                    <div class="justify-content-center rating readonly">
-                                        <label class="rating-label rating-label-half">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${open.avg_star <= 0.5} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-full">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${open.avg_star <= 1.0} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-half">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${open.avg_star <= 1.5} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-full">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${open.avg_star <= 2.0} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-half">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${open.avg_star <= 2.5} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-full">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${open.avg_star <= 3.0} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-half">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${open.avg_star <= 3.5} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-full">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${open.avg_star <= 4.0} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-half">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${open.avg_star <= 4.5} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-full">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${open.avg_star <= 5.0} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                    </div>
+                            <h5 th:text="${open.name}" class="overlay-text name"></h5>
+                            <p class="overlay-text date"><span th:text="${open.start_date}"/> ~ <span th:text="${open.end_date}"/></p>
+                            <div class="overlay-text star">
+                                <div class="justify-content-center rating readonly">
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${open.avg_star < 1.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${open.avg_star < 1.5} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${open.avg_star < 2.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${open.avg_star < 2.5} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${open.avg_star < 3.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${open.avg_star < 3.5} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${open.avg_star < 4.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${open.avg_star < 4.5} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${open.avg_star < 5.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${open.avg_star == 5.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
                                 </div>
                             </div>
                         </div><!--overay end-->
+
                     </div>
                 
                 </div>
@@ -491,67 +485,66 @@
                              th:alt="${all.img_path}" th:onclick="|location.href='@{/event/}${all.event_no}'|">
                         <img th:unless="${all.img_path != null}" th:src="@{/images/default_img.png}" class="img-fluid"
                              alt="default_img" th:onclick="|location.href='@{/event/}${all.event_no}'|">
-                      
+
                         <div class="overlay" th:onclick="|location.href='@{/event/}${all.event_no}'|">
-                            <div class="text-box">
-                                <p th:text="${all.name}" class="overlay-name"/><br/>
-                                <p class="overlay-text card-text"><span th:text="${all.start_date}" class="overlay-text"/> ~ <span th:text="${all.end_date}" class="overlay-text"/></p>
-                                <div class="overlay-text star">
-                                    <div class="justify-content-center rating readonly">
-                                        <label class="rating-label rating-label-half">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${all.avg_star <= 0.5} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-full">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${all.avg_star <= 1.0} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-half">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${all.avg_star <= 1.5} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-full">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${all.avg_star <= 2.0} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-half">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${all.avg_star <= 2.5} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-full">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${all.avg_star <= 3.0} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-half">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${all.avg_star <= 3.5} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-full">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${all.avg_star <= 4.0} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-half">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${all.avg_star <= 4.5} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                        <label class="rating-label rating-label-full">
-                                            <input type="radio" class="rating-input"
-                                                   th:checked="${all.avg_star <= 5.0} ? true : false">
-                                            <span class="star-icon"></span>
-                                        </label>
-                                    </div>
+                            <h5 th:text="${all.name}" class="overlay-text name"></h5>
+                            <p class="overlay-text date"><span th:text="${all.start_date}"/> ~ <span th:text="${all.end_date}"/></p>
+                            <div class="overlay-text star">
+                                <div class="justify-content-center rating readonly">
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${all.avg_star < 1.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${all.avg_star < 1.5} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${all.avg_star < 2.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${all.avg_star < 2.5} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${all.avg_star < 3.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${all.avg_star < 3.5} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${all.avg_star < 4.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${all.avg_star < 4.5} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${all.avg_star < 5.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input"
+                                               th:checked="${all.avg_star == 5.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
                                 </div>
                             </div>
                         </div><!--overay end-->
+                      
                     </div>
                 </div>
             </div>

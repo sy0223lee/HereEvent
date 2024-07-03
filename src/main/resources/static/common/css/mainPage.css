@@ -1,3 +1,14 @@
+/* a 태그 색상 변경 */
+.section-title a {
+    color: var(--default-color);
+    text-decoration: none;
+    transition: 0.3s;
+}
+.section-title a:hover {
+    color: color-mix(in srgb, var(--default-color), transparent 25%);
+    text-decoration: none;
+}
+
 /* 오버레이 */
 .overlay {
     position: absolute;
@@ -22,15 +33,13 @@ h2.overlay-text.rank{
     top: 0;
     left: 0;
     margin: 12px;
-    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+    width: 40px;
+    height: 40px;
+    background: rgb(225, 69, 51, 0.7);
+    border-radius: 50%;
     z-index: 3;
 }
 
-/*.overlay-text.rank{*/
-/*    text-align: left;*/
-/*    margin-left: 15px;*/
-/*    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;*/
-/*}*/
 .overlay-text.name {
     margin: 70px 10px 20px;
     text-overflow: ellipsis;
