@@ -18,7 +18,7 @@
 }
 
 /* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
-:root { 
+:root {
   --background-color: #ffffff; /* Background color for the entire website, including individual sections */
   --default-color: #2A2E44; /* Default color used for the majority of the text content across the entire website */
   --heading-color: #2A2E44; /* Color for headings, subheadings and title throughout the website */
@@ -715,7 +715,10 @@ section,
   scroll-margin-top: 100px;
   overflow: clip;
 }
-
+ul.runningtime{
+  list-style: none;
+  padding-left: 0px;
+}
 .section-bg {
   --default-color: #ffff;
   --heading-color: #ffff;
@@ -1930,6 +1933,9 @@ section,
   font-weight: 700;
   padding: 0;
   margin: 30px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .blog-details .content {
@@ -2426,12 +2432,13 @@ section,
   margin: 10px;
   padding: 10px 20px;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   background-color: var(--accent-color);
   color: white;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
+
 }
 .widget-item {
   margin-bottom: 40px;
@@ -2579,6 +2586,7 @@ section,
   border: 1px solid color-mix(in srgb, var(--default-color), transparent 60%);
   display: inline-block;
   transition: 0.3s;
+  border-radius: 8px;
 }
 
 .tags-widget ul a:hover {

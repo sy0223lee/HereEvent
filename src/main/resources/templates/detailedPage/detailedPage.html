@@ -65,12 +65,17 @@
                     form.submit();
                 }
             });
+
+
+
         });
+
     </script>
 
     <title>HereEvent-EventDetail</title>
 </head>
 <body class="blog-details-page">
+
 <main layout:fragment="main" class="main">
 
     <!-- Page Title -->
@@ -78,11 +83,11 @@
         <div class="container">
             <nav class="breadcrumbs">
                 <ol>
-                    <li><a href="#">Home</a></li>
-                    <li class="current">Blog Details</li>
+                    <li><a href="/hereevent">Home</a></li>
+                    <li class="current">Event Details</li>
                 </ol>
             </nav>
-            <h1>팝업 세부정보</h1>
+            <h1>이벤트 상세정보</h1>
         </div>
     </div><!-- End Page Title -->
 
@@ -102,27 +107,31 @@
                                 <img th:unless="${imgPath != null}" th:src="@{/images/default_img.png}" alt="default_img"/>
 
                                 <input type="hidden" class="member" th:value="${session.member}">
-                                <button class="default interest-btn" th:if="${event.event_interest_no == 0}" th:value="${event.event_no}">♡</button>
-                                <button class="picked interest-btn" th:unless="${event.event_interest_no == 0}" th:value="${event.event_no}">♥</button>
+
                             </div>
 
                         </div>
 
 
 
+                        <div>
+                            <h2 class="title"><span th:text="${event.name}"></span>
+                                <button class="default interest-btn" th:if="${event.event_interest_no == 0}" th:value="${event.event_no}">♡</button>
+                                <button class="picked interest-btn" th:unless="${event.event_interest_no == 0}" th:value="${event.event_no}">♥</button>
 
-                        <h2 class="title"><span th:text="${event.name}"></span></h2>
+                            </h2>
 
-                            <div class="submenu">
-                                <a href="javascript:void(0);" onclick="scrollToSection('content-section')" class="nav-item" th:classappend="${tab == 'content'} ? 'active' : ''" data-tab="content">상세정보</a>
-                                <a href="javascript:void(0);" onclick="scrollToSection('navigation-section')" class="nav-item" th:classappend="${tab == 'map'} ? 'active' : ''" data-tab="map">길찾기</a>
-                                <a href="javascript:void(0);" onclick="scrollToSection('reservation-section')" class="nav-item" th:classappend="${tab == 'reservation'} ? 'active' : ''" data-tab="reservation">예약</a>
-                                <a href="javascript:void(0);" onclick="scrollToSection('reviews-section')" class="nav-item" th:classappend="${tab == 'reviews'} ? 'active' : ''" data-tab="reviews">후기</a>
-                            </div>
+                        </div>
+                        <div class="submenu">
+                            <a href="javascript:void(0);" onclick="scrollToSection('content-section')" th:classappend="${tab == 'content'} ? 'active' : ''" data-tab="content">상세정보</a>
+                            <a href="javascript:void(0);" onclick="scrollToSection('navigation-section')" th:classappend="${tab == 'map'} ? 'active' : ''" data-tab="map">길찾기</a>
+                            <a href="javascript:void(0);" onclick="scrollToSection('reservation-section')" th:classappend="${tab == 'reservation'} ? 'active' : ''" data-tab="reservation">예약</a>
+                            <a href="javascript:void(0);" onclick="scrollToSection('reviews-section')" th:classappend="${tab == 'reviews'} ? 'active' : ''" data-tab="reviews">후기</a>
+                        </div>
 
                         <article id="content-section" class="article">
                             <!-- 상세 정보 -->
-                            <th:block th:replace="~{detailedPage/content :: content}"></th:block>
+                            <th:block th:replace="~{detailedPage/content :: content(${eventtime},'test')}"></th:block>
                         </article>
 
                         <article id="navigation-section" class="article">
@@ -162,38 +171,17 @@
 
                     </div><!--/Search Widget -->
 
-                    <!-- Categories Widget -->
-                    <div class="categories-widget widget-item">
-
-                        <h3 class="widget-title">Categories</h3>
-                        <ul class="mt-3">
-                            <li><a href="#">General <span>(25)</span></a></li>
-                            <li><a href="#">Lifestyle <span>(12)</span></a></li>
-                            <li><a href="#">Travel <span>(5)</span></a></li>
-                            <li><a href="#">Design <span>(22)</span></a></li>
-                            <li><a href="#">Creative <span>(8)</span></a></li>
-                            <li><a href="#">Educaion <span>(14)</span></a></li>
-                        </ul>
-
-                    </div><!--/Categories Widget -->
 
                     <!-- Tags Widget -->
                     <div class="tags-widget widget-item">
 
-                        <h3 class="widget-title">Tags</h3>
+                        <h3 class="widget-title">Category</h3>
                         <ul>
-                            <li><a href="#">App</a></li>
-                            <li><a href="#">IT</a></li>
-                            <li><a href="#">Business</a></li>
-                            <li><a href="#">Mac</a></li>
-                            <li><a href="#">Design</a></li>
-                            <li><a href="#">Office</a></li>
-                            <li><a href="#">Creative</a></li>
-                            <li><a href="#">Studio</a></li>
-                            <li><a href="#">Smart</a></li>
-                            <li><a href="#">Tips</a></li>
-                            <li><a href="#">Marketing</a></li>
+                            <li th:each="category : ${category}">
+                                <a th:href="|location.href='@{/event/list/(category_no=${category_no})}'|" th:text="${category.name}"></a>
+                            </li>
                         </ul>
+
 
                     </div><!--/Tags Widget -->
 
