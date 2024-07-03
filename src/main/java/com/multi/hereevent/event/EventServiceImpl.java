@@ -17,47 +17,42 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
-    private final EventDAO dao;
+    private final EventDAO eventDAO;
     private final CategoryDAO categoryDAO;
 
     @Override
     public int insertEvent(EventDTO event) {
-        return dao.insertEvent(event);
+        return eventDAO.insertEvent(event);
     }
-
-
     @Override
     public int updateEvent(EventDTO event) {
-        return dao.updateEvent(event);
-
+        return eventDAO.updateEvent(event);
+    }
+    @Override
+    public int deleteEvent(int id) {
+        return eventDAO.deleteEvent(id);
     }
     @Override
     public List<EventDTO> selectAll() {
-        return dao.selectAll();
+        return eventDAO.selectAll();
     }
 
     @Override
-    public int deleteEvent(int id) {
-        return dao.deleteEvent(id);
-    }
-    @Override
     public List<EventDTO> searchEvent(String keyword) {
-        return dao.searchEvent(keyword);
+        return eventDAO.searchEvent(keyword);
     }
 
     @Override
     public List<EventDTO> getAllEvent() {
-        return dao.getAllEvent();
+        return eventDAO.getAllEvent();
     }
-
     @Override
     public List<EventDTO> getListByStarRank() {
-        return dao.getListStarRank();
+        return eventDAO.getListStarRank();
     }
-
     @Override
     public List<EventDTO> selectEventByCategoryNo(int category_no) {
-        return dao.selectEventByCategoryNo(category_no);
+        return eventDAO.selectEventByCategoryNo(category_no);
     }
     @Override
     public List<FourEventByCategoryDTO> selectFourEventByCategory() {
@@ -72,7 +67,7 @@ public class EventServiceImpl implements EventService {
             FourEventByCategoryDTO fourEventDTO= new FourEventByCategoryDTO();
             List<EventDTO> eventlist = new ArrayList<>();
             // sql문으로 가져온 fourEventCategoryDTO를 저장
-            eventlist = dao.selectFourEventByCategory(category.getCategory_no());
+            eventlist = eventDAO.selectFourEventByCategory(category.getCategory_no());
             //System.out.println("eventlist=====>"+eventlist.size());
             // category_no로 event 4개 조회해서 fourEventCategoryDTO에 저장
             fourEventDTO.setCategory_no(category.getCategory_no());
@@ -86,79 +81,95 @@ public class EventServiceImpl implements EventService {
     }
     @Override
     public List<EventDTO> getOpenEvent() {
-        return dao.getOpenEvent();
+        return eventDAO.getOpenEvent();
+    }
+    @Override
+    public List<EventDTO> getPopularEvent() {
+        return eventDAO.getPopularEvent();
     }
 
     @Override
-    public List<EventDTO> getPopularEvent() {
-        return dao.getPopularEvent();
+    public List<EventDTO> getAllEventWithCondition(List<String> state, List<String> type) {
+        return List.of();
     }
-
+    @Override
+    public List<EventDTO> getStarEventWithCondition(List<String> state, List<String> type) {
+        return List.of();
+    }
+    @Override
+    public List<EventDTO> getEventByCategoryWithCondition(int category_no, List<String> state, List<String> type) {
+        return List.of();
+    }
+    @Override
+    public List<EventDTO> getOpenEventWithCondition(List<String> type) {
+        return List.of();
+    }
+    @Override
+    public List<EventDTO> getPopularEventWithCondition(List<String> state, List<String> type) {
+        return List.of();
+    }
 
     //세부페이지
     @Override
     public EventDTO getEventDetails(int event_no) {
-        return dao.getEventDetails(event_no);
+        return eventDAO.getEventDetails(event_no);
     }
-
     @Override
     public EventDTO getEventDetails(int event_no, int category_no) {
-        return dao.getEventDetails(event_no, category_no);
+        return eventDAO.getEventDetails(event_no, category_no);
     }
-
     //사진 가져오기
     @Override
     public EventDTO getEventImage(int event_no) {
-        return dao.getEventImage(event_no);
+        return eventDAO.getEventImage(event_no);
     }
 
+    // 리뷰 관련
     @Override
     public int insertReserve(ReserveDTO reservation) {
-        return dao.insertReserve(reservation);
+        return eventDAO.insertReserve(reservation);
     }
-
     @Override
     public ReserveDTO checkReserveOrder(int event_no,Date reserve_date, Time reserve_time) {
-        return dao.checkReserveOrder(event_no,reserve_date,reserve_time);
+        return eventDAO.checkReserveOrder(event_no,reserve_date,reserve_time);
     }
-
     @Override
     public int checkReserveLimit(int event_no) {
-        return dao.checkReserveLimit(event_no);
+        return eventDAO.checkReserveLimit(event_no);
     }
 
     // 크롤링
     @Override
     public int insertCrawlingEvent(EventDTO event) {
-        return dao.insertCrawlingEvent(event);
+        return eventDAO.insertCrawlingEvent(event);
     }
-
     @Override
     public int updateEventImg(int event_no, String img_path) {
-        return dao.updateEventImg(event_no, img_path);
+        return eventDAO.updateEventImg(event_no, img_path);
     }
-
     @Override
     public int selectEventNoByEventName(String eventName) {
-        return Integer.parseInt(dao.selectEventNoByEventName(eventName));
+        return Integer.parseInt(eventDAO.selectEventNoByEventName(eventName));
     }
 
+    // 특정 멤버 이벤트 내역 조회
     @Override
     public List<MemberEventDTO> selectMemberEvent(int member_no) {
-        return dao.selectMemberEvent(member_no);
+        return eventDAO.selectMemberEvent(member_no);
     }
-
+    // 오늘로부터 2주 내에 오픈 예정인 관심 카테고리 이벤트 조회
     @Override
     public List<EventDTO> selectNewEvent(int member_no) {
-        return dao.selectNewEvent(member_no);
+        return eventDAO.selectNewEvent(member_no);
     }
 
+    // 페이징
     @Override
     public Page<EventDTO> selectEventWithPage(Map<String, Object> params, Pageable page) {
-        int count = dao.countEventWithPage(params);
+        int count = eventDAO.countEventWithPage(params);
         params.put("offset", page.getOffset());
         params.put("pageSize", page.getPageSize());
-        List<EventDTO> eventList = dao.selectEventWithPage(params);
+        List<EventDTO> eventList = eventDAO.selectEventWithPage(params);
         return new PageImpl<>(eventList, page, count);
     }
 }

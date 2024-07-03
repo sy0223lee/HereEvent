@@ -51,7 +51,7 @@
 body {
   color: var(--default-color);
   background-color: var(--background-color);
-  font-family: var(--default-font), sans-serif;
+  font-family: var(--default-font), "Noto Sans", sans-serif;
 }
 
 a {

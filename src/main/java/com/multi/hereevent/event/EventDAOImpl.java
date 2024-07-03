@@ -54,7 +54,6 @@ public class EventDAOImpl implements EventDAO{
 
     @Override
     public List<EventDTO> selectEventByCategoryNo(int category_no) {
-        //System.out.println("DAONO===>>>"+category_no);
         return sqlSession.selectList("com.multi.hereevent.event.selectEventByCategory", category_no);
     }
 
@@ -67,6 +66,32 @@ public class EventDAOImpl implements EventDAO{
     public List<EventDTO> getPopularEvent() {
         return sqlSession.selectList("com.multi.hereevent.event.getPopularEvent");
     }
+
+    @Override
+    public List<EventDTO> getAllEventWithCondition(List<String> state, List<String> type) {
+        return List.of();
+    }
+
+    @Override
+    public List<EventDTO> getStarEventWithCondition(List<String> state, List<String> type) {
+        return List.of();
+    }
+
+    @Override
+    public List<EventDTO> getEventByCategoryWithCondition(int category_no, List<String> state, List<String> type) {
+        return List.of();
+    }
+
+    @Override
+    public List<EventDTO> getOpenEventWithCondition(List<String> type) {
+        return List.of();
+    }
+
+    @Override
+    public List<EventDTO> getPopularEventWithCondition(List<String> state, List<String> type) {
+        return List.of();
+    }
+
 
     //세부페이지
     @Override

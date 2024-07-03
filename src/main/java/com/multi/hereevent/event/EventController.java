@@ -53,17 +53,28 @@ public class EventController {
     @GetMapping("/list")
     public String listpage(@RequestParam("type") String type, Model model){
         model.addAttribute("type", type);
-        if(type.equals("star")){
-            model.addAttribute("eventList", eventService.getListByStarRank());
-        }else if(type.equals("popular")){
-            model.addAttribute("eventList", eventService.getPopularEvent());
-        }else if(type.equals("open")){
-            model.addAttribute("eventList", eventService.getOpenEvent());
-        }else if(type.equals("all")){
-            model.addAttribute("eventList", eventService.getAllEvent());
+        switch (type) {
+            case "star" -> model.addAttribute("eventList", eventService.getListByStarRank());
+            case "popular" -> model.addAttribute("eventList", eventService.getPopularEvent());
+            case "open" -> model.addAttribute("eventList", eventService.getOpenEvent());
+            case "all" -> model.addAttribute("eventList", eventService.getAllEvent());
         }
         return "main/listPage";
     }
+//    @PostMapping("/list")
+//    @ResponseBody
+//    public List<EventDTO> selectEventWithMap(@RequestBody Map<String, Object> data){
+//        String tag = (String) data.get("tag");
+//        ArrayList<String> state =  (ArrayList<String>) data.get("state");
+//        ArrayList<String> type = (ArrayList<String>) data.get("type");
+//        switch (type) {
+//            case "star" -> eventService.get
+//            case "popular" ->
+//            case "open" ->
+//            case "all" ->
+//        }
+//        return mapService.selectEventWithMap(location, state, type);
+//    }
   
     //카테고리별 리스트
     @GetMapping("/event/list/{category_no}")

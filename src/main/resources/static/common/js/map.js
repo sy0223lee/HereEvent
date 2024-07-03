@@ -30,15 +30,15 @@ function printList(map, markers, markerImg){
         success: function (result) {
             let printData = "";
             result.forEach(event => {
-                printData = printData
-                    + '<div class="card" style="width: 18rem;">'
-                    + '  <img src="/hereevent/download/event/' + event.img_path + '"class="card-img-top">'
-                    + '  <div class="card-body">'
-                    + '     <h5 class="card-title">' + event.name + '</h5>'
-                    + '     <p class="card-text">' + event.addr + '</p>'
-                    + '     <a href="/hereevent/event/' + event.event_no + '" class="btn btn-primary">상세페이지</a>'
-                    + '  </div>'
-                    + '</div>'
+                printData += "<div class='card' style='width: 18rem;'>" +
+                    "               <img src='/hereevent/download/event/" + event.img_path +"' class='card-img-top'>" +
+                    "                <div class='card-body'>" +
+                    "                    <h5 class='card-title'>" + event.name + "</h5>" +
+                    "                    <p class='card-text'><span>" + event.start_date + "</span> ~ <span>" + event.end_date + "</span></p>" +
+                    "                    <p class='card-text'>" + event.addr + "</p>" +
+                    "                    <a href='/hereevent/event/" + event.event_no + "' class='btn btn-primary'>상세페이지</a>" +
+                    "                </div>" +
+                    "            </div>";
             });
             $("#list-box").empty(); // <tr>태그 모두 지우기
             $("#list-box").append(printData);
