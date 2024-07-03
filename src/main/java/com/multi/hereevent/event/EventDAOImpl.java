@@ -33,8 +33,8 @@ public class EventDAOImpl implements EventDAO{
         return sqlSession.selectList("com.multi.hereevent.event.selectAll");
     }
     @Override
-    public int deleteEvent(int event_no) {
-        return sqlSession.delete("com.multi.hereevent.event.deleteEvent", event_no);
+    public int deleteEvent(List<Integer> eventNo) {
+        return sqlSession.delete("com.multi.hereevent.event.deleteEvent", eventNo);
     }
 
     @Override

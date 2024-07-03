@@ -89,7 +89,7 @@
 
 .review-table .select{width: 5%;}
 .review-table .event-img{width: 8%;}
-.review-table .event-name{width: 37%;}
+.review-table .event-name{width: 30%;}
 .review-table .writer{width: 10%;}
 .review-table .star{width: 10%;}
 .review-table .write-date{width: 10%;}
@@ -97,6 +97,7 @@
 .review-table .show-detail{width: 10%;}
 
 .review-table .event-no{width: 8%;}
+.review-table .event-date{width: 18%;}
 .review-table .event-update{width: 15%;}
 .review-table .event-detail{width: 15%;}
 .review-img {

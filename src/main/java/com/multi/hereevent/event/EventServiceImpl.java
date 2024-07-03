@@ -29,7 +29,6 @@ public class EventServiceImpl implements EventService {
     @Override
     public int updateEvent(EventDTO event) {
         return dao.updateEvent(event);
-
     }
     @Override
     public List<EventDTO> selectAll() {
@@ -37,8 +36,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public int deleteEvent(int id) {
-        return dao.deleteEvent(id);
+    public int deleteEvent(List<Integer> eventNo) {
+        return dao.deleteEvent(eventNo);
     }
     @Override
     public List<EventDTO> searchEvent(String keyword) {
@@ -158,6 +157,14 @@ public class EventServiceImpl implements EventService {
         int count = dao.countEventWithPage(params);
         params.put("offset", page.getOffset());
         params.put("pageSize", page.getPageSize());
+        if (page.getSort().isSorted()) {
+            String sort = page.getSort().iterator().next().getProperty();
+            System.out.println("sort==>"+sort);
+            String direction = page.getSort().iterator().next().getDirection().name();
+            System.out.println("direction===>"+direction);
+            params.put("sort", sort);
+            params.put("direction", direction);
+        }
         List<EventDTO> eventList = dao.selectEventWithPage(params);
         return new PageImpl<>(eventList, page, count);
     }

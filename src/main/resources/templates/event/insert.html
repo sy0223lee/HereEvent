@@ -5,27 +5,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>행사 등록</title>
+    <title>이벤트 등록</title>
+    <link href="/hereevent/common/css/admin.css" rel="stylesheet">
     <link href="/hereevent/common/css/insertEvent.css" rel="stylesheet">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script type="text/javascript" src="/hereevent/common/js/findAddr.js"></script>
     <script>
         function updateDateRange() {
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
+            const startDate = document.getElementById('start_date').value;
+            const endDate = document.getElementById('end_date').value;
             const dateRange = document.getElementById('dateRange');
-            if (startDate && endDate) {
+            if (start_date && end_date) {
                 dateRange.textContent = `운영기간: ${startDate} ~ ${endDate}`;
             } else {
                 dateRange.textContent = '';
             }
         }
+
     </script>
 </head>
 <body class="body">
 <main layout:fragment="main" class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="/hereevent/main">Home</a></li>
+                    <li><a href="/hereevent/admin">관리</a></li>
+                    <li class="current"><a href="/hereevent/admin/event">이벤트</a></li>
+                </ol>
+            </nav>
+            <h1>이벤트 등록</h1>
+        </div>
+    </div>
+    <!-- End Page Title -->
 <form class="form-container" action="/hereevent/admin/event/insert" method="post" enctype="multipart/form-data">
-    <h1 class="form-title">이벤트 등록</h1>
-
-    <label class="form-label" for="category">카테고리:</label>
+    <label class="form-label" for="category">*카테고리:</label>
     <select class="form-select" id="category" name="category_no">
         <!-- DB에서 카테고리 목록을 가져와서 option으로 지정 -->
         <option th:each="category : ${categoryList}" th:value="${category.category_no}" th:text="${category.name}"></option>
@@ -42,9 +58,14 @@
     <input class="form-input" type="date" id="end_date" name="end_date" required onchange="updateDateRange()">
 
     <p id="dateRange" class="date-range"></p>
-
-    <label class="form-label" for="addr">*주소:</label>
-    <input class="form-input" type="text" id="addr" name="addr" required>
+    <div class="addr-place">
+        <label class="form-label" for="address">*주소:</label>
+        <input type="button" onclick="sample6_execDaumPostcode()" value="주소 찾기"><br>
+    </div>
+    <input class="form-input-addr" type="text" id="postcode"  name="postcode" placeholder="우편번호">
+    <input class="form-input-addr" type="text" id="address" name="addr" placeholder="주소"><br>
+    <input  class="form-input-addr" type="text" id="detailAddress" name="detailAddress" placeholder="상세주소">
+    <input  class="form-input-addr" type="text" id="extraAddress"  name="extraAddress" placeholder="참고항목">
 
     <label class="form-label" for="info">*상세 정보: (최대 1000자)</label>
     <textarea class="form-textarea" id="info" name="info" maxlength="1000" rows="10" required></textarea>
@@ -56,7 +77,7 @@
     <label class="form-label" for="sns">SNS 주소:</label>
     <input class="form-input" type="url" id="sns" name="sns">
 
-    <label class="form-label" for="image">대표 이미지:</label>
+    <label class="form-label" for="image">*대표 이미지:</label>
     <input class="form-input" type="file" id="image" name="event_img" accept="image/*" required>
 
     <label class="form-label">참여 방식:</label>

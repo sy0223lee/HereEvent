@@ -5,9 +5,30 @@
         insert into event (category_no, name, start_date, end_date, addr, info, homepage, sns, img_path, type, reserve_limit, wait_limit)
         values (#{category_no}, #{name}, #{start_date}, #{end_date}, #{addr}, #{info}, #{homepage}, #{sns}, #{img_path}, #{type}, #{reserve_limit}, #{wait_limit})
     </select>
-    <select id="deleteEvent" parameterType="int">
-        delete from event where event_no = #{event_no}
-    </select>
+    <!-- 이벤트 수정-->
+    <update id="updateEvent" parameterType="event">
+        update event
+        set category_no = #{category_no},
+          name = #{name},
+          start_date = #{start_date},
+          end_date = #{end_date},
+          addr = #{addr},
+          info = #{info},
+          homepage = #{homepage},
+          sns = #{sns},
+          img_path = #{img_path},
+          type = #{type},
+          reserve_limit = #{reserve_limit},
+          wait_limit = #{wait_limit}
+        WHERE event_no=#{event_no}
+    </update>
+    <delete id="deleteEvent">
+        DELETE FROM event
+        WHERE event_no IN
+        <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
     <select id="searchEvent" parameterType="String" resultType="event">
         SELECT *
         FROM event
@@ -158,24 +179,6 @@
         order by enter_date desc
     </select>
 
-    <!-- 이벤트 수정-->
-    <update id="updateEvent" parameterType="event">
-        update event
-        set category_no = #{category_no},
-            name = #{name},
-            start_date = #{start_date},
-            end_date = #{end_date},
-            addr = #{addr},
-            info = #{info},
-            homepage = #{homepage},
-            sns = #{sns},
-            img_path = #{img_path},
-            type = #{type},
-            reserve_limit = #{reserve_limit},
-            wait_limit = #{wait_limit}
-        WHERE id = #{id}
-
-    </update>
     <!-- 이벤트 전체조회-->
     <select id="selectAll" resultType="event">
         SELECT * FROM event
@@ -213,8 +216,8 @@
         </choose>
     </select>
     <select id="selectEventWithPage" parameterType="map" resultType="event">
-        select e.*
-        from event e
+        select e.*,c.*
+        from event e left join category c on e.category_no = c.category_no
         <choose>
             <when test="type == null">
 
@@ -226,14 +229,16 @@
                 where e.addr like concat('%', #{keyword}, '%')
             </when>
             <when test='type == "category"'>
-                where e.event_no in (
-                    select e.event_no
-                    from event e left join category c on e.category_no = c.category_no
-                    where c.name like concat('%', #{keyword}, '%') or c.value like concat('%', #{keyword}, '%'))
+                where c.name like concat('%', #{keyword}, '%') or c.value like concat('%', #{keyword}, '%'))
             </when>
-
         </choose>
-        order by e.event_no desc
+        ORDER BY
+        <if test="sort != null and direction != null">
+            ${sort} ${direction}
+        </if>
+        <if test="sort == null or direction == null">
+            event_no DESC
+        </if>
         limit ${offset}, ${pageSize}
     </select>
 </mapper>

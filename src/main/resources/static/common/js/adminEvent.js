@@ -1,9 +1,9 @@
 // 체크박스 모두 선택, 선택 해제
 function checkSelectAll()  {
     // 전체 체크박스
-    const checkboxes = document.querySelectorAll('input[name="select"]');
+    const checkboxes = document.querySelectorAll('input[name="eventNo"]');
     // 선택된 체크박스
-    const checked = document.querySelectorAll('input[name="select"]:checked');
+    const checked = document.querySelectorAll('input[name="eventNo"]:checked');
     // select all 체크박스
     const selectAll = document.querySelector('input[name="select-all"]');
 
@@ -15,7 +15,7 @@ function checkSelectAll()  {
 
 }
 function selectAll(selectAll)  {
-    const checkboxes = document.getElementsByName('select');
+    const checkboxes = document.getElementsByName('eventNo');
 
     checkboxes.forEach((checkbox) => {
         checkbox.checked = selectAll.checked
