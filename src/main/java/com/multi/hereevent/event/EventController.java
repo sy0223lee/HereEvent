@@ -284,7 +284,7 @@ public class EventController {
     }
 
     @PostMapping("/admin/event/delete")
-    public String deleteEvent(@RequestParam("eventNo") List<Long> eventNo) {
+    public String deleteEvent(@RequestParam("eventNo") List<Integer> eventNo) {
         System.out.println(eventNo);
         eventService.deleteEvent(eventNo);
         return "redirect:/admin/event";

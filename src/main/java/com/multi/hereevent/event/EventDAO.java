@@ -18,7 +18,7 @@ public interface EventDAO {
     //업데이트
     int updateEvent(EventDTO event);
     //삭제
-    int deleteEvent(List<Long> eventNo);
+    int deleteEvent(List<Integer> eventNo);
     //이벤트 전체조회
     List<EventDTO> selectAll();
 
