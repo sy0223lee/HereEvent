@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>HereEvent-Admin</title>
+    <!-- CSS File -->
+    <link href="/hereevent/common/css/register.css" rel="stylesheet">
+    <script type="text/javascript" th:inline="javascript">
+        function pwCheck(){
+            if($('#pass').val() == $('#passchk').val()){
+                $('#check-same-password').text('비밀번호 일치').css('color', 'green')
+            }else{
+                $('#check-same-password').text('비밀번호 불일치').css('color', 'red')
+            }
+        }
+        $(document).ready(function(){
+            $("#nick").keyup(function(){
+                let data1 = {"nick" : $("#nick").val()};
+                $.ajax({
+                    url:"/hereevent/check-nick",
+                    type:"post",
+                    data: data1,
+                    dataType: 'text',
+                    success: function(result){
+                        $("#check-duplicate-nick").text(result);
+                    },
+                    error: function(){
+                        alert("요청 실패");
+                    }
+                });
+            });
+            $("#email").keyup(function(){
+                let data2 = {"email" : $("#email").val()};
+                $.ajax({
+                    url:"/hereevent/check-email",
+                    type:"post",
+                    data: data2,
+                    dataType: 'text',
+                    success: function(result){
+                        $("#check-duplicate-email").text(result);
+                    },
+                    error: function(){
+                        alert("요청 실패");
+                    }
+                });
+            });
+        });
+    </script>
+
+</head>
+<body>
+<main layout:fragment="main" class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="/hereevent/main">Home</a></li>
+                    <li><a href="/hereevent/admin">관리</a></li>
+                    <li class="current">회원</li>
+                </ol>
+            </nav>
+            <h1>회원관리</h1>
+        </div>
+    </div>
+    <!-- End Page Title -->
+
+    <div class="signup-container">
+        <h2>회원등록</h2>
+        <form action="/hereevent/admin/member/memberReg" method="post" enctype="multipart/form-data">
+            <label for="email">이메일</label>
+            <input type="email" id="email" name="email" placeholder="이메일을 입력하세요">
+            <div id="check-duplicate-email"></div>
+
+            <label for="pass">비밀번호</label>
+            <input type="password" id="pass" name="pass" oninput="pwCheck()" placeholder="비밀번호를 입력하세요">
+
+            <label for="passchk">비밀번호 확인</label>
+            <input type="password" id="passchk" name="passchk" oninput="pwCheck()" placeholder="비밀번호를 한번더 입력하세요">
+            <div id="check-same-password"></div>
+
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" placeholder="이름을 입력하세요">
+
+            <label for="nick">닉네임</label>
+            <input type="text" id="nick" name="nick" placeholder="닉네임을 입력하세요">
+            <div id="check-duplicate-nick"></div>
+
+            <label for="tel">전화번호</label>
+            <input type="tel" id="tel" name="tel" placeholder="전화번호를 입력하세요">
+
+            <label for="mgr">매니저권한</label>
+            <input type="tel" id="mgr" name="mgr" placeholder="관리권한 1, 일반회원 0">
+
+            <label for="profile_img">프로필 사진</label>
+            <input type="file" id="profile_img" name="profile_img" accept="image/*">
+            <button class="regi_btn" type="submit">완료</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>

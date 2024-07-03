@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.multi.hereevent.dto.MemberImgDTO;
 import com.multi.hereevent.dto.ReviewImgDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -66,6 +67,23 @@ public class FileUploadService {
             }
         }
         return storeFilename;
+    }
+
+    public MemberImgDTO uploadMemberImg(MultipartFile multipartFile) throws IOException {
+        MemberImgDTO memberImgDTO = new MemberImgDTO();
+        if(!multipartFile.isEmpty()) {
+            String storeFilename = "";
+            if (!multipartFile.isEmpty()) {
+                String originalFilename = multipartFile.getOriginalFilename();
+                if (originalFilename != null) {
+                    storeFilename = createStoreFilename(originalFilename);
+                    multipartFile.transferTo(new File(getProfileFilePath(storeFilename)));
+                }
+            }
+            memberImgDTO.setImg_path(storeFilename);
+        }
+
+        return memberImgDTO;
     }
 
     // 크롤링한 이벤트 사진 저장

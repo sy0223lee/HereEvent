@@ -2,11 +2,13 @@ package com.multi.hereevent.member;
 
 import com.multi.hereevent.dto.CategoryInterestDTO;
 import com.multi.hereevent.dto.MemberDTO;
+import com.multi.hereevent.dto.MemberImgDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
@@ -50,7 +52,7 @@ public class MemberDAOImpl implements MemberDAO {
 
     @Override
     public int deleteMember(int member_no) {
-        return 0;
+        return sqlSession.delete("com.multi.hereevent.member.deleteMember", member_no);
     }
 
     @Override
@@ -68,6 +70,26 @@ public class MemberDAOImpl implements MemberDAO {
     @Override
     public MemberDTO findMemberByEmail(String email) {
         return sqlSession.selectOne("com.multi.hereevent.member.findByEmail", email);
+    }
+
+    @Override
+    public int countMemberWithPage(Map<String, Object> params) {
+        return sqlSession.selectOne("com.multi.hereevent.member.countMemberWithPage", params);
+    }
+
+    @Override
+    public List<MemberDTO> selectMemberWithPage(Map<String, Object> params) {
+        return sqlSession.selectList("com.multi.hereevent.member.selectMemberWithPage", params);
+    }
+
+    @Override
+    public int RegMember(MemberDTO member) {
+        return sqlSession.insert("com.multi.hereevent.member.RegMember",member);
+    }
+
+    @Override
+    public int insertMemberImg(MemberImgDTO memberImgDTO) {
+        return sqlSession.insert("com.multi.hereevent.member.InsertMemberImg",memberImgDTO);
     }
 
 }
