@@ -111,7 +111,7 @@ public class WaitServiceImpl implements WaitService {
         int waitGroups = position / 3;
         int waitMinutes = waitGroups * 3;
 
-        return "예상 대기 시간: " + waitMinutes + "분";
+        return "예상 대기 시간 " + waitMinutes + "분";
     }
 
 
