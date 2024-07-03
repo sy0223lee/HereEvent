@@ -69,7 +69,17 @@
 
 
         });
+        function activateTab(event) {
+            // 모든 탭에서 'on' 클래스 제거
+            var tabs = document.querySelectorAll('.submenu a');
+            tabs.forEach(function(tab) {
+                tab.classList.remove('on');
+            });
 
+            // 클릭된 탭에 'on' 클래스 추가
+            var clickedTab = event.currentTarget;
+            clickedTab.classList.add('on');
+        }
     </script>
 
     <title>HereEvent-EventDetail</title>
@@ -123,10 +133,10 @@
 
                         </div>
                         <div class="submenu">
-                            <a href="javascript:void(0);" onclick="scrollToSection('content-section')" th:classappend="${tab == 'content'} ? 'active' : ''" data-tab="content">상세정보</a>
-                            <a href="javascript:void(0);" onclick="scrollToSection('navigation-section')" th:classappend="${tab == 'map'} ? 'active' : ''" data-tab="map">길찾기</a>
-                            <a href="javascript:void(0);" onclick="scrollToSection('reservation-section')" th:classappend="${tab == 'reservation'} ? 'active' : ''" data-tab="reservation">예약</a>
-                            <a href="javascript:void(0);" onclick="scrollToSection('reviews-section')" th:classappend="${tab == 'reviews'} ? 'active' : ''" data-tab="reviews">후기</a>
+                            <a href="javascript:void(0);" class="on" onclick="scrollToSection('content-section');activateTab(event)" th:classappend="${tab == 'content'} ? 'active' : ''" data-tab="content">상세정보</a>
+                            <a href="javascript:void(0);" onclick="scrollToSection('navigation-section');activateTab(event)" th:classappend="${tab == 'map'} ? 'active' : ''" data-tab="map">길찾기</a>
+                            <a href="javascript:void(0);" onclick="scrollToSection('reservation-section');activateTab(event)" th:classappend="${tab == 'reservation'} ? 'active' : ''" data-tab="reservation">예약</a>
+                            <a href="javascript:void(0);" onclick="scrollToSection('reviews-section');activateTab(event)" th:classappend="${tab == 'reviews'} ? 'active' : ''" data-tab="reviews">후기</a>
                         </div>
 
                         <article id="content-section" class="article">
@@ -178,7 +188,7 @@
                         <h3 class="widget-title">Category</h3>
                         <ul>
                             <li th:each="category : ${category}">
-                                <a th:href="|location.href='@{/event/list/(category_no=${category_no})}'|" th:text="${category.name}"></a>
+                                <a th:onclick= "|location.href='@{/event/list/(category_no=${category.category_no})}'|" th:text="${category.name}"></a>
                             </li>
                         </ul>
 

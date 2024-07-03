@@ -52,6 +52,19 @@
             z-index: 2;
  	    }
     </style>
+    <script>
+        window.onload = function() {
+
+            const params = new URLSearchParams(window.location.search);
+            const status = params.get('status');
+
+            if (status === 'visit') {
+                alert('입장되었습니다');
+            } else if (status === 'cancel') {
+                alert('취소되었습니다');
+            }
+        }
+    </script>
 </head>
 
 <body class="index-page">
