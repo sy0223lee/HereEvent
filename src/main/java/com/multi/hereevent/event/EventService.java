@@ -15,7 +15,7 @@ public interface EventService {
     //행사 등록
     int insertEvent(EventDTO event);
     int updateEvent(EventDTO event);
-    int deleteEvent(int event_no);
+    int deleteEvent(List<Long> eventNo);
     //모든 이벤트 가져오기
     List<EventDTO> selectAll();
     //행사이름 검색

@@ -4,6 +4,7 @@ import com.multi.hereevent.category.CategoryService;
 import com.multi.hereevent.dto.*;
 import com.multi.hereevent.event.interest.EventInterestService;
 import com.multi.hereevent.event.time.EventTimeService;
+import com.multi.hereevent.fileupload.FileUploadService;
 import com.multi.hereevent.review.ReviewService;
 
 import com.multi.hereevent.wait.WaitService;
@@ -11,12 +12,15 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -33,6 +37,7 @@ public class EventController {
     private final EventTimeService eventTimeService;
     private final CategoryService categoryService;
     private final WaitService waitService;
+    private final FileUploadService fileUploadService;
 
     @GetMapping("/main")
     public String mainPage(Model model) {
@@ -198,8 +203,10 @@ public class EventController {
     /***** 관리자 페이지 *****/
     @GetMapping("/admin/event")
     public String selectEventWithPage(@RequestParam Map<String, Object> params,
-                                       @PageableDefault(value = 10) Pageable page, Model model){
+                                      @PageableDefault(value = 10,sort = "event_no", direction = Sort.Direction.DESC) Pageable page, Model model){
         Page<EventDTO> result = eventService.selectEventWithPage(params, page);
+        System.out.println("param==>"+params);
+        System.out.println("page==>"+page);
         model.addAttribute("type", params.get("type"));
         model.addAttribute("keyword", params.get("keyword"));
         model.addAttribute("eventList", result.getContent());
@@ -217,23 +224,57 @@ public class EventController {
         return "event/insert";
     }
     @PostMapping("/admin/event/insert")
-    public String createEvent(EventDTO eventDTO) {
-        eventService.insertEvent(eventDTO);
+    public String createEvent(EventDTO event) {
+        System.out.println(event);
+        //주소 합쳐서 넣기
+        event.setAddr(event.getAddr()+event.getDetailAddress()+event.getExtraAddress());
+        //행사 이미지 등록하기
+        MultipartFile eventImg = event.getEvent_img();
+        String storeFilename = null;
+        try {
+            storeFilename = fileUploadService.uploadEventImg(eventImg);
+            event.setImg_path(storeFilename);
+            //DB에 삽입
+            eventService.insertEvent(event);
+            System.out.println("+++++"+event);
+            return "redirect:/admin/event";
+        } catch (IOException e) {
+            new RuntimeException();
+            return "common/errorPage";
+        }
+    }
+    @GetMapping("/admin/event/update/{event_no}")
+    public String updateEventPage(@PathVariable("event_no") int event_no, Model model){
+        List<CategoryDTO> categoryList = new ArrayList<>();
+        categoryList = categoryService.getListCategory();
+        model.addAttribute("categoryList",categoryList);
+        EventDTO event = eventService.getEventDetails(event_no);
+        System.out.println(event);
+        model.addAttribute("event",event);
+        return "event/update";
+    }
+    @PostMapping("/admin/event/update")
+    public String updateEvent(@RequestParam("event_no") int event_no,EventDTO event) {
+        System.out.println("updateEvent====>"+event);
+        MultipartFile eventImg = event.getEvent_img();
+        String storeFilename = null;
+        try {
+            storeFilename = fileUploadService.uploadEventImg(eventImg);
+            event.setImg_path(storeFilename);
+            event.setAddr(event.getAddr()+event.getDetailAddress()+event.getExtraAddress());
+            eventService.updateEvent(event);
+            return "redirect:/admin/event";
+        } catch (IOException e) {
+            new RuntimeException(e);
+            return "common/errorPage";
+        }
+    }
 
+    @PostMapping("/admin/event/delete")
+    public String deleteEvent(@RequestParam("eventNo") List<Long> eventNo) {
+        System.out.println(eventNo);
+        eventService.deleteEvent(eventNo);
         return "redirect:/admin/event";
     }
-//
-//    @PostMapping("/admin/event/update/{event_no}")
-//    public String updateEvent(@PathVariable("event_no") int event_no, @RequestBody EventDTO eventDTO) {
-//        eventDTO.setEvent_no(event_no);
-//        eventService.updateEvent(eventDTO);
-//        return "redirect:/admin/event";
-//    }
-//
-//    @GetMapping("/admin/event/delete/")
-//    public String deleteEvent(@RequestParam("event_no") int event_no) {
-//        eventService.deleteEvent(event_no);
-//        return "redirect:/admin/event";
-//    }
 }
 

@@ -28,9 +28,13 @@ public class EventDTO {
     private int wait_limit = 10; //시간당 제한인원(대기)
     private float avg_star;
     private MultipartFile event_img; // 이벤트 이미지 업로드를 위한 멤버변수
-
+    //카테고리 이름
+    private String category_name;
     // 관심 이벤트 설정 여부 저장을 위한 멤버변수
     private int event_interest_no;
+    //상세주소와 참고항목을 위한 변수
+    private String detailAddress;
+    private String extraAddress;
 
     // 이벤트 크롤링 결과 insert 하기 위한 생성자
     public EventDTO(String name, Date start_date, Date end_date, String addr, String info) {
