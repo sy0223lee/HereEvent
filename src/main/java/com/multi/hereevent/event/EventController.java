@@ -103,7 +103,7 @@ public class EventController {
             eventDetails = eventService.getEventDetails(event_no);
         }
 
-        List<EventTimeDTO> eventTime = eventTimeService.getEventTime(event_no);
+
         List<CategoryDTO> category = categoryService.getListCategory();
 //         System.out.println("시작일===>"+eventDetails.getStart_date());
         List<ReviewDTO> reviewList = reviewService.selectReviewByEventNo(event_no);
@@ -111,7 +111,6 @@ public class EventController {
         List<String> closedDays = eventTimeService.getHolidayDays(event_no);
         
         model.addAttribute("event", eventDetails);
-        model.addAttribute("eventtime",eventTime);
         model.addAttribute("category",category);
         model.addAttribute("reviewList", reviewList);
         model.addAttribute("closedDays", closedDays);
