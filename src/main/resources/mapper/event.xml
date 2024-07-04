@@ -41,7 +41,7 @@
             LEFT JOIN review rev ON e.event_no = rev.event_no
         WHERE e.start_date &lt;= curdate() and e.end_date >= curdate() <!--진행 중-->
         GROUP BY e.event_no
-        ORDER BY total_count DESC
+        ORDER BY total_count DESC, end_date, start_date <!-- count 가 같은 경우 end_date 오름차순 후 start_date 오름차순 정렬-->
         LIMIT 10
     </select>
     <!--별점순 -->
@@ -51,7 +51,7 @@
             JOIN review AS r ON e.event_no = r.event_no
         WHERE e.start_date &lt;= curdate() and e.end_date >= curdate() <!--진행 중-->
         GROUP BY e.event_no
-        ORDER BY avg_star DESC
+        ORDER BY avg_star DESC, end_date, start_date <!-- 별점이 같은 경우 end_date 오름차순 후 start_date 오름차순 정렬-->
         limit 10
     </select>
     <!--카테고리별 -->
@@ -174,7 +174,7 @@
             </if>
         </where>
         GROUP BY e.event_no
-        ORDER BY total_count DESC
+        ORDER BY total_count DESC, end_date, start_date <!-- count 가 같은 경우 end_date 오름차순 후 start_date 오름차순 정렬-->
     </select>
     <!--별점순 - 진행중, 종료 이벤트만 조회 -->
     <select id="getStarEventWithCondition" parameterType="map" resultType="event">
@@ -212,7 +212,7 @@
             </if>
         </where>
         GROUP BY e.event_no
-        ORDER BY avg_star DESC
+        ORDER BY avg_star DESC, end_date, start_date <!-- 별점이 같은 경우 end_date 오름차순 후 start_date 오름차순 정렬-->
     </select>
     <!--카테고리별 -->
     <select id="getEventByCategoryWithCondition" parameterType="map" resultType="event">

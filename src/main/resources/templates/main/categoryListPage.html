@@ -4,7 +4,7 @@
       layout:decorate="~{layout/mainLayout}">>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>HereEvent-Category</title>
     <link href="/hereevent/common/css/cardList.css" rel="stylesheet">
 </head>
 <body>
@@ -19,7 +19,7 @@
                     </ol>
                 </nav>
                 <div>
-                    <h1>[[${categoryName}]]</h1>
+                    <h1>#[[${categoryName}]]</h1>
                 </div>
             </div>
         </div>
@@ -50,16 +50,8 @@
             </div>
         </div>
 
-        <div id="list-box" class="container">
-            <div th:each="event : ${eventlist}" class="card" style="width: 18rem;">
-               <img  th:src="|@{/download/event/}${event.img_path}|" class="card-img-top">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${event.name}"></h5>
-                    <p class="card-text"><span th:text="${event.start_date}" class="overlay-text"/> ~ <span th:text="${event.end_date}" class="overlay-text"/></p>
-                    <p class="card-text" th:text="${event.addr}"></p>
-                    <a th:href="@{/event/{event_no}(event_no=${event.event_no})}" class="btn btn-primary">상세페이지</a>
-                </div>
-            </div>
+        <div id="list-box" class="event-list container">
+            <!-- ajax 로 받아온 데이터 출력 -->
         </div>
 
         <!-- head 태그에 추가 시 동작 X, layout 이 적용되는 태그 내에 추가 시 정상 작동 -->

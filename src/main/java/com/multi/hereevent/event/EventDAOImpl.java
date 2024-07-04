@@ -87,7 +87,8 @@ public class EventDAOImpl implements EventDAO{
 
     @Override
     public List<EventDTO> getEventByCategoryWithCondition(int category_no, List<String> state, List<String> type) {
-        Map<String, List<String>> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
+        params.put("category_no", category_no);
         params.put("state", state);
         params.put("type", type);
         return sqlSession.selectList("com.multi.hereevent.event.getEventByCategoryWithCondition", params);

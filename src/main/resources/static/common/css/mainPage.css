@@ -34,9 +34,7 @@ h2.overlay-text.rank{
     left: 0;
     margin: 12px;
     width: 40px;
-    height: 40px;
     background: rgb(225, 69, 51, 0.7);
-    border-radius: 50%;
     z-index: 3;
 }
 

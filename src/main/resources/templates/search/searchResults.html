@@ -6,53 +6,6 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link href="/hereevent/common/css/cardList.css" rel="stylesheet">
-    <style>
-        #list-box {
-               display: flex;
-               flex-wrap: wrap;
-               justify-content: center;
-               gap: 3rem; /* 카드 사이의 간격 */
-               justify-content: center; /* 카드들을 가운데 정렬 */
-               margin-top: 30px;
-               margin-bottom: 10px;
-           }
-           .card {
-               width: 18rem;
-               height: 25rem;
-               display: flex;
-               flex-direction: column;
-               justify-content: space-between; /* 카드 내용 사이에 공간을 분배하여 균형을 맞춤 */
-               box-shadow: 2px 2px 3px;
-           }
-           .card img {
-               width: 100%;
-               height: 50%;
-           }
-           .card-body {
-               display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                flex-grow: 1; /* 카드 내용이 가변적으로 높이를 차지하도록 설정 */
-           }
-
-            #list-box .btn-primary {
-                background-color: #d0513d;
-                border-color: #d0513d;
-                color: #fff;
-                width: 50%; /* 버튼을 가득 채우도록 너비 설정 */
-                text-align: center;
-                transition: background-color 0.3s, border-color 0.3s; /* 색상 변경 시 부드러운 전환 효과 */
-            }
-           #list-box .btn-primary:hover {
-                background-color: #d76b5a; /* 호버 시 배경 색상 변경 */
-            }
-            #list-box .btn-primary:focus, #list-box .btn-primary:active {
-                background-color: #d76b5a; /* 클릭 시 배경 색상 변경 */
-                border-color: #d76b5a; /* 클릭 시 테두리 색상 변경 */
-                outline: none; /* 클릭 시 기본 포커스 테두리 제거 */
-                box-shadow: 0 0 0 0.1rem rgba(255, 99, 132, 0.5); /* 클릭 시 테두리 그림자 효과 */
-            }
-    </style>
 </head>
 <body>
     <h1>Search Results</h1>
@@ -63,20 +16,31 @@
                 <nav class="breadcrumbs">
                     <ol>
                         <li><a href="#">Home</a></li>
-                        <li class="current" th:text="${keyword} + '의 검색결과'"></li>
+                        <li class="current">검색</li>
                     </ol>
                 </nav>
-                <h1>팝업 세부정보</h1>
+                <h1>'[[${keyword}]]'의 검색 결과</h1>
             </div>
         </div><!-- End Page Title -->
-        <div id="list-box" class="container">
+        <div id="list-box" class="event-list container">
             <div th:each="event : ${events}" class="card" style="width: 18rem;">
-                <img th:src="@{/download/event/{img_path}(img_path=${event.img_path})}" class="card-img-top">
+                <img th:if="${event.img_path == null}"
+                     th:src="@{/images/default_img.png}" class="card-img-top" alt="default_img">
+                <img th:unless="${event.img_path == null}"
+                     th:src="@{/download/event/{img_path}(img_path=${event.img_path})}" class="card-img-top" th:alt="${event.img_path}">
                 <div class="card-body">
                     <h5 class="card-title" th:text="${event.name}"></h5>
-                    <p class="card-text"><span th:text="${event.start_date}" class="overlay-text"/> ~ <span th:text="${event.end_date}" class="overlay-text"/></p>
-                    <p class="card-text" th:text="${event.addr}"></p>
-                    <a th:href="@{/event/{event_no}(event_no=${event.event_no})}" class="btn btn-primary">상세페이지</a>
+
+                    <div class="event-type">
+                        <span th:if="${event.type == 'reserve' or event.type == 'both'}">사전예약</span>
+                        <span th:if="${event.type == 'wait' or event.type == 'both'}">사전예약</span>
+                    </div>
+
+                    <div class="card-text"><span th:text="${event.start_date}"/> ~ <span th:text="${event.end_date}"/></div>
+                    <div class="card-text" th:text="${event.addr}"></div>
+                    <div class="card-btn">
+                        <a th:href="@{/event/{event_no}(event_no=${event.event_no})}" class="btn-primary">상세보기</a>
+                    </div>
                 </div>
             </div>
         </div>
