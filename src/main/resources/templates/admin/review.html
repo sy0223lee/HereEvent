@@ -43,12 +43,16 @@
 
                         form.appendChild(obj);
                         form.setAttribute("method", "post");
-                        form.setAttribute("action", "/hereevent/admin/review/delete");
+                        form.setAttribute("action", "/hereevent/admin/review/deleteOne");
                         document.body.appendChild(form);
                         form.submit();
                     }
                 });
         });
+        function submitDeleteForm() {
+            const form = document.getElementById('deleteForm');
+            form.submit();
+        }
     </script>
 </head>
 <body>
@@ -74,7 +78,7 @@
         <div class="container review-container">
 
             <div class="d-flex align-items-center justify-content-between review-search">
-                <button class="btn btn-primary">선택 삭제</button>
+                <button class="btn btn-primary" onclick="submitDeleteForm()">선택 삭제</button>
                 <div class="search-widget">
                     <form action="/hereevent/admin/review" method="get" class="d-flex justify-content-start">
                         <select name="type">
@@ -92,6 +96,7 @@
             </div>
 
             <div class="review-table container">
+                <form id="deleteForm" action="/hereevent/admin/review/delete" method="post">
                 <div class="row align-items-center text-center table-title">
                     <div class="select">
                         <input type="checkbox" name="select-all" onclick="selectAll(this)">
@@ -110,7 +115,7 @@
                     <!-- 이벤트 정보, 후기 작성 정보 -->
                     <div class="row align-items-center">
                         <div class="select text-center">
-                            <input type="checkbox" name="select" th:value="${review.review_no}" onclick="checkSelectAll()">
+                            <input type="checkbox" name="reviewNo" th:value="${review.review_no}" onclick="checkSelectAll()">
                         </div>
                         <div class="event-img text-center event-image">
                             <a th:href="|@{/event/}${review.event_no}|">

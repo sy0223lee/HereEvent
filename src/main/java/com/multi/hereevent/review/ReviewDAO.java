@@ -22,4 +22,6 @@ public interface ReviewDAO {
     // 페이징 처리
     int countReviewWithPage(Map<String, Object> params);
     List<ReviewDTO> selectReviewWithPage(Map<String, Object> params);
+
+    int deleteReviewSelect(List<Integer> reviewNo);
 }
