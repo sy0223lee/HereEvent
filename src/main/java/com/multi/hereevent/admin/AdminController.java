@@ -53,32 +53,7 @@ public class AdminController {
         }
     }
 
-    /*회원등록버튼*//*
-    @GetMapping("/admin/member/memberReg")
-    public String register() {
-        return "admin/memberReg";
-    }
-    @PostMapping("/admin/member/memberReg")
-    public String register(MemberDTO member) throws IOException {
-        MultipartFile file = member.getProfile_img();
 
-        if (file == null || file.isEmpty()) {
-            System.out.println("파일이 전송되지 않았습니다.");
-            return "common/errorPage"; // 에러 페이지로 리디렉션 또는 다른 처리
-        }
-
-        System.out.println(file); // 파일 정보 출력
-        MemberImgDTO memberImgDTO = fileService.uploadMemberImg(file);
-        System.out.println(memberImgDTO); // 파일 업로드 결과 출력
-        int result = memberService.RegMember(member, memberImgDTO);
-        System.out.println(result); // 결과 출력
-
-        if(result > 0){
-            return "redirect:/admin/member";
-        } else {
-            return "common/errorPage";
-        }
-    }*/
 
     /*회원수정버튼*/
     @GetMapping("/admin/member/memberCor")

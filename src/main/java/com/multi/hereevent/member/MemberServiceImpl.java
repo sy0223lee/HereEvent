@@ -83,14 +83,6 @@ public class MemberServiceImpl implements MemberService{
         return new PageImpl<>(memberList, page, count);
     }
 
-   /* @Override
-    public int RegMember(MemberDTO member, MemberImgDTO memberImgDTO) {
-        if(memberImgDTO == null){
-            return dao.RegMember(member);
-        }else{
-            dao.RegMember(member);
-            return dao.insertMemberImg(memberImgDTO);
-        }
-    }*/
+
 
 }

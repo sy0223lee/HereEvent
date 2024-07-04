@@ -25,6 +25,5 @@ public interface MemberService {
 
     // 페이징 처리
     Page<MemberDTO> selectMemberWithPage(Map<String, Object> params, Pageable page);
-    //int RegMember(MemberDTO member, MemberImgDTO memberImgDTO);
 
 }

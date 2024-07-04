@@ -82,22 +82,6 @@ public class FileUploadService {
         return storeFilename;
     }
 
-    /*public MemberImgDTO uploadMemberImg(MultipartFile multipartFile) throws IOException {
-        MemberImgDTO memberImgDTO = new MemberImgDTO();
-        if(!multipartFile.isEmpty()) {
-            String storeFilename = "";
-            if (!multipartFile.isEmpty()) {
-                String originalFilename = multipartFile.getOriginalFilename();
-                if (originalFilename != null) {
-                    storeFilename = createStoreFilename(originalFilename);
-                    multipartFile.transferTo(new File(getProfileFilePath(storeFilename)));
-                }
-            }
-            memberImgDTO.setImg_path(storeFilename);
-        }
-
-        return memberImgDTO;
-    }*/
 
     // 크롤링한 이벤트 사진 저장
     public String uploadEventImg(String imgUrl) throws IOException {
