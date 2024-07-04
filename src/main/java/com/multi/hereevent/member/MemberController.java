@@ -34,8 +34,14 @@ public class MemberController {
     @PostMapping("/login")
     public String login(MemberDTO member, Model model) {
         MemberDTO loginMember = memberService.loginMember(member);
-        model.addAttribute("member", loginMember);
-        return "redirect:/main";
+        if(loginMember!=null){
+            model.addAttribute("member", loginMember);
+            return "redirect:/main";
+        }else{
+            System.out.println("로그인 실패");
+            model.addAttribute("msg","로그인 실패");
+            return "login/login";
+        }
     }
     @GetMapping("/logout")
     public String logout(SessionStatus status) {
