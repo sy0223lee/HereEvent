@@ -3,8 +3,9 @@ package com.multi.hereevent.event;
 import com.multi.hereevent.category.CategoryDAO;
 import com.multi.hereevent.dto.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -19,27 +20,22 @@ import java.util.Map;
 public class EventServiceImpl implements EventService {
     private final EventDAO dao;
     private final CategoryDAO categoryDAO;
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+
     @Override
     public int insertEvent(EventDTO event) {
         return dao.insertEvent(event);
     }
-
-
     @Override
     public int updateEvent(EventDTO event) {
         return dao.updateEvent(event);
-
     }
     @Override
     public List<EventDTO> selectAll() {
         return dao.selectAll();
     }
-
     @Override
-    public int deleteEvent(int id) {
-        return dao.deleteEvent(id);
+    public int deleteEvent(List<Integer> eventNo) {
+        return dao.deleteEvent(eventNo);
     }
     @Override
     public List<EventDTO> searchEvent(String keyword) {
@@ -55,7 +51,6 @@ public class EventServiceImpl implements EventService {
     public List<EventDTO> getListByStarRank() {
         return dao.getListStarRank();
     }
-
     @Override
     public List<EventDTO> selectEventByCategoryNo(int category_no) {
         return dao.selectEventByCategoryNo(category_no);
@@ -73,13 +68,16 @@ public class EventServiceImpl implements EventService {
             FourEventByCategoryDTO fourEventDTO= new FourEventByCategoryDTO();
             List<EventDTO> eventlist = new ArrayList<>();
             // sql문으로 가져온 fourEventCategoryDTO를 저장
-            eventlist=dao.selectFourEventByCategory(category.getCategory_no());
+            eventlist = dao.selectFourEventByCategory(category.getCategory_no());
             //System.out.println("eventlist=====>"+eventlist.size());
             // category_no로 event 4개 조회해서 fourEventCategoryDTO에 저장
-            fourEventDTO.setCategory_no(category.getCategory_no());
-            fourEventDTO.setName(category.getName());
-            fourEventDTO.setEventList(eventlist);
-            fourList.add(fourEventDTO);
+            if(!eventlist.isEmpty()){
+                fourEventDTO.setCategory_no(category.getCategory_no());
+                fourEventDTO.setName(category.getName());
+                fourEventDTO.setEventList(eventlist);
+                fourList.add(fourEventDTO);
+            }
+
             //System.out.println("service::fourList=====>"+fourList);
         }
 
@@ -144,10 +142,31 @@ public class EventServiceImpl implements EventService {
     public int selectEventNoByEventName(String eventName) {
         return Integer.parseInt(dao.selectEventNoByEventName(eventName));
     }
-    //검색
+
     @Override
-    public List<EventDTO> search(String keyword) {
-        return dao.search(keyword);
+    public List<MemberEventDTO> selectMemberEvent(int member_no) {
+        return dao.selectMemberEvent(member_no);
     }
 
+    @Override
+    public List<EventDTO> selectNewEvent(int member_no) {
+        return dao.selectNewEvent(member_no);
+    }
+
+    @Override
+    public Page<EventDTO> selectEventWithPage(Map<String, Object> params, Pageable page) {
+        int count = dao.countEventWithPage(params);
+        params.put("offset", page.getOffset());
+        params.put("pageSize", page.getPageSize());
+        if (page.getSort().isSorted()) {
+            String sort = page.getSort().iterator().next().getProperty();
+            System.out.println("sort==>"+sort);
+            String direction = page.getSort().iterator().next().getDirection().name();
+            System.out.println("direction===>"+direction);
+            params.put("sort", sort);
+            params.put("direction", direction);
+        }
+        List<EventDTO> eventList = dao.selectEventWithPage(params);
+        return new PageImpl<>(eventList, page, count);
+    }
 }

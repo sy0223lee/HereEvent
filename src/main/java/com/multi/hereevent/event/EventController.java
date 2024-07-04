@@ -1,18 +1,27 @@
 package com.multi.hereevent.event;
 
+import com.multi.hereevent.category.CategoryService;
 import com.multi.hereevent.dto.*;
 import com.multi.hereevent.event.interest.EventInterestService;
 import com.multi.hereevent.event.time.EventTimeService;
+import com.multi.hereevent.fileupload.FileUploadService;
 import com.multi.hereevent.review.ReviewService;
 
+import com.multi.hereevent.wait.WaitService;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.List;
@@ -26,6 +35,9 @@ public class EventController {
     private final ReviewService reviewService;
     private final EventInterestService interestService;
     private final EventTimeService eventTimeService;
+    private final CategoryService categoryService;
+    private final WaitService waitService;
+    private final FileUploadService fileUploadService;
 
     @GetMapping("/main")
     public String mainPage(Model model) {
@@ -42,19 +54,46 @@ public class EventController {
         return "main/mainPage";
     }
 
-    //행사검색(프론트 아직)
+    //종류별 목록페이지
+    @GetMapping("/list")
+    public String listpage(@RequestParam("type") String type, Model model){
+        model.addAttribute("type", type);
+        if(type.equals("star")){
+            model.addAttribute("eventList", eventService.getListByStarRank());
+        }else if(type.equals("popular")){
+            model.addAttribute("eventList", eventService.getPopularEvent());
+        }else if(type.equals("open")){
+            model.addAttribute("eventList", eventService.getOpenEvent());
+        }else if(type.equals("all")){
+            model.addAttribute("eventList", eventService.getAllEvent());
+        }
+        return "main/listPage";
+    }
+  
+    //카테고리별 리스트
+    @GetMapping("/event/list/{category_no}")
+    public String listCategory(@PathVariable("category_no") int category_no, Model model){
+        List<EventDTO> eventlist = eventService.selectEventByCategoryNo(category_no);
+        String categoryName = categoryService.selectCategoryName(category_no);
+        model.addAttribute("eventlist",eventlist);
+        model.addAttribute("categoryName", categoryName);
+        return "main/categoryListPage";
+    }
+
+    //행사검색
     @GetMapping("/search")
     public String search(@RequestParam("keyword") String keyword, Model model) {
-        List<EventDTO> searchlist = eventService.search(keyword);
+        List<EventDTO> searchlist = eventService.searchEvent(keyword);
         model.addAttribute("events", searchlist);
         model.addAttribute("keyword", keyword);
         return "search/searchResults";
     }
-  
+
     // 세부페이지
     @GetMapping("/event/{event_no}")
     public String getEventDetails(@PathVariable("event_no") int event_no, Model model) {
         MemberDTO member = (MemberDTO) model.getAttribute("member");
+      
         EventDTO eventDetails;
         if(member != null){
             // 로그인 되어 있는 경우 사용자가 관심 있는 이벤트인지 같이 넘겨주기
@@ -63,14 +102,34 @@ public class EventController {
             // 로그인이 안 되어 있는 경우 이벤트 정보만 넘겨주기
             eventDetails = eventService.getEventDetails(event_no);
         }
-//        System.out.println("시작일===>"+eventDetails.getStart_date());
+
+        List<EventTimeDTO> eventTime = eventTimeService.getEventTime(event_no);
+        List<CategoryDTO> category = categoryService.getListCategory();
+//         System.out.println("시작일===>"+eventDetails.getStart_date());
         List<ReviewDTO> reviewList = reviewService.selectReviewByEventNo(event_no);
+//         System.out.println(eventTime);
         List<String> closedDays = eventTimeService.getHolidayDays(event_no);
-        model.addAttribute("closedDays", closedDays);
+        
         model.addAttribute("event", eventDetails);
+        model.addAttribute("eventtime",eventTime);
+        model.addAttribute("category",category);
         model.addAttribute("reviewList", reviewList);
+        model.addAttribute("closedDays", closedDays);
+      
         return "detailedPage/detailedPage";
     }
+  
+    //대기 현황 확인 페이지
+    @GetMapping("/event/waitSituation")
+    public String waitSituation(@RequestParam("event_no") int event_no, Model model) {
+
+        int waitingCount = waitService.getWaitingCount(event_no);
+        EventDTO eventDetails = eventService.getEventDetails(event_no);
+        model.addAttribute("waitingCount", waitingCount);
+        model.addAttribute("event", eventDetails);
+        return "detailedPage/waitDetailedPage";
+    }
+
 
 //    //예약기능
 //    @PostMapping("/event/reservation")
@@ -88,6 +147,7 @@ public class EventController {
 //        eventService.insertReserve(reserve);
 //        return "redirect:/main";
 //    }
+
     @PostMapping("/reservation/times")
     public ResponseEntity<Map<String, List<String>>> getEventTimes(@RequestBody Map<String, Object> request) {
         int event_no = (Integer) request.get("eventNo");
@@ -107,14 +167,6 @@ public class EventController {
         EventDTO eventDetails = eventService.getEventDetails(event_no);
         model.addAttribute("event", eventDetails);
         return eventService.getEventImage(event_no);
-    }
-
-    //카테고리별 리스트
-    @GetMapping("/event/list/{category_no}")
-    public String listCategory(@PathVariable("category_no") int category_no, Model model){
-        List<EventDTO> eventlist = eventService.selectEventByCategoryNo(category_no);
-        model.addAttribute("eventlist",eventlist);
-        return "event/eventCategoryList";
     }
 
     // 관심 이벤트 등록, 해제
@@ -149,35 +201,92 @@ public class EventController {
         return "common/errorPage";
     }
 
+    /***** 마이페이지 이벤트 내역 *****/
+    @GetMapping("/myevent")
+    public String myevent(Model model) {
+        MemberDTO member = (MemberDTO) model.getAttribute("member");
+        assert member != null;
+        List<MemberEventDTO> eventList = eventService.selectMemberEvent(member.getMember_no());
+        model.addAttribute("eventList", eventList);
+        return "mypage/myevent";
+
+    }
+
     /***** 관리자 페이지 *****/
     @GetMapping("/admin/event")
-    public String adminEventPage(Model model){
-        List<EventDTO> eventList = eventService.selectAll();
-        for(EventDTO event : eventList){
-            EventDTO eventDetails = eventService.getEventDetails(event.getEvent_no());
-            event.setImg_path(eventDetails.getImg_path());
-        }
-        model.addAttribute("event", eventList);
+    public String selectEventWithPage(@RequestParam Map<String, Object> params,
+                                      @PageableDefault(value = 10,sort = "event_no", direction = Sort.Direction.DESC) Pageable page, Model model){
+        Page<EventDTO> result = eventService.selectEventWithPage(params, page);
+        System.out.println("param==>"+params);
+        System.out.println("page==>"+page);
+        model.addAttribute("type", params.get("type"));
+        model.addAttribute("keyword", params.get("keyword"));
+        model.addAttribute("eventList", result.getContent());
+        model.addAttribute("totalPages", result.getTotalPages());
+        model.addAttribute("totalElements", result.getTotalElements());
+        model.addAttribute("pageNumber", page.getPageNumber());
         return "admin/event";
     }
     // insert, update, delete 만들어 놨는데 수정해서 쓰시면 될거같습니다.
-//    @PostMapping("/admin/event")
-//    public String createEvent(EventDTO eventDTO) {
-//        eventService.insertEvent(eventDTO);
-//        return "redirect:/admin/event";
-//    }
-//
-//    @PostMapping("/admin/event/update/{event_no}")
-//    public String updateEvent(@PathVariable("event_no") int event_no, @RequestBody EventDTO eventDTO) {
-//        eventDTO.setEvent_no(event_no);
-//        eventService.updateEvent(eventDTO);
-//        return "redirect:/admin/event";
-//    }
-//
-//    @GetMapping("/admin/event/delete/")
-//    public String deleteEvent(@RequestParam("event_no") int event_no) {
-//        eventService.deleteEvent(event_no);
-//        return "redirect:/admin/event";
-//    }
+    @GetMapping("/admin/event/insert")
+    public String createEventPage(Model model){
+        List<CategoryDTO> categoryList = new ArrayList<>();
+        categoryList = categoryService.getListCategory();
+        model.addAttribute("categoryList",categoryList);
+        return "event/insert";
+    }
+    @PostMapping("/admin/event/insert")
+    public String createEvent(EventDTO event) {
+        System.out.println(event);
+        //주소 합쳐서 넣기
+        event.setAddr(event.getAddr()+event.getDetailAddress()+event.getExtraAddress());
+        //행사 이미지 등록하기
+        MultipartFile eventImg = event.getEvent_img();
+        String storeFilename = null;
+        try {
+            storeFilename = fileUploadService.uploadEventImg(eventImg);
+            event.setImg_path(storeFilename);
+            //DB에 삽입
+            eventService.insertEvent(event);
+            System.out.println("+++++"+event);
+            return "redirect:/admin/event";
+        } catch (IOException e) {
+            new RuntimeException();
+            return "common/errorPage";
+        }
+    }
+    @GetMapping("/admin/event/update/{event_no}")
+    public String updateEventPage(@PathVariable("event_no") int event_no, Model model){
+        List<CategoryDTO> categoryList = new ArrayList<>();
+        categoryList = categoryService.getListCategory();
+        model.addAttribute("categoryList",categoryList);
+        EventDTO event = eventService.getEventDetails(event_no);
+        System.out.println(event);
+        model.addAttribute("event",event);
+        return "event/update";
+    }
+    @PostMapping("/admin/event/update")
+    public String updateEvent(@RequestParam("event_no") int event_no,EventDTO event) {
+        System.out.println("updateEvent====>"+event);
+        MultipartFile eventImg = event.getEvent_img();
+        String storeFilename = null;
+        try {
+            storeFilename = fileUploadService.uploadEventImg(eventImg);
+            event.setImg_path(storeFilename);
+            event.setAddr(event.getAddr()+event.getDetailAddress()+event.getExtraAddress());
+            eventService.updateEvent(event);
+            return "redirect:/admin/event";
+        } catch (IOException e) {
+            new RuntimeException(e);
+            return "common/errorPage";
+        }
+    }
+
+    @PostMapping("/admin/event/delete")
+    public String deleteEvent(@RequestParam("eventNo") List<Integer> eventNo) {
+        System.out.println(eventNo);
+        eventService.deleteEvent(eventNo);
+        return "redirect:/admin/event";
+    }
 }
 

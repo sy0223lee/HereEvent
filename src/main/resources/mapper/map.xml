@@ -1,82 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.multi.hereevent.map">
-    <select id="selectStill" resultType="event">
-        SELECT *
-        FROM event
-        WHERE start_date &lt;= now() and end_date > now()
-    </select>
-    <select id="select" parameterType="button" resultType="event">
-        SELECT *
-        FROM event
-        <if test="state==null and type!=null">
-            WHERE type=#{type}
-        </if>
-        <if test="state!=null and type==null">
-            <choose>
-                <when test="state.contains('still')">
-                    <if test="state.contains('open')">
-                        <if test="state.contains('end')">
-
-                        </if>
-                        <if test="!state.contains('end')">
-                            WHERE (start_date &lt;= now() and end_date > now()) or start_date > now()
-                        </if>
-                    </if>
-                    <if test="!state.contains('open')">
-                        <if test="state.contains('end')">
-                            WHERE (start_date &lt;= now() and end_date > now()) or end_date &lt; now()
-                        </if>
-                        <if test="!state.contains('end')">
-                            WHERE start_date &lt;= now() and end_date > now()
-                        </if>
-                    </if>
-                </when>
-                <when test="state.contains('open')">
-                    <if test="state.contains('end')">
-                        WHERE start_date > now() or end_date &lt; now()
-                    </if>
-                    <if test="!state.contains('end')">
-                        WHERE start_date > now()
-                    </if>
-                </when>
-                <otherwise>
-                    WHERE end_date &lt; now()
-                </otherwise>
-            </choose>
-        </if>
-        <if test="state!=null and type!=null">
-            <choose>
-                <when test="state.contains('still')">
-                    <if test="state.contains('open')">
-                        <if test="state.contains('end')">
-                            WHERE type=#{type}
-                        </if>
-                        <if test="!state.contains('end')">
-                            WHERE ((start_date &lt;= now() and end_date > now()) or start_date > now()) and type=#{type}
-                        </if>
-                    </if>
-                    <if test="!state.contains('open')">
-                        <if test="state.contains('end')">
-                            WHERE ((start_date &lt;= now() and end_date > now()) or end_date &lt; now()) and type=#{type}
-                        </if>
-                        <if test="!state.contains('end')">
-                            WHERE start_date &lt;= now() and end_date > now() and type=#{type}
-                        </if>
-                    </if>
-                </when>
-                <when test="state.contains('open')">
-                    <if test="state.contains('end')">
-                        WHERE (start_date > now() or end_date &lt; now()) and type=#{type}
-                    </if>
-                    <if test="!state.contains('end')">
-                        WHERE start_date > now() and type=#{type}
-                    </if>
-                </when>
-                <otherwise>
-                    WHERE end_date &lt; now() and type=#{type}
-                </otherwise>
-            </choose>
-        </if>
+    <!-- 지도 조건에 맞는 이벤트 조회 -->
+    <select id="selectEventWithMap" parameterType="map" resultType="event">
+        select * from event
+        where
+        <choose>
+            <when test='location == "seongsu"'> (addr like "%성동구%" or addr like "%광진구%")</when>
+            <when test='location == "hongdae"'> (addr like "%마포구%" or addr like "%서대문구%") </when>
+            <when test='location == "gangnam"'> (addr like "%강남구%" or addr like "%서초구%") </when>
+            <when test='location == "yeouido"'> addr like "%영등포구%"</when>
+            <when test='location == "myeongdong"'> (addr like "%중구%" or addr like "%종로구%") </when>
+            <when test='location == "jamsil"'> addr like "%송파구%" </when>
+            <when test='location == "seoul"'> addr like "서울특별시%" </when>
+            <when test='location == "gyeonggi"'> addr like "경기도%" </when>
+            <when test='location == "busan"'> addr like "부산광역시%" </when>
+        </choose>
+        <if test="location != null and state.size > 0"> and </if>
+        <foreach collection="state" item="val" separator="or" open="(" close=")">
+            <if test='val == "still"'> <!-- 운영중 -->
+                (start_date &lt;= curdate() and end_date >= curdate())
+            </if>
+            <if test='val == "open"'> <!-- 오픈 예정 -->
+                start_date > curdate()
+            </if>
+            <if test='val == "end"'> <!-- 종료 -->
+                end_date &lt; curdate()
+            </if>
+        </foreach>
+        <if test="(location != null or state.size > 0) and type.size > 0"> and </if>
+        <foreach collection="type" item="val" separator="or" open="(" close=")">
+            <if test='val == "reserve"'> <!-- 사전예약 가능 -->
+                (type = "reserve" or type = "both")
+            </if>
+            <if test='val == "wait"'> <!-- 현장대기 가능 -->
+                (type = "wait" or type = "both")
+            </if>
+            <if test='val == "both"'> <!-- 사전예약, 현장대기 둘 다 가능 -->
+                type = "both"
+            </if>
+        </foreach>
     </select>
 </mapper>

@@ -1,13 +1,14 @@
 package com.multi.hereevent.map;
 
-import com.multi.hereevent.dto.ButtonDTO;
 import com.multi.hereevent.dto.EventDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,18 +21,19 @@ public class MapController {
         return "kakaomap/kakaomap";
     }
 
-    @GetMapping("/map/clicktest")
-    public String clicktest(){
-        return "kakaomap/clicktest";
+    @GetMapping("/map")
+    public String mapPage(){
+        return "kakaomap/map";
     }
 
-    @PostMapping("/map/clicktest/ajaxtest")
+    // 지도 조건에 맞는 이벤트 조회해서 JSON 으로 넘기기
+    @PostMapping("/map/list")
     @ResponseBody
-    public List<EventDTO> ajaxtest(ButtonDTO buttonDTO){
-        List<EventDTO> list = mapService.button(buttonDTO);
-        System.out.println(buttonDTO);
-        System.out.println(buttonDTO.getType());
-        System.out.println(buttonDTO.getState());
-        return list;
+    public List<EventDTO> selectEventWithMap(@RequestBody Map<String, Object> data){
+        String location = (String) data.get("location");
+        ArrayList<String> state =  (ArrayList<String>) data.get("state");
+        ArrayList<String> type = (ArrayList<String>) data.get("type");
+
+        return mapService.selectEventWithMap(location, state, type);
     }
 }

@@ -67,6 +67,20 @@ public class FileUploadService {
         }
         return storeFilename;
     }
+    // 이벤트사진 저장
+    public String uploadEventImg(MultipartFile multipartFile) throws IOException {
+        String storeFilename = "";
+
+        if(!multipartFile.isEmpty()) {
+            String originalFilename = multipartFile.getOriginalFilename();
+            if(originalFilename != null) {
+                storeFilename = createStoreFilename(originalFilename);
+                multipartFile.transferTo(new File(getEventFilePath(storeFilename)));
+            }
+        }
+        return storeFilename;
+    }
+
 
     // 크롤링한 이벤트 사진 저장
     public String uploadEventImg(String imgUrl) throws IOException {

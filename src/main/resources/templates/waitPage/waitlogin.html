@@ -29,10 +29,13 @@
     </main>
     <script>
         window.onload = function() {
-            alert("등록되지 않은 번호입니다")
 
-        };
-
+            const params = new URLSearchParams(window.location.search);
+            const errorMessage = params.get('errorMessage');
+            if (errorMessage) {
+                alert(errorMessage);
+            }
+        }
     </script>
 </body>
 </html>

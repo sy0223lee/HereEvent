@@ -48,7 +48,7 @@ public class WaitController {
         WaitDTO waitDetailTel = service.waitDetailTel(wait.getWait_tel());
         model.addAttribute("wait", loginMyWait);
         if (loginMyWait == null) {
-            redirectAttributes.addFlashAttribute("error", "등록되지 않은 번호입니다.");
+            redirectAttributes.addAttribute("errorMessage", "등록되지 않은 번호입니다.");
             return "redirect:/wait/login";
         }
         redirectAttributes.addAttribute("wait_no", waitDetailTel.getWait_no());
@@ -73,17 +73,24 @@ public class WaitController {
         return "waitPage/mywait";
     }
     @PostMapping("/wait/updateState")
-    public String updateState(@RequestParam("wait_no") String wait_no, Model model) {
+    public String updateState(@RequestParam("wait_no") String wait_no, @RequestParam("action") String action, Model model) {
 
         WaitDTO eventDetail = service.EventDetail(Integer.parseInt(wait_no));
-        eventDetail.setState("visit");
+        String statusMessage = "";
+        if ("visit".equals(action)) {
+            eventDetail.setState("visit");
+            statusMessage = "visit";
+        } else if ("cancel".equals(action)) {
+            eventDetail.setState("cancel");
+            statusMessage = "cancel";
+        }
         eventDetail.setWait_date(LocalDateTime.now());
         model.addAttribute("event_no", eventDetail.getEvent_no());
 
-        service.updateStateToVisit(eventDetail);
+        service.updateState(eventDetail);
         System.out.println(eventDetail);
 
-        return "redirect:/main";
+        return "redirect:/main?status=" + statusMessage;
     }
 
     @GetMapping("/wait/delete")

@@ -1,6 +1,7 @@
 package com.multi.hereevent.event;
 
 import com.multi.hereevent.dto.EventDTO;
+import com.multi.hereevent.dto.MemberEventDTO;
 import com.multi.hereevent.dto.ReserveDTO;
 import com.multi.hereevent.dto.ReviewDTO;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,6 @@ public class EventDAOImpl implements EventDAO{
     public int insertEvent(EventDTO event) {
         return sqlSession.insert("com.multi.hereevent.event.insertEvent",event);
     }
-
     @Override
     public int updateEvent(EventDTO event) {
         return sqlSession.update("com.multi.hereevent.event.updateEvent", event);
@@ -33,8 +33,8 @@ public class EventDAOImpl implements EventDAO{
         return sqlSession.selectList("com.multi.hereevent.event.selectAll");
     }
     @Override
-    public int deleteEvent(int event_no) {
-        return sqlSession.delete("com.multi.hereevent.event.deleteEvent", event_no);
+    public int deleteEvent(List<Integer> eventNo) {
+        return sqlSession.delete("com.multi.hereevent.event.deleteEvent", eventNo);
     }
 
     @Override
@@ -124,14 +124,28 @@ public class EventDAOImpl implements EventDAO{
     public String selectEventNoByEventName(String eventName) {
         return sqlSession.selectOne("com.multi.hereevent.event.selectEventNoByEventName", eventName);
     }
+
+    @Override
+    public List<MemberEventDTO> selectMemberEvent(int member_no) {
+        return sqlSession.selectList("com.multi.hereevent.event.selectMemberEvent", member_no);
+    }
+
+    @Override
+    public List<EventDTO> selectNewEvent(int member_no) {
+        return sqlSession.selectList("com.multi.hereevent.event.selectNewEvent", member_no);
+    }
+
     @Override
     public List<EventDTO> selectFourEventByCategory(int category_no) {
         return sqlSession.selectList("com.multi.hereevent.event.fourEventByCategory", category_no);
     }
-
-    //검색
     @Override
-    public List<EventDTO> search(String keyword) {
-        return sqlSession.selectList("com.multi.hereevent.event.search", keyword);
+    public int countEventWithPage(Map<String, Object> params) {
+        return sqlSession.selectOne("com.multi.hereevent.event.countEventWithPage", params);
+    }
+
+    @Override
+    public List<EventDTO> selectEventWithPage(Map<String, Object> params) {
+        return sqlSession.selectList("com.multi.hereevent.event.selectEventWithPage", params);
     }
 }

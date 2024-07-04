@@ -27,11 +27,13 @@ public interface WaitService {
     WaitDTO waitDetailTel(String wait_tel);
     //대기 삭제
     int waitDelete(int wait_no);
+
     //대기 순서
     int getWaitingPosition(int event_no,int wait_no);
     int getWaitingCount(int event_no);
-    int updateStateToVisit(WaitDTO wait);
+    int updateState(WaitDTO wait);
     boolean canInsert(String wait_tel);
+    void checkAndUpdateWaitStatus();
     //입장 가능시간
     String getEntranceWaitTime(int event_no, int wait_no);
 

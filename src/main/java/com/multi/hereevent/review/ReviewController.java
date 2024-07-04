@@ -3,6 +3,7 @@ package com.multi.hereevent.review;
 import com.multi.hereevent.dto.MemberDTO;
 import com.multi.hereevent.dto.ReviewDTO;
 import com.multi.hereevent.dto.ReviewImgDTO;
+import com.multi.hereevent.event.EventService;
 import com.multi.hereevent.fileupload.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -111,6 +112,7 @@ public class ReviewController {
         model.addAttribute("pageNumber", page.getPageNumber());
         return "admin/review";
     }
+    /*상세보기 삭제버튼*/
     @PostMapping("/admin/review/delete")
     public String deleteAdminReview(@RequestParam("review_no") String review_no){
         int result = reviewService.deleteReview(Integer.parseInt(review_no));

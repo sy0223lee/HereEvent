@@ -1,9 +1,9 @@
 package com.multi.hereevent.member;
 
-import com.multi.hereevent.dto.CategoryInterestDTO;
-import com.multi.hereevent.dto.MemberDTO;
+import com.multi.hereevent.dto.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MemberDAO {
     MemberDTO loginMember(MemberDTO member);
@@ -18,5 +18,8 @@ public interface MemberDAO {
     boolean checkMemberEmail(String email);
     MemberDTO findMemberByEmail(String email);
 
-    int setInterestCategory(CategoryInterestDTO ci);
+    // 페이징 처리
+    int countMemberWithPage(Map<String, Object> params);
+    List<MemberDTO> selectMemberWithPage(Map<String, Object> params);
+
 }

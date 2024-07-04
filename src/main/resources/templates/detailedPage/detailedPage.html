@@ -65,12 +65,27 @@
                     form.submit();
                 }
             });
+
+
+
         });
+        function activateTab(event) {
+            // 모든 탭에서 'on' 클래스 제거
+            var tabs = document.querySelectorAll('.submenu a');
+            tabs.forEach(function(tab) {
+                tab.classList.remove('on');
+            });
+
+            // 클릭된 탭에 'on' 클래스 추가
+            var clickedTab = event.currentTarget;
+            clickedTab.classList.add('on');
+        }
     </script>
 
     <title>HereEvent-EventDetail</title>
 </head>
 <body class="blog-details-page">
+
 <main layout:fragment="main" class="main">
 
     <!-- Page Title -->
@@ -78,11 +93,11 @@
         <div class="container">
             <nav class="breadcrumbs">
                 <ol>
-                    <li><a href="#">Home</a></li>
-                    <li class="current">Blog Details</li>
+                    <li><a href="/hereevent">Home</a></li>
+                    <li class="current">Event Details</li>
                 </ol>
             </nav>
-            <h1>팝업 세부정보</h1>
+            <h1>이벤트 상세정보</h1>
         </div>
     </div><!-- End Page Title -->
 
@@ -98,30 +113,35 @@
 
                         <div class="post-img">
                             <div th:each="imgPath : ${event.img_path}" class="image-container">
-                                <img th:src="|@{/download/event/}${imgPath}|" th:alt="${imgPath}" alt="Event Image" />
+                                <img th:if="${imgPath != null}" th:src="|@{/download/event/}${imgPath}|" th:alt="${imgPath}"/>
+                                <img th:unless="${imgPath != null}" th:src="@{/images/default_img.png}" alt="default_img"/>
 
                                 <input type="hidden" class="member" th:value="${session.member}">
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div>
+                            <h2 class="title"><span th:text="${event.name}"></span>
                                 <button class="default interest-btn" th:if="${event.event_interest_no == 0}" th:value="${event.event_no}">♡</button>
                                 <button class="picked interest-btn" th:unless="${event.event_interest_no == 0}" th:value="${event.event_no}">♥</button>
-                            </div>
+
+                            </h2>
 
                         </div>
-
-
-
-
-                        <h2 class="title"><span th:text="${event.name}"></span></h2>
-                        <div class="container">
-                            <div class="submenu">
-                                <a href="javascript:void(0);" onclick="scrollToSection('content-section')" class="nav-item" th:classappend="${tab == 'content'} ? 'active' : ''" data-tab="content">상세정보</a>
-                                <a href="javascript:void(0);" onclick="scrollToSection('navigation-section')" class="nav-item" th:classappend="${tab == 'map'} ? 'active' : ''" data-tab="map">길찾기</a>
-                                <a href="javascript:void(0);" onclick="scrollToSection('reservation-section')" class="nav-item" th:classappend="${tab == 'reservation'} ? 'active' : ''" data-tab="reservation">예약</a>
-                                <a href="javascript:void(0);" onclick="scrollToSection('reviews-section')" class="nav-item" th:classappend="${tab == 'reviews'} ? 'active' : ''" data-tab="reviews">후기</a>
-                            </div>
+                        <div class="submenu">
+                            <a href="javascript:void(0);" class="on" onclick="scrollToSection('content-section');activateTab(event)" th:classappend="${tab == 'content'} ? 'active' : ''" data-tab="content">상세정보</a>
+                            <a href="javascript:void(0);" onclick="scrollToSection('navigation-section');activateTab(event)" th:classappend="${tab == 'map'} ? 'active' : ''" data-tab="map">길찾기</a>
+                            <a href="javascript:void(0);" onclick="scrollToSection('reservation-section');activateTab(event)" th:classappend="${tab == 'reservation'} ? 'active' : ''" data-tab="reservation">예약</a>
+                            <a href="javascript:void(0);" onclick="scrollToSection('reviews-section');activateTab(event)" th:classappend="${tab == 'reviews'} ? 'active' : ''" data-tab="reviews">후기</a>
                         </div>
+
                         <article id="content-section" class="article">
                             <!-- 상세 정보 -->
-                            <th:block th:replace="~{detailedPage/content :: content}"></th:block>
+                            <th:block th:replace="~{detailedPage/content :: content(${eventtime},'test')}"></th:block>
                         </article>
 
                         <article id="navigation-section" class="article">
@@ -145,57 +165,39 @@
 
             <div class="col-lg-4 sidebar">
 
-                <div class="widgets-container">
+                <div class="widgets-container fixed">
 
                     <!-- Search Widget -->
                     <div class="search-widget widget-item">
 
-                        <h3 class="widget-title">Search</h3>
-                        <form action="">
-                            <input type="text">
-                            <button type="submit"><i class="bi bi-search"></i></button>
-                        </form>
+                        <h3 class="widget-title">현재 대기 현황</h3>
+
+
+                        <button type="submit" class="widget-button"
+                                th:onclick="|location.href='@{/event/waitSituation(event_no=${event_no})}'|">
+                            대기 현황 click
+                        </button>
+
 
                     </div><!--/Search Widget -->
 
-                    <!-- Categories Widget -->
-                    <div class="categories-widget widget-item">
-
-                        <h3 class="widget-title">Categories</h3>
-                        <ul class="mt-3">
-                            <li><a href="#">General <span>(25)</span></a></li>
-                            <li><a href="#">Lifestyle <span>(12)</span></a></li>
-                            <li><a href="#">Travel <span>(5)</span></a></li>
-                            <li><a href="#">Design <span>(22)</span></a></li>
-                            <li><a href="#">Creative <span>(8)</span></a></li>
-                            <li><a href="#">Educaion <span>(14)</span></a></li>
-                        </ul>
-
-                    </div><!--/Categories Widget -->
 
                     <!-- Tags Widget -->
                     <div class="tags-widget widget-item">
 
-                        <h3 class="widget-title">Tags</h3>
+                        <h3 class="widget-title">Category</h3>
                         <ul>
-                            <li><a href="#">App</a></li>
-                            <li><a href="#">IT</a></li>
-                            <li><a href="#">Business</a></li>
-                            <li><a href="#">Mac</a></li>
-                            <li><a href="#">Design</a></li>
-                            <li><a href="#">Office</a></li>
-                            <li><a href="#">Creative</a></li>
-                            <li><a href="#">Studio</a></li>
-                            <li><a href="#">Smart</a></li>
-                            <li><a href="#">Tips</a></li>
-                            <li><a href="#">Marketing</a></li>
+                            <li th:each="category : ${category}">
+                                <a th:onclick= "|location.href='@{/event/list/(category_no=${category.category_no})}'|" th:text="${category.name}"></a>
+                            </li>
                         </ul>
+
 
                     </div><!--/Tags Widget -->
 
                 </div><!-- /widget container-->
             </div><!-- sidebar-->
-            
+
         </div>
     </div>
 

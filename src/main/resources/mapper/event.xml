@@ -1,42 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.multi.hereevent.event">
-    <select id="search" parameterType="string" resultType="event">
-        SELECT *
-        FROM event
-        WHERE name LIKE CONCAT('%', #{keyword}, '%')
-    </select>
     <select id="insertEvent" parameterType="event">
-        insert into events (category_no, name, start_date, end_date, addr, info, homepage, sns, img_path, type, reserve_limit, wait_limit)
+        insert into event (category_no, name, start_date, end_date, addr, info, homepage, sns, img_path, type, reserve_limit, wait_limit)
         values (#{category_no}, #{name}, #{start_date}, #{end_date}, #{addr}, #{info}, #{homepage}, #{sns}, #{img_path}, #{type}, #{reserve_limit}, #{wait_limit})
     </select>
-    <select id="deleteEvent" parameterType="int">
-        delete from event where event_no = #{event_no}
-    </select>
-
+    <!-- 이벤트 수정-->
+    <update id="updateEvent" parameterType="event">
+        update event
+        set category_no = #{category_no},
+          name = #{name},
+          start_date = #{start_date},
+          end_date = #{end_date},
+          addr = #{addr},
+          info = #{info},
+          homepage = #{homepage},
+          sns = #{sns},
+          img_path = #{img_path},
+          type = #{type},
+          reserve_limit = #{reserve_limit},
+          wait_limit = #{wait_limit}
+        WHERE event_no=#{event_no}
+    </update>
+    <delete id="deleteEvent">
+        DELETE FROM event
+        WHERE event_no IN
+        <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
     <select id="searchEvent" parameterType="String" resultType="event">
         SELECT *
         FROM event
-        WHERE name Like CONCAT('%' , #{name} , '%')
+        WHERE name Like CONCAT('%', #{keyword} ,'%')
     </select>
     <select id="getAllEvent" resultType="event">
-        SELECT *
-        FROM event
+        SELECT e.event_no, e.category_no, e.name, e.start_date, e.end_date, e.addr, e.info,
+        e.homepage, e.sns, e.img_path, e.type, e.reserve_limit, e.wait_limit,
+        AVG(r.star) AS avg_star
+        FROM event e
+            LEFT JOIN review r ON e.event_no = r.event_no
+        GROUP BY e.event_no, e.category_no, e.name, e.start_date, e.end_date, e.addr,
+        e.info, e.homepage, e.sns, e.img_path, e.type, e.reserve_limit, e.wait_limit
     </select>
     <select id="getOpenEvent" resultType="event">
-        SELECT event_no, category_no, name, start_date, end_date, addr, info, homepage, sns, img_path, type, reserve_limit, wait_limit
-        FROM event
-        WHERE start_date > now()
-        ORDER BY start_date
+        SELECT e.event_no, e.category_no, e.name, e.start_date, e.end_date, e.addr, e.info,
+        e.homepage, e.sns, e.img_path, e.type, e.reserve_limit, e.wait_limit,
+        AVG(r.star) AS avg_star
+        FROM event e
+            LEFT JOIN review r ON e.event_no = r.event_no
+        WHERE e.start_date > NOW()
+        GROUP BY e.event_no, e.category_no, e.name, e.start_date, e.end_date, e.addr,
+        e.info, e.homepage, e.sns, e.img_path, e.type, e.reserve_limit, e.wait_limit
+        ORDER BY e.start_date;
     </select>
     <select id="getPopularEvent" resultType="event">
-        SELECT e.event_no,e.name,e.start_date,e.end_date,e.addr, e.img_path,
-        COUNT(DISTINCT r.member_no) + COUNT(DISTINCT w.email) AS total_count
+        SELECT e.event_no, e.name, e.start_date, e.end_date, e.addr, e.img_path,
+        COUNT(DISTINCT r.member_no) + COUNT(DISTINCT w.email) AS total_count,
+        AVG(rev.star) AS avg_star
         FROM event e
-        LEFT JOIN reserve r ON e.event_no = r.event_no
-        LEFT JOIN wait w ON e.event_no = w.event_no
+            LEFT JOIN reserve r ON e.event_no = r.event_no
+            LEFT JOIN wait w ON e.event_no = w.event_no
+            LEFT JOIN review rev ON e.event_no = rev.event_no
+        GROUP BY e.event_no, e.name, e.start_date, e.end_date, e.addr, e.img_path
+        ORDER BY total_count DESC
+        LIMIT 10;
+    </select>
+    <!--별점순 이벤트 조회-->
+    <select id="getEventByStarRank" resultType="event">
+        SELECT e.event_no, e.name, e.addr, e.start_date, e.end_date, e.img_path, AVG(r.star) AS avg_star
+        FROM event AS e
+            JOIN review AS r
+            ON e.event_no = r.event_no
         GROUP BY e.event_no
-        ORDER BY total_count desc limit 10
+        ORDER BY avg_star DESC limit 10
+    </select>
+    <!--카테고리별 이벤트 조회-->
+    <select id="selectEventByCategory" resultType="event">
+        SELECT e.*
+        FROM event AS e
+        JOIN category AS c ON e.category_no = c.category_no
+        WHERE e.category_no = #{category_no}
+    </select>
+    <!--카테고리별 이벤트 4개씩 조회-->
+    <select id="fourEventByCategory" resultType="event">
+        SELECT *
+        FROM event
+        WHERE category_no =#{category_no} AND end_date > NOW()
+        LIMIT 4
     </select>
 
     <select id="getEventDetails" resultType="event">
@@ -59,51 +110,29 @@
     </select>
 
     <!-- 크롤링 -->
-	<insert id="insertCrawlingEvent" parameterType="event">
-		insert into event  (name, start_date, end_date, addr, info, homepage, sns)
-		select #{name}, #{start_date}, #{end_date}, #{addr}, #{info}, #{homepage}, #{sns}
-		from dual where not exists (
-			select event_no
-			from event
-			where name=#{name} and start_date=#{start_date} and end_date=#{end_date})
-	</insert>
-	<select id="selectEventNoByEventName" parameterType="String" resultType="String">
-		select event_no
-		from event
-		where name=#{name}
-	</select>
+    <insert id="insertCrawlingEvent" parameterType="event">
+        insert into event  (name, start_date, end_date, addr, info, homepage, sns)
+        select #{name}, #{start_date}, #{end_date}, #{addr}, #{info}, #{homepage}, #{sns}
+        from dual where not exists (
+            select event_no
+            from event
+            where name=#{name} and start_date=#{start_date} and end_date=#{end_date})
+    </insert>
+    <select id="selectEventNoByEventName" parameterType="String" resultType="String">
+        select event_no
+        from event
+        where name=#{name}
+    </select>
     <update id="updateEventImg" parameterType="Map">
         update event
         set img_path = #{img_path}
         where event_no = #{event_no}
     </update>
 
-    <!--카테고리별 이벤트 조회-->
-    <select id="selectEventByCategory" resultType="event">
-        select *
-        from event
-        where category_no=#{category_no}
-    </select>
-    <!--카테고리별 이벤트 4개씩 조회-->
-    <select id="fourEventByCategory" resultType="event">
-        SELECT *
-        FROM event
-        WHERE category_no =#{category_no} AND end_date > NOW()
-        LIMIT 4
-    </select>
-    <!--별점순 이벤트 조회-->
-    <select id="getEventByStarRank" resultType="event">
-        SELECT e.event_no, e.name, e.img_path, AVG(r.star) AS avg_star
-        FROM event AS e
-        JOIN review AS r
-        ON e.event_no = r.event_no
-        GROUP BY e.event_no
-        ORDER BY avg_star DESC limit 10
-    </select>
     <!--예약하기-->
     <insert id="insertReserve" parameterType="reserve">
-        insert into reserve (event_no,member_no, reserve_date, reserve_time,state,reserve_order)
-        values(#{event_no},#{member_no},#{reserve_date},#{reserve_time},"예약완료",#{reserve_order})
+        insert into reserve (event_no, member_no, reserve_date, reserve_time, reserve_order)
+        values(#{event_no},#{member_no},#{reserve_date},#{reserve_time},#{reserve_order})
     </insert>
     <!--예약 순서 체크-->
     <select id="checkReserve" parameterType="Map" resultType="reserve">
@@ -116,7 +145,7 @@
         select count(*) from reserve
         where event_no=#{event_no}
     </select>
-    
+
     <!-- 관심 이벤트 등록, 해제 -->
     <insert id="insertEventInterest" parameterType="Map">
         insert into event_interest (event_no, member_no) value
@@ -134,27 +163,82 @@
         where i.member_no = #{member_no}
     </select>
 
-    <!-- 이벤트 수정-->
-    <update id="updateEvent" parameterType="event">
-        update event
-        set category_no = #{category_no},
-            name = #{name},
-            start_date = #{start_date},
-            end_date = #{end_date},
-            addr = #{addr},
-            info = #{info},
-            homepage = #{homepage},
-            sns = #{sns},
-            img_path = #{img_path},
-            type = #{type},
-            reserve_limit = #{reserve_limit},
-            wait_limit = #{wait_limit}
-            WHERE id = #{id}
+    <!-- 특정 회원의 이벤트 예약/대기 내역 조회 -->
+    <select id="selectMemberEvent" resultType="memberEvent">
+        select r.reserve_no as index_no, e.event_no, e.name, e.addr, e.img_path, r.state, m.member_no, r.reserve_date as enter_date, r.reserve_time as enter_time
+        from reserve r
+            left join member m on r.member_no = m.member_no
+            left join event e on r.event_no = e.event_no
+        where m.member_no = #{member_no}
+        union
+        select w.wait_no as index_no, e.event_no, e.name, e.addr, e.img_path, w.state, m.member_no, w.wait_date as enter_date, null as enter_time
+        from wait w
+            left join member m on w.email = m.email
+            left join event e on w.event_no = e.event_no
+        where m.member_no = #{member_no}
+        order by enter_date desc
+    </select>
 
-    </update>
     <!-- 이벤트 전체조회-->
     <select id="selectAll" resultType="event">
         SELECT * FROM event
     </select>
+    <!-- 회원별 관심 카테고리 오픈 예정 이벤트 조회 -->
+    <select id="selectNewEvent" resultType="event">
+        select * from event e
+        where start_date &lt; date_add(curdate(), interval 2 week) and
+            start_date >= curdate() and
+            e.category_no in (
+                select ci.category_no
+                from category_interest ci
+                where ci.member_no = #{member_no})
+        order by start_date
+    </select>
+    <select id="countEventWithPage" parameterType="map" resultType="int">
+        select count(e.event_no)
+        from event e
+        <choose>
+            <when test="type == null">
 
+            </when>
+            <when test='type == "event"'>
+                where e.name like concat('%', #{keyword}, '%')
+            </when>
+            <when test='type == "addr"'>
+                where e.addr like concat('%', #{keyword}, '%')
+            </when>
+            <when test='type == "category"'>
+                where e.event_no in (
+                    select e.event_no
+                    from event e left join category c on e.category_no = c.category_no
+                    where c.name like concat('%', #{keyword}, '%') or c.value like concat('%', #{keyword}, '%'))
+            </when>
+        </choose>
+    </select>
+    <select id="selectEventWithPage" parameterType="map" resultType="event">
+        select e.*,c.*
+        from event e left join category c on e.category_no = c.category_no
+        <choose>
+            <when test="type == null">
+
+            </when>
+            <when test='type == "event"'>
+                where e.name like concat('%', #{keyword}, '%')
+            </when>
+            <when test='type == "addr"'>
+                where e.addr like concat('%', #{keyword}, '%')
+            </when>
+            <when test='type == "category"'>
+                where c.name like concat('%', #{keyword}, '%') or c.value like concat('%', #{keyword}, '%'))
+            </when>
+        </choose>
+        ORDER BY
+        <if test="sort != null and direction != null">
+            ${sort} ${direction}
+        </if>
+        <if test="sort == null or direction == null">
+            event_no DESC
+        </if>
+        limit ${offset}, ${pageSize}
+    </select>
 </mapper>

@@ -8,7 +8,14 @@
     <title>HereEvent Register</title>
     <link href="/hereevent/common/css/register.css" rel="stylesheet">
 
-    <script type="text/javascript" th:inline="javascript">
+    <script type="text/javascript" th:inline="javascript" >
+        function pwCheck(){
+            if($('#pass').val() == $('#passchk').val()){
+                $('#check-same-password').text('비밀번호 일치').css('color', 'green')
+            }else{
+                $('#check-same-password').text('비밀번호 불일치').css('color', 'red')
+            }
+        }
         $(document).ready(function(){
             $("#nick").keyup(function(){
                 let data1 = {"nick" : $("#nick").val()};
@@ -47,13 +54,15 @@
 <main layout:fragment="main" class="main">
 <div class="signup-container">
     <h2>회원가입</h2>
-    <form action="/hereevent/insert" method="post">
+    <form action="/hereevent/insert" method="post" enctype="multipart/form-data">
         <label for="email">이메일</label>
         <input type="email" id="email" name="email" placeholder="이메일을 입력하세요">
         <div id="check-duplicate-email"></div>
         <label for="pass">비밀번호</label>
-        <input type="text" id="pass" name="pass" placeholder="비밀번호를 입력하세요">
-
+        <input type="password" id="pass" name="pass" oninput="pwCheck()" placeholder="비밀번호를 입력하세요">
+        <label for="passchk">비밀번호확인</label>
+        <input type="password" id="passchk" name="passchk" oninput="pwCheck()" placeholder="비밀번호를 한번더 입력하세요">
+        <div id="check-same-password"></div>
         <label for="name">이름</label>
         <input type="text" id="name" name="name" placeholder="이름을 입력하세요">
 
@@ -67,7 +76,7 @@
         <input type="date" id="birth" name="birth" placeholder="생년월일을 입력하세요">
 
         <label for="profile-pic">프로필 사진</label>
-        <input type="file" id="profile-pic" name="profile-pic" accept="image/*">
+        <input type="file" id="profile-pic" name="profile_img" accept="image/*">
 
         <div class="extra-options">
             <label>
@@ -75,7 +84,7 @@
             </label>
         </div>
 
-        <button type="submit">다음</button>
+        <button class="regi_btn" type="submit">다음</button>
     </form>
     <div class="links">
         <a href="/hereevent/login">로그인</a>

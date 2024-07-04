@@ -53,40 +53,39 @@
 
         <div class="container">
             <div class="submenu">
-                <a href="/hereevent/mypage"><h2>내 정보</h2></a>
-                <a href="/hereevent/myinterest"><h2>관심 내역</h2></a>
-                <a class="on" href="/hereevent/myreview"><h2>후기 관리</h2></a>
-                <a href="/hereevent/myevent"><h2>행사 내역</h2></a>
+                <a href="/hereevent/mypage"><h5>프로필</h5></a>
+                <a href="/hereevent/myinterest"><h5>관심</h5></a>
+                <a class="on" href="/hereevent/myreview"><h5>후기</h5></a>
+                <a href="/hereevent/myevent"><h5>이벤트</h5></a>
             </div>
         </div>
 
         <!-- Section Title -->
         <div class="container section-title">
-            <h2>[[${reviewList.size()}]] Reviews</h2>
-            <p>작성한 리뷰 확인, 수정, 삭제</p>
+            <h2>작성한 후기 [[${reviewList.size()}]] 개</h2>
         </div><!-- End Section Title -->
 
         <div class="container">
 
-            <div class="blog-comments">
+            <div class="review-comments">
                 <div th:id="|comment-${i.count}|" class="comment" th:each="review, i : ${reviewList}">
                     <div class="d-flex">
-                        <div class="col-md-2 align-self-center event-img">
+                        <div class="col-md-2 align-self-start review-event-img">
                             <img th:if="${review.img_path == null}"
-                                 th:src="@{/images/profile/default_profile.svg}" alt="default_event">
+                                 th:src="@{/images/default_img.png}" alt="default_event">
                             <img th:unless="${review.img_path == null}"
                                  th:src="|@{/download/event/}${review.img_path}|" th:alt="${review.img_path}">
                         </div>
                         <div class="col-md-10 row justify-content-between review-content">
-                            <h5 class="col">[[${review.name}]]</h5>
-                            <h5 class="col text-md-end buttons">
+                            <h5 class="col event-name">[[${review.name}]]</h5>
+                            <h6 class="col text-md-end buttons">
                                 <a th:href="|@{/event/}${review.event_no}|" class="reply">
                                     <i class="bi bi-reply-fill"></i>팝업 상세보기</a>
                                 <button th:onclick="|location.href='@{/myreview/update(review_no=${review.review_no})}'|" class="reply edit-review-btn">
                                     <i class="bi bi-pencil"></i>후기 수정하기</button>
                                 <button class="reply delete-review-btn" th:value="${review.review_no}">
                                     <i class="bi bi-trash"></i>후기 삭제하기</button>
-                            </h5>
+                            </h6>
 
                             <div class="rating readonly">
                                 <label class="rating-label rating-label-half">
@@ -141,7 +140,7 @@
                                 </label>
                             </div>
 
-                            <span th:text="${review.write_date}"></span>
+                            <span class="review-date" th:text="${review.write_date}"></span>
 
                             <div class="review-img">
                                 <div th:each="review_img : ${review.review_imgs}">

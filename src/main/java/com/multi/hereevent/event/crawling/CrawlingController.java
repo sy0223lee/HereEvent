@@ -12,6 +12,6 @@ public class CrawlingController {
     @GetMapping("/crawling")
     public String crawling(){
         service.insertEventInfo();
-        return "redirect:/";
+        return "redirect:/admin";
     }
 }

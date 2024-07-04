@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mainLayout}" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSS File -->
+    <link href="/hereevent/common/css/mywait.css" rel="stylesheet">
+
+    <title>MyWait</title>
+    <script>
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const status = params.get('status');
+            // alert(status)
+            if (status === 'visit') {
+                alert('입장되었습니다');
+            } else if (status === 'cancel') {
+                alert('취소되었습니다');
+            }
+        }
+    </script>
+</head>
+
+<body>
+<main layout:fragment="main" class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="/hereevent">Home</a></li>
+                    <li class="current">wait statement</li>
+                </ol>
+            </nav>
+            <h1>대기현황</h1>
+        </div>
+    </div><!-- End Page Title -->
+
+    <!-- Starter Section Section -->
+
+    <div class="container">
+        <div class="submenu">
+
+
+        </div>
+    </div>
+    <!-- Section Title -->
+    <div class="container section-title">
+        <h2>대기현황</h2>
+
+        <section class="event-details">
+            <div class="event-info">
+                <div class="event-image">
+                    <img th:src="@{'/download/event/' + ${event.img_path}}" th:alt="${firstImgPath}" alt="Event Image" />
+                </div>
+                <div class="event-details-text">
+                    <p><strong>이벤트 제목</strong> <span th:text="${event.name}"></span></p>
+
+                    <p><strong>이벤트 위치</strong> <span th:text="${event.addr}"></span></p>
+                </div>
+            </div>
+
+
+
+
+            <p>
+
+                <span class="waitperson"> 현재 대기 인원 <strong><span th:text="${waitingCount} + '명'"></span></strong></span>
+            </p>
+
+
+        </section>
+        </form>
+    </div>
+
+
+</main>
+
+</body>
+
+</html>

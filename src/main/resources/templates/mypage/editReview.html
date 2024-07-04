@@ -48,10 +48,11 @@
             <nav class="breadcrumbs">
                 <ol>
                     <li><a href="/hereevent">Home</a></li>
-                    <li class="current">마이페이지</li>
+                    <li><a href="/hereevent/mypage">마이페이지</a></li>
+                    <li class="current">후기 수정</li>
                 </ol>
             </nav>
-            <h1>마이페이지</h1>
+            <h1>후기 수정</h1>
         </div>
     </div><!-- End Page Title -->
 
@@ -66,15 +67,15 @@
                 <input type="hidden" class="review_no" name="review_no" th:value="${review.review_no}">
                 <input type="hidden" name="event_no" th:value="${review.event_no}">
                 <input type="hidden" name="member_no" th:value="${session.member.member_no}">
-                <div class="d-flex">
-                    <div class="col-md-2 align-self-center event-img">
+                <div class="d-flex edit-review">
+                    <div class="col-3 align-self-start event-img">
                         <img th:if="${review.img_path == null}"
-                             th:src="@{/images/profile/default_profile.svg}" alt="default_event">
+                             th:src="@{/images/default_img.png}" alt="default_event">
                         <img th:unless="${review.img_path == null}"
                              th:src="|@{/download/event/}${review.img_path}|" th:alt="${review.img_path}">
                     </div>
-                    <div class="col-md-10">
-                        <h5>[[${review.name}]]</h5>
+                    <div class="col-9 review-content">
+                        <h5 class="event-name">[[${review.name}]]</h5>
 
                         <div class="rating">
                             <label class="rating-label rating-label-half" for="starhalf">
@@ -129,12 +130,12 @@
                             </label>
                         </div>
 
-                        <span th:text="${review.write_date}"></span>
+                        <div class="review-date" th:text="${review.write_date}"></div>
 
                         <div class="review-img" id="review-img">
                             <div class="review-img-container" th:each="review_img : ${review.review_imgs}">
                                 <img th:src="|@{/download/review/}${review_img.img_path}|" th:alt="${review_img.img_path}">
-                                <button type="button" class="delete-review-img" th:value="${review_img.review_img_no}"><i class="bi bi-trash"></i></button>
+                                <button class="delete-review-img" th:value="${review_img.review_img_no}"><i class="bi bi-trash"></i></button>
                             </div>
                         </div>
 
@@ -157,7 +158,7 @@
 
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">후기 수정하기</button>
-                    <button type="button" onclick="location.href='/hereevent/myreview'" class="btn btn-secondary">취소</button>
+                    <button onclick="location.href='/hereevent/myreview'" class="btn btn-secondary">취소</button>
                 </div>
             </div>
 

@@ -5,10 +5,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HereEvent-MyEvent</title>
+
     <!-- CSS File -->
     <link href="/hereevent/common/css/mypage.css" rel="stylesheet">
 
-    <title>HereEvent-MyEvent</title>
+    <script>
+        $(document).ready(function() {
+            // 예약 취소 버튼
+            $('.cancel-btn').click(function () {
+                confirm("정말 예약을 취소하시겠습니까?")
+            });
+            // 예약 입장 버튼
+            $('.visit-btn').click(function () {
+               confirm("직원의 안내에 따라 입장 버튼을 눌러주시기 바랍니다.\n방문 완료 처리가 되면 다시 입장하실 수 없습니다.\n그래도 진행 하시겠습니까?")
+            });
+        });
+    </script>
 </head>
 <body>
 <main layout:fragment="main" class="main">
@@ -26,36 +39,97 @@
         </div>
     </div><!-- End Page Title -->
 
-    <!-- Starter Section Section -->
+    <!-- Starter Section -->
     <section id="starter-section" class="starter-section section">
 
         <div class="container">
             <div class="submenu">
-                <a href="/hereevent/mypage"><h2>내 정보</h2></a>
-                <a href="/hereevent/myinterest"><h2>관심 내역</h2></a>
-                <a href="/hereevent/myreview"><h2>후기 관리</h2></a>
-                <a class="on" href="/hereevent/myevent"><h2>행사 내역</h2></a>
+                <a href="/hereevent/mypage"><h5>프로필</h5></a>
+                <a href="/hereevent/myinterest"><h5>관심</h5></a>
+                <a href="/hereevent/myreview"><h5>후기</h5></a>
+                <a class="on" href="/hereevent/myevent"><h5>이벤트</h5></a>
             </div>
         </div>
 
         <!-- Section Title -->
         <div class="container section-title">
-            <h2>Starter Section</h2>
-            <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+            <h2>예약/대기 내역</h2>
         </div><!-- End Section Title -->
 
         <div class="container">
 
-            <ul class="profile-text-area">
-                <li><span>이름</span><p th:text="${session.member.name}"></p></li>
-                <li><span>닉네임</span><p th:text="${session.member.nick}"></p></li>
-                <li><span>이메일</span><p th:text="${session.member.email}"></p></li>
-                <li><span>연락처</span><p th:text="${session.member.tel}"></p></li>
-            </ul>
+            <div th:each="event : ${eventList}" class="event-container">
+                <div class="row">
+                    <div class="event-img col-3 align-self-start">
+                        <img th:if="${event.img_path == null}"
+                             th:src="@{/images/default_img.png}" alt="default_event">
+                        <img th:unless="${event.img_path == null}"
+                             th:src="|@{/download/event/}${event.img_path}|" th:alt="${event.img_path}">
+                    </div>
+
+                    <div class="event-info col-8">
+                        <div class="comment d-flex">
+                            <h5 class="align-self-center event-name" th:text="${event.name}"></h5>
+                            <h6 class="align-self-center">
+                                <a th:href="|@{/event/}${event.event_no}|" class="reply">
+                                <i class="bi bi-reply-fill"></i>팝업 상세보기</a></h6>
+                        </div>
+                        <div>
+                            <div class="event-info title">장소</div>
+                            <div class="event-addr" th:text="${event.addr}"></div>
+                        </div>
+                        <div>
+                            <th:block th:switch="${event.state}">
+                                <div th:case="reserve">
+                                    <div class="event-info title">예약일</div>
+                                    <div class="d-flex">
+                                        <div class="enter-date" th:text="${event.enter_date}"></div>
+                                        <div class="enter-time" th:text="${event.enter_time}"></div>
+                                    </div>
+                                </div>
+                                <div th:case="wait">
+                                    <div class="event-info title">대기일</div>
+                                    <div class="enter-date" th:text="${event.enter_date}"></div>
+                                </div>
+                                <div th:case="visit">
+                                    <div class="event-info title">방문일</div>
+                                    <div class="d-flex">
+                                        <div class="enter-date" th:text="${event.enter_date}"></div>
+                                        <div class="enter-time" th:if="${event.enter_time != null}" th:text="${event.enter_time}"></div>
+                                    </div>
+                                </div>
+                            </th:block>
+
+
+                        </div>
+                    </div>
+
+                    <div class="event-state col-1">
+                        <th:block th:switch="${event.state}">
+                            <div th:case="reserve">예약</div>
+                            <div th:case="wait">대기</div>
+                            <div th:case="visit">방문</div>
+                            <div th:case="cancel">취소</div>
+                        </th:block>
+                    </div>
+                </div>
+
+                <th:block th:switch="${event.state}">
+                    <div th:case="reserve" class="event-btn d-flex justify-content-center">
+                            <button class="col-3 btn-primary cancel-btn">에약 취소</button>
+                            <button class="col-3 btn-secondary visit-btn">입장</button>
+                    </div>
+                    <div th:case="wait" class="event-btn d-flex justify-content-center">
+                        <button th:onclick="|location.href='@{/wait/mywait/{event_no}/{wait_no}(event_no=${event.event_no},wait_no=${event.index_no})}'|"
+                                class="col-3 btn-primary wait-state-btn">대기 현황 확인</button>
+                    </div>
+                </th:block>
+
+            </div>
 
         </div>
 
-    </section><!-- /Starter Section Section -->
+    </section><!-- /Starter Section -->
 
 </main>
 </body>

@@ -49,11 +49,6 @@ public class ReviewServiceImpl implements ReviewService{
         dao.deleteReviewImg(review_img_no);
     }
 
-    @Override
-    public List<ReviewDTO> selectAll() {
-        return dao.selectAll();
-    }
-
     @Transactional
     @Override
     public ReviewDTO selectReviewWithEventImg(int review_no) {

@@ -24,6 +24,10 @@ public class WaitDAOImpl implements WaitDAO {
     }
 
     @Override
+    public List<WaitDTO> getAllWaitingList() {
+        return sqlSession.selectList("com.multi.hereevent.wait.getAllWaitingList");
+    }
+    @Override
     public WaitDTO findByWaitTelAndState(String wait_tel) {
 //        Map<String, String> params = new HashMap<>();
 //        params.put("wait_tel", wait_tel);

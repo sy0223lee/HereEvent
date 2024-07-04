@@ -11,11 +11,11 @@
     <title>HereEvent-MyInterest</title>
     <script type="text/javascript" th:inline="javascript">
         $(document).ready(function() {
-            $(".MuiButton-contained.default").click(function () {
+            $(".category-btn.default").click(function () {
                 let category_no = $(this).val();
                 location.href = "/hereevent/myinterest/category/insert?category_no=" + $(this).val();
             });
-            $(".MuiButton-contained.picked").click(function () {
+            $(".category-btn.picked").click(function () {
                 let category_no = $(this).val();
                 location.href = "/hereevent/myinterest/category/delete?category_no=" + $(this).val();
             });
@@ -46,60 +46,61 @@
         </div>
     </div><!-- End Page Title -->
 
-    <!-- Starter Section Section -->
+    <!-- Starter Section -->
     <section id="starter-section" class="starter-section section">
 
         <div class="container">
             <div class="submenu">
-                <a href="/hereevent/mypage"><h2>내 정보</h2></a>
-                <a class="on" href="/hereevent/myinterest"><h2>관심 내역</h2></a>
-                <a href="/hereevent/myreview"><h2>후기 관리</h2></a>
-                <a href="/hereevent/myevent"><h2>행사 내역</h2></a>
+                <a href="/hereevent/mypage"><h5>프로필</h5></a>
+                <a class="on" href="/hereevent/myinterest"><h5>관심</h5></a>
+                <a href="/hereevent/myreview"><h5>후기</h5></a>
+                <a href="/hereevent/myevent"><h5>이벤트</h5></a>
             </div>
         </div>
 
-        <!-- Section Title -->
-        <div class="container section-title">
-            <h2>관심 있는 카테고리와 팝업 스토어</h2>
-            <p>관심 있는 카테고리와 팝업 스토어를 추가해보세요.<br>
-                저희가 그에 맞게 추천 해드릴게요.</p>
-        </div><!-- End Section Title -->
-
         <div class="container">
 
-            <div class="interest-category">
-                <h3>관심 카테고리</h3>
-                <div class="MuiStack-root category-select css-13mr7ti-MuiStack-root">
-                    <button type="button" class="MuiButtonBase-root MuiButton-root MuiButton-contained" tabindex="0"
-                            th:each="category, i : ${categoryList}" th:value="${category.category_no}"
+            <!-- Section Title -->
+            <div class="container section-title">
+                <h2>관심 카테고리 선택/해제</h2>
+            </div><!-- End Section Title -->
+
+            <div class="interest-category d-flex justify-content-center">
+
+                <div class="category-select text-center">
+                    <button type="button" class="category-btn"
+                            th:each="category : ${categoryList}" th:value="${category.category_no}"
                             th:classappend="${category.member_no == 0} ? 'default' : 'picked'">
-                        <span class="MuiButton-label" th:text="${category.name}"></span>
-                        <span class="MuiTouchRipple-root"></span>
+                        <span th:text="${category.name}"></span>
                     </button>
                 </div>
             </div>
 
+            <!-- Section Title -->
+            <div class="container section-title">
+                <h2>관심 이벤트 [[${eventList.size()}]]개</h2>
+            </div><!-- End Section Title -->
+
             <div class="interest-event">
-                <h3>관심 팝업</h3>
-                <div class="blog-comments row">
-                    <div th:id="|comment-${i.count}|" class="comment col-md-6" th:each="event, i : ${eventList}">
+                <div class="blog-comments row justify-content-evenly">
+                    <div th:id="|comment-${i.count}|" class="comment col-md-5" th:each="event, i : ${eventList}">
                         <div class="d-flex">
-                            <div class="col-md-3 align-self-center interest-event-img">
-                                <img th:if="${event.img_path == null}"
-                                     th:src="@{/images/event/default_profile.svg}" alt="default_profile">
-                                <img th:unless="${event.img_path == null}"
-                                     th:src="|@{/download/event/}${event.img_path}|" alt="member_profile">
+                            <div class="col-md-3 align-self-start interest-event-img">
+                                <img th:if="${event.img_path != null}" th:src="|@{/download/event/}${event.img_path}|" th:alt="${event.img_path}">
+                                <img th:unless="${event.img_path != null}" th:src="@{/images/default_img.png}" alt="default_img">
                             </div>
                             <div class="col-md-9">
-                                <h5>[[${event.name}]]</h5>
-                                <h5><a th:href="|@{/event/}${event.event_no}|" class="reply">
-                                    <i class="bi bi-reply-fill"></i>팝업 상세보기</a>
-                                    <input type="hidden" class="member" th:value="${session.member}">
-                                    <button class="default interest-btn" th:if="${event.event_interest_no == 0}" th:value="${event.event_no}">♡</button>
-                                    <button class="picked interest-btn" th:unless="${event.event_interest_no == 0}" th:value="${event.event_no}">♥</button>
-                                </h5>
+                                <div class="row justify-content-between">
+                                    <h5 class="event-name col-6 align-self-center">[[${event.name}]]</h5>
+                                    <h6 class="col-6 d-flex justify-content-end"><a th:href="|@{/event/}${event.event_no}|" class="reply align-self-center">
+                                        <i class="bi bi-reply-fill"></i>팝업 상세보기</a>
+                                        <input type="hidden" class="member" th:value="${session.member}">
+                                        <button class="default interest-btn" th:if="${event.event_interest_no == 0}" th:value="${event.event_no}">♡</button>
+                                        <button class="picked interest-btn" th:unless="${event.event_interest_no == 0}" th:value="${event.event_no}">♥</button>
+                                    </h6>
+                                </div>
                                 <p>[[${event.start_date}]] ~ [[${event.end_date}]]</p>
-                                <p th:text="${event.addr}"></p>
+                                <p class="event-addr" th:text="${event.addr}"></p>
                             </div>
                         </div>
                     </div>
@@ -108,7 +109,7 @@
 
         </div>
 
-    </section><!-- /Starter Section Section -->
+    </section><!-- /Starter Section -->
 
 </main>
 </body>
