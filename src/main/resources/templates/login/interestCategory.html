@@ -6,7 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/hereevent/common/css/mypage.css" rel="stylesheet">
-    <title>카테고리 선택</title>
+    <link href="/hereevent/common/css/admin.css" rel="stylesheet">
+    <title>HereEvent-SelectInterest</title>
 
     <script type="text/javascript" th:inline="javascript">
         $(document).ready(function() {
@@ -26,9 +27,12 @@
 <main layout:fragment="main" class="main">
     <section id="starter-section" class="starter-section section">
         <div class="container">
+                <!-- Section Title -->
+                <div class="container section-title">
+                    <h2>관심 카테고리 선택</h2>
+                    <h5>관심있는 카테고리를 선택하세요.</h5>
+                </div><!-- End Section Title -->
             <div class="interest-category">
-                <h1>관심 카테고리 선택</h1>
-
                     <input type="hidden" name="member_no" th:value="${session.member.member_no}">
                     <div class="MuiStack-root category-select css-13mr7ti-MuiStack-root">
                         <button type="button" class="MuiButtonBase-root MuiButton-root MuiButton-contained" tabindex="0"
@@ -38,9 +42,7 @@
                             <span class="MuiTouchRipple-root"></span>
                         </button>
                     </div>
-                <form action="/hereevent/interestCategory" method="post">
-                    <button type="submit">가입완료</button>
-                </form>
+                <button class="btn btn-primary" onclick="location.href='/hereevent/main'">홈으로 가기</button>
             </div>
         </div>
     </section>

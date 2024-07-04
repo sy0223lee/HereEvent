@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,10 +72,13 @@ public class EventServiceImpl implements EventService {
             eventlist = eventDAO.selectFourEventByCategory(category.getCategory_no());
             //System.out.println("eventlist=====>"+eventlist.size());
             // category_no로 event 4개 조회해서 fourEventCategoryDTO에 저장
-            fourEventDTO.setCategory_no(category.getCategory_no());
-            fourEventDTO.setName(category.getName());
-            fourEventDTO.setEventList(eventlist);
-            fourList.add(fourEventDTO);
+            if(!eventlist.isEmpty()){
+                fourEventDTO.setCategory_no(category.getCategory_no());
+                fourEventDTO.setName(category.getName());
+                fourEventDTO.setEventList(eventlist);
+                fourList.add(fourEventDTO);
+            }
+
             //System.out.println("service::fourList=====>"+fourList);
         }
 
@@ -140,6 +144,7 @@ public class EventServiceImpl implements EventService {
         return eventDAO.checkReserveLimit(event_no);
     }
 
+
     // 크롤링
     @Override
     public int insertCrawlingEvent(EventDTO event) {
@@ -171,6 +176,15 @@ public class EventServiceImpl implements EventService {
         int count = eventDAO.countEventWithPage(params);
         params.put("offset", page.getOffset());
         params.put("pageSize", page.getPageSize());
+
+        if (page.getSort().isSorted()) {
+            String sort = page.getSort().iterator().next().getProperty();
+            System.out.println("sort==>"+sort);
+            String direction = page.getSort().iterator().next().getDirection().name();
+            System.out.println("direction===>"+direction);
+            params.put("sort", sort);
+            params.put("direction", direction);
+        }
         List<EventDTO> eventList = eventDAO.selectEventWithPage(params);
         return new PageImpl<>(eventList, page, count);
     }

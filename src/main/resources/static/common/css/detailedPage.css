@@ -92,7 +92,7 @@
 .container .fixed {
     position: sticky;
     top: 100px;
-    z-index: 1000;
+
 }
 .submenu > a {
     display: block;
@@ -136,9 +136,6 @@
     display: inline-block;
 }
 .interest-btn{
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
     background: none;
     padding: 5px 10px;
     border: none;
@@ -146,6 +143,7 @@
     font-weight: bolder;
     color: var(--accent-color);
     text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
+
 }
 
 /* 상세페이지 - 리뷰 */
@@ -176,6 +174,23 @@
 }
 
 /* 상세페이지 - 예약 */
+.time-button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: pink;
+    color: black;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+.time-button:hover {
+    color: white;
+    background-color: #f0f0f0;
+}
+.selected-button {
+    background-color: pink;
+    color: black;
+}
+
 .reservation{
     text-align: center;
 }
@@ -248,13 +263,15 @@
     background-color: var(--accent-color);
     color: white;
 }
-#calendar .disabled {
+#calendar .within-event.disabled {
+    background: none;
     color: #aaa;
     cursor: not-allowed;
 }
 
 #calendar .within-event {
     background-color: pink;
+    cursor: pointer;
 }
 .reservation form {
     margin-bottom: 20px;
