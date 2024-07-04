@@ -21,16 +21,15 @@
                         <li th:if="${type == 'all'}" class="current">전체 이벤트</li>
                     </ol>
                 </nav>
-                <h1 th:if="${type == 'star'}">별점이 높은 이벤트 TOP 10</h1>
-                <h1 th:if="${type == 'popular'}">인기가 많은 이벤트 TOP 10</h1>
-                <h1 th:if="${type == 'open'}">오픈 예정 이벤트</h1>
-                <h1 th:if="${type == 'all'}">전체 이벤트</h1>
+                <h1 th:if="${type == 'star'}">별점 순 이벤트 목록</h1>
+                <h1 th:if="${type == 'popular'}">인기 순 이벤트 목록</h1>
+                <h1 th:if="${type == 'open'}">오픈 예정 이벤트 목록</h1>
+                <h1 th:if="${type == 'all'}">전체 이벤트 목록</h1>
             </div>
         </div>
         <!-- End Page Title -->
 
         <div class="container d-flex justify-content-center event-select">
-            <input type="hidden" name="tag" th:value="${type}">
             <!-- 오픈 예정인 이벤트는 상태 버튼 표시 X -->
             <div th:unless="${type == 'open'}" class="state">
                 상태
@@ -59,19 +58,21 @@
         </div>
 
         <div id="list-box" class="event-list container">
-            <div th:each="event : ${eventList}" class="card" style="width: 18rem;">
-               <img th:src="@{/download/event/{img_path}(img_path=${event.img_path})}" class="card-img-top">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${event.name}"></h5>
-                    <p class="card-text"><span th:text="${event.start_date}"/> ~ <span th:text="${event.end_date}"/></p>
-                    <p class="card-text" th:text="${event.addr}"></p>
-                    <a th:href="@{/event/{event_no}(event_no=${event.event_no})}" class="btn btn-primary">상세페이지</a>
-                </div>
-            </div>
+            <!-- ajax 로 받아온 데이터 출력 -->
         </div>
 
         <!-- head 태그에 추가 시 동작 X, layout 이 적용되는 태그 내에 추가 시 정상 작동 -->
         <script type="text/javascript" src="/hereevent/common/js/cardList.js"></script>
+        <script type="text/javascript" th:inline="javascript">
+            $(document).ready(function() {
+                printEventList([[${type}]]);
+                $(".btn-check").each(function () {
+                    $(this).click(function () {
+                        printEventList([[${type}]]);
+                    });
+                });
+            })
+        </script>
     </main>
 
 </body>

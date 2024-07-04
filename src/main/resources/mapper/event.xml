@@ -117,9 +117,9 @@
         FROM event e LEFT JOIN review r ON e.event_no = r.event_no
         <where>
             e.start_date > curdate()
-            <if test="type != null and type.size > 0">
+            <if test="list != null and list.size > 0">
                 and
-                <foreach collection="type" item="val" separator="or" open="(" close=")">
+                <foreach collection="list" item="val" separator="or" open="(" close=")">
                     <if test='val == "reserve"'> <!-- 사전예약 가능 -->
                         (e.type = "reserve" or e.type = "both")
                     </if>

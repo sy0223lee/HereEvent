@@ -51,19 +51,13 @@ public class EventController {
 
     //종류별 목록페이지
     @GetMapping("/list")
-    public String listpage(@RequestParam("type") String type, Model model){
+    public String listPage(@RequestParam("type") String type, Model model){
         model.addAttribute("type", type);
-        switch (type) {
-            case "star" -> model.addAttribute("eventList", eventService.getListByStarRank());
-            case "popular" -> model.addAttribute("eventList", eventService.getPopularEvent());
-            case "open" -> model.addAttribute("eventList", eventService.getOpenEvent());
-            case "all" -> model.addAttribute("eventList", eventService.getAllEvent());
-        }
         return "main/listPage";
     }
     @PostMapping("/list")
     @ResponseBody
-    public List<EventDTO> selectEventWithMap(@RequestBody Map<String, Object> data){
+    public List<EventDTO> selectEventListByRank(@RequestBody Map<String, Object> data){
         String tag = (String) data.get("tag");
         ArrayList<String> state =  (ArrayList<String>) data.get("state");
         ArrayList<String> type = (ArrayList<String>) data.get("type");
@@ -78,13 +72,19 @@ public class EventController {
     }
   
     //카테고리별 리스트
-    @GetMapping("/event/list/{category_no}")
-    public String listCategory(@PathVariable("category_no") int category_no, Model model){
-        List<EventDTO> eventlist = eventService.selectEventByCategoryNo(category_no);
+    @GetMapping("/list/category/{category_no}")
+    public String listCategoryPage(@PathVariable("category_no") int category_no, Model model){
         String categoryName = categoryService.selectCategoryName(category_no);
-        model.addAttribute("eventlist",eventlist);
+        model.addAttribute("categoryNo", category_no);
         model.addAttribute("categoryName", categoryName);
         return "main/categoryListPage";
+    }
+    @PostMapping("/list/category/{category_no}")
+    @ResponseBody
+    public List<EventDTO> selectEventListByCategory(@PathVariable("category_no") int category_no, @RequestBody Map<String, Object> data){
+        ArrayList<String> state =  (ArrayList<String>) data.get("state");
+        ArrayList<String> type = (ArrayList<String>) data.get("type");
+        return eventService.getEventByCategoryWithCondition(category_no, state, type);
     }
 
     //행사검색

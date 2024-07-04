@@ -21,27 +21,34 @@
                 <div>
                     <h1>[[${categoryName}]]</h1>
                 </div>
-                <!--<h1 th:if="${category_no == 1}">캐릭터</h1>
-                <h1 th:if="${category_no == 2}">뷰티</h1>
-                <h1 th:if="${category_no == 3}">웹툰</h1>
-                <h1 th:if="${category_no == 4}">생필품</h1>
-                <h1 th:if="${category_no == 5}">가구</h1>
-                <h1 th:if="${category_no == 6}">패션</h1>
-                <h1 th:if="${category_no == 7}">유튜브</h1>
-                <h1 th:if="${category_no == 8}">식품</h1>
-                <h1 th:if="${category_no == 9}">영화</h1>
-                <h1 th:if="${category_no == 10}">기타</h1>
-                <h1 th:if="${category_no == 20}">애니메이션</h1>
-                <h1 th:if="${category_no == 21}">드라마</h1>
-                <h1 th:if="${category_no == 22}">예술</h1>
-                <h1 th:if="${category_no == 23}">게임</h1>
-                <h1 th:if="${category_no == 24}">연예인</h1>
-                <h1 th:if="${category_no == 25}">스포츠</h1>
-                <h1 th:if="${category_no == 26}">지역</h1>
-                <h1 th:if="${category_no == 27}">식물</h1>-->
             </div>
         </div>
         <!-- End Page Title -->
+
+        <div class="container d-flex justify-content-center event-select">
+            <div class="state">
+                상태
+                <input value="still" type="checkbox" class="btn-check" name="state" id="still" checked>
+                <label class="state-btn" for="still">진행중</label> <!-- 기본값 -->
+
+                <input value="open" type="checkbox" class="btn-check" name="state" id="open">
+                <label class="state-btn" for="open">오픈예정</label>
+
+                <input value="end" type="checkbox" class="btn-check" name="state" id="end">
+                <label class="state-btn" for="end">종료</label>
+            </div>
+            <div class="type">
+                방식
+                <input value="reserve" type="checkbox" class="btn-check" name="type" id="reserve">
+                <label class="type-btn" for="reserve">사전예약</label>
+
+                <input value="wait" type="checkbox" class="btn-check" name="type" id="wait">
+                <label class="type-btn" for="wait">현장대기</label>
+
+                <input value="both" type="checkbox" class="btn-check" name="type" id="both">
+                <label class="type-btn" for="both">사전예약+현장대기</label>
+            </div>
+        </div>
 
         <div id="list-box" class="container">
             <div th:each="event : ${eventlist}" class="card" style="width: 18rem;">
@@ -54,6 +61,20 @@
                 </div>
             </div>
         </div>
+
+        <!-- head 태그에 추가 시 동작 X, layout 이 적용되는 태그 내에 추가 시 정상 작동 -->
+        <script type="text/javascript" src="/hereevent/common/js/cardList.js"></script>
+        <script type="text/javascript" th:inline="javascript">
+            $(document).ready(function() {
+                console.log([[${category_no}]]);
+                printCategoryList([[${category_no}]]);
+                $(".btn-check").each(function () {
+                    $(this).click(function () {
+                        printCategoryList([[${category_no}]]);
+                    });
+                });
+            })
+        </script>
     </main>
 </body>
 </html>

@@ -75,13 +75,13 @@
                     <div th:each="four:${fourlist}" class="swiper-slide category-list">
                         <div class="category-imgs row row-cols-2">
                             <th:block th:each="event, i : ${four.eventList}">
-                                <img class="img-fluid col" th:onclick="|location.href='@{/event/list/}${four.category_no}'|"
+                                <img class="img-fluid col"
                                      th:if="${event.img_path != null}" th:src="|@{/download/event/}${event.img_path}|" th:alt="${event.img_path}">
-                                <img class="img-fluid col" th:onclick="|location.href='@{/event/list/}${four.category_no}'|"
+                                <img class="img-fluid col"
                                      th:unless="${event.img_path != null}" th:src="@{/images/default_img.png}" alt="default_img">
                             </th:block>
                         </div>
-                        <div class="overlay d-flex" th:onclick="|location.href='@{/event/list/}${four.category_no}'|">
+                        <div class="overlay d-flex" th:onclick="|location.href='@{/list/category/}${four.category_no}'|">
                             <h3 class="category-name">#[[${four.name}]]</h3>
                         </div><!--overay end-->
                     </div>

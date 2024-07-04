@@ -198,12 +198,12 @@
 
         $(document).ready(function() {
             // 페이지 로딩 시 기본 이벤트 출력
-            printList(map, markers, markerImg);
+            printEventList(map, markers, markerImg);
 
             // state 버튼 클릭 시 해당 이벤트 출력
             $(".btn-check").each(function () {
                 $(this).click(function () {
-                    printList(map, markers, markerImg);
+                    printEventList(map, markers, markerImg);
                 });
             });
         });
