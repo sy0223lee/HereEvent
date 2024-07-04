@@ -31,9 +31,9 @@
                             <input type="hidden" class="write-event-no" th:value="${review.event_no}">
                             <h5 th:text="${review.nick}"></h5>
                             <h5 th:if="${session.member != null and session.member.member_no == review.member_no}">
-                                <button class="reply edit-review-btn" th:value="${review.review_no}">
+                                <button type="button" class="reply edit-review-btn" th:value="${review.review_no}">
                                     <i class="bi bi-pencil"></i></button>
-                                <button class="reply delete-review-btn" th:value="${review.review_no}">
+                                <button type="button" class="reply delete-review-btn" th:value="${review.review_no}">
                                     <i class="bi bi-trash"></i></button>
                             </h5>
                         </div>

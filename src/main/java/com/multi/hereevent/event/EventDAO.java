@@ -15,7 +15,7 @@ public interface EventDAO {
     //관리자페이지
     int insertEvent(EventDTO event); //행사 등록
     int updateEvent(EventDTO event); // 업데이트
-    int deleteEvent(int event_no); // 삭제
+    int deleteEvent(List<Integer> eventNo); // 삭제
     List<EventDTO> selectAll(); //이벤트 전체조회
 
     List<EventDTO> searchEvent(String keyword); //행사 이름 검색

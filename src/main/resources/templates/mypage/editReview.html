@@ -135,7 +135,7 @@
                         <div class="review-img" id="review-img">
                             <div class="review-img-container" th:each="review_img : ${review.review_imgs}">
                                 <img th:src="|@{/download/review/}${review_img.img_path}|" th:alt="${review_img.img_path}">
-                                <button class="delete-review-img" th:value="${review_img.review_img_no}"><i class="bi bi-trash"></i></button>
+                                <button type="button" class="delete-review-img" th:value="${review_img.review_img_no}"><i class="bi bi-trash"></i></button>
                             </div>
                         </div>
 
@@ -158,7 +158,7 @@
 
                 <div class="text-center">
                     <button type="submit" class="btn-primary">후기 수정하기</button>
-                    <button onclick="location.href='/hereevent/myreview'" class="btn btn-secondary">취소</button>
+                    <button type="button" onclick="location.href='/hereevent/myreview'" class="btn btn-secondary">취소</button>
                 </div>
             </div>
 

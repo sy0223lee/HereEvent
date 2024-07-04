@@ -126,8 +126,8 @@
 
                         <div>
                             <h2 class="title"><span th:text="${event.name}"></span>
-                                <button class="default interest-btn" th:if="${event.event_interest_no == 0}" th:value="${event.event_no}">♡</button>
-                                <button class="picked interest-btn" th:unless="${event.event_interest_no == 0}" th:value="${event.event_no}">♥</button>
+                                <button type="button" class="default interest-btn" th:if="${event.event_interest_no == 0}" th:value="${event.event_no}">♡</button>
+                                <button type="button" class="picked interest-btn" th:unless="${event.event_interest_no == 0}" th:value="${event.event_no}">♥</button>
 
                             </h2>
 
