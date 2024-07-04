@@ -12,4 +12,5 @@
 		from event_time
 		where event_no = #{event_no} AND day=#{day}
 	</select>
+	<select id="getEventTime" resultType="eventTime"> select * from event_time where event_no = #{event_no} </select>
 </mapper>

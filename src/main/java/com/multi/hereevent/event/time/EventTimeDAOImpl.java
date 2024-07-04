@@ -25,4 +25,8 @@ public class EventTimeDAOImpl implements EventTimeDAO {
         param.put("day",day);
         return sqlSession.selectOne("com.multi.hereevent.event.time.getEventTimeByEventNo", param);
     }
+    @Override
+    public List<EventTimeDTO> getEventTime(int event_no) {
+        return sqlSession.selectList("com.multi.hereevent.event.time.getEventTime", event_no);
+    }
 }

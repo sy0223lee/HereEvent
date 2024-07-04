@@ -3,11 +3,13 @@ package com.multi.hereevent.event;
 import com.multi.hereevent.dto.EventDTO;
 import com.multi.hereevent.dto.MemberEventDTO;
 import com.multi.hereevent.dto.ReserveDTO;
+import com.multi.hereevent.dto.ReviewDTO;
 
 
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
+import java.util.Map;
 
 public interface EventDAO {
     //관리자페이지
@@ -16,7 +18,7 @@ public interface EventDAO {
     //업데이트
     int updateEvent(EventDTO event);
     //삭제
-    int deleteEvent(int event_no);
+    int deleteEvent(List<Integer> eventNo);
     //이벤트 전체조회
     List<EventDTO> selectAll();
 
@@ -60,4 +62,7 @@ public interface EventDAO {
     List<MemberEventDTO> selectMemberEvent(int member_no);
     // 오늘로부터 2주 내에 오픈 예정인 관심 카테고리 이벤트 조회
     List<EventDTO> selectNewEvent(int member_no);
+    // 페이징 처리
+    int countEventWithPage(Map<String, Object> params);
+    List<EventDTO> selectEventWithPage(Map<String, Object> params);
 }

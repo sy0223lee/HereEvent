@@ -1,21 +1,21 @@
 package com.multi.hereevent.event;
 
-import com.multi.hereevent.dto.EventDTO;
-import com.multi.hereevent.dto.FourEventByCategoryDTO;
-import com.multi.hereevent.dto.MemberEventDTO;
-import com.multi.hereevent.dto.ReserveDTO;
+import com.multi.hereevent.dto.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
+import java.util.Map;
 
 public interface EventService {
     //관리자페이지
     //행사 등록
     int insertEvent(EventDTO event);
     int updateEvent(EventDTO event);
-    int deleteEvent(int event_no);
+    int deleteEvent(List<Integer> eventNo);
     //모든 이벤트 가져오기
     List<EventDTO> selectAll();
     //행사이름 검색
@@ -57,4 +57,6 @@ public interface EventService {
     List<MemberEventDTO> selectMemberEvent(int member_no);
     // 오늘로부터 2주 내에 오픈 예정인 관심 카테고리 이벤트 조회
     List<EventDTO> selectNewEvent(int member_no);
+    // 페이징 처리
+    Page<EventDTO> selectEventWithPage(Map<String, Object> params, Pageable page);
 }

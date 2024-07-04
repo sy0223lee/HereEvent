@@ -92,7 +92,7 @@
 .container .fixed {
     position: sticky;
     top: 100px;
-    z-index: 1000;
+
 }
 .submenu > a {
     display: block;
@@ -136,9 +136,6 @@
     display: inline-block;
 }
 .interest-btn{
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
     background: none;
     padding: 5px 10px;
     border: none;
@@ -146,6 +143,7 @@
     font-weight: bolder;
     color: var(--accent-color);
     text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
+
 }
 
 /* 상세페이지 - 리뷰 */

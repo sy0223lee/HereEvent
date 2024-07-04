@@ -33,8 +33,8 @@ public class EventDAOImpl implements EventDAO{
         return sqlSession.selectList("com.multi.hereevent.event.selectAll");
     }
     @Override
-    public int deleteEvent(int event_no) {
-        return sqlSession.delete("com.multi.hereevent.event.deleteEvent", event_no);
+    public int deleteEvent(List<Integer> eventNo) {
+        return sqlSession.delete("com.multi.hereevent.event.deleteEvent", eventNo);
     }
 
     @Override
@@ -138,5 +138,14 @@ public class EventDAOImpl implements EventDAO{
     @Override
     public List<EventDTO> selectFourEventByCategory(int category_no) {
         return sqlSession.selectList("com.multi.hereevent.event.fourEventByCategory", category_no);
+    }
+    @Override
+    public int countEventWithPage(Map<String, Object> params) {
+        return sqlSession.selectOne("com.multi.hereevent.event.countEventWithPage", params);
+    }
+
+    @Override
+    public List<EventDTO> selectEventWithPage(Map<String, Object> params) {
+        return sqlSession.selectList("com.multi.hereevent.event.selectEventWithPage", params);
     }
 }

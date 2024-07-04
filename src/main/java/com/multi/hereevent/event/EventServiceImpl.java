@@ -3,12 +3,16 @@ package com.multi.hereevent.event;
 import com.multi.hereevent.category.CategoryDAO;
 import com.multi.hereevent.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +29,6 @@ public class EventServiceImpl implements EventService {
     @Override
     public int updateEvent(EventDTO event) {
         return dao.updateEvent(event);
-
     }
     @Override
     public List<EventDTO> selectAll() {
@@ -33,8 +36,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public int deleteEvent(int id) {
-        return dao.deleteEvent(id);
+    public int deleteEvent(List<Integer> eventNo) {
+        return dao.deleteEvent(eventNo);
     }
     @Override
     public List<EventDTO> searchEvent(String keyword) {
@@ -152,4 +155,20 @@ public class EventServiceImpl implements EventService {
         return dao.selectNewEvent(member_no);
     }
 
+    @Override
+    public Page<EventDTO> selectEventWithPage(Map<String, Object> params, Pageable page) {
+        int count = dao.countEventWithPage(params);
+        params.put("offset", page.getOffset());
+        params.put("pageSize", page.getPageSize());
+        if (page.getSort().isSorted()) {
+            String sort = page.getSort().iterator().next().getProperty();
+            System.out.println("sort==>"+sort);
+            String direction = page.getSort().iterator().next().getDirection().name();
+            System.out.println("direction===>"+direction);
+            params.put("sort", sort);
+            params.put("direction", direction);
+        }
+        List<EventDTO> eventList = dao.selectEventWithPage(params);
+        return new PageImpl<>(eventList, page, count);
+    }
 }
