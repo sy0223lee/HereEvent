@@ -34,4 +34,6 @@ public class MemberDTO {
         this.tel = tel;
         this.mgr = 0;
     }
+
+
 }

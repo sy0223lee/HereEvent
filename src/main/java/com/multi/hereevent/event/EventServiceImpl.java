@@ -74,10 +74,13 @@ public class EventServiceImpl implements EventService {
             eventlist = dao.selectFourEventByCategory(category.getCategory_no());
             //System.out.println("eventlist=====>"+eventlist.size());
             // category_no로 event 4개 조회해서 fourEventCategoryDTO에 저장
-            fourEventDTO.setCategory_no(category.getCategory_no());
-            fourEventDTO.setName(category.getName());
-            fourEventDTO.setEventList(eventlist);
-            fourList.add(fourEventDTO);
+            if(!eventlist.isEmpty()){
+                fourEventDTO.setCategory_no(category.getCategory_no());
+                fourEventDTO.setName(category.getName());
+                fourEventDTO.setEventList(eventlist);
+                fourList.add(fourEventDTO);
+            }
+
             //System.out.println("service::fourList=====>"+fourList);
         }
 

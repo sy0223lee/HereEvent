@@ -1,11 +1,14 @@
 package com.multi.hereevent.member;
 
-import com.multi.hereevent.dto.CategoryInterestDTO;
 import com.multi.hereevent.dto.MemberDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +52,7 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public int deleteMember(int member_no) {
-        return 0;
+        return dao.deleteMember(member_no);
     }
 
     @Override
@@ -66,5 +69,16 @@ public class MemberServiceImpl implements MemberService{
     public MemberDTO findMemberByEmail(String email) {
         return dao.findMemberByEmail(email);
     }
+
+    @Override
+    public Page<MemberDTO> selectMemberWithPage(Map<String, Object> params, Pageable page) {
+        int count = dao.countMemberWithPage(params);
+        params.put("offset", page.getOffset());
+        params.put("pageSize", page.getPageSize());
+        List<MemberDTO> memberList = dao.selectMemberWithPage(params);
+        return new PageImpl<>(memberList, page, count);
+    }
+
+
 
 }

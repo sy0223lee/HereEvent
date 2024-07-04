@@ -81,6 +81,7 @@ public class FileUploadService {
         return storeFilename;
     }
 
+
     // 크롤링한 이벤트 사진 저장
     public String uploadEventImg(String imgUrl) throws IOException {
         URL url = new URL(imgUrl);
