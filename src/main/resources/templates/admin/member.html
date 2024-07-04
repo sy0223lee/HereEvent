@@ -13,21 +13,23 @@
         $(document).ready(function() {
             pageBtn([[${totalPages}]], [[${pageNumber}]], [[${totalElements}]]);
 
-            $("#deleteOne").click(function () {
-                if (confirm("회원을 삭제하시겠습니까?") === true) {
-                    let form = document.createElement("form");
-                    let obj = document.createElement("input");
-                    obj.setAttribute("type", "hidden");
-                    obj.setAttribute("name", "member_no");
-                    obj.setAttribute("value", $(this).val());
+            $(".delete-btn").each(function (){
+                $(this).click(function () {
+                    if (confirm("회원을 삭제하시겠습니까?") === true) {
+                        let form = document.createElement("form");
+                        let obj = document.createElement("input");
+                        obj.setAttribute("type", "hidden");
+                        obj.setAttribute("name", "member_no");
+                        obj.setAttribute("value", $(this).val());
 
-                    form.appendChild(obj);
-                    form.setAttribute("method", "post");
-                    form.setAttribute("action", "/hereevent/admin/member/delete");
-                    document.body.appendChild(form);
-                    form.submit();
-                    alert("삭제되었습니다!");
-                }
+                        form.appendChild(obj);
+                        form.setAttribute("method", "post");
+                        form.setAttribute("action", "/hereevent/admin/member/delete");
+                        document.body.appendChild(form);
+                        form.submit();
+                        alert("삭제되었습니다!");
+                    }
+                });
             });
         });
     </script>
@@ -105,10 +107,10 @@
                             <div class="tel text-center" th:text="${member.tel}"></div>
                             <div class="reg-date text-center" th:text="${member.reg_date}"></div>
                             <div class="c-btn text-end">
-                                <button id="corOne" class="cor-btn btn btn-primary" onclick="location.href='/hereevent/admin/member/memberCor'">수정</button>
+                                <button class="cor-btn btn btn-primary" onclick="location.href='/hereevent/admin/member/memberCor'">수정</button>
                             </div>
                             <div class="d-btn text-end">
-                                <button id="deleteOne" class="delete-btn btn btn-primary" th:value="${member.member_no}">삭제</button>
+                                <button class="delete-btn btn btn-primary" th:value="${member.member_no}">삭제</button>
                             </div>
                         </div>
                     </div>

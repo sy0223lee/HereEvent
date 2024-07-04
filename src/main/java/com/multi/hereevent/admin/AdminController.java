@@ -53,7 +53,7 @@ public class AdminController {
         }
     }
 
-    /*회원등록버튼*/
+    /*회원등록버튼*//*
     @GetMapping("/admin/member/memberReg")
     public String register() {
         return "admin/memberReg";
@@ -78,7 +78,7 @@ public class AdminController {
         } else {
             return "common/errorPage";
         }
-    }
+    }*/
 
     /*회원수정버튼*/
     @GetMapping("/admin/member/memberCor")

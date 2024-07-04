@@ -69,7 +69,7 @@ public class FileUploadService {
         return storeFilename;
     }
 
-    public MemberImgDTO uploadMemberImg(MultipartFile multipartFile) throws IOException {
+    /*public MemberImgDTO uploadMemberImg(MultipartFile multipartFile) throws IOException {
         MemberImgDTO memberImgDTO = new MemberImgDTO();
         if(!multipartFile.isEmpty()) {
             String storeFilename = "";
@@ -84,7 +84,7 @@ public class FileUploadService {
         }
 
         return memberImgDTO;
-    }
+    }*/
 
     // 크롤링한 이벤트 사진 저장
     public String uploadEventImg(String imgUrl) throws IOException {

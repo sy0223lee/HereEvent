@@ -82,7 +82,7 @@ public class MemberDAOImpl implements MemberDAO {
         return sqlSession.selectList("com.multi.hereevent.member.selectMemberWithPage", params);
     }
 
-    @Override
+   /* @Override
     public int RegMember(MemberDTO member) {
         return sqlSession.insert("com.multi.hereevent.member.RegMember",member);
     }
@@ -90,6 +90,6 @@ public class MemberDAOImpl implements MemberDAO {
     @Override
     public int insertMemberImg(MemberImgDTO memberImgDTO) {
         return sqlSession.insert("com.multi.hereevent.member.InsertMemberImg",memberImgDTO);
-    }
+    }*/
 
 }

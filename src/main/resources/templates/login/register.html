@@ -54,7 +54,7 @@
 <main layout:fragment="main" class="main">
 <div class="signup-container">
     <h2>회원가입</h2>
-    <form action="/hereevent/insert" method="post">
+    <form action="/hereevent/insert" method="post" enctype="multipart/form-data">
         <label for="email">이메일</label>
         <input type="email" id="email" name="email" placeholder="이메일을 입력하세요">
         <div id="check-duplicate-email"></div>
@@ -76,7 +76,7 @@
         <input type="date" id="birth" name="birth" placeholder="생년월일을 입력하세요">
 
         <label for="profile-pic">프로필 사진</label>
-        <input type="file" id="profile-pic" name="profile-pic" accept="image/*">
+        <input type="file" id="profile-pic" name="profile_img" accept="image/*">
 
         <div class="extra-options">
             <label>
