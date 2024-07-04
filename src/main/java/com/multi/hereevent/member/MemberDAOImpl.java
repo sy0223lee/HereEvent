@@ -1,8 +1,6 @@
 package com.multi.hereevent.member;
 
-import com.multi.hereevent.dto.CategoryInterestDTO;
 import com.multi.hereevent.dto.MemberDTO;
-import com.multi.hereevent.dto.MemberImgDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;

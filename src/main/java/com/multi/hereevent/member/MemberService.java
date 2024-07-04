@@ -1,9 +1,6 @@
 package com.multi.hereevent.member;
 
-import com.multi.hereevent.dto.CategoryInterestDTO;
 import com.multi.hereevent.dto.MemberDTO;
-import com.multi.hereevent.dto.MemberImgDTO;
-import com.multi.hereevent.dto.ReviewDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

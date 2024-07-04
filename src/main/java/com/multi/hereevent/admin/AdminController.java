@@ -1,8 +1,6 @@
 package com.multi.hereevent.admin;
 
-import com.multi.hereevent.dto.CategoryInterestDTO;
 import com.multi.hereevent.dto.MemberDTO;
-import com.multi.hereevent.dto.MemberImgDTO;
 import com.multi.hereevent.fileupload.FileUploadService;
 import com.multi.hereevent.member.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @Controller
