@@ -113,9 +113,19 @@ public class ReviewController {
         return "admin/review";
     }
     /*상세보기 삭제버튼*/
-    @PostMapping("/admin/review/delete")
-    public String deleteAdminReview(@RequestParam("review_no") String review_no){
+    @PostMapping("/admin/review/deleteOne")
+    public String deleteOneAdminReview(@RequestParam("review_no") String review_no){
         int result = reviewService.deleteReview(Integer.parseInt(review_no));
+        if(result > 0){
+            return "redirect:/admin/review";
+        }else {
+            return "common/errorPage";
+        }
+    }
+    /*선택 삭제기능*/
+    @PostMapping("/admin/review/delete")
+    public String deleteAdminReview(@RequestParam("reviewNo") List<Integer> reviewNo){
+        int result = reviewService.deleteReviewSelect(reviewNo);
         if(result > 0){
             return "redirect:/admin/review";
         }else {

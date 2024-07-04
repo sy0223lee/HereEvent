@@ -93,4 +93,9 @@ public class ReviewServiceImpl implements ReviewService{
         }
         return new PageImpl<>(reviewList, page, count);
     }
+
+    @Override
+    public int deleteReviewSelect(List<Integer> reviewNo) {
+        return dao.deleteReviewSelect(reviewNo);
+    }
 }
