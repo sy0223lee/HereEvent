@@ -51,7 +51,9 @@
 
             <div class="container review-container">
                 <div class="d-flex align-items-center justify-content-between review-search">
+                  
                     <button class="btn btn-primary" onclick="submitDeleteForm()">선택 삭제</button>
+                  
                     <div class="radio-group">
                         <input type="radio" id="sortEventNo" name="sort"
                                value="event_no,DESC" onclick="changeSort('event_no,DESC')" th:checked="${sort == 'event_no,DESC'}">
@@ -60,6 +62,7 @@
                                value="end_date,DESC" onclick="changeSort('end_date,DESC')" th:checked="${sort == 'end_date,DESC'}">
                         <label class="form-label" for="sortEndDate">종료일자 순</label>
                     </div>
+
                     <div class="search-widget">
                         <form action="/hereevent/admin/event" method="get" class="d-flex justify-content-start">
                             <select name="type">

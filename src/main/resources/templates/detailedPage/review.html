@@ -23,7 +23,7 @@
                         <img th:if="${review.img_path == null}"
                              th:src="@{/images/default_img.png}" alt="default_profile">
                         <img th:unless="${review.img_path == null}"
-                             th:src="|@{/download/profile/}${review.img_path}|" alt="member_profile">
+                             th:src="|@{/download/profile/}${review.img_path}|" th:alt="${review.img_path}">
                     </div>
                     <div class="flex-grow-1">
                         <div class="d-flex justify-content-between">
@@ -116,7 +116,7 @@
                             <img th:if="${session.member.img_path == null}"
                                  th:src="@{/images/default_img.png}" alt="default_profile">
                             <img th:unless="${session.member.img_path == null}"
-                                 th:src="|@{/download/profile/}${session.member.img_path}|" alt="member_profile">
+                                 th:src="|@{/download/profile/}${session.member.img_path}|" th:alt="${session.member.img_path}">
                         </div>
                         <div class="col-md-10 form-group">
                             <h4 th:text="${session.member.nick}"></h4>
@@ -181,7 +181,7 @@
                     </div>
 
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Post Review</button>
+                        <button type="submit" class="btn-primary">Post Review</button>
                     </div>
 
                 </form>

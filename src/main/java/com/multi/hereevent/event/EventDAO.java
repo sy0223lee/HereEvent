@@ -13,30 +13,26 @@ import java.util.Map;
 
 public interface EventDAO {
     //관리자페이지
-    //행사 등록
-    int insertEvent(EventDTO event);
-    //업데이트
-    int updateEvent(EventDTO event);
-    //삭제
-    int deleteEvent(List<Integer> eventNo);
-    //이벤트 전체조회
-    List<EventDTO> selectAll();
+    int insertEvent(EventDTO event); //행사 등록
+    int updateEvent(EventDTO event); // 업데이트
+    int deleteEvent(int event_no); // 삭제
+    List<EventDTO> selectAll(); //이벤트 전체조회
 
-    //행사 이름 검색
-    List<EventDTO> searchEvent(String keyword);
-    //전체 팝업 조회
-    List<EventDTO> getAllEvent();
+    List<EventDTO> searchEvent(String keyword); //행사 이름 검색
 
-    //별점 높은순 10순위 리스트
-    List<EventDTO> getListStarRank();
-    //카테고리별 조회
-    List<EventDTO> selectEventByCategoryNo(int category_no);
-    //카테고리별로 4개씩 가져오기
-    List<EventDTO> selectFourEventByCategory(int category_no);
-    //오픈예정 행사
-    List<EventDTO> getOpenEvent();
-    //예약,대기 높은순 10순위 리스트
-    List<EventDTO> getPopularEvent();
+    List<EventDTO> getAllEvent(); //전체 팝업 조회
+    List<EventDTO> getListStarRank(); //별점 높은순 10순위 리스트
+//    List<EventDTO> selectEventByCategoryNo(int category_no); //카테고리별 조회
+    List<EventDTO> selectFourEventByCategory(int category_no); //카테고리별로 4개씩 가져오기
+    List<EventDTO> getOpenEvent(); //오픈예정 행사
+    List<EventDTO> getPopularEvent(); //예약,대기 높은순 10순위 리스트
+
+    // 조건 주고 조회
+    List<EventDTO> getAllEventWithCondition(List<String> state, List<String> type); //전체 팝업 조회
+    List<EventDTO> getStarEventWithCondition(List<String> state, List<String> type); //별점 높은순 10순위 리스트
+    List<EventDTO> getEventByCategoryWithCondition(int category_no, List<String> state, List<String> type); //카테고리별 조회
+    List<EventDTO> getOpenEventWithCondition(List<String> type); //오픈예정 행사
+    List<EventDTO> getPopularEventWithCondition(List<String> state, List<String> type); //예약,대기 높은순 10순위 리스트
 
     //인스타그램 태그
 
@@ -62,6 +58,7 @@ public interface EventDAO {
     List<MemberEventDTO> selectMemberEvent(int member_no);
     // 오늘로부터 2주 내에 오픈 예정인 관심 카테고리 이벤트 조회
     List<EventDTO> selectNewEvent(int member_no);
+
     // 페이징 처리
     int countEventWithPage(Map<String, Object> params);
     List<EventDTO> selectEventWithPage(Map<String, Object> params);

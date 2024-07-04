@@ -18,7 +18,7 @@
         </choose>
         <if test="location != null and state.size > 0"> and </if>
         <foreach collection="state" item="val" separator="or" open="(" close=")">
-            <if test='val == "still"'> <!-- 운영중 -->
+            <if test='val == "still"'> <!-- 진행 중 -->
                 (start_date &lt;= curdate() and end_date >= curdate())
             </if>
             <if test='val == "open"'> <!-- 오픈 예정 -->
