@@ -51,10 +51,10 @@ public class EventServiceImpl implements EventService {
     public List<EventDTO> getListByStarRank() {
         return eventDAO.getListStarRank();
     }
-    @Override
-    public List<EventDTO> selectEventByCategoryNo(int category_no) {
-        return eventDAO.selectEventByCategoryNo(category_no);
-    }
+//    @Override
+//    public List<EventDTO> selectEventByCategoryNo(int category_no) {
+//        return eventDAO.selectEventByCategoryNo(category_no);
+//    }
     @Override
     public List<FourEventByCategoryDTO> selectFourEventByCategory() {
         // list로 카테고리번호를 가져옴

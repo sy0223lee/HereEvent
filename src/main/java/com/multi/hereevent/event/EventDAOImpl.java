@@ -47,22 +47,18 @@ public class EventDAOImpl implements EventDAO{
     public List<EventDTO> getAllEvent() {
         return sqlSession.selectList("com.multi.hereevent.event.getAllEvent");
     }
-
     @Override
     public List<EventDTO> getListStarRank() {
         return sqlSession.selectList("com.multi.hereevent.event.getEventByStarRank");
     }
-
-    @Override
-    public List<EventDTO> selectEventByCategoryNo(int category_no) {
-        return sqlSession.selectList("com.multi.hereevent.event.selectEventByCategory", category_no);
-    }
-
+//    @Override
+//    public List<EventDTO> selectEventByCategoryNo(int category_no) {
+//        return sqlSession.selectList("com.multi.hereevent.event.selectEventByCategory", category_no);
+//    }
     @Override
     public List<EventDTO> getOpenEvent() {
         return sqlSession.selectList("com.multi.hereevent.event.getOpenEvent");
     }
-
     @Override
     public List<EventDTO> getPopularEvent() {
         return sqlSession.selectList("com.multi.hereevent.event.getPopularEvent");
@@ -76,7 +72,6 @@ public class EventDAOImpl implements EventDAO{
         params.put("type", type);
         return sqlSession.selectList("com.multi.hereevent.event.getAllEventWithCondition", params);
     }
-
     @Override
     public List<EventDTO> getStarEventWithCondition(List<String> state, List<String> type) {
         Map<String, List<String>> params = new HashMap<>();
@@ -84,7 +79,6 @@ public class EventDAOImpl implements EventDAO{
         params.put("type", type);
         return sqlSession.selectList("com.multi.hereevent.event.getStarEventWithCondition", params);
     }
-
     @Override
     public List<EventDTO> getEventByCategoryWithCondition(int category_no, List<String> state, List<String> type) {
         Map<String, Object> params = new HashMap<>();
@@ -93,12 +87,10 @@ public class EventDAOImpl implements EventDAO{
         params.put("type", type);
         return sqlSession.selectList("com.multi.hereevent.event.getEventByCategoryWithCondition", params);
     }
-
     @Override
     public List<EventDTO> getOpenEventWithCondition(List<String> type) {
         return sqlSession.selectList("com.multi.hereevent.event.getOpenEventWithCondition", type);
     }
-
     @Override
     public List<EventDTO> getPopularEventWithCondition(List<String> state, List<String> type) {
         Map<String, List<String>> params = new HashMap<>();
@@ -107,13 +99,11 @@ public class EventDAOImpl implements EventDAO{
         return sqlSession.selectList("com.multi.hereevent.event.getPopularEventWithCondition", params);
     }
 
-
     //세부페이지
     @Override
     public EventDTO getEventDetails(int event_no) {
         return sqlSession.selectOne("com.multi.hereevent.event.getEventDetails", event_no);
     }
-
     @Override
     public EventDTO getEventDetails(int event_no, int member_no) {
         Map<String, Integer> param = new HashMap<>();
@@ -121,11 +111,11 @@ public class EventDAOImpl implements EventDAO{
         param.put("member_no", member_no);
         return sqlSession.selectOne("com.multi.hereevent.event.getEventDetailsWithInterest", param);
     }
-
     @Override
     public EventDTO getEventImage(int event_no) {
         return sqlSession.selectOne("com.multi.hereevent.event.getEventImage", event_no);
     }
+
     //예약하기
     @Override
     public int insertReserve(ReserveDTO reservation) {
@@ -151,7 +141,6 @@ public class EventDAOImpl implements EventDAO{
     public int insertCrawlingEvent(EventDTO event) {
         return sqlSession.insert("com.multi.hereevent.event.insertCrawlingEvent", event);
     }
-
     @Override
     public int updateEventImg(int event_no, String img_path) {
         Map<String, Object> params = new HashMap<>();
@@ -159,7 +148,6 @@ public class EventDAOImpl implements EventDAO{
         params.put("img_path", img_path);
         return sqlSession.update("com.multi.hereevent.event.updateEventImg", params);
     }
-
     @Override
     public String selectEventNoByEventName(String eventName) {
         return sqlSession.selectOne("com.multi.hereevent.event.selectEventNoByEventName", eventName);
