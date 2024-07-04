@@ -57,7 +57,7 @@
             <div class="container member-container">
 
                 <div class="d-flex align-items-center justify-content-between member-search">
-                    <button class="btn btn-primary">선택 삭제</button>
+                    <button type="button" class="btn-primary">선택 삭제</button>
                     <div class="search-widget">
                         <form action="/hereevent/admin/member" method="get" class="d-flex justify-content-start">
                             <select name="type">
@@ -106,10 +106,10 @@
                             <div class="tel text-center" th:text="${member.tel}"></div>
                             <div class="reg-date text-center" th:text="${member.reg_date}"></div>
                             <div class="c-btn text-end">
-                                <button class="cor-btn btn btn-primary" onclick="location.href='/hereevent/admin/member/memberCor'">수정</button>
+                                <button type="button" class="cor-btn btn-primary" onclick="location.href='/hereevent/admin/member/memberCor'">수정</button>
                             </div>
                             <div class="d-btn text-end">
-                                <button class="delete-btn btn btn-primary" th:value="${member.member_no}">삭제</button>
+                                <button type="button" class="delete-btn btn-primary" th:value="${member.member_no}">삭제</button>
                             </div>
                         </div>
                     </div>

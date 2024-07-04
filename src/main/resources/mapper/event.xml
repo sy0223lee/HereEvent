@@ -34,67 +34,252 @@
         FROM event
         WHERE name Like CONCAT('%', #{keyword} ,'%')
     </select>
+
+    <!-- 메인 화면 이벤트 조회 -->
+    <!-- 전체 -->
     <select id="getAllEvent" resultType="event">
-        SELECT e.event_no, e.category_no, e.name, e.start_date, e.end_date, e.addr, e.info,
-        e.homepage, e.sns, e.img_path, e.type, e.reserve_limit, e.wait_limit,
-        AVG(r.star) AS avg_star
-        FROM event e
-            LEFT JOIN review r ON e.event_no = r.event_no
-        GROUP BY e.event_no, e.category_no, e.name, e.start_date, e.end_date, e.addr,
-        e.info, e.homepage, e.sns, e.img_path, e.type, e.reserve_limit, e.wait_limit
+        SELECT e.*, AVG(r.star) AS avg_star
+        FROM event e LEFT JOIN review r ON e.event_no = r.event_no
+        WHERE e.start_date &lt;= curdate() and e.end_date >= curdate() <!--진행 중-->
+        GROUP BY e.event_no
+        ORDER BY e.end_date
     </select>
+    <!-- 오픈 예정 -->
     <select id="getOpenEvent" resultType="event">
-        SELECT e.event_no, e.category_no, e.name, e.start_date, e.end_date, e.addr, e.info,
-        e.homepage, e.sns, e.img_path, e.type, e.reserve_limit, e.wait_limit,
-        AVG(r.star) AS avg_star
-        FROM event e
-            LEFT JOIN review r ON e.event_no = r.event_no
-        WHERE e.start_date > NOW()
-        GROUP BY e.event_no, e.category_no, e.name, e.start_date, e.end_date, e.addr,
-        e.info, e.homepage, e.sns, e.img_path, e.type, e.reserve_limit, e.wait_limit
-        ORDER BY e.start_date;
+        SELECT e.*, AVG(r.star) AS avg_star
+        FROM event e LEFT JOIN review r ON e.event_no = r.event_no
+        WHERE e.start_date > curdate()
+        GROUP BY e.event_no
+        ORDER BY e.start_date
     </select>
+    <!-- 인기순 -->
     <select id="getPopularEvent" resultType="event">
-        SELECT e.event_no, e.name, e.start_date, e.end_date, e.addr, e.img_path,
-        COUNT(DISTINCT r.member_no) + COUNT(DISTINCT w.email) AS total_count,
-        AVG(rev.star) AS avg_star
+        SELECT e.*, AVG(rev.star) AS avg_star,
+            COUNT(DISTINCT r.member_no) + COUNT(DISTINCT w.email) AS total_count
         FROM event e
             LEFT JOIN reserve r ON e.event_no = r.event_no
             LEFT JOIN wait w ON e.event_no = w.event_no
             LEFT JOIN review rev ON e.event_no = rev.event_no
-        GROUP BY e.event_no, e.name, e.start_date, e.end_date, e.addr, e.img_path
-        ORDER BY total_count DESC
-        LIMIT 10;
-    </select>
-    <!--별점순 이벤트 조회-->
-    <select id="getEventByStarRank" resultType="event">
-        SELECT e.event_no, e.name, e.addr, e.start_date, e.end_date, e.img_path, AVG(r.star) AS avg_star
-        FROM event AS e
-            JOIN review AS r
-            ON e.event_no = r.event_no
+        WHERE e.start_date &lt;= curdate() and e.end_date >= curdate() <!--진행 중-->
         GROUP BY e.event_no
-        ORDER BY avg_star DESC limit 10
+        ORDER BY total_count DESC, end_date, start_date <!-- count 가 같은 경우 end_date 오름차순 후 start_date 오름차순 정렬-->
+        LIMIT 10
     </select>
-    <!--카테고리별 이벤트 조회-->
-    <select id="selectEventByCategory" resultType="event">
-        SELECT e.*
+    <!--별점순 -->
+    <select id="getEventByStarRank" resultType="event">
+        SELECT e.*, AVG(r.star) AS avg_star
         FROM event AS e
-        JOIN category AS c ON e.category_no = c.category_no
-        WHERE e.category_no = #{category_no}
+            JOIN review AS r ON e.event_no = r.event_no
+        WHERE e.start_date &lt;= curdate() and e.end_date >= curdate() <!--진행 중-->
+        GROUP BY e.event_no
+        ORDER BY avg_star DESC, end_date, start_date <!-- 별점이 같은 경우 end_date 오름차순 후 start_date 오름차순 정렬-->
+        limit 10
     </select>
+<!--    &lt;!&ndash;카테고리별 &ndash;&gt;-->
+<!--    <select id="selectEventByCategory"  resultType="event">-->
+<!--        SELECT e.*-->
+<!--        FROM event AS e JOIN category AS c ON e.category_no = c.category_no-->
+<!--        WHERE e.category_no = #{category_no} and-->
+<!--            c.name != "기타" and &lt;!&ndash;기타 카테고리는 제외&ndash;&gt;-->
+<!--            (e.start_date &lt;= curdate() and e.end_date >= curdate()) &lt;!&ndash;진행 중&ndash;&gt;-->
+<!--        ORDER BY e.end_date-->
+<!--    </select>-->
     <!--카테고리별 이벤트 4개씩 조회-->
     <select id="fourEventByCategory" resultType="event">
         SELECT *
         FROM event
-        WHERE category_no =#{category_no} AND end_date > NOW()
+        WHERE category_no = #{category_no}
+        ORDER BY end_date desc
         LIMIT 4
     </select>
 
+    <!-- 리스트 페이지 이벤트 조회 -->
+    <!-- 전체 -->
+    <select id="getAllEventWithCondition" parameterType="map" resultType="event">
+        SELECT e.*, AVG(r.star) AS avg_star
+        FROM event e LEFT JOIN review r ON e.event_no = r.event_no
+        <where>
+            <if test="state != null and state.size > 0">
+                and
+                <foreach collection="state" item="val" separator="or" open="(" close=")">
+                    <if test='val == "still"'> <!-- 진행 중 -->
+                        (e.start_date &lt;= curdate() and e.end_date >= curdate())
+                    </if>
+                    <if test='val == "open"'> <!-- 오픈 예정 -->
+                        e.start_date > curdate()
+                    </if>
+                    <if test='val == "end"'> <!-- 종료 -->
+                        e.end_date &lt; curdate()
+                    </if>
+                </foreach>
+            </if>
+            <if test="type != null and type.size > 0">
+                and
+                <foreach collection="type" item="val" separator="or" open="(" close=")">
+                    <if test='val == "reserve"'> <!-- 사전예약 가능 -->
+                        (e.type = "reserve" or e.type = "both")
+                    </if>
+                    <if test='val == "wait"'> <!-- 현장대기 가능 -->
+                        (e.type = "wait" or e.type = "both")
+                    </if>
+                    <if test='val == "both"'> <!-- 사전예약, 현장대기 둘 다 가능 -->
+                        e.type = "both"
+                    </if>
+                </foreach>
+            </if>
+        </where>
+        GROUP BY e.event_no
+        ORDER BY e.end_date
+    </select>
+    <!-- 오픈 예정 -->
+    <select id="getOpenEventWithCondition" parameterType="list" resultType="event">
+        SELECT e.*, AVG(r.star) AS avg_star
+        FROM event e LEFT JOIN review r ON e.event_no = r.event_no
+        <where>
+            e.start_date > curdate()
+            <if test="list != null and list.size > 0">
+                and
+                <foreach collection="list" item="val" separator="or" open="(" close=")">
+                    <if test='val == "reserve"'> <!-- 사전예약 가능 -->
+                        (e.type = "reserve" or e.type = "both")
+                    </if>
+                    <if test='val == "wait"'> <!-- 현장대기 가능 -->
+                        (e.type = "wait" or e.type = "both")
+                    </if>
+                    <if test='val == "both"'> <!-- 사전예약, 현장대기 둘 다 가능 -->
+                        e.type = "both"
+                    </if>
+                </foreach>
+            </if>
+        </where>
+        GROUP BY e.event_no
+        ORDER BY e.start_date
+    </select>
+    <!-- 인기순 -->
+    <select id="getPopularEventWithCondition" parameterType="map" resultType="event">
+        SELECT e.*, AVG(rev.star) AS avg_star,
+        COUNT(DISTINCT r.member_no) + COUNT(DISTINCT w.email) AS total_count
+        FROM event e
+            LEFT JOIN reserve r ON e.event_no = r.event_no
+            LEFT JOIN wait w ON e.event_no = w.event_no
+            LEFT JOIN review rev ON e.event_no = rev.event_no
+        <where>
+            <if test="state != null and state.size > 0">
+                and
+                <foreach collection="state" item="val" separator="or" open="(" close=")">
+                    <if test='val == "still"'> <!-- 진행 중 -->
+                        (start_date &lt;= curdate() and end_date >= curdate())
+                    </if>
+                    <if test='val == "open"'> <!-- 오픈 예정 -->
+                        e.start_date > curdate()
+                    </if>
+                    <if test='val == "end"'> <!-- 종료 -->
+                        e.end_date &lt; curdate()
+                    </if>
+                </foreach>
+            </if>
+            <if test="type != null and type.size > 0">
+                and
+                <foreach collection="type" item="val" separator="or" open="(" close=")">
+                    <if test='val == "reserve"'> <!-- 사전예약 가능 -->
+                        (e.type = "reserve" or e.type = "both")
+                    </if>
+                    <if test='val == "wait"'> <!-- 현장대기 가능 -->
+                        (e.type = "wait" or e.type = "both")
+                    </if>
+                    <if test='val == "both"'> <!-- 사전예약, 현장대기 둘 다 가능 -->
+                        e.type = "both"
+                    </if>
+                </foreach>
+            </if>
+        </where>
+        GROUP BY e.event_no
+        ORDER BY total_count DESC, end_date, start_date <!-- count 가 같은 경우 end_date 오름차순 후 start_date 오름차순 정렬-->
+    </select>
+    <!--별점순 - 진행중, 종료 이벤트만 조회 -->
+    <select id="getStarEventWithCondition" parameterType="map" resultType="event">
+        SELECT e.*, AVG(r.star) AS avg_star
+        FROM event AS e
+        JOIN review AS r ON e.event_no = r.event_no
+        <where>
+            <if test="state == null or state.size == 0">
+                e.start_date &lt;= curdate()
+            </if>
+            <if test="state != null and state.size > 0">
+                and
+                <foreach collection="state" item="val" separator="or" open="(" close=")">
+                    <if test='val == "still"'> <!-- 진행 중 -->
+                        (e.start_date &lt;= curdate() and e.end_date >= curdate())
+                    </if>
+                    <if test='val == "end"'> <!-- 종료 -->
+                        e.end_date &lt; curdate()
+                    </if>
+                </foreach>
+            </if>
+            <if test="type != null and type.size > 0">
+                and
+                <foreach collection="type" item="val" separator="or" open="(" close=")">
+                    <if test='val == "reserve"'> <!-- 사전예약 가능 -->
+                        (e.type = "reserve" or e.type = "both")
+                    </if>
+                    <if test='val == "wait"'> <!-- 현장대기 가능 -->
+                        (e.type = "wait" or e.type = "both")
+                    </if>
+                    <if test='val == "both"'> <!-- 사전예약, 현장대기 둘 다 가능 -->
+                        e.type = "both"
+                    </if>
+                </foreach>
+            </if>
+        </where>
+        GROUP BY e.event_no
+        ORDER BY avg_star DESC, end_date, start_date <!-- 별점이 같은 경우 end_date 오름차순 후 start_date 오름차순 정렬-->
+    </select>
+    <!--카테고리별 -->
+    <select id="getEventByCategoryWithCondition" parameterType="map" resultType="event">
+        SELECT e.*
+        FROM event AS e JOIN category AS c ON e.category_no = c.category_no
+        <where>
+            e.category_no = #{category_no} and
+            c.name != "기타" <!--기타 카테고리는 제외-->
+            <if test="state != null and state.size > 0">
+                and
+                <foreach collection="state" item="val" separator="or" open="(" close=")">
+                    <if test='val == "still"'> <!-- 진행 중 -->
+                        (e.start_date &lt;= curdate() and e.end_date >= curdate())
+                    </if>
+                    <if test='val == "open"'> <!-- 오픈 예정 -->
+                        e.start_date > curdate()
+                    </if>
+                    <if test='val == "end"'> <!-- 종료 -->
+                        e.end_date &lt; curdate()
+                    </if>
+                </foreach>
+            </if>
+            <if test="type != null and type.size > 0">
+                and
+                <foreach collection="type" item="val" separator="or" open="(" close=")">
+                    <if test='val == "reserve"'> <!-- 사전예약 가능 -->
+                        (e.type = "reserve" or e.type = "both")
+                    </if>
+                    <if test='val == "wait"'> <!-- 현장대기 가능 -->
+                        (e.type = "wait" or e.type = "both")
+                    </if>
+                    <if test='val == "both"'> <!-- 사전예약, 현장대기 둘 다 가능 -->
+                        e.type = "both"
+                    </if>
+                </foreach>
+            </if>
+        </where>
+        ORDER BY e.end_date
+    </select>
+
+    <!-- 이벤트 상세 조회 -->
     <select id="getEventDetails" resultType="event">
-        SELECT event_no, category_no, name, start_date, end_date,addr, info, homepage, sns, img_path, type, reserve_limit, wait_limit
+        SELECT *
         FROM event
         WHERE event_no = #{event_no}
     </select>
+    <!-- 멤버 관심 이벤트 여부 조회 -->
     <select id="getEventDetailsWithInterest" parameterType="Map" resultType="event">
         with
         e as (select * from event where event_no = #{event_no}),
@@ -110,6 +295,7 @@
     </select>
 
     <!-- 크롤링 -->
+    <!-- 기존 테이블에 존재하지 않은 이벤트이면 삽입 -->
     <insert id="insertCrawlingEvent" parameterType="event">
         insert into event  (name, start_date, end_date, addr, info, homepage, sns)
         select #{name}, #{start_date}, #{end_date}, #{addr}, #{info}, #{homepage}, #{sns}
@@ -118,11 +304,13 @@
             from event
             where name=#{name} and start_date=#{start_date} and end_date=#{end_date})
     </insert>
+    <!-- 이벤트 이름으로 이벤트 번호 조회 -->
     <select id="selectEventNoByEventName" parameterType="String" resultType="String">
         select event_no
         from event
         where name=#{name}
     </select>
+    <!-- 이벤트 이미지 업데이트 (등록) -->
     <update id="updateEventImg" parameterType="Map">
         update event
         set img_path = #{img_path}
@@ -183,6 +371,7 @@
     <select id="selectAll" resultType="event">
         SELECT * FROM event
     </select>
+
     <!-- 회원별 관심 카테고리 오픈 예정 이벤트 조회 -->
     <select id="selectNewEvent" resultType="event">
         select * from event e
@@ -194,6 +383,8 @@
                 where ci.member_no = #{member_no})
         order by start_date
     </select>
+
+    <!-- 페이지네이션 -->
     <select id="countEventWithPage" parameterType="map" resultType="int">
         select count(e.event_no)
         from event e

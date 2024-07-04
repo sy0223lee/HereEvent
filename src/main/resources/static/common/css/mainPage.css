@@ -1,0 +1,83 @@
+/* a 태그 색상 변경 */
+.section-title a {
+    color: var(--default-color);
+    text-decoration: none;
+    transition: 0.3s;
+}
+.section-title a:hover {
+    color: color-mix(in srgb, var(--default-color), transparent 25%);
+    text-decoration: none;
+}
+
+/* 오버레이 */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: inherit;
+    justify-content: center;
+    align-items: center;
+    background: rgb(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.overlay-text{
+    color: white; /* 텍스트 색상 */
+    font-weight: bold; /* 텍스트 두께 */
+    text-align: center;
+}
+
+h2.overlay-text.rank{
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 12px;
+    width: 40px;
+    background: rgb(225, 69, 51, 0.7);
+    z-index: 3;
+}
+
+.overlay-text.name {
+    margin: 70px 10px 20px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.overlay-text.date {
+    font-size: 14px; /* 텍스트 크기 */
+    margin-top: 15px;
+}
+.overlay-text.star{
+    width: 100%;
+    position: absolute;
+    bottom: 20px;
+}
+
+.swiper-slide:hover .overlay {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
+    cursor: pointer;
+}
+
+/* 카테고리 이미지 */
+.row {
+    margin: 0;
+}
+.swiper-slide .category-imgs img {
+    width: 50%;
+    height: 100px;
+    padding: 0;
+    margin: 0;
+}
+.category-list .overlay {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
+    cursor: pointer;
+}
+.category-list .overlay .category-name{
+    color: white; /* 텍스트 색상 */
+    font-weight: bold; /* 텍스트 두께 */
+}
