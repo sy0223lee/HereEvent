@@ -8,6 +8,7 @@ import com.multi.hereevent.dto.ReserveDTO;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
+import java.util.Map;
 
 public interface EventService {
     //관리자페이지

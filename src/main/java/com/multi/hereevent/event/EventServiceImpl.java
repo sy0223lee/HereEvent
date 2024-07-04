@@ -3,19 +3,24 @@ package com.multi.hereevent.event;
 import com.multi.hereevent.category.CategoryDAO;
 import com.multi.hereevent.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
     private final EventDAO dao;
     private final CategoryDAO categoryDAO;
-
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
     @Override
     public int insertEvent(EventDTO event) {
         return dao.insertEvent(event);
@@ -122,6 +127,7 @@ public class EventServiceImpl implements EventService {
     public int checkReserveLimit(int event_no) {
         return dao.checkReserveLimit(event_no);
     }
+
 
     // 크롤링
     @Override

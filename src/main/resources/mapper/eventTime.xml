@@ -7,9 +7,14 @@
 			(#{item.event_no}, #{item.day}, #{item.open_time}, #{item.close_time})
 		</foreach>
 	</insert>
-	<select id="getEventTimeByEventNo" resultType="eventTime">
+	<select id="getEventTimeByEventNo" resultType="com.multi.hereevent.dto.EventTimeDTO">
 		select *
 		from event_time
 		where event_no = #{event_no} AND day=#{day}
+	</select>
+	<select id="getHolidayDays" resultType="String">
+		SELECT day
+		FROM event_time
+		WHERE event_no = #{event_no} AND (open_time IS NULL AND close_time IS NULL)
 	</select>
 </mapper>
