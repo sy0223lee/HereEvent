@@ -756,6 +756,10 @@ ul.runningtime{
   text-align: center;
   position: relative;
 }
+.section-banner {
+  text-align: center;
+  position: relative;
+}
 
 .section-title h2 {
   font-size: 32px;
@@ -913,7 +917,34 @@ ul.runningtime{
 .clients .swiper-wrapper {
   height: auto;
 }
+/*--------------------------------------------------------------
+# Banner Section
+--------------------------------------------------------------*/
 
+.banner .swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.banner .swiper-slide {
+  height: 400px;
+}
+
+.banner .swiper-slide img {
+  transition: 0.3s;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.banner .swiper-slide img:hover {
+  cursor: pointer;
+}
+
+.banner .swiper-wrapper {
+  height: 400px;
+}
 
 /*.clients .swiper-pagination {*/
 /*  margin-top: 20px;*/

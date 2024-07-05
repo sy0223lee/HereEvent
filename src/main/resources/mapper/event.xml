@@ -36,6 +36,12 @@
     </select>
 
     <!-- 메인 화면 이벤트 조회 -->
+    <!-- 진행중인 이벤트 -->
+    <select id="getOnGoingEvent" resultType="event">
+    SELECT * FROM event
+    where start_date &lt; sysdate() AND end_date &gt; sysdate()
+    limit 10
+    </select>
     <!-- 전체 -->
     <select id="getAllEvent" resultType="event">
         SELECT e.*, AVG(r.star) AS avg_star
