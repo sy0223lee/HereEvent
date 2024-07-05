@@ -38,7 +38,11 @@
             </label>
         </div>
         <button type="submit" class="login">로그인</button>
+
     </form>
+        <button class="login"
+                th:onclick="|location.href='@{/wait/login}'|">
+            본인 대기 확인</button>
     <div class="links">
         <a href="/hereevent/register">회원가입</a>
         <a href="#">아이디/비밀번호 찾기</a>
