@@ -21,5 +21,6 @@ public interface MemberDAO {
     // 페이징 처리
     int countMemberWithPage(Map<String, Object> params);
     List<MemberDTO> selectMemberWithPage(Map<String, Object> params);
-
+    int updateMember(MemberDTO member);
+    int deleteMembers(List<Integer> memberNo);
 }

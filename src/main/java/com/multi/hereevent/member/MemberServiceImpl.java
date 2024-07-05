@@ -79,6 +79,15 @@ public class MemberServiceImpl implements MemberService{
         return new PageImpl<>(memberList, page, count);
     }
 
+    @Override
+    public int updateMember(MemberDTO member) {
+        return dao.updateMember(member);
+    }
+
+    @Override
+    public int deleteMembers(List<Integer> memberNo) {
+        return dao.deleteMembers(memberNo);
+    }
 
 
 }

@@ -91,9 +91,12 @@
             <option th:each="i : ${#numbers.sequence(10, 100, 10)}" th:value="${i}" th:text="${i} + '명'"></option>
         </select>
 
-        <button class="form-button" type="submit">행사 수정</button>
-        <button class="form-button" type="button"
-                onclick="location.href='/hereevent/admin/event'">취소</button>
+        <div id="btn-box">
+            <button id="btn1" class="form-button" type="submit">행사 수정</button>
+            <button id="btn2" class="form-button" type="button"
+                    onclick="location.href='/hereevent/admin/event'">취소</button>
+        </div>
+
     </form>
 </main>
 </body>
