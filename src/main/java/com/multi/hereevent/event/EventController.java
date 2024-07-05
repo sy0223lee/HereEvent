@@ -75,7 +75,7 @@ public class EventController {
         }
         return eventlist;
     }
-  
+
     //카테고리별 리스트
     @GetMapping("/list/category/{category_no}")
     public String listCategoryPage(@PathVariable("category_no") int category_no, Model model){
@@ -105,7 +105,7 @@ public class EventController {
     @GetMapping("/event/{event_no}")
     public String getEventDetails(@PathVariable("event_no") int event_no, Model model) {
         MemberDTO member = (MemberDTO) model.getAttribute("member");
-      
+
         EventDTO eventDetails;
         if(member != null){
             // 로그인 되어 있는 경우 사용자가 관심 있는 이벤트인지 같이 넘겨주기
@@ -118,18 +118,17 @@ public class EventController {
         List<CategoryDTO> category = categoryService.getListCategory();
 //         System.out.println("시작일===>"+eventDetails.getStart_date());
         List<ReviewDTO> reviewList = reviewService.selectReviewByEventNo(event_no);
-        model.addAttribute("category",category);
-        model.addAttribute("eventtime",eventTime);
+//         System.out.println(eventTime);
         List<String> closedDays = eventTimeService.getHolidayDays(event_no);
 
         model.addAttribute("event", eventDetails);
         model.addAttribute("category",category);
         model.addAttribute("reviewList", reviewList);
         model.addAttribute("closedDays", closedDays);
-      
+
         return "detailedPage/detailedPage";
     }
-  
+
     //대기 현황 확인 페이지
     @GetMapping("/event/waitSituation")
     public String waitSituation(@RequestParam("event_no") int event_no, Model model) {
@@ -300,4 +299,3 @@ public class EventController {
         return "redirect:/admin/event";
     }
 }
-
