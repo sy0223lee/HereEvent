@@ -30,6 +30,13 @@
 		delete from review_img
 		where review_img_no = #{review_img_no}
 	</delete>
+	<delete id="deleteReviewSelect">
+		DELETE FROM review
+		WHERE review_no IN
+		<foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
 	<select id="selectReviewWithEventImg" resultType="review">
 		select r.*, e.img_path, e.name
 		from review r inner join event e on r.event_no = e.event_no

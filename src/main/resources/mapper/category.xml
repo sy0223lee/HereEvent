@@ -4,7 +4,7 @@
 	<!--대분류만 가져오기-->
 	<select id="list" resultType="category">
 		select * from category
-		where value is null
+		where name != "기타" and value is null
 	</select>
 	<select id="selectCategoryInterestByMemberNo" resultType="categoryInterest">
 		with

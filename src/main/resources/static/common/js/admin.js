@@ -1,9 +1,9 @@
 // 체크박스 모두 선택, 선택 해제
 function checkSelectAll()  {
     // 전체 체크박스
-    const checkboxes = document.querySelectorAll('input[name="select"]');
+    const checkboxes = document.querySelectorAll('input[name="reviewNo"]');
     // 선택된 체크박스
-    const checked = document.querySelectorAll('input[name="select"]:checked');
+    const checked = document.querySelectorAll('input[name="reviewNo"]:checked');
     // select all 체크박스
     const selectAll = document.querySelector('input[name="select-all"]');
 
@@ -15,7 +15,7 @@ function checkSelectAll()  {
 
 }
 function selectAll(selectAll)  {
-    const checkboxes = document.getElementsByName('select');
+    const checkboxes = document.getElementsByName('reviewNo');
 
     checkboxes.forEach((checkbox) => {
         checkbox.checked = selectAll.checked
@@ -48,32 +48,32 @@ function pageBtn(totalPages, pageNumber, totalElements) {
     // <, << 활성화/비활성화 처리
     if (prevBlockPageNumber >= 0) {
         // <, << 활성화
-        strHTML += "<li class='page-item'><button onclick='movePage(0)' class='page-btn'><i class='bi bi-chevron-double-left'></i></button></li>";
-        strHTML += "<li class='page-item'><button onclick='movePage(" + prevBlockPageNumber + ")' class='page-btn'><i class='bi bi-chevron-left'></i></button></li>";
+        strHTML += "<li class='page-item'><button type='button' onclick='movePage(0)' class='page-btn'><i class='bi bi-chevron-double-left'></i></button></li>";
+        strHTML += "<li class='page-item'><button type='button' onclick='movePage(" + prevBlockPageNumber + ")' class='page-btn'><i class='bi bi-chevron-left'></i></button></li>";
     } else {
         // <, << 비활성화
-        strHTML += "<li class='page-item disabled'><button class='page-btn'><i class='bi bi-chevron-double-left'></button></i></li>";
-        strHTML += "<li class='page-item disabled'><button class='page-btn'><i class='bi bi-chevron-left'></i></button></li>";
+        strHTML += "<li class='page-item disabled'><button type='button' class='page-btn'><i class='bi bi-chevron-double-left'></button></i></li>";
+        strHTML += "<li class='page-item disabled'><button type='button' class='page-btn'><i class='bi bi-chevron-left'></i></button></li>";
     }
 
     // 페이징 번호 생성
     for (let i = startPageNumber; i <= endPageNumber; i++) {
         if (i === pageNumber) {
-            strHTML += "<li class='page-item active'><button class='page-btn'>" + (i+1) + "</button></li>";
+            strHTML += "<li class='page-item active'><button type='button' class='page-btn'>" + (i+1) + "</button></li>";
         } else {
-            strHTML += "<li class='page-item'><button onclick='movePage(" + i + ")' class='page-btn'>" + (i+1) + "</button></li>";
+            strHTML += "<li class='page-item'><button type='button' onclick='movePage(" + i + ")' class='page-btn'>" + (i+1) + "</button></li>";
         }
     }
 
     // >, >> 활성화/비활성화 처리
     if (nextBlockPageNumber < totalPages) {
         // >, >> 활성화
-        strHTML += "<li class='page-item'><button onclick='movePage(" + nextBlockPageNumber + ")' class='page-btn'><i class='bi bi-chevron-right'></i></button></li>";
-        strHTML += "<li class='page-item'><button onclick='movePage(" + (totalPages-1) + ")' class='page-btn'><i class='bi bi-chevron-double-right'></i></button></li>";
+        strHTML += "<li class='page-item'><button type='button' onclick='movePage(" + nextBlockPageNumber + ")' class='page-btn'><i class='bi bi-chevron-right'></i></button></li>";
+        strHTML += "<li class='page-item'><button type='button' onclick='movePage(" + (totalPages-1) + ")' class='page-btn'><i class='bi bi-chevron-double-right'></i></button></li>";
     } else {
         // >, >> 비활성화
-        strHTML += "<li class='page-item disabled'><button class='page-btn'><i class='bi bi-chevron-right'></i></button></li>";
-        strHTML += "<li class='page-item disabled'><button class='page-btn'><i class='bi bi-chevron-double-right'></i></button></li>";
+        strHTML += "<li class='page-item disabled'><button type='button' class='page-btn'><i class='bi bi-chevron-right'></i></button></li>";
+        strHTML += "<li class='page-item disabled'><button type='button' class='page-btn'><i class='bi bi-chevron-double-right'></i></button></li>";
     }
 
     $(".pagination").append(strHTML);

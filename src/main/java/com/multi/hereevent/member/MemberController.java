@@ -4,14 +4,20 @@ import com.multi.hereevent.category.interest.CategoryInterestService;
 import com.multi.hereevent.dto.CategoryInterestDTO;
 import com.multi.hereevent.dto.MemberDTO;
 import com.multi.hereevent.fileupload.FileUploadService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
@@ -28,15 +34,37 @@ public class MemberController {
         return "login/login";
     }
     @PostMapping("/login")
-    public String login(MemberDTO member, Model model) {
+    public String login(MemberDTO member, Model model, HttpServletResponse response,
+                        @RequestParam(name = "remember", defaultValue = "false") boolean remember) {
         MemberDTO loginMember = memberService.loginMember(member);
-        model.addAttribute("member", loginMember);
-        return "redirect:/main";
+        if(loginMember!=null){
+            model.addAttribute("member", loginMember);
+            // 쿠키 생성: 'savedEmail'이라는 이름으로 이메일 저장
+            if(remember){
+                Cookie cookie = new Cookie("savedEmail", member.getEmail());
+                System.out.println("cookie===>"+cookie);
+                cookie.setMaxAge(7 * 24 * 60 * 60); // 쿠키 유효 기간을 7일로 설정
+                cookie.setPath("/"); // 쿠키의 유효 경로 설정
+                response.addCookie(cookie);
+            }
+            return "redirect:/main";
+        }else{
+            System.out.println("로그인 실패");
+            model.addAttribute("msg","로그인 실패");
+            return "login/login";
+        }
     }
     @GetMapping("/logout")
     public String logout(SessionStatus status) {
         status.setComplete(); // 세션에 있는 객체를 제거
         return "redirect:/main";
+    }
+    //회원가입 시  Date 값이 비어있으면 null로 변경해주는 메소드
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
     @GetMapping("/register")
     public String register() {
@@ -52,6 +80,7 @@ public class MemberController {
             member.setImg_path(storeFilename);
             System.out.println(member);
             memberService.insertMember(member);
+
             MemberDTO findmem = memberService.findMemberByEmail(member.getEmail());
             List<CategoryInterestDTO> categoryList = categoryService.selectCategoryInterestByMemberNo(findmem.getMember_no());
             model.addAttribute("categoryList", categoryList);

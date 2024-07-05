@@ -20,4 +20,6 @@ public interface ReviewService {
 
     // 페이징 처리
     Page<ReviewDTO> selectReviewWithPage(Map<String, Object> params, Pageable page);
+    //선택 삭제
+    int deleteReviewSelect(List<Integer> reviewNo);
 }

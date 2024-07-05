@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class EventTimeServiceimpl implements EventTimeService{
+public class EventTimeServiceImpl implements EventTimeService{
     private final EventTimeDAO dao;
 
     @Override
@@ -30,14 +30,21 @@ public class EventTimeServiceimpl implements EventTimeService{
             timeList.add(String.valueOf(i)+":"+openTime[1]+":"+openTime[2]);
         }
         System.out.println("timeList===>"+timeList);
-       return timeList;
+        return timeList;
     }
 
+    @Override
     public EventTimeDTO getEventTimeByEventNoAndDay(int event_no, String day){
         return dao.getEventTimeByEventNoAndDay(event_no,day);
     }
+
+    @Override
     public List<EventTimeDTO> getEventTime(int event_no){
         return dao.getEventTime(event_no);
     }
 
+    @Override
+    public List<String> getHolidayDays(int event_no) {
+        return dao.getHolidayDays(event_no);
+    }
 }
