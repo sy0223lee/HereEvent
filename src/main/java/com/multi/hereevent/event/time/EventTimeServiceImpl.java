@@ -6,11 +6,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class EventTimeServiceimpl implements EventTimeService{
+public class EventTimeServiceImpl implements EventTimeService{
     private final EventTimeDAO dao;
 
     @Override
@@ -34,8 +33,14 @@ public class EventTimeServiceimpl implements EventTimeService{
         return timeList;
     }
 
+    @Override
     public EventTimeDTO getEventTimeByEventNoAndDay(int event_no, String day){
         return dao.getEventTimeByEventNoAndDay(event_no,day);
+    }
+
+    @Override
+    public List<EventTimeDTO> getEventTime(int event_no){
+        return dao.getEventTime(event_no);
     }
 
     @Override

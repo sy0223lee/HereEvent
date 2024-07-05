@@ -12,6 +12,10 @@
 		from event_time
 		where event_no = #{event_no} AND day=#{day}
 	</select>
+	<select id="getEventTime" resultType="eventTime">
+		select * from event_time
+		where event_no = #{event_no}
+	</select>
 	<select id="getHolidayDays" resultType="String">
 		SELECT day
 		FROM event_time

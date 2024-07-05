@@ -29,6 +29,11 @@ public class EventTimeDAOImpl implements EventTimeDAO {
     }
 
     @Override
+    public List<EventTimeDTO> getEventTime(int event_no) {
+        return sqlSession.selectList("com.multi.hereevent.event.time.getEventTime", event_no);
+    }
+
+    @Override
     public List<String> getHolidayDays(int event_no) {
         return sqlSession.selectList("com.multi.hereevent.event.time.getHolidayDays", event_no);
 

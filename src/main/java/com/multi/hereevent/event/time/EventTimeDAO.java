@@ -8,5 +8,6 @@ import java.util.Map;
 public interface EventTimeDAO {
     int insertEventTimeList(List<EventTimeDTO> eventTimeList);
     EventTimeDTO getEventTimeByEventNoAndDay(int event_no,String day);
+    List<EventTimeDTO> getEventTime(int event_no);
     List<String> getHolidayDays(int event_no);
 }
