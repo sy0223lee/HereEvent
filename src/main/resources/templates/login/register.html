@@ -17,21 +17,21 @@
     <h2>회원가입</h2>
     <form id="regiForm" action="/hereevent/insert" method="post" enctype="multipart/form-data">
         <label for="email">이메일</label>
-        <input type="email" id="email" name="email" placeholder="이메일을 입력하세요">
+        <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" required>
         <div id="check-duplicate-email"></div>
         <label for="pass">비밀번호</label>
-        <input type="password" id="pass" name="pass" oninput="pwCheck()" placeholder="비밀번호를 입력하세요">
+        <input type="password" id="pass" name="pass" oninput="pwCheck()" placeholder="비밀번호를 입력하세요" required>
         <label for="passchk">비밀번호확인</label>
-        <input type="password" id="passchk" name="passchk" oninput="pwCheck()" placeholder="비밀번호를 한번더 입력하세요">
+        <input type="password" id="passchk" name="passchk" oninput="pwCheck()" placeholder="비밀번호를 한번더 입력하세요" required>
         <div id="check-same-password"></div>
         <label for="name">이름</label>
-        <input type="text" id="name" name="name" placeholder="이름을 입력하세요">
+        <input type="text" id="name" name="name" placeholder="이름을 입력하세요" required>
 
         <label for="nick">닉네임</label>
-        <input type="text" id="nick" name="nick" placeholder="닉네임을 입력하세요">
+        <input type="text" id="nick" name="nick" placeholder="닉네임을 입력하세요" required>
         <div id="check-duplicate-nick"></div>
         <label for="tel">전화번호</label>
-        <input type="tel" id="tel" name="tel" placeholder="전화번호를 입력하세요">
+        <input type="tel" id="tel" name="tel" placeholder="전화번호를 입력하세요" required>
 
         <label for="birth">생년월일</label>
         <input type="date" id="birth" name="birth" placeholder="생년월일을 입력하세요">

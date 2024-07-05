@@ -4,6 +4,8 @@ import com.multi.hereevent.category.interest.CategoryInterestService;
 import com.multi.hereevent.dto.CategoryInterestDTO;
 import com.multi.hereevent.dto.MemberDTO;
 import com.multi.hereevent.fileupload.FileUploadService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -32,10 +34,19 @@ public class MemberController {
         return "login/login";
     }
     @PostMapping("/login")
-    public String login(MemberDTO member, Model model) {
+    public String login(MemberDTO member, Model model, HttpServletResponse response,
+                        @RequestParam(name = "remember", defaultValue = "false") boolean remember) {
         MemberDTO loginMember = memberService.loginMember(member);
         if(loginMember!=null){
             model.addAttribute("member", loginMember);
+            // 쿠키 생성: 'savedEmail'이라는 이름으로 이메일 저장
+            if(remember){
+                Cookie cookie = new Cookie("savedEmail", member.getEmail());
+                System.out.println("cookie===>"+cookie);
+                cookie.setMaxAge(7 * 24 * 60 * 60); // 쿠키 유효 기간을 7일로 설정
+                cookie.setPath("/"); // 쿠키의 유효 경로 설정
+                response.addCookie(cookie);
+            }
             return "redirect:/main";
         }else{
             System.out.println("로그인 실패");

@@ -51,6 +51,8 @@ public class EventController {
         model.addAttribute("openlist",openlist);
         List<EventDTO> popularlist = eventService.getPopularEvent();
         model.addAttribute("popularlist",popularlist);
+        List<EventDTO> onGoingList = eventService.getOnGoingEvent();
+        model.addAttribute("ongoinglist",onGoingList);
         return "main/mainPage";
     }
 

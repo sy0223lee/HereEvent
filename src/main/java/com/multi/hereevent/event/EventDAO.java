@@ -26,7 +26,7 @@ public interface EventDAO {
     List<EventDTO> selectFourEventByCategory(int category_no); //카테고리별로 4개씩 가져오기
     List<EventDTO> getOpenEvent(); //오픈예정 행사
     List<EventDTO> getPopularEvent(); //예약,대기 높은순 10순위 리스트
-
+    List<EventDTO> getOnGoingEvent(); // 진행중인 행사
     // 조건 주고 조회
     List<EventDTO> getAllEventWithCondition(List<String> state, List<String> type); //전체 팝업 조회
     List<EventDTO> getStarEventWithCondition(List<String> state, List<String> type); //별점 높은순 10순위 리스트

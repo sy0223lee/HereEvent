@@ -93,6 +93,11 @@ public class EventServiceImpl implements EventService {
         return eventDAO.getPopularEvent();
     }
 
+    @Override
+    public List<EventDTO> getOnGoingEvent() {
+        return eventDAO.getOnGoingEvent();
+    }
+
     // 리스트 페이지 이벤트 리스트 조회
     @Override
     public List<EventDTO> getAllEventWithCondition(List<String> state, List<String> type) {
