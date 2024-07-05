@@ -5,8 +5,8 @@
 <head>
     <meta charset="utf-8">
     <title>HereEvent-Map</title>
+    <link href="/hereevent/common/css/cardList.css" rel="stylesheet">
     <link href="/hereevent/common/css/map.css" rel="stylesheet">
-    <script type="text/javascript" src="/hereevent/common/js/map.js"></script>
 
     <style>
         #map {
@@ -15,24 +15,6 @@
             margin: auto;
             text-align: center;
             box-shadow: 0 0 5px;
-        }
-
-        #list-box .btn-primary {
-            background-color: #d0513d;
-            border-color: #d0513d;
-            color: #fff;
-            width: 50%; /* 버튼을 가득 채우도록 너비 설정 */
-            text-align: center;
-            transition: background-color 0.3s, border-color 0.3s; /* 색상 변경 시 부드러운 전환 효과 */
-        }
-        #list-box .btn-primary:hover {
-            background-color: #d76b5a; /* 호버 시 배경 색상 변경 */
-        }
-        #list-box .btn-primary:focus, #list-box .btn-primary:active {
-            background-color: #d76b5a; /* 클릭 시 배경 색상 변경 */
-            border-color: #d76b5a; /* 클릭 시 테두리 색상 변경 */
-            outline: none; /* 클릭 시 기본 포커스 테두리 제거 */
-            box-shadow: 0 0 0 0.1rem rgba(255, 99, 132, 0.5); /* 클릭 시 테두리 그림자 효과 */
         }
 
         #state-box{
@@ -137,11 +119,12 @@
         </div>
     </div>
 
-    <div id="list-box" class="container">
+    <div id="list-box" class="event-list container">
 
     </div>
 
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1c7411c7e9cd13cdaac33d749ab11436&libraries=services"></script>
+    <script type="text/javascript" src="/hereevent/common/js/map.js"></script>
     <script th:inline="javascript">
         let map;
         let markers = [];
@@ -155,7 +138,7 @@
         map = new kakao.maps.Map(mapContainer, mapOption);
 
         // 마커 이미지 생성
-        const imgSrc = "http://localhost:9090/hereevent/images/map/icon-gps.png";
+        const imgSrc = "http://localhost:9090/hereevent/images/map/icon-location.png";
         const imgSize = new kakao.maps.Size(35, 35);
         let markerImg = new kakao.maps.MarkerImage(imgSrc, imgSize);
 
@@ -215,12 +198,12 @@
 
         $(document).ready(function() {
             // 페이지 로딩 시 기본 이벤트 출력
-            printList(map, markers, markerImg);
+            printMapList(map, markers, markerImg);
 
             // state 버튼 클릭 시 해당 이벤트 출력
             $(".btn-check").each(function () {
                 $(this).click(function () {
-                    printList(map, markers, markerImg);
+                    printMapList(map, markers, markerImg);
                 });
             });
         });

@@ -279,7 +279,7 @@
 .reservation input[type="radio"] {
     margin: 0 10px;
 }
-.reservation button[type="submit"], button[type="button"] {
+.reservation button[type="submit"], .reservation button[type="button"] {
     margin-top: 10px;
     padding: 10px 20px;
     border: none;
@@ -290,7 +290,7 @@
     cursor: pointer;
     transition: background-color 0.3s;
 }
-.reservation button[type="submit"]:hover, button[type="button"]:hover {
+.reservation button[type="submit"]:hover, .reservation button[type="button"]:hover {
     background-color: darkred;
 }
 

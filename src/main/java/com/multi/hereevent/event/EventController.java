@@ -56,28 +56,40 @@ public class EventController {
 
     //종류별 목록페이지
     @GetMapping("/list")
-    public String listpage(@RequestParam("type") String type, Model model){
+    public String listPage(@RequestParam("type") String type, Model model){
         model.addAttribute("type", type);
-        if(type.equals("star")){
-            model.addAttribute("eventList", eventService.getListByStarRank());
-        }else if(type.equals("popular")){
-            model.addAttribute("eventList", eventService.getPopularEvent());
-        }else if(type.equals("open")){
-            model.addAttribute("eventList", eventService.getOpenEvent());
-        }else if(type.equals("all")){
-            model.addAttribute("eventList", eventService.getAllEvent());
-        }
         return "main/listPage";
     }
-  
+    @PostMapping("/list")
+    @ResponseBody
+    public List<EventDTO> selectEventListByRank(@RequestBody Map<String, Object> data){
+        String tag = (String) data.get("tag");
+        ArrayList<String> state =  (ArrayList<String>) data.get("state");
+        ArrayList<String> type = (ArrayList<String>) data.get("type");
+        List<EventDTO> eventlist = new ArrayList<>();
+        switch (tag) {
+            case "star" -> eventlist = eventService.getStarEventWithCondition(state, type);
+            case "popular" -> eventlist = eventService.getPopularEventWithCondition(state, type);
+            case "open" -> eventlist = eventService.getOpenEventWithCondition(type);
+            case "all" -> eventlist = eventService.getAllEventWithCondition(state, type);
+        }
+        return eventlist;
+    }
+
     //카테고리별 리스트
-    @GetMapping("/event/list/{category_no}")
-    public String listCategory(@PathVariable("category_no") int category_no, Model model){
-        List<EventDTO> eventlist = eventService.selectEventByCategoryNo(category_no);
+    @GetMapping("/list/category/{category_no}")
+    public String listCategoryPage(@PathVariable("category_no") int category_no, Model model){
         String categoryName = categoryService.selectCategoryName(category_no);
-        model.addAttribute("eventlist",eventlist);
+        model.addAttribute("categoryNo", category_no);
         model.addAttribute("categoryName", categoryName);
         return "main/categoryListPage";
+    }
+    @PostMapping("/list/category/{category_no}")
+    @ResponseBody
+    public List<EventDTO> selectEventListByCategory(@PathVariable("category_no") int category_no, @RequestBody Map<String, Object> data){
+        ArrayList<String> state =  (ArrayList<String>) data.get("state");
+        ArrayList<String> type = (ArrayList<String>) data.get("type");
+        return eventService.getEventByCategoryWithCondition(category_no, state, type);
     }
 
     //행사검색
@@ -93,7 +105,7 @@ public class EventController {
     @GetMapping("/event/{event_no}")
     public String getEventDetails(@PathVariable("event_no") int event_no, Model model) {
         MemberDTO member = (MemberDTO) model.getAttribute("member");
-      
+
         EventDTO eventDetails;
         if(member != null){
             // 로그인 되어 있는 경우 사용자가 관심 있는 이벤트인지 같이 넘겨주기
@@ -103,22 +115,20 @@ public class EventController {
             eventDetails = eventService.getEventDetails(event_no);
         }
 
-        List<EventTimeDTO> eventTime = eventTimeService.getEventTime(event_no);
         List<CategoryDTO> category = categoryService.getListCategory();
 //         System.out.println("시작일===>"+eventDetails.getStart_date());
         List<ReviewDTO> reviewList = reviewService.selectReviewByEventNo(event_no);
 //         System.out.println(eventTime);
         List<String> closedDays = eventTimeService.getHolidayDays(event_no);
-        
+
         model.addAttribute("event", eventDetails);
-        model.addAttribute("eventtime",eventTime);
         model.addAttribute("category",category);
         model.addAttribute("reviewList", reviewList);
         model.addAttribute("closedDays", closedDays);
-      
+
         return "detailedPage/detailedPage";
     }
-  
+
     //대기 현황 확인 페이지
     @GetMapping("/event/waitSituation")
     public String waitSituation(@RequestParam("event_no") int event_no, Model model) {
@@ -289,4 +299,3 @@ public class EventController {
         return "redirect:/admin/event";
     }
 }
-
