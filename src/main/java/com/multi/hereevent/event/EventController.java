@@ -103,8 +103,6 @@ public class EventController {
         category= categoryService.getListCategory();
         System.out.println("시작일===>"+eventDetails.getStart_date());
         List<ReviewDTO> reviewList = reviewService.selectReviewByEventNo(event_no);
-        System.out.println(eventTime);
-
         model.addAttribute("category",category);
 
         model.addAttribute("eventtime",eventTime);
