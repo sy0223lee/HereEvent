@@ -7,47 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HereEvent Login</title>
     <link href="/hereevent/common/css/login.css" rel="stylesheet">
+    <script>
+        var msg;
+        if ('[[${msg}]]') {
+            msg = '[[${msg}]]';
+        } else {
+            msg = '';
+        }
+        console.log("msg:", msg);
+        if (msg !== '') {
+            alert(msg);
+        }
+    </script>
 </head>
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-<script>
-    Kakao.init('0d19fdc001af9930a452b64e7f7e0bef'); //발급받은 키 중 javascript키를 사용해준다.
-    console.log(Kakao.isInitialized()); // sdk초기화여부판단
-    //카카오로그인
-    function kakaoLogin() {
-        Kakao.Auth.login({
-          success: function (response) {
-            Kakao.API.request({
-              url: '/v2/user/me',
-              success: function (response) {
-                  console.log(response)
-                  window.location.href = '/hereevent/mypage';
-              },
-              fail: function (error) {
-                console.log(error)
-              },
-            })
-          },
-          fail: function (error) {
-            console.log(error)
-          },
-        })
-      }
-    //카카오로그아웃
-    function kakaoLogout() {
-        if (Kakao.Auth.getAccessToken()) {
-          Kakao.API.request({
-            url: '/v1/user/unlink',
-            success: function (response) {
-                console.log(response)
-            },
-            fail: function (error) {
-              console.log(error)
-            },
-          })
-          Kakao.Auth.setAccessToken(undefined)
-        }
-      }
-</script>
 <body>
 <main layout:fragment="main" class="main">
 <div class="login-container">
@@ -64,7 +37,6 @@
                 <input type="checkbox" name="remember"> 아이디 저장
             </label>
         </div>
-
         <button type="submit" class="login">로그인</button>
 
     </form>
@@ -76,8 +48,8 @@
         <a href="#">아이디/비밀번호 찾기</a>
     </div>
     <div class="social-login">
-        <button class="kakao-login" onclick="location.href='/hereevent/login/kakao'" title="카카오 로그인"></button>
-        <button class="naver-login" onclick="location.href='/hereevent/login/naver'" title="네이버 로그인"></button>
+        <button type="button" class="kakao-login" onclick="location.href='/hereevent/login/kakao'" title="카카오 로그인"></button>
+        <button type="button" class="naver-login" onclick="location.href='/hereevent/login/naver'" title="네이버 로그인"></button>
     </div>
 </div>
 </main>

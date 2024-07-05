@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>HereEvent-Admin</title>
+    <link href="/hereevent/common/css/mypage.css" rel="stylesheet">
+
+</head>
+<body>
+<main layout:fragment="main" class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="/hereevent/main">Home</a></li>
+                    <li><a href="/hereevent/admin">관리</a></li>
+                    <li class="current">회원</li>
+                </ol>
+            </nav>
+            <h1>회원관리</h1>
+        </div>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- Section Title -->
+    <div class="container section-title">
+        <h2>프로필 수정</h2>
+        <div class="profile-img-area" id="profile-img">
+            <img alt="default_profile">
+            <img alt="member_profile">
+        </div>
+        <button type="button" onclick="location.href='/hereevent/mypage/edit-profile-img'"
+                class="edit-img-btn btn-primary">수정</button>
+    </div><!-- End Section Title -->
+
+    <div class="container">
+
+        <ul class="profile-text-area">
+            <li><span>이름</span>
+                <p></p></li>
+            <li><span>닉네임</span>
+                <p>
+                    <button type="button" onclick="location.href='/hereevent/mypage/edit-nick'"
+                            class="edit-btn btn-primary">수정</button></p></li>
+            <li><span>이메일</span>
+                <p></p></li>
+            <li><span>연락처</span>
+                <p></p></li>
+            <li><span>생일</span>
+                <p>
+                    <button type="button" onclick="location.href='/hereevent/mypage/edit-birth'"
+                            class="edit-btn btn-primary">수정</button></p>
+                <p>
+                    <button type="button" onclick="location.href='/hereevent/mypage/edit-birth'"
+                            class="edit-btn btn-primary">등록</button></p>
+            </li>
+        </ul>
+
+        <div class="profile-btn-area d-flex justify-content-end">
+            <button type="button" class="edit-btn edit-btn btn-primary">비밀번호 변경</button>
+            <button type="button" class="edit-btn btn-secondary">회원 탈퇴</button>
+        </div>
+    </div>
+</main>
+</body>
+</html>

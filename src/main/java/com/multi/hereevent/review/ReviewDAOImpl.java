@@ -79,4 +79,9 @@ public  class ReviewDAOImpl implements ReviewDAO{
     public List<ReviewDTO> selectReviewWithPage(Map<String, Object> params) {
         return sqlSession.selectList("com.multi.hereevent.review.selectReviewWithPage", params);
     }
+
+    @Override
+    public int deleteReviewSelect(List<Integer> reviewNo) {
+        return sqlSession.delete("com.multi.hereevent.review.deleteReviewSelect", reviewNo);
+    }
 }

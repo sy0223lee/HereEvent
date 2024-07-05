@@ -95,8 +95,8 @@
                                     <h6 class="col-6 d-flex justify-content-end"><a th:href="|@{/event/}${event.event_no}|" class="reply align-self-center">
                                         <i class="bi bi-reply-fill"></i>팝업 상세보기</a>
                                         <input type="hidden" class="member" th:value="${session.member}">
-                                        <button class="default interest-btn" th:if="${event.event_interest_no == 0}" th:value="${event.event_no}">♡</button>
-                                        <button class="picked interest-btn" th:unless="${event.event_interest_no == 0}" th:value="${event.event_no}">♥</button>
+                                        <button type="button" class="default interest-btn" th:if="${event.event_interest_no == 0}" th:value="${event.event_no}">♡</button>
+                                        <button type="button" class="picked interest-btn" th:unless="${event.event_interest_no == 0}" th:value="${event.event_no}">♥</button>
                                     </h6>
                                 </div>
                                 <p>[[${event.start_date}]] ~ [[${event.end_date}]]</p>

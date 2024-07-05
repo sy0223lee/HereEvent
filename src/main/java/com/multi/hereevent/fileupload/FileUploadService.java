@@ -75,11 +75,12 @@ public class FileUploadService {
             String originalFilename = multipartFile.getOriginalFilename();
             if(originalFilename != null) {
                 storeFilename = createStoreFilename(originalFilename);
-                multipartFile.transferTo(new File(getProfileFilePath(storeFilename)));
+                multipartFile.transferTo(new File(getEventFilePath(storeFilename)));
             }
         }
         return storeFilename;
     }
+
 
     // 크롤링한 이벤트 사진 저장
     public String uploadEventImg(String imgUrl) throws IOException {

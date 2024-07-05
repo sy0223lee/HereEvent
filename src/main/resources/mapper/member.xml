@@ -46,4 +46,53 @@
 		from member
 		where email = #{email}
 	</select>
+	<delete id="deleteMember" parameterType="int">
+		delete
+		from member
+		where member_no = #{member_no}
+	</delete>
+	<select id="countMemberWithPage" parameterType="map" resultType="int">
+		select count(m.member_no)
+		from member m
+		<choose>
+			<when test="type == null or type == ''">
+				<!-- type이 null이거나 빈 문자열인 경우 아무 조건도 추가하지 않음 -->
+			</when>
+			<when test='type == "name"'>
+				where m.name like concat('%', #{keyword}, '%')
+			</when>
+			<when test='type == "nick"'>
+				where m.nick like concat('%', #{keyword}, '%')
+			</when>
+			<when test='type == "email"'>
+				where m.email like concat('%', #{keyword}, '%')
+			</when>
+			<when test='type == "tel"'>
+				where m.tel like concat('%', #{keyword}, '%')
+			</when>
+		</choose>
+	</select>
+	<select id="selectMemberWithPage" parameterType="map" resultType="member">
+		select m.*
+		from member m
+		<choose>
+			<when test="type == null or type == ''">
+				<!-- type이 null이거나 빈 문자열인 경우 아무 조건도 추가하지 않음 -->
+			</when>
+			<when test='type == "name"'>
+				where m.name like concat('%', #{keyword}, '%')
+			</when>
+			<when test='type == "nick"'>
+				where m.nick like concat('%', #{keyword}, '%')
+			</when>
+			<when test='type == "email"'>
+				where m.email like concat('%', #{keyword}, '%')
+			</when>
+			<when test='type == "tel"'>
+				where m.tel like concat('%', #{keyword}, '%')
+			</when>
+		</choose>
+		order by m.member_no desc
+		limit ${offset}, ${pageSize}
+	</select>
 </mapper>

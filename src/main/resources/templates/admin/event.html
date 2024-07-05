@@ -17,12 +17,19 @@
              pageBtn([[${totalPages}]], [[${pageNumber}]], [[${totalElements}]]);
 
         });
+        function submitDeleteForm() {
+            const form = document.getElementById('deleteForm');
+            form.submit();
+        }
+        function changeSort(sortBy) {
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('sort', sortBy);
+            window.location.href = currentUrl.toString();
+        }
     </script>
 </head>
 <body>
 <main layout:fragment="main" class="main">
-
-
     <!-- Page Title -->
     <div class="page-title">
         <div class="container">
@@ -30,7 +37,7 @@
                 <ol>
                     <li><a href="/hereevent/main">Home</a></li>
                     <li><a href="/hereevent/admin">관리</a></li>
-                    <li class="current">이벤트</li>
+                    <li class="current"><a href="/hereevent/admin/event">이벤트</a></li>
                 </ol>
             </nav>
             <h1>이벤트 관리</h1>
@@ -44,29 +51,44 @@
 
             <div class="container review-container">
                 <div class="d-flex align-items-center justify-content-between review-search">
-                    <button class="btn btn-primary">선택 삭제</button>
-                    <button class="btn btn-primary" onclick="location.href='/hereevent/admin/event/insert'">등록하기</button>
+                  
+                    <button type='button' class="btn-primary" onclick="submitDeleteForm()">선택 삭제</button>
+                  
+                    <div class="radio-group">
+                        <input type="radio" id="sortEventNo" name="sort"
+                               value="event_no,DESC" onclick="changeSort('event_no,DESC')" th:checked="${sort == 'event_no,DESC'}">
+                        <label class="form-label" for="sortEventNo">이벤트 등록 순</label>
+                        <input type="radio" id="sortEndDate" name="sort"
+                               value="end_date,DESC" onclick="changeSort('end_date,DESC')" th:checked="${sort == 'end_date,DESC'}">
+                        <label class="form-label" for="sortEndDate">종료일자 순</label>
+                    </div>
+
                     <div class="search-widget">
                         <form action="/hereevent/admin/event" method="get" class="d-flex justify-content-start">
                             <select name="type">
                                 <option value="all" th:selected="${type == 'all'}">--</option>
-                                <option value="event" th:selected="${type == 'event'}">이벤트</option>
+                                <option value="event" th:selected="${type == 'event'}">이벤트명</option>
                                 <option value="addr" th:selected="${type == 'addr'}">주소</option>
                                 <option value="category" th:selected="${type == 'category'}">카테고리</option>
                             </select>
                             <input type="text" name="keyword" placeholder="검색어를 입력하세요" th:if="${keyword == null}">
                             <input type="text" name="keyword" placeholder="검색어를 입력하세요" th:unless="${keyword == null}" th:value="${keyword}">
                             <button type="submit"><i class="bi bi-search"></i></button>
+
                         </form>
                     </div>
+                    <button type="button" class="btn-primary" onclick="location.href='/hereevent/admin/event/insert'">등록하기</button>
+
                 </div>
                 <div class="review-table container">
+                    <form id="deleteForm" action="/hereevent/admin/event/delete" method="post">
                     <div class="row align-items-center text-center table-title">
                         <div class="select">
                             <input type="checkbox" name="select-all" onclick="selectAll(this)">
                         </div>
                         <div class="event-no">번호</div>
                         <div class="event-name">이벤트</div>
+                        <div class="event-date">기간</div>
                         <div class="event-update">수정하기</div>
                         <div class="event-detail">상세보기</div>
                     </div>
@@ -74,11 +96,12 @@
                     <div class="table-row" th:each="event : ${eventList}">
                         <div class="row align-items-center">
                             <div class="select text-center">
-                                <input type="checkbox" name="select" th:value="${event.event_no}" onclick="checkSelectAll()">
+                                <input type="checkbox" name="eventNo" th:value="${event.event_no}" onclick="checkSelectAll()">
                             </div>
                             <div class="event-no">[[${event.event_no}]]</div>
                             <div class="event-img text-center event-image">
                                 <a th:href="|@{/event/}${event.event_no}|">
+                                    <!--th:src="|@{/download/event/}${event.img_path}|"-->
                                     <img th:if="${event.img_path != null}" th:src="|@{/download/event/}${event.img_path}|" th:alt="${event.img_path}">
                                     <img th:unless="${event.img_path != null}" th:src="@{/images/default_img.png}" alt="default_img">
                                 </a>
@@ -87,11 +110,16 @@
                                 <a th:href="|@{/event/}${event.event_no}|">
                                     [[${event.name}]]</a>
                             </div>
-                            <div class="show-detail text-center">
-                                <button type="button" class="event-update-btn off" th:value="${event.event_no}">수정하기</button>
+                            <div class="event-date">
+                                    [[${event.start_date}]]~[[${event.end_date}]]</a>
                             </div>
                             <div class="show-detail text-center">
-                                <button type="button" class="event-detail-btn off" th:value="${event.event_no}">상세보기</button>
+                                <button type="button" class="event-update-btn off" th:value="${event.event_no}"
+                                        th:attr="onclick='location.href=\'/hereevent/admin/event/update/' + ${event.event_no} + '\''">수정하기</button>
+                            </div>
+                            <div class="show-detail text-center">
+                                <button type="button" class="event-detail-btn off" th:value="${event.event_no}"
+                                        th:attr="onclick='location.href=\'/hereevent/event/' + ${event.event_no} + '\''">상세보기</button>
                             </div>
                         </div>
                     </div>

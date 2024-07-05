@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html  lang="ko" xmlns:th="http://www.thymeleaf.org"
+       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+       layout:decorate="~{layout/mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>이벤트 수정</title>
+    <link href="/hereevent/common/css/insertEvent.css" rel="stylesheet">
+    <link href="/hereevent/common/css/admin.css" rel="stylesheet">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script type="text/javascript" src="/hereevent/common/js/findAddr.js"></script>
+</head>
+<body>
+<main layout:fragment="main" class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="/hereevent/main">Home</a></li>
+                    <li><a href="/hereevent/admin">관리</a></li>
+                    <li class="current" ><a href="/hereevent/admin/event">이벤트</a></li>
+                </ol>
+            </nav>
+            <h1>이벤트 수정</h1>
+        </div>
+    </div>
+    <!-- End Page Title -->
+    <form class="form-container" action="/hereevent/admin/event/update" method="post" enctype="multipart/form-data">
+        <label class="form-label" for="category">*카테고리:</label>
+        <select class="form-select" id="category" name="category_no">
+            <!-- DB에서 카테고리 목록을 가져와서 option으로 지정 -->
+            <option th:each="category : ${categoryList}" th:value="${category.category_no}" th:text="${category.name}"></option>
+            <!-- 예시: 실제 데이터는 서버에서 동적으로 추가 -->
+        </select>
+        <input class="form-input" type="hidden" id="event_no" name="event_no" th:value="${event.event_no}">
+        <label class="form-label" for="name">*이벤트명:</label>
+        <input class="form-input" type="text" id="name" name="name" th:value="${event.name}" required >
+
+        <label class="form-label" for="start_date">*시작 날짜:</label>
+        <input class="form-input" type="date" id="start_date" name="start_date" th:value="${event.start_date}" required onchange="updateDateRange()">
+
+        <label class="form-label" for="end_date">*종료 날짜:</label>
+        <input class="form-input" type="date" id="end_date" name="end_date" th:value="${event.end_date}" required onchange="updateDateRange()">
+
+        <p id="dateRange" class="date-range"></p>
+        <div class="addr-place">
+            <label class="form-label" for="address">*주소:</label>
+            <input type="button" onclick="sample6_execDaumPostcode()" value="주소 찾기"><br>
+        </div>
+        <input class="form-input-addr" type="text" id="postcode"  name="postcode" placeholder="우편번호">
+        <input class="form-input-addr" type="text" id="address" name="addr" placeholder="주소" th:value="${event.addr}" required><br>
+        <input  class="form-input-addr" type="text" id="detailAddress" name="detailAddress" placeholder="상세주소">
+        <input  class="form-input-addr" type="text" id="extraAddress"  name="extraAddress" placeholder="참고항목">
+
+        <label class="form-label" for="info">*상세 정보: (최대 1000자)</label>
+        <textarea class="form-textarea" id="info" name="info" maxlength="1000" rows="10" th:text="${event.info}" required></textarea>
+        <span class="textarea-info">최대 1000자까지 입력 가능합니다.</span>
+
+        <label class="form-label" for="homepage" >홈페이지 주소:</label>
+        <input class="form-input" type="text" id="homepage" name="homepage" th:value="${event.homepage}">
+
+        <label class="form-label" for="sns" th:value="${event.sns}">SNS 주소:</label>
+        <input class="form-input" type="text" id="sns" name="sns" th:value="${event.homepage}">
+        <div id="profile-img">
+            <img th:if="${event.img_path == null}"
+                 th:src="@{/images/default_img.png}" alt="default_profile">
+            <img th:unless="${event.img_path == null}"
+                 th:src="|@{/download/event/}${event.img_path}|">
+        </div>
+        <label class="form-label" for="image">*대표 이미지:</label>
+        <input class="form-input" type="file" id="image" name="event_img" accept="image/*" required>
+
+        <label class="form-label">참여 방식:</label>
+        <div class="radio-group">
+            <input type="radio" id="reserve" name="type" value="reserve" required>
+            <label class="form-label" for="reserve">사전예약</label>
+            <input type="radio" id="wait" name="type" value="wait" required>
+            <label class="form-label" for="wait">현장대기</label>
+            <input type="radio" id="both" name="type" value="both" required>
+            <label class="form-label" for="both">전체</label>
+        </div>
+
+        <label class="form-label" for="reserve_limit">예약 제한 인원:</label>
+        <select class="form-select" id="reserve_limit" name="reserve_limit">
+            <option th:each="i : ${#numbers.sequence(10, 100, 10)}" th:value="${i}" th:text="${i} + '명'"></option>
+        </select>
+
+        <label class="form-label" for="wait_limit">대기 제한 인원:</label>
+        <select class="form-select" id="wait_limit" name="wait_limit">
+            <option th:each="i : ${#numbers.sequence(10, 100, 10)}" th:value="${i}" th:text="${i} + '명'"></option>
+        </select>
+
+        <button class="form-button" type="submit">행사 수정</button>
+        <button class="form-button" type="button"
+                onclick="location.href='/hereevent/admin/event'">취소</button>
+    </form>
+</main>
+</body>
+</html>

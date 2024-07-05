@@ -19,6 +19,5 @@ public class ReserveDTO {
     private Date reserve_date;
     private Time reserve_time;
     private String state;
-    private int reserve_order;
 
 }

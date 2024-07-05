@@ -5,13 +5,17 @@ import com.multi.hereevent.dto.CategoryInterestDTO;
 import com.multi.hereevent.dto.MemberDTO;
 import com.multi.hereevent.fileupload.FileUploadService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
@@ -30,13 +34,26 @@ public class MemberController {
     @PostMapping("/login")
     public String login(MemberDTO member, Model model) {
         MemberDTO loginMember = memberService.loginMember(member);
-        model.addAttribute("member", loginMember);
-        return "redirect:/main";
+        if(loginMember!=null){
+            model.addAttribute("member", loginMember);
+            return "redirect:/main";
+        }else{
+            System.out.println("로그인 실패");
+            model.addAttribute("msg","로그인 실패");
+            return "login/login";
+        }
     }
     @GetMapping("/logout")
     public String logout(SessionStatus status) {
         status.setComplete(); // 세션에 있는 객체를 제거
         return "redirect:/main";
+    }
+    //회원가입 시  Date 값이 비어있으면 null로 변경해주는 메소드
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
     @GetMapping("/register")
     public String register() {
@@ -52,6 +69,7 @@ public class MemberController {
             member.setImg_path(storeFilename);
             System.out.println(member);
             memberService.insertMember(member);
+
             MemberDTO findmem = memberService.findMemberByEmail(member.getEmail());
             List<CategoryInterestDTO> categoryList = categoryService.selectCategoryInterestByMemberNo(findmem.getMember_no());
             model.addAttribute("categoryList", categoryList);

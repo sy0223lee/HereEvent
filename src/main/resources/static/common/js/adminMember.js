@@ -1,9 +1,9 @@
 // 체크박스 모두 선택, 선택 해제
 function checkSelectAll()  {
     // 전체 체크박스
-    const checkboxes = document.querySelectorAll('input[name="eventNo"]');
+    const checkboxes = document.querySelectorAll('input[name="select"]');
     // 선택된 체크박스
-    const checked = document.querySelectorAll('input[name="eventNo"]:checked');
+    const checked = document.querySelectorAll('input[name="select"]:checked');
     // select all 체크박스
     const selectAll = document.querySelector('input[name="select-all"]');
 
@@ -15,7 +15,7 @@ function checkSelectAll()  {
 
 }
 function selectAll(selectAll)  {
-    const checkboxes = document.getElementsByName('eventNo');
+    const checkboxes = document.getElementsByName('select');
 
     checkboxes.forEach((checkbox) => {
         checkbox.checked = selectAll.checked
@@ -93,5 +93,5 @@ function movePage(pageNumber){
     let keyword = $('input[name="keyword"]').val();
 
     // 경로 이동
-    location.href = "/hereevent/admin/event?type=" + type + "&keyword=" + keyword + "&page=" + pageNumber;
+    location.href = "/hereevent/admin/member?type=" + type + "&keyword=" + keyword + "&page=" + pageNumber;
 }
