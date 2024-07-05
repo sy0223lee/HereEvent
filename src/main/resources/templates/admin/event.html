@@ -82,47 +82,48 @@
                 </div>
                 <div class="review-table container">
                     <form id="deleteForm" action="/hereevent/admin/event/delete" method="post">
-                    <div class="row align-items-center text-center table-title">
-                        <div class="select">
-                            <input type="checkbox" name="select-all" onclick="selectAll(this)">
+                        <div class="row align-items-center text-center table-title">
+                            <div class="select">
+                                <input type="checkbox" name="select-all" onclick="selectAll(this)">
+                            </div>
+                            <div class="event-no">번호</div>
+                            <div class="event-name">이벤트</div>
+                            <div class="event-date">기간</div>
+                            <div class="event-update">수정하기</div>
+                            <div class="event-detail">상세보기</div>
                         </div>
-                        <div class="event-no">번호</div>
-                        <div class="event-name">이벤트</div>
-                        <div class="event-date">기간</div>
-                        <div class="event-update">수정하기</div>
-                        <div class="event-detail">상세보기</div>
-                    </div>
 
-                    <div class="table-row" th:each="event : ${eventList}">
-                        <div class="row align-items-center">
-                            <div class="select text-center">
-                                <input type="checkbox" name="eventNo" th:value="${event.event_no}" onclick="checkSelectAll()">
-                            </div>
-                            <div class="event-no">[[${event.event_no}]]</div>
-                            <div class="event-img text-center event-image">
-                                <a th:href="|@{/event/}${event.event_no}|">
-                                    <!--th:src="|@{/download/event/}${event.img_path}|"-->
-                                    <img th:if="${event.img_path != null}" th:src="|@{/download/event/}${event.img_path}|" th:alt="${event.img_path}">
-                                    <img th:unless="${event.img_path != null}" th:src="@{/images/default_img.png}" alt="default_img">
-                                </a>
-                            </div>
-                            <div class="event-name">
-                                <a th:href="|@{/event/}${event.event_no}|">
-                                    [[${event.name}]]</a>
-                            </div>
-                            <div class="event-date">
-                                    [[${event.start_date}]]~[[${event.end_date}]]</a>
-                            </div>
-                            <div class="show-detail text-center">
-                                <button type="button" class="event-update-btn off" th:value="${event.event_no}"
-                                        th:attr="onclick='location.href=\'/hereevent/admin/event/update/' + ${event.event_no} + '\''">수정하기</button>
-                            </div>
-                            <div class="show-detail text-center">
-                                <button type="button" class="event-detail-btn off" th:value="${event.event_no}"
-                                        th:attr="onclick='location.href=\'/hereevent/event/' + ${event.event_no} + '\''">상세보기</button>
+                        <div class="table-row" th:each="event : ${eventList}">
+                            <div class="row align-items-center">
+                                <div class="select text-center">
+                                    <input type="checkbox" name="eventNo" th:value="${event.event_no}" onclick="checkSelectAll()">
+                                </div>
+                                <div class="event-no">[[${event.event_no}]]</div>
+                                <div class="event-img text-center event-image">
+                                    <a th:href="|@{/event/}${event.event_no}|">
+                                        <!--th:src="|@{/download/event/}${event.img_path}|"-->
+                                        <img th:if="${event.img_path != null}" th:src="|@{/download/event/}${event.img_path}|" th:alt="${event.img_path}">
+                                        <img th:unless="${event.img_path != null}" th:src="@{/images/default_img.png}" alt="default_img">
+                                    </a>
+                                </div>
+                                <div class="event-name">
+                                    <a th:href="|@{/event/}${event.event_no}|">
+                                        [[${event.name}]]</a>
+                                </div>
+                                <div class="event-date">
+                                        [[${event.start_date}]]~[[${event.end_date}]]</a>
+                                </div>
+                                <div class="show-detail text-center">
+                                    <button type="button" class="event-update-btn off" th:value="${event.event_no}"
+                                            th:attr="onclick='location.href=\'/hereevent/admin/event/update/' + ${event.event_no} + '\''">수정하기</button>
+                                </div>
+                                <div class="show-detail text-center">
+                                    <button type="button" class="event-detail-btn off" th:value="${event.event_no}"
+                                            th:attr="onclick='location.href=\'/hereevent/event/' + ${event.event_no} + '\''">상세보기</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <!-- 페이지네이션-->
                 <nav>

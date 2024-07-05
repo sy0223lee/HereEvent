@@ -1,3 +1,8 @@
+#profile-img img {
+   max-width: 500px;
+   max-height: 300px;
+   text-align: center;
+}
 .form-container {
     margin: 0 auto;
     background-color: #fff;
@@ -41,15 +46,17 @@
 .radio-group label {
     margin-right: 10px;
 }
-.form-button {
-    width: 100%;
+#btn1, #btn2 {
+    width: 150px;
     padding: 10px;
     background-color: #e14533;
     color: #fff;
     border: none;
     border-radius: 5px;
     font-size: 16px;
-    cursor: pointer;
+}
+#btn-box {
+    text-align:center;
 }
 .date-range {
     font-weight: bold;
@@ -69,3 +76,4 @@
 .addr-place label {
     margin-right: 160px; /* 주소와 버튼 사이의 간격 */
 }
+

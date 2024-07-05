@@ -22,5 +22,6 @@ public interface MemberService {
 
     // 페이징 처리
     Page<MemberDTO> selectMemberWithPage(Map<String, Object> params, Pageable page);
-
+    int updateMember(MemberDTO member);
+    int deleteMembers(List<Integer> memberNo);
 }

@@ -1,5 +1,7 @@
 package com.multi.hereevent.admin;
 
+import com.multi.hereevent.dto.CategoryDTO;
+import com.multi.hereevent.dto.EventDTO;
 import com.multi.hereevent.dto.MemberDTO;
 import com.multi.hereevent.fileupload.FileUploadService;
 import com.multi.hereevent.member.MemberService;
@@ -9,11 +11,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -47,16 +50,34 @@ public class AdminController {
             return "common/errorPage";
         }
     }
-
-
+    /*회원선택삭제*/
+    @PostMapping("/admin/member/deletelist")
+    public String deleteMember(@RequestParam("memberNo") List<Integer> memberNo) {
+        memberService.deleteMembers(memberNo);
+        return "redirect:/admin/member";
+    }
 
     /*회원수정버튼*/
-    @GetMapping("/admin/member/memberCor")
-    public String memberCor() {
+    @GetMapping("/admin/member/update/{member_no}")
+    public String memberUpdate(@PathVariable("member_no") int member_no, Model model){
+        MemberDTO member = memberService.selectMemberDetail(member_no);
+        model.addAttribute("member",member);
         return "admin/memberCor";
     }
-    /*@PostMapping("/admin/member/memberReg")
-    public String memberCor() throws{
-
-    }*/
+    @PostMapping("/admin/member/update")
+    public String memberUpdate(MemberDTO member) {
+        MultipartFile memberImg = member.getProfile_img();
+        if(!memberImg.isEmpty()) {
+            String storeFilename = null;
+            try {
+                storeFilename = fileService.uploadProfileImg(memberImg);
+                member.setImg_path(storeFilename);
+            } catch (IOException e) {
+                new RuntimeException(e);
+                return "common/errorPage";
+            }
+        }
+        memberService.updateMember(member);
+        return "redirect:/admin/member";
+    }
 }

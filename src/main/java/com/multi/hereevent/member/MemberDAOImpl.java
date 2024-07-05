@@ -80,5 +80,15 @@ public class MemberDAOImpl implements MemberDAO {
         return sqlSession.selectList("com.multi.hereevent.member.selectMemberWithPage", params);
     }
 
+    @Override
+    public int updateMember(MemberDTO member) {
+        return sqlSession.update("com.multi.hereevent.member.updateMember",member);
+    }
+
+    @Override
+    public int deleteMembers(List<Integer> memberNo) {
+        return sqlSession.update("com.multi.hereevent.member.deleteMembers",memberNo);
+    }
+
 
 }

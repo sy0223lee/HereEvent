@@ -5,8 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>HereEvent-Admin</title>
-    <link href="/hereevent/common/css/mypage.css" rel="stylesheet">
-
+    <link href="/hereevent/common/css/memberUpdate.css" rel="stylesheet">
 </head>
 <body>
 <main layout:fragment="main" class="main">
@@ -26,44 +25,55 @@
     <!-- End Page Title -->
 
     <!-- Section Title -->
-    <div class="container section-title">
-        <h2>프로필 수정</h2>
-        <div class="profile-img-area" id="profile-img">
-            <img alt="default_profile">
-            <img alt="member_profile">
+    <form class="form-container" action="/hereevent/admin/member/update" method="post" enctype="multipart/form-data">
+        <input class="form-input" type="hidden" id="member_no" name="member_no" th:value="${member.member_no}">
+        <label class="form-label" for="email">*이메일:</label>
+        <input class="form-input" type="text" id="email" name="email" th:value="${member.email}" required >
+
+        <label class="form-label" for="pass">*비밀번호:</label>
+        <input class="form-input" type="password" id="pass" name="pass" th:value="${member.pass}" required >
+
+        <label class="form-label" for="name">*이름:</label>
+        <input class="form-input" type="text" id="name" name="name" th:value="${member.name}" required >
+
+        <label class="form-label" for="nick">*닉:</label>
+        <input class="form-input" type="text" id="nick" name="nick" th:value="${member.nick}" required >
+
+        <label class="form-label" for="tel">*전화번호:</label>
+        <input class="form-input" type="text" id="tel" name="tel" th:value="${member.tel}" required >
+
+        <label class="form-label" for="birth">생일:</label>
+        <input class="form-input" type="date" id="birth" name="birth" th:value="${member.birth}" onchange="updateDateRange()">
+
+
+
+
+        <div id="profile-img">
+            <img th:if="${member.img_path == null}"
+                 th:src="@{/images/default_img.png}" alt="default_profile">
+            <img th:unless="${member.img_path == null}"
+                 th:src="|@{/download/profile/}${member.img_path}|">
+            <input type="hidden" name="img_path" th:value="${member.img_path}">
         </div>
-        <button type="button" onclick="location.href='/hereevent/mypage/edit-profile-img'"
-                class="edit-img-btn btn-primary">수정</button>
-    </div><!-- End Section Title -->
 
-    <div class="container">
+        <label class="form-label" for="image">프로필사진:</label>
+        <input class="form-input" type="file" id="image" name="profile_img" accept="image/*">
 
-        <ul class="profile-text-area">
-            <li><span>이름</span>
-                <p></p></li>
-            <li><span>닉네임</span>
-                <p>
-                    <button type="button" onclick="location.href='/hereevent/mypage/edit-nick'"
-                            class="edit-btn btn-primary">수정</button></p></li>
-            <li><span>이메일</span>
-                <p></p></li>
-            <li><span>연락처</span>
-                <p></p></li>
-            <li><span>생일</span>
-                <p>
-                    <button type="button" onclick="location.href='/hereevent/mypage/edit-birth'"
-                            class="edit-btn btn-primary">수정</button></p>
-                <p>
-                    <button type="button" onclick="location.href='/hereevent/mypage/edit-birth'"
-                            class="edit-btn btn-primary">등록</button></p>
-            </li>
-        </ul>
-
-        <div class="profile-btn-area d-flex justify-content-end">
-            <button type="button" class="edit-btn edit-btn btn-primary">비밀번호 변경</button>
-            <button type="button" class="edit-btn btn-secondary">회원 탈퇴</button>
+        <label class="form-label">*관리자:</label>
+        <div class="radio-group">
+            <input type="radio" id="0" name="mgr" value="0" th:checked="${member.mgr == 0} ? true : false" required>
+            <label class="form-label" for="0">일반회원</label>
+            <input type="radio" id="1" name="mgr" value="1" th:checked="${member.mgr == 1} ? true : false" required>
+            <label class="form-label" for="1">매니저</label>
         </div>
-    </div>
+
+        <div id="btn-box">
+            <button id="btn1" class="form-button" type="submit">행사 수정</button>
+            <button id="btn2" class="form-button" type="button"
+                    onclick="location.href='/hereevent/admin/member'">취소</button>
+        </div>
+
+    </form>
 </main>
 </body>
 </html>

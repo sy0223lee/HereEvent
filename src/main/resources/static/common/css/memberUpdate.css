@@ -1,0 +1,66 @@
+
+    #profile-img img {
+       max-width: 500px;
+       max-height: 300px;
+       text-align: center;
+    }
+    .form-container {
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 600px;
+        box-sizing: border-box;
+    }
+    .form-title {
+        text-align: center;
+        color: #333;
+    }
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+    }
+    .form-input, .form-select, .form-textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    .form-input-addr{
+                width: 50%;
+                padding: 10px;
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-sizing: border-box;
+            }
+    .radio-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .radio-group label {
+        margin-right: 10px;
+    }
+    #btn1, #btn2 {
+        width: 150px;
+        padding: 10px;
+        background-color: #e14533;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+
+    }
+    #btn-box {
+        text-align:center;
+    }
+    .date-range {
+        font-weight: bold;
+        color: #e14533;
+    }

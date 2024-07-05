@@ -95,4 +95,26 @@
 		order by m.member_no desc
 		limit ${offset}, ${pageSize}
 	</select>
+
+	<!-- 회원 수정-->
+	<update id="updateMember" parameterType="member">
+		UPDATE member
+		SET email = #{email},
+			pass = #{pass},
+			name = #{name},
+			nick = #{nick},
+			tel = #{tel},
+			birth = #{birth},
+			img_path = #{img_path},
+			mgr = #{mgr}
+		WHERE member_no=#{member_no}
+	</update>
+	<!-- 회원 선택삭제 -->
+	<delete id="deleteMembers">
+		DELETE FROM member
+		WHERE member_no IN
+		<foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
 </mapper>
