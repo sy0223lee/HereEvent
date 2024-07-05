@@ -160,6 +160,11 @@ public class EventDAOImpl implements EventDAO{
     }
 
     @Override
+    public List<Integer> selectWaitEvent() {
+        return sqlSession.selectList("com.multi.hereevent.event.selectWaitEvent");
+    }
+
+    @Override
     public List<EventDTO> selectFourEventByCategory(int category_no) {
         return sqlSession.selectList("com.multi.hereevent.event.fourEventByCategory", category_no);
     }

@@ -71,4 +71,9 @@ public class WaitDAOImpl implements WaitDAO {
         return sqlSession.selectList("com.multi.hereevent.wait.getWaitingListByEventNo", event_no);
     }
 
+    @Override
+    public List<WaitDTO> selectWaitToUpdate(int event_no) {
+        return sqlSession.selectList("com.multi.hereevent.wait.selectWaitToUpdate", event_no);
+    }
+
 }

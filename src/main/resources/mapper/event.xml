@@ -375,6 +375,13 @@
         order by start_date
     </select>
 
+    <!-- 진행 중이고 현장대기 가능한 이벤트 조회 -->
+    <select id="selectWaitEvent" resultType="int">
+        select event_no
+        from event
+        where start_date &lt;= curdate() and end_date >= curdate() and type in ("both", "wait");
+    </select>
+
     <!-- 페이지네이션 -->
     <select id="countEventWithPage" parameterType="map" resultType="int">
         select count(e.event_no)

@@ -55,8 +55,6 @@ public class WaitController {
         redirectAttributes.addAttribute("wait_no", waitInfo.getWait_no());
         redirectAttributes.addAttribute("event_no", waitInfo.getEvent_no());
         return "redirect:/wait/mywait/{event_no}/{wait_no}";
-
-
     }
 
     @GetMapping("/wait/mywait/{event_no}/{wait_no}")

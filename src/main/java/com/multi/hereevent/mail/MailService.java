@@ -26,52 +26,49 @@ public class MailService {
     public final EventService eventService;
     public final WaitService waitService;
 
-    /* 대기 3팀 남았을 경우 이메일 보내기 */
-    public void sendWaitAlmostEmail(WaitDTO wait) {
-        // 매개변수로 받아온 wait 에는 wait_no가 포함되어 있지 않으므로
-        // 삽입된 대기의 wait_no 를 따로 가져오기
-        WaitDTO curWait = waitService.getWaitInfo(wait.getWait_tel());
-        // wait_no 로 이벤트 정보를 포함한 waitDTO 가져오기
-        WaitDTO eventWait = waitService.eventDetail(curWait.getWait_no());
-
-        try {
-            // 이메일 전송
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
-
-            messageHelper.setFrom("sy0223lee@gmail.com");
-            messageHelper.setTo(wait.getEmail());
-            messageHelper.setSubject("[HereEvent] '" + eventWait.getName() + "' 대기 등록 안내");
-            messageHelper.setText(waitAlmostHtml(eventWait, curWait.getWait_no(), curWait.getEvent_no()), true);
-            mailSender.send(message);
-        } catch (MessagingException e){
-            e.printStackTrace();
-        }
-    }
-    private String waitAlmostHtml(WaitDTO wait, int wait_no, int event_no){
-        // 메일로 보낼 정보 조회
-        int position = waitService.getWaitingPosition(event_no, wait_no); // 현재 내 순서
-        int waitingCount = waitService.getWaitingCount(event_no); // 현재 총 대기 인원
-        String waitTime = waitService.getEntranceWaitTime(event_no, wait_no); // 예상 대기 시간
-
-        // 메일로 보낼 메시지 생성
-        StringBuilder sb = new StringBuilder();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
-        sb.append("<html><body>")
-                .append("<meta http-equiv='Content-Type' content='text/html; charset=euc-kr'>")
-                .append("<h2>새로운 이벤트 대기가 등록되었습니다.</h2>")
-                .append("<p style='margin: 10px;'><strong>").append(sdf.format(new Date())).append("에 작성된 내용이며 실시간 현황 확인은 <a href=href='http://localhost:9090/hereevent/wait/login'>HereEvent</a>에서 해주시길 바랍니다.</strong></p>")
-                .append("<img style='margin: 10px; width:200px; height:200px; margin:10px 10px 10px 0;' src='http://localhost:9090/hereevent/download/event/").append(wait.getImg_path()).append("'/>")
-                .append("<p style='margin: 10px;'>이벤트명 : <strong>").append(wait.getName()).append("</strong></p>")
-                .append("<p style='margin: 10px;'>주소 : <strong>").append(wait.getAddr()).append("</strong></p>")
-                .append("<p style='margin: 10px;'>대기번호 : <strong>").append(wait.getWait_no()).append("</strong></p>")
-                .append("<h3 style='margin: 10px; color: #E14533'>").append(waitTime).append("</h3>")
-                .append("<h3 style='margin: 10px; color: #E14533'>내 순서 : ").append(position).append("번</h3?")
-                .append("<p style='margin: 10px;'>대기 인원 : <strong>").append(waitingCount).append("팀</strong></p>")
-                .append("</body></html>");
-        return sb.toString();
-    }
+//    /* 대기 3팀 남았을 경우 이메일 보내기 */
+//    public void sendWaitAlmostEmail(WaitDTO wait) {
+//        // wait_no 로 이벤트 정보를 포함한 waitDTO 가져오기
+//        WaitDTO eventWait = waitService.eventDetail(wait.getWait_no());
+//        try {
+//            // 이메일 전송
+//            MimeMessage message = mailSender.createMimeMessage();
+//            MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+//
+//            messageHelper.setFrom("sy0223lee@gmail.com");
+//            messageHelper.setTo(wait.getEmail());
+//            messageHelper.setSubject("[HereEvent] '" + eventWait.getName() + "' 대기 입장 안내");
+//            messageHelper.setText(waitAlmostHtml(eventWait, wait.getWait_no(), wait.getEvent_no()), true);
+//            mailSender.send(message);
+//        } catch (MessagingException e){
+//            e.printStackTrace();
+//        }
+//    }
+//    public String waitAlmostHtml(WaitDTO wait, int wait_no, int event_no){
+//        // 메일로 보낼 정보 조회
+//        int position = waitService.getWaitingPosition(event_no, wait_no); // 현재 내 순서
+//        int waitingCount = waitService.getWaitingCount(event_no); // 현재 총 대기 인원
+//        String waitTime = waitService.getEntranceWaitTime(event_no, wait_no); // 예상 대기 시간
+//
+//        // 메일로 보낼 메시지 생성
+//        StringBuilder sb = new StringBuilder();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//
+//        sb.append("<html><body>")
+//                .append("<meta http-equiv='Content-Type' content='text/html; charset=euc-kr'>")
+//                .append("<h2>곧 입장이 가능합니다. 가까운 곳에 와서 대기해주시기 바랍니다.</h2>")
+//                .append("<h3 style='color: #E14533'>입장 가능 상태가 된 후 20분 내로 입장하지 않으시면 취소되니 주의 바랍니다.</h3>")
+//                .append("<p style='margin: 10px;'><strong>").append(sdf.format(new Date())).append("에 작성된 내용이며 실시간 현황 확인은 <a href=href='http://localhost:9090/hereevent/wait/login'>HereEvent</a>에서 해주시길 바랍니다.</strong></p>")
+//                .append("<img style='margin: 10px; width:200px; height:200px; margin:10px 10px 10px 0;' src='http://localhost:9090/hereevent/download/event/").append(wait.getImg_path()).append("'/>")
+//                .append("<p style='margin: 10px;'>이벤트명 : <strong>").append(wait.getName()).append("</strong></p>")
+//                .append("<p style='margin: 10px;'>주소 : <strong>").append(wait.getAddr()).append("</strong></p>")
+//                .append("<p style='margin: 10px;'>대기번호 : <strong>").append(wait.getWait_no()).append("</strong></p>")
+//                .append("<h3 style='margin: 10px; color: #E14533'>").append(waitTime).append("</h3>")
+//                .append("<h3 style='margin: 10px; color: #E14533'>내 순서 : ").append(position).append("번</h3>")
+//                .append("<p style='margin: 10px;'>총 대기 인원 : <strong>").append(waitingCount).append("팀</strong></p>")
+//                .append("</body></html>");
+//        return sb.toString();
+//    }
 
     /* 대기 등록 성공 시 이메일 보내기 */
     public void sendWaitSuccessEmail(WaitDTO wait) {
@@ -114,8 +111,8 @@ public class MailService {
             .append("<p style='margin: 10px;'>주소 : <strong>").append(wait.getAddr()).append("</strong></p>")
             .append("<p style='margin: 10px;'>대기번호 : <strong>").append(wait.getWait_no()).append("</strong></p>")
             .append("<h3 style='margin: 10px; color: #E14533'>").append(waitTime).append("</h3>")
-            .append("<h3 style='margin: 10px; color: #E14533'>내 순서 : ").append(position).append("번</h3?")
-            .append("<p style='margin: 10px;'>대기 인원 : <strong>").append(waitingCount).append("팀</strong></p>")
+            .append("<h3 style='margin: 10px; color: #E14533'>내 순서 : ").append(position).append("번</h3>")
+            .append("<p style='margin: 10px;'>총 대기 인원 : <strong>").append(waitingCount).append("팀</strong></p>")
             .append("</body></html>");
         return sb.toString();
     }

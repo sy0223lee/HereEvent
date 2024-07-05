@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.multi.hereevent.wait">
-
     <select id="insert" parameterType="wait" >
         insert into wait (event_no, wait_tel, email)
         values(#{event_no}, #{wait_tel},#{email})
@@ -60,7 +59,18 @@
     <update id="updateState" parameterType="wait">
         UPDATE wait
         SET state = #{state},
-        wait_date = #{wait_date}
+            wait_date = #{wait_date},
+            send_mail = #{send_mail}
         WHERE wait_no = #{wait_no}
     </update>
+
+    <!-- 1번 대기와 4번 대기 조회, wait_date 와 send_mail 수정하기 위해 조회 -->
+    <select id="selectWaitToUpdate" resultType="wait">
+        select *
+        from (select *, row_number() over (order by wait_no) num
+            from wait
+            where event_no = #{event_no} and state in ("wait", "able")) w
+        where num in (1, 4)
+        order by num
+    </select>
 </mapper>

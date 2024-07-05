@@ -58,6 +58,9 @@ public interface EventDAO {
     // 오늘로부터 2주 내에 오픈 예정인 관심 카테고리 이벤트 조회
     List<EventDTO> selectNewEvent(int member_no);
 
+    // 진행 중이고 현장대기 가능한 이벤트 조회
+    List<Integer> selectWaitEvent();
+
     // 페이징 처리
     int countEventWithPage(Map<String, Object> params);
     List<EventDTO> selectEventWithPage(Map<String, Object> params);
