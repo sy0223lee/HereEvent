@@ -9,17 +9,17 @@
     <update id="updateEvent" parameterType="event">
         update event
         set category_no = #{category_no},
-          name = #{name},
-          start_date = #{start_date},
-          end_date = #{end_date},
-          addr = #{addr},
-          info = #{info},
-          homepage = #{homepage},
-          sns = #{sns},
-          img_path = #{img_path},
-          type = #{type},
-          reserve_limit = #{reserve_limit},
-          wait_limit = #{wait_limit}
+            name = #{name},
+            start_date = #{start_date},
+            end_date = #{end_date},
+            addr = #{addr},
+            info = #{info},
+            homepage = #{homepage},
+            sns = #{sns},
+            img_path = #{img_path},
+            type = #{type},
+            reserve_limit = #{reserve_limit},
+            wait_limit = #{wait_limit}
         WHERE event_no=#{event_no}
     </update>
     <delete id="deleteEvent">

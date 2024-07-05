@@ -83,7 +83,7 @@
 				where r.event_no in (
 					select e.event_no
 					from event e left join category c on e.category_no = c.category_no
-					where c.name like concat('%', #{keyword}, '%') or c.value like concat('%', #{keyword}, '%'))
+					where c.name like concat('%', #{keyword}, '%'))
 			</when>
 			<when test='type == "write_date"'>
 				where write_date >= #{keyword} and write_date &lt; date_add(#{keyword}, interval 1 day)
@@ -115,7 +115,7 @@
 				where r.event_no in (
 					select e.event_no
 					from event e left join category c on e.category_no = c.category_no
-					where c.name like concat('%', #{keyword}, '%') or c.value like concat('%', #{keyword}, '%'))
+					where c.name like concat('%', #{keyword}, '%'))
 			</when>
 			<when test='type == "write_date"'>
 				where write_date >= #{keyword} and write_date &lt; date_add(#{keyword}, interval 1 day)
