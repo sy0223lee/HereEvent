@@ -2,6 +2,8 @@ package com.multi.hereevent.mail;
 
 import com.multi.hereevent.dto.EventDTO;
 import com.multi.hereevent.dto.MemberDTO;
+import com.multi.hereevent.dto.WaitDTO;
+import com.multi.hereevent.event.EventDAO;
 import com.multi.hereevent.event.EventService;
 import com.multi.hereevent.member.MemberService;
 import jakarta.mail.MessagingException;
@@ -20,6 +22,29 @@ public class MailService {
     public final MemberService memberService;
     public final EventService eventService;
 
+    /* 대기 3팀 남았을 경우 이메일 보내기 */
+
+    /* 대기 등록 성공 시 이메일 보내기 */
+    public void sendWaitSuccessEmail(WaitDTO wait) throws MessagingException {
+        // 대기한 이벤트 정보 가져오기
+        EventDTO event = eventService.getEventDetails(wait.getEvent_no());
+
+        // 이메일 전송
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+
+        messageHelper.setFrom("sy0223lee@gmail.com");
+        messageHelper.setTo(wait.getEmail());
+        messageHelper.setSubject("[HereEvent] '" + event.getName() + "' 대기 등록 안내");
+        messageHelper.setText(waitSuccessHTML(event), true);
+        mailSender.send(message);
+    }
+    private String waitSuccessHTML(EventDTO event){
+
+        return "";
+    }
+
+    /* 추천 이메일 보내기 */
     public void sendRecommendEmail() throws MessagingException {
         List<MemberDTO> memberList = memberService.selectAllMember(); // 모든 멤버 조회
         for (MemberDTO member : memberList) {
@@ -37,8 +62,8 @@ public class MailService {
             }
         }
     }
-
-    public String recommendHtml(List<EventDTO> eventList) {
+    /* 추천 이메일 내용 html 로 작성 */
+    private String recommendHtml(List<EventDTO> eventList) {
         StringBuilder sb = new StringBuilder();
         sb.append("<html><body>");
         sb.append("<meta http-equiv='Content-Type' content='text/html; charset=euc-kr'>");

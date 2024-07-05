@@ -75,15 +75,6 @@
         ORDER BY avg_star DESC, end_date, start_date <!-- 별점이 같은 경우 end_date 오름차순 후 start_date 오름차순 정렬-->
         limit 10
     </select>
-<!--    &lt;!&ndash;카테고리별 &ndash;&gt;-->
-<!--    <select id="selectEventByCategory"  resultType="event">-->
-<!--        SELECT e.*-->
-<!--        FROM event AS e JOIN category AS c ON e.category_no = c.category_no-->
-<!--        WHERE e.category_no = #{category_no} and-->
-<!--            c.name != "기타" and &lt;!&ndash;기타 카테고리는 제외&ndash;&gt;-->
-<!--            (e.start_date &lt;= curdate() and e.end_date >= curdate()) &lt;!&ndash;진행 중&ndash;&gt;-->
-<!--        ORDER BY e.end_date-->
-<!--    </select>-->
     <!--카테고리별 이벤트 4개씩 조회-->
     <select id="fourEventByCategory" resultType="event">
         SELECT *
