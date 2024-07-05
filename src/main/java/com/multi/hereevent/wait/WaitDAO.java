@@ -1,16 +1,12 @@
 package com.multi.hereevent.wait;
 
-import com.multi.hereevent.dto.EventDTO;
-import com.multi.hereevent.dto.MemberDTO;
 import com.multi.hereevent.dto.WaitDTO;
 
 import java.util.List;
 
 public interface WaitDAO {
-    //대기 확인을 위한 로그인
-    WaitDTO waitLogin(WaitDTO wait);
-    //기존 레코드 확인
-    WaitDTO findByWaitTelAndState(String wait_tel);
+    //대기 확인을 위한 로그인, wait_tel 로 세부정보 가져오기, 기존 레코드 확인
+    WaitDTO getWaitInfo(String wait_tel);
     //대기 등록
     int waitInsert(WaitDTO wait);
     //대기 삭제
@@ -21,8 +17,6 @@ public interface WaitDAO {
     WaitDTO read(String wait_no);
     //wait_no로 세부정보 가져오기
     WaitDTO waitDetail(int wait_no);
-    //wait_tel로 세부정보 가져오기
-    WaitDTO waitDetailTel(String wait_tel);
     //wait_no로 event세부정보 가져오기
     WaitDTO eventDetails(int wait_no);
     //wait_state변환

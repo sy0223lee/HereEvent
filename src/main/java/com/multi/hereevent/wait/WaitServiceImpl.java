@@ -1,7 +1,5 @@
 package com.multi.hereevent.wait;
 
-import com.multi.hereevent.dto.EventDTO;
-import com.multi.hereevent.dto.MemberDTO;
 import com.multi.hereevent.dto.WaitDTO;
 import com.multi.hereevent.event.EventDAO;
 import lombok.RequiredArgsConstructor;
@@ -10,17 +8,15 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class WaitServiceImpl implements WaitService {
     private final WaitDAO dao;
-    private final EventDAO eventDAO;
 
     @Override
-    public WaitDTO waitLogin(WaitDTO wait) {
-        return dao.waitLogin(wait);
+    public WaitDTO getWaitInfo(String wait_tel) {
+        return dao.getWaitInfo(wait_tel);
     }
 
     @Override
@@ -45,23 +41,16 @@ public class WaitServiceImpl implements WaitService {
     }
 
     @Override
-    public WaitDTO EventDetail(int wait_no) {
+    public WaitDTO eventDetail(int wait_no) {
         return dao.eventDetails(wait_no);
     }
 
     @Override
-    public WaitDTO waitDetailTel(String wait_tel) {
-
-        return dao.waitDetailTel(wait_tel);
-    }
-
-    @Override
     public int waitDelete(int wait_no) {
-
         return dao.delete(wait_no);
     }
 
-
+    // 본인의 대기 번호 조회
     @Override
     public int getWaitingPosition(int event_no, int wait_no) {
         List<WaitDTO> waitingList = dao.whenIgetInNo(event_no);
@@ -72,22 +61,21 @@ public class WaitServiceImpl implements WaitService {
         }
         return -1;
     }
-
+    // 해당 이벤트에 대기 중인 전체 인원 조회
     @Override
     public int getWaitingCount(int event_no) {
         List<WaitDTO> waitingList = dao.whenIgetInNo(event_no);
         return waitingList.size();
     }
-
+    // 대기 상태를 cancel 또는 visit 로 수정
     @Override
     public int updateState(WaitDTO wait) {
         return dao.updateState(wait);
     }
 
-
     @Override
     public boolean canInsert(String wait_tel) {
-        WaitDTO existingWait = dao.findByWaitTelAndState(wait_tel);
+        WaitDTO existingWait = dao.getWaitInfo(wait_tel);
         return existingWait == null;
     }
     @Override
@@ -113,7 +101,6 @@ public class WaitServiceImpl implements WaitService {
 
         return "예상 대기 시간 " + waitMinutes + "분";
     }
-
 
     @Override
     @Scheduled(fixedRate = 60000)  // 1분

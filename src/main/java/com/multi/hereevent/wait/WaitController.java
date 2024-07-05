@@ -43,15 +43,14 @@ public class WaitController {
     }
     @PostMapping("/wait/login")
     public String login(WaitDTO wait, Model model, RedirectAttributes redirectAttributes) {
-        WaitDTO loginMyWait = waitService.waitLogin(wait);
-        WaitDTO waitDetailTel = waitService.waitDetailTel(wait.getWait_tel());
-        model.addAttribute("wait", loginMyWait);
-        if (loginMyWait == null) {
+        WaitDTO waitInfo = waitService.getWaitInfo(wait.getWait_tel());
+        model.addAttribute("wait", waitInfo);
+        if (waitInfo == null) {
             redirectAttributes.addAttribute("errorMessage", "등록되지 않은 번호입니다.");
             return "redirect:/wait/login";
         }
-        redirectAttributes.addAttribute("wait_no", waitDetailTel.getWait_no());
-        redirectAttributes.addAttribute("event_no", waitDetailTel.getEvent_no());
+        redirectAttributes.addAttribute("wait_no", waitInfo.getWait_no());
+        redirectAttributes.addAttribute("event_no", waitInfo.getEvent_no());
         return "redirect:/wait/mywait/{event_no}/{wait_no}";
 
 
@@ -59,9 +58,9 @@ public class WaitController {
 
     @GetMapping("/wait/mywait/{event_no}/{wait_no}")
     public String mywait(@PathVariable("wait_no") int wait_no,@PathVariable("event_no") int event_no, Model model) {
-        WaitDTO eventDetail = waitService.EventDetail(wait_no);
+        WaitDTO eventDetail = waitService.eventDetail(wait_no);
         model.addAttribute("event", eventDetail);
-        System.out.println(eventDetail);
+//        System.out.println(eventDetail);
         int position = waitService.getWaitingPosition(event_no, wait_no);
         int waitingCount = waitService.getWaitingCount(event_no);
         String waitTime = waitService.getEntranceWaitTime(event_no, wait_no);
@@ -74,7 +73,7 @@ public class WaitController {
     @PostMapping("/wait/updateState")
     public String updateState(@RequestParam("wait_no") String wait_no, @RequestParam("action") String action, Model model) {
 
-        WaitDTO eventDetail = waitService.EventDetail(Integer.parseInt(wait_no));
+        WaitDTO eventDetail = waitService.eventDetail(Integer.parseInt(wait_no));
         String statusMessage = "";
         if ("visit".equals(action)) {
             eventDetail.setState("visit");

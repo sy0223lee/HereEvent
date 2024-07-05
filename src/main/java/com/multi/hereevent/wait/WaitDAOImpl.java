@@ -19,26 +19,13 @@ public class WaitDAOImpl implements WaitDAO {
     private final SqlSession sqlSession;
 
     @Override
-    public WaitDTO waitLogin(WaitDTO wait) {
-        return sqlSession.selectOne("com.multi.hereevent.wait.login", wait);
+    public WaitDTO getWaitInfo(String wait_tel) {
+        return sqlSession.selectOne("com.multi.hereevent.wait.getWaitInfo", wait_tel);
     }
-
     @Override
     public List<WaitDTO> getAllWaitingList() {
         return sqlSession.selectList("com.multi.hereevent.wait.getAllWaitingList");
     }
-    @Override
-    public WaitDTO findByWaitTelAndState(String wait_tel) {
-//        Map<String, String> params = new HashMap<>();
-//        params.put("wait_tel", wait_tel);
-//        params.put("state", "wait");
-
-        WaitDTO dto =  sqlSession.selectOne("com.multi.hereevent.wait.check", wait_tel);
-        System.out.println("====================="+dto);
-        return dto;
-    }
-
-
 
     @Override
     public int waitInsert(WaitDTO wait) {
@@ -66,21 +53,14 @@ public class WaitDAOImpl implements WaitDAO {
     }
 
     @Override
-    public WaitDTO waitDetailTel(String wait_tel) {
-        return sqlSession.selectOne("com.multi.hereevent.wait.detailTel",wait_tel);
-    }
-
-    @Override
     public WaitDTO eventDetails(int wait_no) {
-        return sqlSession.selectOne("com.multi.hereevent.wait.EventDetails",wait_no);
+        return sqlSession.selectOne("com.multi.hereevent.wait.eventDetails",wait_no);
     }
 
     @Override
     public int updateState(WaitDTO wait) {
-
         return sqlSession.update("com.multi.hereevent.wait.updateState", wait);
     }
-
 
     @Override
     public List<WaitDTO> whenIgetInNo(int event_no) {
