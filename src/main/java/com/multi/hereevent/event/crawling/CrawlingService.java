@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class CrawlingService {
     private final EventTimeService eventTimeService;
     private final FileUploadService fileUploadService;
 
+    @Scheduled(cron = "0 0 7 * * *") // 매일 오전 7시마다 실행
     public void insertEventInfo() {
         // WebDriver 경로 설정
         System.setProperty("webdriver.chrome.driver", "src/main/resources/driver/chromedriver.exe");

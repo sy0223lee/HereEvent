@@ -3,6 +3,7 @@ package com.multi.hereevent.wait;
 import com.multi.hereevent.dto.EventDTO;
 import com.multi.hereevent.dto.WaitDTO;
 import com.multi.hereevent.event.EventService;
+import com.multi.hereevent.mail.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 public class WaitController {
     private final WaitService waitService;
     private final EventService eventService;
+    private final MailService mailService;
 
     @GetMapping("/wait/register/event/{event_no}")
     public String register(@PathVariable("event_no") int event_no, Model model) {
@@ -31,6 +33,7 @@ public class WaitController {
         }else {
             waitService.waitInsert(wait);
             // 대기 등록 성공 시 메일 전송
+            mailService.sendWaitSuccessEmail(wait);
         }
         redirectAttributes.addAttribute("event_no", wait.getEvent_no());
         redirectAttributes.addAttribute("success", "true");
