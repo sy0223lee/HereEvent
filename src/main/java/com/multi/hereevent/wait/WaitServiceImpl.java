@@ -124,7 +124,6 @@ public class WaitServiceImpl implements WaitService {
             List<WaitDTO> updateWaitList = waitDAO.selectWaitToUpdate(eventNo); // wait_date 수정할 대기와 메일을 보내야하는 대기 조회
             if(!updateWaitList.isEmpty()) { // 대기열이 비어있지 않은 경우
                 WaitDTO stateWait = updateWaitList.get(0); // 입장해야 하는 wait
-                WaitDTO sendWait = updateWaitList.get(1); // 메일 전송해야 하는 wait
 
                 // state 가 wait 인 경우
                 if (stateWait.getState().equals("wait")) {
@@ -142,14 +141,19 @@ public class WaitServiceImpl implements WaitService {
                     stateWait.setState("cancel");
                     waitDAO.updateState(stateWait);
                 }
-                // 자신의 앞에 3팀이 남은 경우 send_mail 컬럼이 null 이면 이메일 전송 후 send 으로 변경
-                if (sendWait.getSend_mail() == null) {
-                    log.info("입장 안내 메일 전송");
-                    // 이메일 전송하기
-                    sendWaitAlmostEmail(sendWait);
-                    // send_mail 을 send 로 변경
-                    sendWait.setSend_mail("send");
-                    waitDAO.updateState(sendWait);
+
+                if(updateWaitList.size() == 2) { // 메일 보낼 대기가 존재하는지 확인
+                    WaitDTO sendWait = updateWaitList.get(1); // 메일 전송해야 하는 wait
+
+                    // 자신의 앞에 3팀이 남은 경우 send_mail 컬럼이 null 이면 이메일 전송 후 send 으로 변경
+                    if (sendWait.getSend_mail() == null) {
+                        log.info("입장 안내 메일 전송");
+                        // 이메일 전송하기
+                        sendWaitAlmostEmail(sendWait);
+                        // send_mail 을 send 로 변경
+                        sendWait.setSend_mail("send");
+                        waitDAO.updateState(sendWait);
+                    }
                 }
             }
         }
