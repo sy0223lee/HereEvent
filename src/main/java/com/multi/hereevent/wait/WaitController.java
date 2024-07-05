@@ -3,21 +3,21 @@ package com.multi.hereevent.wait;
 import com.multi.hereevent.dto.EventDTO;
 import com.multi.hereevent.dto.WaitDTO;
 import com.multi.hereevent.event.EventService;
-import jakarta.servlet.http.HttpSession;
+import com.multi.hereevent.mail.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Controller
 @RequiredArgsConstructor
 public class WaitController {
-    private final WaitService service;
+    private final WaitService waitService;
     private final EventService eventService;
+    private final MailService mailService;
 
     @GetMapping("/wait/register/event/{event_no}")
     public String register(@PathVariable("event_no") int event_no, Model model) {
@@ -27,11 +27,13 @@ public class WaitController {
     }
     @PostMapping("/wait/insert")
     public String register(WaitDTO wait, RedirectAttributes redirectAttributes, @RequestParam("wait_tel") String waitTel){
-        if(!service.canInsert(waitTel)){
+        if(!waitService.canInsert(waitTel)){
             redirectAttributes.addAttribute("error", "이미 다른 팝업스토어에 대기 중 입니다.");
 
         }else {
-            service.waitInsert(wait);
+            waitService.waitInsert(wait);
+            // 대기 등록 성공 시 메일 전송
+            mailService.sendWaitSuccessEmail(wait);
         }
         redirectAttributes.addAttribute("event_no", wait.getEvent_no());
         redirectAttributes.addAttribute("success", "true");
@@ -44,28 +46,25 @@ public class WaitController {
     }
     @PostMapping("/wait/login")
     public String login(WaitDTO wait, Model model, RedirectAttributes redirectAttributes) {
-        WaitDTO loginMyWait = service.waitLogin(wait);
-        WaitDTO waitDetailTel = service.waitDetailTel(wait.getWait_tel());
-        model.addAttribute("wait", loginMyWait);
-        if (loginMyWait == null) {
+        WaitDTO waitInfo = waitService.getWaitInfo(wait.getWait_tel());
+        model.addAttribute("wait", waitInfo);
+        if (waitInfo == null) {
             redirectAttributes.addAttribute("errorMessage", "등록되지 않은 번호입니다.");
             return "redirect:/wait/login";
         }
-        redirectAttributes.addAttribute("wait_no", waitDetailTel.getWait_no());
-        redirectAttributes.addAttribute("event_no", waitDetailTel.getEvent_no());
+        redirectAttributes.addAttribute("wait_no", waitInfo.getWait_no());
+        redirectAttributes.addAttribute("event_no", waitInfo.getEvent_no());
         return "redirect:/wait/mywait/{event_no}/{wait_no}";
-
-
     }
 
     @GetMapping("/wait/mywait/{event_no}/{wait_no}")
     public String mywait(@PathVariable("wait_no") int wait_no,@PathVariable("event_no") int event_no, Model model) {
-        WaitDTO eventDetail = service.EventDetail(wait_no);
+        WaitDTO eventDetail = waitService.eventDetail(wait_no);
         model.addAttribute("event", eventDetail);
-        System.out.println(eventDetail);
-        int position = service.getWaitingPosition(event_no, wait_no);
-        int waitingCount = service.getWaitingCount(event_no);
-        String waitTime = service.getEntranceWaitTime(event_no, wait_no);
+//        System.out.println(eventDetail);
+        int position = waitService.getWaitingPosition(event_no, wait_no);
+        int waitingCount = waitService.getWaitingCount(event_no);
+        String waitTime = waitService.getEntranceWaitTime(event_no, wait_no);
 
         model.addAttribute("waitTime", waitTime);
         model.addAttribute("position", position);
@@ -75,7 +74,7 @@ public class WaitController {
     @PostMapping("/wait/updateState")
     public String updateState(@RequestParam("wait_no") String wait_no, @RequestParam("action") String action, Model model) {
 
-        WaitDTO eventDetail = service.EventDetail(Integer.parseInt(wait_no));
+        WaitDTO eventDetail = waitService.eventDetail(Integer.parseInt(wait_no));
         String statusMessage = "";
         if ("visit".equals(action)) {
             eventDetail.setState("visit");
@@ -87,7 +86,7 @@ public class WaitController {
         eventDetail.setWait_date(LocalDateTime.now());
         model.addAttribute("event_no", eventDetail.getEvent_no());
 
-        service.updateState(eventDetail);
+        waitService.updateState(eventDetail);
         System.out.println(eventDetail);
 
         return "redirect:/main?status=" + statusMessage;
@@ -96,14 +95,8 @@ public class WaitController {
     @GetMapping("/wait/delete")
     public String delete(@RequestParam("wait_no") int wait_no) {
         System.out.println(wait_no);
-        service.waitDelete(wait_no);
+        waitService.waitDelete(wait_no);
         return "redirect:/main";
     }
-
-
-
-
-
-
 
 }

@@ -1,32 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.multi.hereevent.wait">
-
     <select id="insert" parameterType="wait" >
         insert into wait (event_no, wait_tel, email)
         values(#{event_no}, #{wait_tel},#{email})
     </select>
     <!-- 로그인 -->
-    <select id="login" parameterType="wait" resultType="wait">
+    <select id="getWaitInfo" parameterType="wait" resultType="wait">
         select *
         from wait
         where wait_tel = #{wait_tel} and state ='wait'
     </select>
 
-    <!-- waitDTO가져오기 wait 면서 tel이 같은 것 -->
-    <select id="check" parameterType="String" resultType="wait">
-        select *
-        from wait
-        where wait_tel = #{wait_tel} and state ='wait'
-
-    </select>
-    <!-- waitDTO가져오기 -->
+    <!-- waitDTO 가져오기 -->
     <select id="detail" parameterType="Integer" resultType="wait">
         select * from wait where wait_no = #{wait_no}
-    </select>
-
-    <select id="detailTel" parameterType="String" resultType="wait">
-        select * from wait where wait_tel = #{wait_tel} AND state ='wait'
     </select>
 
     <!-- 전체 선택 -->
@@ -45,29 +33,11 @@
     </delete>
 
     <!-- wait_no로 이벤트 details 가져오기-->
-    <select id="EventDetails" resultType="wait">
-        select
-        w.wait_no,
-        w.wait_tel,
-        w.email,
-        w.wait_date,
-        w.state,
-        e.event_no,
-        e.addr,
-        e.name,
-        e.img_path
-        from
-        wait w
-        join
-        event e ON w.event_no = e.event_no
-        where
-        w.wait_no = #{wait_no};
-    </select>
-    <!--  이벤트 details 가져오기  -->
-    <select id="getEventDetails" resultType="event">
-        SELECT event_no, category_no, name, start_date, end_date,addr, info, homepage, sns, img_path, type, reserve_limit, wait_limit
-        FROM event
-        WHERE event_no = #{event_no}
+    <select id="eventDetails" resultType="wait">
+        select w.wait_no, w.wait_tel, w.email, w.wait_date, w.state,
+            e.event_no, e.addr, e.name, e.img_path
+        from wait w join event e ON w.event_no = e.event_no
+        where w.wait_no = #{wait_no}
     </select>
 
     <!-- 자신의 순서확인 -->
@@ -85,17 +55,22 @@
         order by wait_no
     </select>
 
-    <!--  event photo 가져오기  -->
-    <select id="getEventImage" resultType="com.multi.hereevent.dto.EventDTO">
-        SELECT event_no, image_path
-        FROM events
-        WHERE event_no = #{eventNo}
-    </select>
     <!-- update State-->
     <update id="updateState" parameterType="wait">
         UPDATE wait
         SET state = #{state},
-        wait_date = #{wait_date}
+            wait_date = #{wait_date},
+            send_mail = #{send_mail}
         WHERE wait_no = #{wait_no}
     </update>
+
+    <!-- 1번 대기와 4번 대기 조회, wait_date 와 send_mail 수정하기 위해 조회 -->
+    <select id="selectWaitToUpdate" resultType="wait">
+        select *
+        from (select *, row_number() over (order by wait_no) num
+            from wait
+            where event_no = #{event_no} and state in ("wait", "able")) w
+        where num in (1, 4)
+        order by num
+    </select>
 </mapper>

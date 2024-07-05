@@ -4,11 +4,11 @@
 	<!--대분류만 가져오기-->
 	<select id="list" resultType="category">
 		select * from category
-		where name != "기타" and value is null
+		where name != "기타"
 	</select>
 	<select id="selectCategoryInterestByMemberNo" resultType="categoryInterest">
 		with
-		c as (select * from category where value is null),
+		c as (select * from category),
 		i as (select * from category_interest where member_no = #{member_no})
 		select i.category_interest_no, c.category_no, i.member_no, c.name
 		from c left join i on c.category_no = i.category_no

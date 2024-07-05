@@ -51,10 +51,6 @@ public class EventDAOImpl implements EventDAO{
     public List<EventDTO> getListStarRank() {
         return sqlSession.selectList("com.multi.hereevent.event.getEventByStarRank");
     }
-//    @Override
-//    public List<EventDTO> selectEventByCategoryNo(int category_no) {
-//        return sqlSession.selectList("com.multi.hereevent.event.selectEventByCategory", category_no);
-//    }
     @Override
     public List<EventDTO> getOpenEvent() {
         return sqlSession.selectList("com.multi.hereevent.event.getOpenEvent");
@@ -166,6 +162,11 @@ public class EventDAOImpl implements EventDAO{
     @Override
     public List<EventDTO> selectNewEvent(int member_no) {
         return sqlSession.selectList("com.multi.hereevent.event.selectNewEvent", member_no);
+    }
+
+    @Override
+    public List<Integer> selectWaitEvent() {
+        return sqlSession.selectList("com.multi.hereevent.event.selectWaitEvent");
     }
 
     @Override

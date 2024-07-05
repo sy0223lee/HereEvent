@@ -1,13 +1,12 @@
 package com.multi.hereevent.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.apache.ibatis.type.Alias;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +18,9 @@ public class WaitDTO {
     private String email;
     private LocalDateTime wait_date;
     private String state;
+    private String send_mail;
+
+    // 이벤트 정보
     private String name; // 이벤트이름
     private String addr; //위치
     private String img_path;

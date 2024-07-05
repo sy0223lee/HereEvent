@@ -9,17 +9,17 @@
     <update id="updateEvent" parameterType="event">
         update event
         set category_no = #{category_no},
-          name = #{name},
-          start_date = #{start_date},
-          end_date = #{end_date},
-          addr = #{addr},
-          info = #{info},
-          homepage = #{homepage},
-          sns = #{sns},
-          img_path = #{img_path},
-          type = #{type},
-          reserve_limit = #{reserve_limit},
-          wait_limit = #{wait_limit}
+            name = #{name},
+            start_date = #{start_date},
+            end_date = #{end_date},
+            addr = #{addr},
+            info = #{info},
+            homepage = #{homepage},
+            sns = #{sns},
+            img_path = #{img_path},
+            type = #{type},
+            reserve_limit = #{reserve_limit},
+            wait_limit = #{wait_limit}
         WHERE event_no=#{event_no}
     </update>
     <delete id="deleteEvent">
@@ -81,15 +81,6 @@
         ORDER BY avg_star DESC, end_date, start_date <!-- 별점이 같은 경우 end_date 오름차순 후 start_date 오름차순 정렬-->
         limit 10
     </select>
-<!--    &lt;!&ndash;카테고리별 &ndash;&gt;-->
-<!--    <select id="selectEventByCategory"  resultType="event">-->
-<!--        SELECT e.*-->
-<!--        FROM event AS e JOIN category AS c ON e.category_no = c.category_no-->
-<!--        WHERE e.category_no = #{category_no} and-->
-<!--            c.name != "기타" and &lt;!&ndash;기타 카테고리는 제외&ndash;&gt;-->
-<!--            (e.start_date &lt;= curdate() and e.end_date >= curdate()) &lt;!&ndash;진행 중&ndash;&gt;-->
-<!--        ORDER BY e.end_date-->
-<!--    </select>-->
     <!--카테고리별 이벤트 4개씩 조회-->
     <select id="fourEventByCategory" resultType="event">
         SELECT *
@@ -388,6 +379,13 @@
                 from category_interest ci
                 where ci.member_no = #{member_no})
         order by start_date
+    </select>
+
+    <!-- 진행 중이고 현장대기 가능한 이벤트 조회 -->
+    <select id="selectWaitEvent" resultType="int">
+        select event_no
+        from event
+        where start_date &lt;= curdate() and end_date >= curdate() and type in ("both", "wait");
     </select>
 
     <!-- 페이지네이션 -->
