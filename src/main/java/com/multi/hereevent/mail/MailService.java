@@ -2,6 +2,7 @@ package com.multi.hereevent.mail;
 
 import com.multi.hereevent.dto.EventDTO;
 import com.multi.hereevent.dto.MemberDTO;
+import com.multi.hereevent.dto.ReserveDTO;
 import com.multi.hereevent.dto.WaitDTO;
 import com.multi.hereevent.event.EventService;
 import com.multi.hereevent.member.MemberService;
@@ -25,6 +26,46 @@ public class MailService {
     public final MemberService memberService;
     public final EventService eventService;
     public final WaitService waitService;
+
+    /* 예약 등록 성공 시 이메일 보내기 */
+    public void sendReserveSuccessEmail(ReserveDTO reserve){
+        // 예약된 이벤트 정보 조회
+        EventDTO event = eventService.getEventDetails(reserve.getEvent_no());
+        // 예약한 회원 정보 조회
+        MemberDTO member = memberService.selectMemberDetail(reserve.getMember_no());
+
+        try {
+            // 이메일 전송
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+
+            messageHelper.setFrom("sy0223lee@gmail.com");
+            messageHelper.setTo(member.getEmail());
+            messageHelper.setSubject("[HereEvent] '" + event.getName() + "' 예약 등록 안내");
+            messageHelper.setText(reserveSuccessHtml(event, member, reserve), true);
+            mailSender.send(message);
+        } catch (MessagingException e){
+            e.printStackTrace();
+        }
+    }
+    private String reserveSuccessHtml(EventDTO event, MemberDTO member, ReserveDTO reserve){
+        // 메일로 보낼 메시지 생성
+        StringBuilder sb = new StringBuilder();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        sb.append("<html><body>")
+                .append("<meta http-equiv='Content-Type' content='text/html; charset=euc-kr'>")
+                .append("<h2>").append(member.getNick()).append("님 새로운 이벤트 예약이 등록되었습니다.</h2>")
+                .append("<img style='margin: 10px; width:200px; height:200px; margin:10px 10px 10px 0;' src='http://localhost:9090/hereevent/download/event/").append(event.getImg_path()).append("'/>")
+                .append("<p style='margin: 10px;'>이벤트명 : <strong>").append(event.getName()).append("</strong></p>")
+                .append("<p style='margin: 10px;'>기간 : <strong>").append(event.getStart_date()).append("~").append(event.getEnd_date()).append("</strong></p>")
+                .append("<p style='margin: 10px;'>위치 : <strong>").append(event.getAddr()).append("</strong></p>")
+                .append("<h3 style='margin: 10px; color: #E14533'>예약 날짜 : ").append(reserve.getReserve_date()).append("</h3>")
+                .append("<h3 style='margin: 10px; color: #E14533'>예약 시간 : ").append(reserve.getReserve_time()).append("</h3>")
+                .append("<a href='http://localhost:9090/hereevent/main' style='margin: 10px;'>이벤트 예약 내역 보러가기</a>")
+                .append("</body></html>");
+        return sb.toString();
+    }
 
     /* 대기 등록 성공 시 이메일 보내기 */
     public void sendWaitSuccessEmail(WaitDTO wait) {
@@ -64,7 +105,7 @@ public class MailService {
             .append("<p style='margin: 10px;'><strong>").append(sdf.format(new Date())).append("에 작성된 내용이며 실시간 현황 확인은 <a href=href='http://localhost:9090/hereevent/wait/login'>HereEvent</a>에서 해주시길 바랍니다.</strong></p>")
             .append("<img style='margin: 10px; width:200px; height:200px; margin:10px 10px 10px 0;' src='http://localhost:9090/hereevent/download/event/").append(wait.getImg_path()).append("'/>")
             .append("<p style='margin: 10px;'>이벤트명 : <strong>").append(wait.getName()).append("</strong></p>")
-            .append("<p style='margin: 10px;'>주소 : <strong>").append(wait.getAddr()).append("</strong></p>")
+            .append("<p style='margin: 10px;'>위치 : <strong>").append(wait.getAddr()).append("</strong></p>")
             .append("<p style='margin: 10px;'>대기번호 : <strong>").append(wait.getWait_no()).append("</strong></p>")
             .append("<h3 style='margin: 10px; color: #E14533'>").append(waitTime).append("</h3>")
             .append("<h3 style='margin: 10px; color: #E14533'>내 순서 : ").append(position).append("번</h3>")

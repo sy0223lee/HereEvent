@@ -21,12 +21,13 @@ public class EventDTO {
     private String addr; //위치
     private String info; //팝업소개
     private String homepage; //브랜드홈페이지
-    private String sns; // 브랜드 SNS링크
+    private String sns; // 브랜드 SNS 링크
     private String img_path; //저장한 이미지 경로
     private String type; //사전, 대기, 전체
     private int reserve_limit; //시간당 제한인원(예약)
     private int wait_limit = 10; //시간당 제한인원(대기)
-    private float avg_star;
+
+    private float avg_star; // 평균 별점 계산
     private MultipartFile event_img; // 이벤트 이미지 업로드를 위한 멤버변수
     //카테고리 이름
     private String category_name;
