@@ -54,6 +54,7 @@ function printCategoryList(categoryNo){
             });
             $("#list-box").empty(); // <tr>태그 모두 지우기
             $("#list-box").append(printData);
+            window.scrollTo(0, 0);
         },
         error: function (obj, msg) {
             console.log("요청 실패: " + obj + ", " + msg);
@@ -123,6 +124,7 @@ function printEventList(tag){
             });
             $("#list-box").empty(); // <tr>태그 모두 지우기
             $("#list-box").append(printData);
+            window.scrollTo(0, 0);
         },
         error: function (obj, msg) {
             console.log("요청 실패: " + obj + ", " + msg);
