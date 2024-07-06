@@ -76,43 +76,12 @@
     background-color: rgba(255, 255, 255, 1);
 }
 
-.submenu {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin: 15px 0 20px;
-    padding-bottom: 10px;
-    position: sticky;
-    top: 95px;
-    z-index: 1000;
-    background-color: white;
-}
-
 .container .fixed {
     position: sticky;
     top: 100px;
 
 }
-.submenu > a {
-    display: block;
-    width: 20%;
-    text-align: center;
-    border-bottom: 1px solid #2c2c2c;
-    padding: 10px 0;
-    flex: 1 1 auto;
 
-}
-.submenu > a.on {
-    color: var(--accent-color);
-    border-bottom: 2px solid var(--accent-color);
-    font-weight: 900;
-}
-.submenu > a h2 {
-    font-size: 16px;
-    margin: 0;
-    font-weight: 600;
-}
 .active {
     font-weight: bold;
     text-decoration: underline;

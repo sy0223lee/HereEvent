@@ -1,3 +1,19 @@
+/* 상단 버튼 */
+.event-select {
+    gap: 10px;
+    padding: 15px 0 10px 0;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 95px;
+    z-index: 4;
+    background: white;
+}
+
+.btn-label{
+    margin: 0 10px;
+    font-weight: bold;
+}
+
 /* 카드 리스트 */
 .event-list.container{
     padding: 30px 0;
@@ -6,20 +22,26 @@
     gap: 3rem; /* 카드 사이의 간격 */
     justify-content: center; /* 카드들을 가운데 정렬 */
 }
-.event-select label {
-    width: fit-content;
-    border: 1px solid var(--default-color);
-    border-radius: 25px;
-    color: var(--default-color);
-    padding: 8px 15px;
-    margin: 8px 2px;
-    cursor: pointer;
+
+.btn-outline-primary{
+    --bs-btn-color: var(--accent-color);
+    --bs-btn-border-color: var(--accent-color);
+    --bs-btn-hover-bg: var(--accent-color);
+    --bs-btn-hover-border-color: var(--accent-color);
+    --bs-btn-active-bg: var(--accent-color);
+    --bs-btn-active-border-color: var(--accent-color);
+    --bs-btn-disabled-color: var(--accent-color);
+    --bs-btn-disabled-border-color: var(--accent-color);
 }
-.event-select input:checked + label {
-    background: var(--accent-color);
-    color: #fff;
-    border-color: var(--accent-color);
-    font-weight: bold;
+.btn-outline-secondary{
+    --bs-btn-color: var(--default-color);
+    --bs-btn-border-color: var(--default-color);
+    --bs-btn-hover-bg: var(--default-color);
+    --bs-btn-hover-border-color: var(--default-color);
+    --bs-btn-active-bg: var(--default-color);
+    --bs-btn-active-border-color: var(--default-color);
+    --bs-btn-disabled-color: var(--default-color);
+    --bs-btn-disabled-border-color: var(--default-color);
 }
 
 /* 별점, 인기 순위 등수 */
