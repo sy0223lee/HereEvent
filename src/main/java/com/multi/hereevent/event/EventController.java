@@ -11,6 +11,7 @@ import com.multi.hereevent.review.ReviewService;
 import com.multi.hereevent.wait.WaitService;
 import lombok.RequiredArgsConstructor;
 
+import org.json.simple.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -145,9 +146,38 @@ public class EventController {
         model.addAttribute("event", eventDetails);
         return "detailedPage/waitDetailedPage";
     }
+    // 예약기능
+    @PostMapping("/event/reservation")
+    @ResponseBody
+    @SuppressWarnings("unchecked")
+    public String reservation(@RequestBody Map<String, String> data, Model model) {
+        MemberDTO member = (MemberDTO) model.getAttribute("member");
+        if (member == null) {
+            JSONObject json = new JSONObject();
+            json.put("message", "로그인을 해주세요.");
+            return json.toJSONString();
+        }
+        System.out.println("Request Data: " + data);
+
+        int event_no = Integer.parseInt(data.get("eventNo"));
+        int member_no = member.getMember_no();
+        data.put("memberNo", String.valueOf(member_no));
+        String reserve_date = data.get("reserveDate");
+        String reserve_time = data.get("reserveTime");
+
+//        System.out.println("[reserve] " + event_no + ", " + date + ", " + time);
+        model.addAttribute("memberNo", member_no);
+        model.addAttribute("eventNo", event_no);
+        model.addAttribute("reserveDate", reserve_date);
+        model.addAttribute("reserveTime", reserve_time);
+        String message = eventTimeService.makeReservation(event_no, member_no, reserve_date, reserve_time);
+        JSONObject json = new JSONObject();
+        json.put("message", message);
+
+        return json.toJSONString();
+    }
 
 
-//    //예약기능
 //    @PostMapping("/event/reservation")
 //    public String reservation(@PathVariable int event_no, ReserveDTO reserve,Model model){
 //        if(eventService.checkReserveOrder(reserve.getEvent_no(),

@@ -7,7 +7,7 @@
 			(#{item.event_no}, #{item.day}, #{item.open_time}, #{item.close_time})
 		</foreach>
 	</insert>
-	<select id="getEventTimeByEventNo" resultType="com.multi.hereevent.dto.EventTimeDTO">
+	<select id="getEventTimeByEventNoAndDay" resultType="com.multi.hereevent.dto.EventTimeDTO">
 		select *
 		from event_time
 		where event_no = #{event_no} AND day=#{day}
@@ -21,4 +21,21 @@
 		FROM event_time
 		WHERE event_no = #{event_no} AND (open_time IS NULL AND close_time IS NULL)
 	</select>
+	<!-- 예약 가능한 인원 수 조회 -->
+	<select id="getReservedCountByEventId" resultType="int" parameterType="map">
+		SELECT COUNT(*)
+		FROM reserve
+		WHERE event_no = #{event_no} AND reserve_date=#{reserve_date} AND reserve_time=#{reserve_time}
+	</select>
+	<select id="getReserveLimitByEventId" resultType="int">
+		select reserve_limit
+		from event
+		where event_no = #{event_no}
+	</select>
+	<!-- 예약 정보를 insert -->
+	<insert id="insertReservation" parameterType="map">
+		INSERT INTO reserve (event_no, member_no, reserve_date, reserve_time)
+		VALUES (#{event_no}, #{member_no}, #{reserve_date}, #{reserve_time})
+	</insert>
+
 </mapper>

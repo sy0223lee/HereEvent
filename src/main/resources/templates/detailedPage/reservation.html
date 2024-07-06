@@ -6,14 +6,13 @@
     <title>HereEvent-EventDetail</title>
 </head>
 <body>
-<div th:fragment="reservation" >
+<div th:fragment="reservation">
     <h2 class="title">예약</h2>
     <div class="reservation">
-        <form action="/hereevent/event/reservation" method="post">
-            <input type="hidden" name="event_no" th:value="${event.event_no}">
-            <input type="hidden" name="member_no" th:if="${session.member != null}" th:value="${session.member.member_no}">
-            <input type="date" id="reserve_date" name="reserve_date" placeholder="예약날짜를 입력하세요">
-        </form>
+        <!--        <form action="/hereevent/event/reservation" method="post">-->
+        <input type="hidden" name="event_no" th:value="${event.event_no}">
+        <input type="hidden" name="member_no" th:value="${session.member != null ? session.member.member_no : ''}">
+        <input type="date" id="reserve_date" name="reserve_date" placeholder="예약날짜를 입력하세요">
 
         <div class="calendar-container">
             <div class="nav">
@@ -38,38 +37,16 @@
             <div id="eventTimesContainer">
                 <!-- 버튼이 여기에 추가될 예정 -->
             </div>
-            <button type="submit">예약</button>
+            <button type="button" onclick="reserve()">예약</button>
+
         </div>
+        <!--        </form>-->
     </div>
     <script type="text/javascript" th:inline="javascript">
-        function createButtons(times) {
-            const container = document.getElementById('eventTimesContainer');
-            container.innerHTML = ''; // 기존 내용을 지움
-
-            times.forEach(time => {
-                const button = document.createElement('button');
-                button.textContent = time;
-                button.classList.add('time-button');
-                button.onclick = (event) => {
-                    event.preventDefault(); // 페이지 이동 방지
-
-                    // 모든 버튼의 선택 상태 해제
-                    const allButtons = container.querySelectorAll('.time-button');
-                    allButtons.forEach(btn => btn.classList.remove('selected-button'));
-
-                    // 클릭된 버튼에 선택 상태 적용
-                    button.classList.add('selected-button');
-                };
-                container.appendChild(button);
-            });
-        }
-
-        // 예시로 시간을 설정 (실제 시간은 서버에서 받아올 예정)
-        const eventTimes = ['10:00', '11:00', '12:00', '13:00', '14:00'];
-        createButtons(eventTimes);
 
         let lastDate = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         let today = new Date();
+        today.setHours(0, 0, 0, 0);
         let year = today.getFullYear();
         let month = today.getMonth();
         let date = today.getDate();
@@ -77,7 +54,7 @@
 
         // 휴무일 정보 가져오기 (Thymeleaf 사용)
         const closedDays = /*[[${closedDays}]]*/ [];
-        console.log(closedDays)
+        console.log(closedDays);
         let eventNo = /*[[${event.event_no}]]*/ 0;
 
         // 이벤트 시작일과 종료일 가져오기
@@ -118,9 +95,15 @@
 
                             if (currentDate >= eventStartDate && currentDate <= eventEndDate) {
                                 newTd.classList.add("within-event");
-                                newTd.addEventListener("click", function() {
-                                    selectDate(this, d);
-                                });
+
+                                // 현재 날짜 이전은 disabled 처리
+                                if (currentDate < today) {
+                                    newTd.classList.add("disabled");
+                                } else {
+                                    newTd.addEventListener("click", function() {
+                                        selectDate(this, d);
+                                    });
+                                }
                             } else {
                                 newTd.classList.add("disabled");
                             }
@@ -134,14 +117,9 @@
 
                             // 휴무일인지 확인
                             let dayName = ["일", "월", "화", "수", "목", "금", "토"][dayOfWeek];
-                                if (closedDays.includes(dayName)) {
-                                    newTd.classList.add("disabled");
-                                } else {
-                                    newTd.addEventListener("click", function() {
-                                        selectDate(newTd, d);
-                                    });
-                                }
-
+                            if (closedDays.includes(dayName)) {
+                                newTd.classList.add("disabled");
+                            }
                         })(i);
                         i++;
                     }
@@ -197,23 +175,77 @@
                     alert("해당 날짜는 예약이 불가능합니다.");
                 } else {
                     // 서버에서 받은 운영 시간을 'select' 옵션으로 업데이트
-                    updateTimeOptions(data.times);
+                    createButtons(data.times);
                 }
             }).catch(error => {
                 console.error('Error:', error);
             });
         }
 
-        // 운영 시간을 'select' 옵션으로 업데이트하는 함수
-        function updateTimeOptions(times) {
-            const select = document.querySelector('select[name="times"]');
-            select.innerHTML = ''; // 기존 옵션을 비움
+        function createButtons(times) {
+            const container = document.getElementById('eventTimesContainer');
+            container.innerHTML = ''; // 기존 내용을 지움
 
             times.forEach(time => {
-                const option = document.createElement('option');
-                option.value = time;
-                option.text = time;
-                select.appendChild(option);
+                const button = document.createElement('button');
+                button.textContent = time;
+                button.classList.add('time-button');
+                button.onclick = (event) => {
+                    event.preventDefault(); // 페이지 이동 방지
+
+                    // 모든 버튼의 선택 상태 해제
+                    const allButtons = container.querySelectorAll('.time-button');
+                    allButtons.forEach(btn => btn.classList.remove('selected-button'));
+
+                    // 클릭된 버튼에 선택 상태 적용
+                    button.classList.add('selected-button');
+                };
+                container.appendChild(button);
+            });
+        }
+
+        function reserve() {
+            // 예약 요청 처리 로직
+            const selectedTime = document.querySelector('.time-button.selected-button');
+            const reserveDate = document.getElementById('reserve_date').value;
+
+            if (!selectedTime || !reserveDate) {
+                alert("예약 날짜와 시간을 선택해주세요.");
+                return;
+            }
+
+            fetch('/hereevent/event/reservation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    eventNo: eventNo,
+                    reserveDate: reserveDate,
+                    reserveTime: selectedTime.textContent
+                })
+            }).then(response => {
+                console.log('Reservation response:', response);
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            }).then(data => {
+                console.log('Reservation Data:', data);
+                if (data.message === "로그인을 해주세요.") {
+                    alert(data.message);
+                    window.location.href = "/hereevent/login"; // 로그인 페이지로 이동
+                } else if (data.message === "예약 인원이 초과되었습니다.") {
+                    alert(data.message);
+                    location.reload(); // 페이지 새로고침
+                } else if (data.message === "예약되었습니다.") {
+                    alert(data.message);
+                    window.location.href = "/hereevent/myevent"; // 예약 확인 페이지로 이동
+                } else if (data.message === "예약을 할 수 없는 이벤트입니다.") {
+                    alert(data.message);
+                }
+            }).catch(error => {
+                console.error('Error:', error);
             });
         }
 
@@ -239,7 +271,6 @@
 
         renderCalendar(year, month);
     </script>
-</div>
 </div>
 </body>
 </html>

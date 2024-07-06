@@ -3,7 +3,6 @@ package com.multi.hereevent.event.time;
 import com.multi.hereevent.dto.EventTimeDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -25,7 +24,7 @@ public class EventTimeDAOImpl implements EventTimeDAO {
         HashMap<String,Object> param = new HashMap<>();
         param.put("event_no",event_no);
         param.put("day",day);
-        return sqlSession.selectOne("com.multi.hereevent.event.time.getEventTimeByEventNo", param);
+        return sqlSession.selectOne("com.multi.hereevent.event.time.getEventTimeByEventNoAndDay", param);
     }
 
     @Override
@@ -37,5 +36,20 @@ public class EventTimeDAOImpl implements EventTimeDAO {
     public List<String> getHolidayDays(int event_no) {
         return sqlSession.selectList("com.multi.hereevent.event.time.getHolidayDays", event_no);
 
+    }
+
+    @Override
+    public int getReserveLimitByEventId(int event_no) {
+        return sqlSession.selectOne("com.multi.hereevent.event.time.getReserveLimitByEventId", event_no);
+    }
+
+    @Override
+    public int getReservedCountByEventId(int event_no, String reserve_date, String reserve_time) {
+        return sqlSession.selectOne("com.multi.hereevent.event.time.getReservedCountByEventId", event_no);
+    }
+
+    @Override
+    public void insertReservation(Map<String, Object> reservationInfo) {
+        sqlSession.insert("com.multi.hereevent.event.time.insertReservation", reservationInfo);
     }
 }
