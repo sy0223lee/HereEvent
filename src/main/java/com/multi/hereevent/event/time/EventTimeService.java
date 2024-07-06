@@ -9,4 +9,5 @@ public interface EventTimeService {
     List<String> getOperTime(int event_no, String day);
     EventTimeDTO getEventTimeByEventNoAndDay(int event_no, String day);
     List<String> getHolidayDays(int event_no);
+    String makeReservation(int event_no, int member_no, String reserve_date, String reserve_time);
 }

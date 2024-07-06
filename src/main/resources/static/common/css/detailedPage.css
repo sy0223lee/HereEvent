@@ -179,16 +179,14 @@
     padding: 10px 20px;
     background-color: pink;
     color: black;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     cursor: pointer;
 }
 .time-button:hover {
-    color: white;
-    background-color: #f0f0f0;
+    color: #darkred;
 }
 .selected-button {
     background-color: pink;
-    color: black;
+    color: white;
 }
 
 .reservation{
@@ -263,12 +261,16 @@
     background-color: var(--accent-color);
     color: white;
 }
+#calendar .disabled {
+    background: none;
+    color: #aaa;
+    cursor: not-allowed;
+}
 #calendar .within-event.disabled {
     background: none;
     color: #aaa;
     cursor: not-allowed;
 }
-
 #calendar .within-event {
     background-color: pink;
     cursor: pointer;
