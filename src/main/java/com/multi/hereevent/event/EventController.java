@@ -5,6 +5,7 @@ import com.multi.hereevent.dto.*;
 import com.multi.hereevent.event.interest.EventInterestService;
 import com.multi.hereevent.event.time.EventTimeService;
 import com.multi.hereevent.fileupload.FileUploadService;
+import com.multi.hereevent.mail.MailService;
 import com.multi.hereevent.review.ReviewService;
 
 import com.multi.hereevent.wait.WaitService;
@@ -38,6 +39,7 @@ public class EventController {
     private final CategoryService categoryService;
     private final WaitService waitService;
     private final FileUploadService fileUploadService;
+    private final MailService mailService;
 
     @GetMapping("/main")
     public String mainPage(Model model) {
