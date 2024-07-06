@@ -8,7 +8,8 @@
 <body>
 <div th:fragment="reservation">
     <h2 class="title">예약</h2>
-    <div class="reservation">
+    <div th:unless="${event.type != 'wait'}"> 현장 대기만 가능한 이벤트입니다. </div>
+    <div th:if="${event.type != 'wait'}" class="reservation">
         <!--        <form action="/hereevent/event/reservation" method="post">-->
         <input type="hidden" name="event_no" th:value="${event.event_no}">
         <input type="hidden" name="member_no" th:value="${session.member != null ? session.member.member_no : ''}">
