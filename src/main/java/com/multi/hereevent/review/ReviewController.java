@@ -99,37 +99,5 @@ public class ReviewController {
         return reviewService.selectReviewImgs(Integer.parseInt(review_no));
     }
 
-    /***** 관리자 페이지 *****/
-    @GetMapping("/admin/review")
-    public String selectReviewWithPage(@RequestParam Map<String, Object> params,
-                                       @PageableDefault(value = 10) Pageable page, Model model){
-        Page<ReviewDTO> result = reviewService.selectReviewWithPage(params, page);
-        model.addAttribute("type", params.get("type"));
-        model.addAttribute("keyword", params.get("keyword"));
-        model.addAttribute("reviewList", result.getContent());
-        model.addAttribute("totalPages", result.getTotalPages());
-        model.addAttribute("totalElements", result.getTotalElements());
-        model.addAttribute("pageNumber", page.getPageNumber());
-        return "admin/review";
-    }
-    /*상세보기 삭제버튼*/
-    @PostMapping("/admin/review/deleteOne")
-    public String deleteOneAdminReview(@RequestParam("review_no") String review_no){
-        int result = reviewService.deleteReview(Integer.parseInt(review_no));
-        if(result > 0){
-            return "redirect:/admin/review";
-        }else {
-            return "common/errorPage";
-        }
-    }
-    /*선택 삭제기능*/
-    @PostMapping("/admin/review/delete")
-    public String deleteAdminReview(@RequestParam("reviewNo") List<Integer> reviewNo){
-        int result = reviewService.deleteReviewSelect(reviewNo);
-        if(result > 0){
-            return "redirect:/admin/review";
-        }else {
-            return "common/errorPage";
-        }
-    }
+
 }
