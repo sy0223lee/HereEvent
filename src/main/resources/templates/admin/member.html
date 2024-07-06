@@ -111,12 +111,12 @@
                                 <div class="email" th:text="${member.email}"></div>
                                 <div class="tel text-center" th:text="${member.tel}"></div>
                                 <div class="reg-date text-center" th:text="${member.reg_date}"></div>
-                                <div class="c-btn text-end">
-                                    <button class="cor-btn btn btn-primary" th:value="${member.member_no}"
-                                            th:attr="onclick='location.href=\'/hereevent/admin/member/update/' + ${member.member_no} + '\''">수정</button>
+                                <div class="c-btn">
+                                    <button type="button" class="cor-btn btn btn-primary" th:value="${member.member_no}"
+                                            th:onclick="|location.href='@{/admin/member/update/}${member.member_no}'|">수정</button>
                                 </div>
-                                <div class="d-btn text-end">
-                                    <button class="delete-btn btn btn-primary" th:value="${member.member_no}">삭제</button>
+                                <div class="d-btn">
+                                    <button type="button" class="delete-btn btn btn-primary" th:value="${member.member_no}">삭제</button>
                                 </div>
 
                             </div>

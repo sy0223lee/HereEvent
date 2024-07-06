@@ -45,12 +45,14 @@
                         form.setAttribute("action", "/hereevent/admin/review/deleteOne");
                         document.body.appendChild(form);
                         form.submit();
+                        alert("삭제되었습니다!");
                     }
                 });
         });
         function submitDeleteForm() {
             const form = document.getElementById('deleteForm');
             form.submit();
+            alert("삭제되었습니다!");
         }
     </script>
 </head>
