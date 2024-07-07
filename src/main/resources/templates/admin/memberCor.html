@@ -26,34 +26,34 @@
 
     <!-- Section Title -->
     <form class="form-container" action="/hereevent/admin/member/update" method="post" enctype="multipart/form-data">
-        <input class="form-input" type="hidden" id="member_no" name="member_no" th:value="${member.member_no}">
+        <input class="form-input" type="hidden" id="member_no" name="member_no" th:value="${editMember.member_no}">
         <label class="form-label" for="email">*이메일:</label>
-        <input class="form-input" type="text" id="email" name="email" th:value="${member.email}" required >
+        <input class="form-input" type="text" id="email" name="email" th:value="${editMember.email}" required >
 
         <label class="form-label" for="pass">*비밀번호:</label>
-        <input class="form-input" type="password" id="pass" name="pass" th:value="${member.pass}" required >
+        <input class="form-input" type="password" id="pass" name="pass" th:value="${editMember.pass}" required >
 
         <label class="form-label" for="name">*이름:</label>
-        <input class="form-input" type="text" id="name" name="name" th:value="${member.name}" required >
+        <input class="form-input" type="text" id="name" name="name" th:value="${editMember.name}" required >
 
         <label class="form-label" for="nick">*닉:</label>
-        <input class="form-input" type="text" id="nick" name="nick" th:value="${member.nick}" required >
+        <input class="form-input" type="text" id="nick" name="nick" th:value="${editMember.nick}" required >
 
         <label class="form-label" for="tel">*전화번호:</label>
-        <input class="form-input" type="text" id="tel" name="tel" th:value="${member.tel}" required >
+        <input class="form-input" type="text" id="tel" name="tel" th:value="${editMember.tel}" required >
 
         <label class="form-label" for="birth">생일:</label>
-        <input class="form-input" type="date" id="birth" name="birth" th:value="${member.birth}" onchange="updateDateRange()">
+        <input class="form-input" type="date" id="birth" name="birth" th:value="${editMember.birth}" onchange="updateDateRange()">
 
 
 
 
         <div id="profile-img">
-            <img th:if="${member.img_path == null}"
+            <img th:if="${editMember.img_path == null}"
                  th:src="@{/images/default_img.png}" alt="default_profile">
-            <img th:unless="${member.img_path == null}"
-                 th:src="|@{/download/profile/}${member.img_path}|">
-            <input type="hidden" name="img_path" th:value="${member.img_path}">
+            <img th:unless="${editMember.img_path == null}"
+                 th:src="|@{/download/profile/}${editMember.img_path}|">
+            <input type="hidden" name="img_path" th:value="${editMember.img_path}">
         </div>
 
         <label class="form-label" for="image">프로필사진:</label>
@@ -61,9 +61,9 @@
 
         <label class="form-label">*관리자:</label>
         <div class="radio-group">
-            <input type="radio" id="0" name="mgr" value="0" th:checked="${member.mgr == 0} ? true : false" required>
+            <input type="radio" id="0" name="mgr" value="0" th:checked="${editMember.mgr == 0} ? true : false" required>
             <label class="form-label" for="0">일반회원</label>
-            <input type="radio" id="1" name="mgr" value="1" th:checked="${member.mgr == 1} ? true : false" required>
+            <input type="radio" id="1" name="mgr" value="1" th:checked="${editMember.mgr == 1} ? true : false" required>
             <label class="form-label" for="1">매니저</label>
         </div>
 

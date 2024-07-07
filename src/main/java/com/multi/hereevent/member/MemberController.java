@@ -87,7 +87,6 @@ public class MemberController {
             model.addAttribute("member",findmem);
             return "login/interestCategory";
         } catch (IOException e) {
-            new RuntimeException();
             return "common/errorPage";
         }
 
