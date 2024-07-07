@@ -207,7 +207,7 @@ public class AdminController {
         eventNo.add(Integer.parseInt(event_no));
         int result = eventService.deleteEvent(eventNo);
         if(result > 0){
-            return "redirect:/admin/review";
+            return "redirect:/admin/event";
         }else {
             return "common/errorPage";
         }
