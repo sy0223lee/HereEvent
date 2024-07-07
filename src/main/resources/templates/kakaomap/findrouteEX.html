@@ -72,6 +72,7 @@
         <button onclick="searchAddressToCoords()">길찾기</button>
 
     </div>
+    <div id="output"></div>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1c7411c7e9cd13cdaac33d749ab11436&libraries=services"></script>
     <script>
         var placeOverlay = new kakao.maps.CustomOverlay({zIndex: 1}),
@@ -149,10 +150,67 @@
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     var response = JSON.parse(xhr.responseText);
-                    console.log(response); // <- xhr.responseText 로 결과를 가져올 수 있음
+                    //console.log(response); // <- xhr.responseText 로 결과를 가져올 수 있음
+                    displayResponse(response);
                     // 노선그래픽 데이터 호출
                     callMapObjApiAJAX(response.result.path[0].info.mapObj);
                 }
+            }
+            xhr.send();
+
+        }
+        function displayResponse(response) {
+            var outputElement = document.getElementById('output');
+            outputElement.innerHTML = '';
+
+            response.result.path.forEach(function(path, index) {
+                var routeDiv = document.createElement('div');
+                routeDiv.classList.add('route');
+                var routeSummary = `
+                <h3>경로 ${index + 1}</h3>
+                <p>총 소요시간: ${path.info.totalTime}분, 요금: ${path.info.payment}원</p>
+                <button onclick="toggleDetails(${index})">상세보기</button>
+            `;
+                var routeDetails = `
+                <div id="details-${index}" class="route-details">
+                    <ul>
+                        ${path.subPath.map(function(subPath) {
+                    return `
+                                <li>
+                                    <strong>${getTrafficType(subPath.trafficType)}</strong>
+                                    ${subPath.sectionTime}분, ${subPath.distance}m
+                                    (${subPath.startName} -> ${subPath.endName})
+                                </li>
+                            `;
+                }).join('')}
+                    </ul>
+                </div>
+            `;
+
+                routeDiv.innerHTML = routeSummary + routeDetails;
+                outputElement.appendChild(routeDiv);
+            });
+        }
+
+        function toggleDetails(index) {
+            var details = document.getElementById('details-' + index);
+            if (details.style.display === 'none' || details.style.display === '') {
+                details.style.display = 'block';
+            } else {
+                details.style.display = 'none';
+            }
+        }
+
+        function getTrafficType(type) {
+            switch (type) {
+                case 1:
+                    return '지하철';
+                case 2:
+                    return '버스';
+                case 3:
+                    return '도보';
+                default:
+                    return '기타';
             }
         }
 
@@ -352,7 +410,17 @@
             setMapByAddress(eventAddress);
         });
 
-
+        function setMapByAddress(address) {
+            // 주소로 좌표를 검색합니다
+            geocoder.addressSearch(address, function(result, status) {
+                // 정상적으로 검색이 완료됐으면
+                if (status === kakao.maps.services.Status.OK) {
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    // 결과값으로 받은 위치를 지도의 중심으로 설정합니다
+                    map.setCenter(coords);
+                }
+            });
+        }
 
 
     </script>
