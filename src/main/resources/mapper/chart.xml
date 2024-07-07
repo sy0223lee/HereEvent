@@ -6,26 +6,28 @@
 		with
 		s as (select start_date date, count(start_date) start_cnt from event where start_date between curdate() and date_add(curdate(), interval 4 day) group by start_date),
 		e as (select end_date date, count(end_date) end_cnt from event where end_date between curdate() and date_add(curdate(), interval 4 day) group by end_date)
-		select s.date, ifnull(start_cnt, 0) start_cnt, ifnull(end_cnt, 0) end_cnt
+		select s.date as date, ifnull(start_cnt, 0) start_cnt, ifnull(end_cnt, 0) end_cnt
 		from s left join e on s.date = e.date
 		union
-		select e.date, ifnull(start_cnt, 0) start_cnt, ifnull(end_cnt, 0) end_cnt
+		select e.date as date, ifnull(start_cnt, 0) start_cnt, ifnull(end_cnt, 0) end_cnt
 		from s right join e on s.date = e.date
-		order by date;
+		order by date
 	</select>
 	<!-- 이벤트 카테고리 비율 -->
 	<select id="categoryRate" resultType="chart">
-		select c.name, count(c.name) cnt
+		select c.name name, count(c.name) cnt
 		from event e left join category c on e.category_no = c.category_no
 		where c.name is not null
-		group by c.name;
+		group by c.name
+		order by cnt desc
 	</select>
 	<!-- 날짜별 신규 회원 가입 -->
 	<select id="newMemberCount" resultType="chart">
 		select reg_date date, count(member_no) cnt
 		from member
 		where reg_date between date_sub(curdate(), interval 7 day) and curdate()
-		group by reg_date;
+		group by reg_date
+		order by reg_date
 	</select>
 	<!-- 예약/대기 상위 이벤트 -->
 	<select id="reserveTopEvent" resultType="chart">
@@ -33,15 +35,15 @@
 		from reserve r left join event e on r.event_no = e.event_no
 		where end_date >= curdate()
 		group by e.event_no
-		order by reserve_cnt desc
-		limit 5;
+		order by cnt desc
+		limit 5
 	</select>
 	<select id="waitTopEvent" resultType="chart">
 		select e.event_no, e.name, count(e.event_no) cnt
 		from wait w left join event e on w.event_no = e.event_no
 		where end_date >= curdate()
 		group by e.event_no
-		order by wait_cnt desc
-		limit 5;
+		order by cnt desc
+		limit 5
 	</select>
 </mapper>

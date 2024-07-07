@@ -23,7 +23,7 @@ import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
-@SessionAttributes("editMember")
+@SessionAttributes("member")
 public class AdminController {
     private final MemberService memberService;
     private final FileUploadService fileUploadService;
@@ -35,14 +35,19 @@ public class AdminController {
     /************** 관리 메인페이지 ************/
     @GetMapping("/admin")
     public String adminPage(Model model){
-        // 차트에 필요한 리스트 model 에 add
-        model.addAttribute("eventList", chartService.startEndEventCount());
-        model.addAttribute("categoryList", chartService.categoryRate());
-        model.addAttribute("memberList", chartService.newMemberCount());
-        model.addAttribute("reserveList", chartService.reserveTopEvent());
-        model.addAttribute("waitList", chartService.waitTopEvent());
+        MemberDTO member = (MemberDTO) model.getAttribute("member");
+        if(member != null && member.getMgr() == 1) {
+            // 차트에 필요한 리스트 model 에 add
+            model.addAttribute("eventList", chartService.startEndEventCount());
+            model.addAttribute("categoryList", chartService.categoryRate());
+            model.addAttribute("memberList", chartService.newMemberCount());
+            model.addAttribute("reserveList", chartService.reserveTopEvent());
+            model.addAttribute("waitList", chartService.waitTopEvent());
 
-        return "admin/home";
+            return "admin/home";
+        }else{
+            return "common/errorPage";
+        }
     }
 
     /************** 회원관리 ************/

@@ -14,26 +14,26 @@ public class ChartDAOImpl implements ChartDAO{
 
     @Override
     public List<ChartDTO> startEndEventCount() {
-        return sqlSession.selectList("com.multi.hereevent.admin.ChartDAO.startEndEventCount");
+        return sqlSession.selectList("com.multi.hereevent.admin.startEndEventCount");
     }
 
     @Override
     public List<ChartDTO> categoryRate() {
-        return sqlSession.selectList("com.multi.hereevent.admin.ChartDAO.categoryRate");
+        return sqlSession.selectList("com.multi.hereevent.admin.categoryRate");
     }
 
     @Override
     public List<ChartDTO> newMemberCount() {
-        return sqlSession.selectList("com.multi.hereevent.admin.ChartDAO.newMemberCount");
+        return sqlSession.selectList("com.multi.hereevent.admin.newMemberCount");
     }
 
     @Override
     public List<ChartDTO> reserveTopEvent() {
-        return sqlSession.selectList("com.multi.hereevent.admin.ChartDAO.reserveTopEvent");
+        return sqlSession.selectList("com.multi.hereevent.admin.reserveTopEvent");
     }
 
     @Override
     public List<ChartDTO> waitTopEvent() {
-        return sqlSession.selectList("com.multi.hereevent.admin.ChartDAO.waitTopEvent");
+        return sqlSession.selectList("com.multi.hereevent.admin.waitTopEvent");
     }
 }

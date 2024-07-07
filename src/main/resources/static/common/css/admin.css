@@ -2,7 +2,19 @@
 .menu h3{
     font-weight: 600;
 }
-
+#start_end_chart, #category_rate_chart,
+#new_member_chart, #top_event_chart{
+    width: 48%;
+    margin-bottom: 16px;
+    border: 1px solid var(--default-color);
+    border-radius: 4px;
+}
+g text{
+    font-family: var(--default-font), sans-serif;
+}
+svg > g:nth-child(3) > text{
+    font-size: 20px;
+}
 
 /* 페이징 버튼 */
 .pagination{
