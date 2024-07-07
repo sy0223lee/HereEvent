@@ -39,7 +39,7 @@ function printCategoryList(categoryNo){
 
                 /* 예약 방식 */
                 if(event.type === "reserve"){
-                    printData += "<div class='event-type'><span>사전에약</span></div>";
+                    printData += "<div class='event-type'><span>사전예약</span></div>";
                 }else if((event.type === "wait")){
                     printData += "<div class='event-type'><span>현장대기</span></div>";
                 }else{
