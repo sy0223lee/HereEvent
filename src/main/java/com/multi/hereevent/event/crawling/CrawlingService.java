@@ -51,7 +51,7 @@ public class CrawlingService {
         cal.add(Calendar.DATE, 14); // 2주
         String day = sdf.format(cal.getTime());
         try {
-            driver.get("https://popply.co.kr/popup?area=all&startDate="+ "2024-07-21" + "&endDate=" + "2024-06-20" + "&status=all");
+            driver.get("https://popply.co.kr/popup?area=all&startDate=" + day + "&endDate=" + today + "&status=all");
             WebElement element = driver.findElement(By.cssSelector("div.calendar-popup-list.popuplist-board"));
 
             // 팝업 이미지, 상세 정보 리스트에 저장
