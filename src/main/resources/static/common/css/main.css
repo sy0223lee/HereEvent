@@ -75,29 +75,57 @@ h6 {
   font-family: var(--heading-font), sans-serif;
 }
 
+.btn-outline-primary{
+  --bs-btn-color: var(--accent-color);
+  --bs-btn-border-color: var(--accent-color);
+  --bs-btn-hover-bg: var(--accent-color);
+  --bs-btn-hover-border-color: var(--accent-color);
+  --bs-btn-focus-shadow-rgb: 225, 69, 51;
+  --bs-btn-active-bg: var(--accent-color);
+  --bs-btn-active-border-color: var(--accent-color);
+  --bs-btn-disabled-color: var(--accent-color);
+  --bs-btn-disabled-border-color: var(--accent-color);
+}
+.btn-outline-secondary{
+  --bs-btn-color: var(--default-color);
+  --bs-btn-border-color: var(--default-color);
+  --bs-btn-hover-bg: var(--default-color);
+  --bs-btn-hover-border-color: var(--default-color);
+  --bs-btn-focus-shadow-rgb: 42, 46, 68;
+  --bs-btn-active-bg: var(--default-color);
+  --bs-btn-active-border-color: var(--default-color);
+  --bs-btn-disabled-color: var(--default-color);
+  --bs-btn-disabled-border-color: var(--default-color);
+}
+
 .btn-primary {
   border-radius: 4px;
   padding: 10px 20px;
   border: 0;
-  background-color: var(--accent-color);
-  color: var(--contrast-color);
-}
-
-.btn-primary:hover {
-  color: var(--contrast-color);
-  background-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+  --bs-btn-bg: var(--accent-color);
+  --bs-btn-border-color: var(--accent-color);
+  --bs-btn-hover-bg: color-mix(in srgb, var(--accent-color), transparent 20%);
+  --bs-btn-hover-border-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+  --bs-btn-focus-shadow-rgb: 225, 69, 51;
+  --bs-btn-active-bg: color-mix(in srgb, var(--accent-color), transparent 20%);
+  --bs-btn-active-border-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+  --bs-btn-disabled-bg: var(--accent-color);
+  --bs-btn-disabled-border-color: var(--accent-color);
 }
 
 .btn-secondary {
   border-radius: 4px;
   padding: 10px 20px;
   border: 0;
-  background-color: var(--default-color);
-  color: var(--contrast-color);
-}
-.btn-secondary:hover {
-  color: var(--contrast-color);
-  background-color: color-mix(in srgb, var(--default-color), transparent 20%);
+  --bs-btn-bg: var(--default-color);
+  --bs-btn-border-color: var(--default-color);
+  --bs-btn-hover-bg: color-mix(in srgb, var(--default-color), transparent 20%);
+  --bs-btn-hover-border-color: color-mix(in srgb, var(--default-color), transparent 20%);
+  --bs-btn-focus-shadow-rgb: 42, 46, 68;
+  --bs-btn-active-bg: color-mix(in srgb, var(--default-color), transparent 20%);
+  --bs-btn-active-border-color: color-mix(in srgb, var(--default-color), transparent 20%);
+  --bs-btn-disabled-bg: var(--default-color);
+  --bs-btn-disabled-border-color: var(--default-color);
 }
 
 /*--------------------------------------------------------------
@@ -963,10 +991,11 @@ ul.runningtime{
 .banner .swiper {
   width: 100%;
   height: 100%;
+  padding-bottom: 30px;
 }
 
 .banner .swiper-slide {
-  height: 400px;
+  height: 550px;
 }
 
 .banner .swiper-slide img {
@@ -982,7 +1011,7 @@ ul.runningtime{
 }
 
 .banner .swiper-wrapper {
-  height: 400px;
+  height: 550px;
 }
 
 /*.clients .swiper-pagination {*/

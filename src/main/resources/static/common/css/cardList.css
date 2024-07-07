@@ -23,27 +23,6 @@
     justify-content: center; /* 카드들을 가운데 정렬 */
 }
 
-.btn-outline-primary{
-    --bs-btn-color: var(--accent-color);
-    --bs-btn-border-color: var(--accent-color);
-    --bs-btn-hover-bg: var(--accent-color);
-    --bs-btn-hover-border-color: var(--accent-color);
-    --bs-btn-active-bg: var(--accent-color);
-    --bs-btn-active-border-color: var(--accent-color);
-    --bs-btn-disabled-color: var(--accent-color);
-    --bs-btn-disabled-border-color: var(--accent-color);
-}
-.btn-outline-secondary{
-    --bs-btn-color: var(--default-color);
-    --bs-btn-border-color: var(--default-color);
-    --bs-btn-hover-bg: var(--default-color);
-    --bs-btn-hover-border-color: var(--default-color);
-    --bs-btn-active-bg: var(--default-color);
-    --bs-btn-active-border-color: var(--default-color);
-    --bs-btn-disabled-color: var(--default-color);
-    --bs-btn-disabled-border-color: var(--default-color);
-}
-
 /* 별점, 인기 순위 등수 */
 .event-rank{
     position: absolute;

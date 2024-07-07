@@ -1,10 +1,7 @@
 package com.multi.hereevent.admin;
 
 import com.multi.hereevent.category.CategoryService;
-import com.multi.hereevent.dto.CategoryDTO;
-import com.multi.hereevent.dto.EventDTO;
-import com.multi.hereevent.dto.MemberDTO;
-import com.multi.hereevent.dto.ReviewDTO;
+import com.multi.hereevent.dto.*;
 import com.multi.hereevent.event.EventService;
 import com.multi.hereevent.fileupload.FileUploadService;
 import com.multi.hereevent.member.MemberService;
@@ -33,6 +30,25 @@ public class AdminController {
     private final ReviewService reviewService;
     private final EventService eventService;
     private final CategoryService categoryService;
+    private final ChartService chartService;
+
+    /************** 관리 메인페이지 ************/
+    @GetMapping("/admin")
+    public String adminPage(Model model){
+        MemberDTO member = (MemberDTO) model.getAttribute("member");
+        if(member != null && member.getMgr() == 1) {
+            // 차트에 필요한 리스트 model 에 add
+            model.addAttribute("eventList", chartService.startEndEventCount());
+            model.addAttribute("categoryList", chartService.categoryRate());
+            model.addAttribute("memberList", chartService.newMemberCount());
+            model.addAttribute("reserveList", chartService.reserveTopEvent());
+            model.addAttribute("waitList", chartService.waitTopEvent());
+
+            return "admin/home";
+        }else{
+            return "common/errorPage";
+        }
+    }
 
     /************** 회원관리 ************/
     @GetMapping("/admin/member")
@@ -50,7 +66,7 @@ public class AdminController {
 
     /*단일 삭제버튼*/
     @PostMapping("/admin/member/delete")
-    public String deleteAdminMember(@RequestParam("member_no") String member_no){
+    public String deleteOneMember(@RequestParam("member_no") String member_no){
         int result = memberService.deleteMember(Integer.parseInt(member_no));
         if(result > 0){
             return "redirect:/admin/member";
@@ -60,8 +76,8 @@ public class AdminController {
     }
 
     /*회원선택삭제*/
-    @PostMapping("/admin/member/deletelist")
-    public String deleteMember(@RequestParam("memberNo") List<Integer> memberNo) {
+    @PostMapping("/admin/member/delete-select")
+    public String deleteMember(@RequestParam("select") List<Integer> memberNo) {
         memberService.deleteMembers(memberNo);
         return "redirect:/admin/member";
     }
@@ -70,8 +86,9 @@ public class AdminController {
     @GetMapping("/admin/member/update/{member_no}")
     public String memberUpdate(@PathVariable("member_no") int member_no, Model model){
         MemberDTO member = memberService.selectMemberDetail(member_no);
-        model.addAttribute("member",member);
-        return "admin/memberCor";
+        // 속성명을 member 로 하면 session 에 저장된 member 의 값이 바뀌게 되므로 다른 속성명 이용 필요
+        model.addAttribute("editMember",member);
+        return "admin/updateMember";
     }
     @PostMapping("/admin/member/update")
     public String memberUpdate(MemberDTO member) {
@@ -82,7 +99,6 @@ public class AdminController {
                 storeFilename = fileUploadService.uploadProfileImg(memberImg);
                 member.setImg_path(storeFilename);
             } catch (IOException e) {
-                new RuntimeException(e);
                 return "common/errorPage";
             }
         }
@@ -104,8 +120,8 @@ public class AdminController {
         return "admin/review";
     }
     /*상세보기 삭제버튼*/
-    @PostMapping("/admin/review/deleteOne")
-    public String deleteOneAdminReview(@RequestParam("review_no") String review_no){
+    @PostMapping("/admin/review/delete")
+    public String deleteOneReview(@RequestParam("review_no") String review_no){
         int result = reviewService.deleteReview(Integer.parseInt(review_no));
         if(result > 0){
             return "redirect:/admin/review";
@@ -114,8 +130,8 @@ public class AdminController {
         }
     }
     /*선택 삭제기능*/
-    @PostMapping("/admin/review/delete")
-    public String deleteAdminReview(@RequestParam("reviewNo") List<Integer> reviewNo){
+    @PostMapping("/admin/review/delete-select")
+    public String deleteReview(@RequestParam("select") List<Integer> reviewNo){
         int result = reviewService.deleteReviewSelect(reviewNo);
         if(result > 0){
             return "redirect:/admin/review";
@@ -137,7 +153,6 @@ public class AdminController {
         model.addAttribute("pageNumber", page.getPageNumber());
         return "admin/event";
     }
-    // insert, update, delete 만들어 놨는데 수정해서 쓰시면 될거같습니다.
     @GetMapping("/admin/event/insert")
     public String createEventPage(Model model){
         List<CategoryDTO> categoryList = new ArrayList<>();
@@ -160,7 +175,6 @@ public class AdminController {
             System.out.println("+++++"+event);
             return "redirect:/admin/event";
         } catch (IOException e) {
-            new RuntimeException();
             return "common/errorPage";
         }
     }
@@ -174,7 +188,7 @@ public class AdminController {
         return "event/update";
     }
     @PostMapping("/admin/event/update")
-    public String updateEvent(@RequestParam("event_no") int event_no,EventDTO event) {
+    public String updateEvent(EventDTO event) {
         MultipartFile eventImg = event.getEvent_img();
         String storeFilename = null;
         try {
@@ -184,13 +198,22 @@ public class AdminController {
             eventService.updateEvent(event);
             return "redirect:/admin/event";
         } catch (IOException e) {
-            new RuntimeException(e);
             return "common/errorPage";
         }
     }
-
     @PostMapping("/admin/event/delete")
-    public String deleteEvent(@RequestParam("eventNo") List<Integer> eventNo) {
+    public String deleteOneEvent(@RequestParam("event_no") String event_no){
+        List<Integer> eventNo = new ArrayList<>();
+        eventNo.add(Integer.parseInt(event_no));
+        int result = eventService.deleteEvent(eventNo);
+        if(result > 0){
+            return "redirect:/admin/review";
+        }else {
+            return "common/errorPage";
+        }
+    }
+    @PostMapping("/admin/event/delete-select")
+    public String deleteEvent(@RequestParam("select") List<Integer> eventNo) {
         eventService.deleteEvent(eventNo);
         return "redirect:/admin/event";
     }

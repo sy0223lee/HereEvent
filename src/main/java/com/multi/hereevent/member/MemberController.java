@@ -87,7 +87,6 @@ public class MemberController {
             model.addAttribute("member",findmem);
             return "login/interestCategory";
         } catch (IOException e) {
-            new RuntimeException();
             return "common/errorPage";
         }
 
@@ -215,17 +214,6 @@ public class MemberController {
             return "redirect:/mypage";
         } catch (IOException e) {
             e.printStackTrace();
-            return "common/errorPage";
-        }
-    }
-
-    /***** 관리자 페이지 이동 *****/
-    @GetMapping("/admin")
-    public String adminPage(Model model){
-        MemberDTO member = (MemberDTO) model.getAttribute("member");
-        if(member != null && member.getMgr() == 1){
-            return "admin/home";
-        }else{
             return "common/errorPage";
         }
     }
