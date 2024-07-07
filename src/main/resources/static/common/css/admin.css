@@ -1,3 +1,9 @@
+/* admin - home.html */
+.menu h3{
+    font-weight: 600;
+}
+
+
 /* 페이징 버튼 */
 .pagination{
     margin: 30px;

@@ -1,10 +1,7 @@
 package com.multi.hereevent.admin;
 
 import com.multi.hereevent.category.CategoryService;
-import com.multi.hereevent.dto.CategoryDTO;
-import com.multi.hereevent.dto.EventDTO;
-import com.multi.hereevent.dto.MemberDTO;
-import com.multi.hereevent.dto.ReviewDTO;
+import com.multi.hereevent.dto.*;
 import com.multi.hereevent.event.EventService;
 import com.multi.hereevent.fileupload.FileUploadService;
 import com.multi.hereevent.member.MemberService;
@@ -33,6 +30,20 @@ public class AdminController {
     private final ReviewService reviewService;
     private final EventService eventService;
     private final CategoryService categoryService;
+    private final ChartService chartService;
+
+    /************** 관리 메인페이지 ************/
+    @GetMapping("/admin")
+    public String adminPage(Model model){
+        // 차트에 필요한 리스트 model 에 add
+        model.addAttribute("eventList", chartService.startEndEventCount());
+        model.addAttribute("categoryList", chartService.categoryRate());
+        model.addAttribute("memberList", chartService.newMemberCount());
+        model.addAttribute("reserveList", chartService.reserveTopEvent());
+        model.addAttribute("waitList", chartService.waitTopEvent());
+
+        return "admin/home";
+    }
 
     /************** 회원관리 ************/
     @GetMapping("/admin/member")
@@ -72,7 +83,7 @@ public class AdminController {
         MemberDTO member = memberService.selectMemberDetail(member_no);
         // 속성명을 member 로 하면 session 에 저장된 member 의 값이 바뀌게 되므로 다른 속성명 이용 필요
         model.addAttribute("editMember",member);
-        return "admin/memberCor";
+        return "admin/updateMember";
     }
     @PostMapping("/admin/member/update")
     public String memberUpdate(MemberDTO member) {

@@ -6,9 +6,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSS File -->
-    <link href="/hereevent/common/css/mypage.css" rel="stylesheet">
+    <link href="/hereevent/common/css/admin.css" rel="stylesheet">
 
-    <title>HereEvent-MyPage</title>
+    <title>HereEvent-Admin</title>
 </head>
 <body>
 <main layout:fragment="main" class="main">
@@ -26,13 +26,35 @@
         </div>
     </div><!-- End Page Title -->
 
-    <!-- Starter Section Section -->
+    <!-- Starter Section -->
     <section id="starter-section" class="starter-section section">
-        <div class="container">
-            <h3><a href="/hereevent/crawling">크롤링</a></h3>
-            <h3><a href="/hereevent/admin/review">후기 관리</a></h3>
-            <h3><a href="/hereevent/admin/event">이벤트 관리</a></h3>
-            <h3><a href="/hereevent/admin/member">회원 관리</a></h3>
+        <div class="container d-flex">
+            <div class="menu col-2">
+                <h3 class="pb-2">관리 메뉴</h3>
+                <h4 class="py-1"><a href="/hereevent/admin/event">이벤트 관리</a></h4>
+                <h4 class="py-1"><a href="/hereevent/admin/member">회원 관리</a></h4>
+                <h4 class="py-1"><a href="/hereevent/admin/review">후기 관리</a></h4>
+                <h4 class="py-1"><a href="/hereevent/crawling">크롤링</a></h4>
+            </div>
+            <div class="chart col-10">
+                차트 구역
+                <div class="start-end-chart">
+                    날짜별 시작/종료 이벤트 개수
+
+                </div>
+                <div class="category-rate-chart">
+                    이벤트 카테고리 비율
+
+                </div>
+                <div class="new-member-chart">
+                    날짜별 신규 회원 가입 수
+
+                </div>
+                <div class="top-event-chart">
+                    예약/대기 상위 이벤트
+
+                </div>
+            </div>
         </div>
     </section>
 
