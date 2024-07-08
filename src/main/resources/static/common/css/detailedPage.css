@@ -112,9 +112,15 @@
     font-weight: bolder;
     color: var(--accent-color);
     text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
-
 }
-
+.interest-cnt{
+    justify-content: center;
+    font-size: 16px;
+}
+#eventInterest{
+    color: var(--accent-color);
+    text-align: right;
+}
 /* 상세페이지 - 리뷰 */
 .comment-content{
     width: 100%;
