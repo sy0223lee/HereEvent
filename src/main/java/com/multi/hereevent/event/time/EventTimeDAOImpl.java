@@ -20,6 +20,11 @@ public class EventTimeDAOImpl implements EventTimeDAO {
     }
 
     @Override
+    public int updateEventTimeList(List<EventTimeDTO> eventTimeList) {
+        return sqlSession.update("com.multi.hereevent.event.time.updateEventTimeList",eventTimeList);
+    }
+
+    @Override
     public EventTimeDTO getEventTimeByEventNoAndDay(int event_no, String day) {
         HashMap<String,Object> param = new HashMap<>();
         param.put("event_no",event_no);

@@ -9,6 +9,18 @@
     <link href="/hereevent/common/css/admin.css" rel="stylesheet">
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script type="text/javascript" src="/hereevent/common/js/findAddr.js"></script>
+    <script>
+        function updateDateRange() {
+            const startDate = document.getElementById('start_date').value;
+            const endDate = document.getElementById('end_date').value;
+            const dateRange = document.getElementById('dateRange');
+            if (start_date && end_date) {
+                dateRange.textContent = `운영기간: ${startDate} ~ ${endDate}`;
+            } else {
+                dateRange.textContent = '';
+            }
+        }
+    </script>
 </head>
 <body>
 <main layout:fragment="main" class="main">
@@ -45,6 +57,84 @@
         <input class="form-input" type="date" id="end_date" name="end_date" th:value="${event.end_date}" required onchange="updateDateRange()">
 
         <p id="dateRange" class="date-range"></p>
+        <label class="form-label">*행사 시간:</label>
+        <label class="form-label">월요일:</label>
+        <input type="hidden" th:value="월" name="event_time">
+        <select id="mon_start" name="event_time">
+            <option>휴무</option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}" ></option>
+        </select>
+        ~
+        <select id="mon_end" name="event_time">
+            <option>휴무</option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+        </select><br>
+        <input type="hidden" th:value="화" name="event_time">
+        <label class="form-label">화요일:</label>
+        <select id="tue_start" name="event_time">
+            <option>휴무</option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+        </select>
+        ~
+        <select id="tue_end" name="event_time">
+            <option>휴무</option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+        </select><br>
+        <input type="hidden" th:value="수" name="event_time">
+        <label class="form-label">수요일:</label>
+        <select id="wed_start" name="event_time">
+            <option>휴무</option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+        </select>
+        ~
+        <select id="wed_end" name="event_time">
+            <option>휴무</option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+        </select><br>
+        <input type="hidden" th:value="목" name="event_time">
+        <label class="form-label">목요일:</label>
+        <select id="thu_start" name="event_time">
+            <option>휴무</option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+        </select>
+        ~
+        <select id="thu_end" name="event_time">
+            <option>휴무</option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+        </select><br>
+        <input type="hidden" th:value="금" name="event_time">
+        <label class="form-label">금요일:</label>
+        <select id="fri_start" name="event_time">
+            <option>휴무</option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+        </select>
+        ~
+        <select id="fri_end" name="event_time">
+            <option>휴무</option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+        </select><br>
+        <input type="hidden" th:value="토" name="event_time">
+        <label class="form-label">토요일:</label>
+        <select id="sat_start" name="event_time">
+            <option>휴무</option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+        </select>
+        ~
+        <select id="sat_end" name="event_time">
+            <option>휴무</option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+        </select><br>
+        <input type="hidden" th:value="일" name="event_time">
+        <label class="form-label">일요일:</label>
+        <select id="sun_start" name="event_time">
+            <option>휴무</option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+        </select>
+        ~
+        <select id="sun_end" name="event_time">
+            <option>휴무</option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+        </select><br>
         <div class="addr-place">
             <label class="form-label" for="address">*주소:</label>
             <input type="button" onclick="sample6_execDaumPostcode()" value="주소 찾기"><br>

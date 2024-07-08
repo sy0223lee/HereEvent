@@ -3,6 +3,7 @@ package com.multi.hereevent.admin;
 import com.multi.hereevent.category.CategoryService;
 import com.multi.hereevent.dto.*;
 import com.multi.hereevent.event.EventService;
+import com.multi.hereevent.event.time.EventTimeService;
 import com.multi.hereevent.fileupload.FileUploadService;
 import com.multi.hereevent.member.MemberService;
 import com.multi.hereevent.review.ReviewService;
@@ -29,6 +30,7 @@ public class AdminController {
     private final FileUploadService fileUploadService;
     private final ReviewService reviewService;
     private final EventService eventService;
+    private final EventTimeService eventTimeService;
     private final CategoryService categoryService;
     private final ChartService chartService;
 
@@ -158,6 +160,13 @@ public class AdminController {
         List<CategoryDTO> categoryList = new ArrayList<>();
         categoryList = categoryService.getListCategory();
         model.addAttribute("categoryList",categoryList);
+        // 시간을 나타내는 문자열 리스트 생성
+        List<String> hours = new ArrayList<>();
+        for (int i = 0; i < 24; i++) {
+            hours.add(String.format("%02d:00", i));
+        }
+        model.addAttribute("hours", hours);
+
         return "event/insert";
     }
     @PostMapping("/admin/event/insert")
@@ -173,10 +182,31 @@ public class AdminController {
             //DB에 삽입
             eventService.insertEvent(event);
             System.out.println("+++++"+event);
+            EventDTO regievent = eventService.getEventDetail(event.getName());
+            System.out.println("register event::"+regievent);
+            List<EventTimeDTO> eventTimeList = parseEventTimes(regievent.getEvent_no(),event.getEvent_time());
+            System.out.println("timeList::>>"+eventTimeList);
+            eventTimeService.insertEventTimeList(eventTimeList);
             return "redirect:/admin/event";
         } catch (IOException e) {
             return "common/errorPage";
         }
+    }
+    //이벤트 시간 LIST 처리
+    private List<EventTimeDTO> parseEventTimes(int eventNo, String eventTimesString) {
+        List<EventTimeDTO> eventTimeList = new ArrayList<>();
+        String[] eventTimesArray = eventTimesString.split(",");
+        for (int i = 0; i < eventTimesArray.length; i += 3) {
+            String day = eventTimesArray[i].trim();
+            String startTime = eventTimesArray[i + 1].trim();
+            String endTime = eventTimesArray[i + 2].trim();
+            if (startTime.equalsIgnoreCase("휴무") || endTime.equalsIgnoreCase("휴무")) {
+                startTime = null;
+                endTime = null;
+            }
+            eventTimeList.add(new EventTimeDTO(eventNo, day, startTime, endTime));
+        }
+        return eventTimeList;
     }
     @GetMapping("/admin/event/update/{event_no}")
     public String updateEventPage(@PathVariable("event_no") int event_no, Model model){
@@ -185,10 +215,23 @@ public class AdminController {
         model.addAttribute("categoryList",categoryList);
         EventDTO event = eventService.getEventDetails(event_no);
         model.addAttribute("event",event);
+        List<EventTimeDTO> eventTimeList = eventTimeService.getEventTime(event_no);
+        System.out.println(eventTimeList);
+        model.addAttribute("eventTimeList",eventTimeList);
+        // 시간을 나타내는 문자열 리스트 생성
+        List<String> hours = new ArrayList<>();
+        for (int i = 0; i < 24; i++) {
+            hours.add(String.format("%02d:00", i));
+        }
+        model.addAttribute("hours", hours);
         return "event/update";
     }
     @PostMapping("/admin/event/update")
     public String updateEvent(EventDTO event) {
+        System.out.println("event::>>"+event);
+        List<EventTimeDTO> eventTimeList = parseEventTimes(event.getEvent_no(),event.getEvent_time());
+        System.out.println("eventTimeList::>>"+eventTimeList);
+        eventTimeService.updateEventTImeList(eventTimeList);
         MultipartFile eventImg = event.getEvent_img();
         String storeFilename = null;
         try {

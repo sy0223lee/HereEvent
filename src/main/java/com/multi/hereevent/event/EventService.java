@@ -12,7 +12,7 @@ import java.util.Map;
 
 public interface EventService {
     //관리자페이지
-    int insertEvent(EventDTO event); //행사 등록
+    int insertEvent(EventDTO event);//행사 등록
     int updateEvent(EventDTO event); // 업데이트
     int deleteEvent(List<Integer> eventNo); // 삭제
     List<EventDTO> selectAll(); //이벤트 전체조회
@@ -37,6 +37,8 @@ public interface EventService {
     //세부페이지
     EventDTO getEventDetails(int event_no);
     EventDTO getEventDetails(int event_no, int category_no); // 이벤트 상세 정보 + 회원 관심 여부 조회
+    //이벤트 이름으로 조회
+    EventDTO getEventDetail(String name);
     //event image
     EventDTO getEventImage(int event_no);
 
