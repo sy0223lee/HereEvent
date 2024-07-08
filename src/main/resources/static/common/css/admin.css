@@ -1,3 +1,21 @@
+/* admin - home.html */
+.menu h3{
+    font-weight: 600;
+}
+#start_end_chart, #category_rate_chart,
+#new_member_chart, #top_event_chart{
+    width: 48%;
+    margin-bottom: 16px;
+    border: 1px solid var(--default-color);
+    border-radius: 4px;
+}
+g text{
+    font-family: var(--default-font), sans-serif;
+}
+svg > g:nth-child(3) > text{
+    font-size: 20px;
+}
+
 /* 페이징 버튼 */
 .pagination{
     margin: 30px;
@@ -32,74 +50,116 @@
     cursor: default;
 }
 
-/* 후기 관리 페이지 */
-.review-search{
+/* 관리 페이지 공통으로 적용되는 css */
+.admin-search{
     margin-bottom: 20px;
 }
-.review-search form{
+.admin-search form{
     border: none;
     padding: 0;
 }
 
-.review-search form select{
+.admin-search form select{
     border: 1px solid color-mix(in srgb, var(--default-color), transparent 70%);
     border-radius: 4px;
     color: var(--default-color);
 }
 
-.review-search form input[type=text] {
+.admin-search form input[type=text]{
     border: 1px solid color-mix(in srgb, var(--default-color), transparent 70%);
     padding: 7px 10px;
     margin-left: 10px;
 }
 
-.review-search form select:focus,
-.review-search form input[type=text]:focus {
+.admin-search form select:focus,
+.admin-search form input[type=text]:focus{
     outline: var(--default-color) solid 1px;
 }
 
-.review-container .event-image img{
+.review-container .event-image img,
+.member-container .member-image img{
     width: 80px;
     height: 80px;
 }
 
-.review-table .table-title, .review-detail label {
+.review-table .table-title, .review-detail label,
+.event-table .table-title, .member-table .table-title{
     font-size: 16px;
     font-weight: 600;
     padding: 10px 0;
 }
-.review-table .table-title{
+.review-table .table-title,
+.event-table .table-title,
+.member-table .table-title{
     border-bottom: 1px solid var(--default-color);
 }
-.review-table .table-row{
+.review-table .table-row,
+.event-table .table-row,
+.member-table .table-row{
     padding: 10px 0;
     border-bottom: 1px solid var(--default-color);
 }
 
-.review-table a {
+.review-table a,
+.event-table a,
+.member-table a{
     color: var(--default-color);
     text-decoration: none;
     transition: 0.3s;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
-.review-table a:hover {
+.review-table a:hover,
+.event-table a:hover,
+.member-table a:hover{
     color: var(--accent-color);
     text-decoration: none;
 }
 
+/* 이벤트 관리 페이지 */
+.event-table .select{width: 5%;}
+.event-table .event-no{width: 5%;}
+.event-table .event-img{width: 13%;}
+.event-table .event-name{width: 37%;}
+.event-table .event-date{width: 20%;}
+.event-table .event-update{width: 10%;}
+.event-table .event-delete{width: 10%;}
+
+.event-container .event-image img{
+    width: 140px;
+    height: 140px;
+}
+.event-container .event-name p{
+    color: gray;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+
+/* 회원 관리 페이지 */
+.member-table .select{width: 5%; text-align: center;}
+.member-table .img_path{width: 10%; text-align: center;}
+.member-table .name{width: 10%; text-align: center;}
+.member-table .nick{width: 12%; text-align: center;}
+.member-table .email{width: 17%; text-align: center;}
+.member-table .tel{width: 15%; text-align: center;}
+.member-table .reg-date{width: 11%; text-align: center;}
+.member-table .update{width: 10%; text-align: center;}
+.member-table .delete{width: 10%; text-align: center;}
+
+/* 후기 관리 페이지 */
 .review-table .select{width: 5%;}
 .review-table .event-img{width: 8%;}
-.review-table .event-name{width: 30%;}
+.review-table .event-name{width: 37%;}
 .review-table .writer{width: 10%;}
 .review-table .star{width: 10%;}
 .review-table .write-date{width: 10%;}
 .review-table .update-date{width: 10%;}
 .review-table .show-detail{width: 10%;}
 
-.review-table .event-no{width: 8%;}
-.review-table .event-date{width: 18%;}
-.review-table .event-update{width: 15%;}
-.review-table .event-detail{width: 15%;}
 .review-img {
     width: 87%;
     overflow: hidden;

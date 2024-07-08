@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -30,7 +31,21 @@
         .placeinfo .title {font-weight: bold; font-size:14px;border-radius: 6px 6px 0 0;margin: -1px -1px 0 -1px;padding:10px; color: #fff;background: #d95050;background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
         .placeinfo .tel {color:#0f7833;}
         .placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
+        #output { width: 30%; float: left; overflow-y: auto; height: 100vh; border-left: 1px solid #ccc; }
+        .route { padding: 10px; border-bottom: 1px solid #eee; }
+        .route h3 { margin: 0; }
+        .route-details { display: none; }
+        .route-details ul { padding: 0; list-style-type: none; }
+
+        .route-details li {
+            list-style-type: none; /* li에 직접 스타일 적용 */
+            padding: 0;
+            margin: 0;
+        }
+
     </style>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
     <title>HereEvent-EventDetail</title>
 </head>
 
@@ -66,9 +81,55 @@
             </li>
         </ul>
     </div>
+    <div>
+        <input type="text" id="start" placeholder="출발지 입력">
+        <input type="button" onclick="sample6_execDaumPostcode('start')" value="주소 찾기"><br>
+        <input type="text" id="end" placeholder="도착지 입력">
+        <input type="button" onclick="sample6_execDaumPostcode('end')" value="주소 찾기"><br>
 
+        <i class="bi bi-sign-turn-right-fill" onclick="searchAddressToCoords()"></i>
+
+    </div>
+
+
+    <script>
+        function sample6_execDaumPostcode(type) {
+            new daum.Postcode({
+                oncomplete: function(data) {
+                    var addr = '';
+                    var extraAddr = '';
+
+                    if (data.userSelectedType === 'R') {
+                        addr = data.roadAddress;
+                    } else {
+                        addr = data.jibunAddress;
+                    }
+
+                    if(data.userSelectedType === 'R'){
+                        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                            extraAddr += data.bname;
+                        }
+                        if(data.buildingName !== '' && data.apartment === 'Y'){
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        if(extraAddr !== ''){
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                    }
+
+                    if (type === 'start') {
+                        document.getElementById('start').value = addr + extraAddr;
+                    } else if (type === 'end') {
+                        document.getElementById('end').value = addr + extraAddr;
+                    }
+                }
+            }).open();
+        }
+    </script>
+
+    <div id="output"></div>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1c7411c7e9cd13cdaac33d749ab11436&libraries=services"></script>
-    <script th:inline="javascript">
+    <script>
         var placeOverlay = new kakao.maps.CustomOverlay({zIndex: 1}),
             contentNode = document.createElement('div'),
             markers = [],
@@ -79,11 +140,221 @@
                 center: new kakao.maps.LatLng(37.566826, 126.9786567),
                 level: 5
             };
-        /*<![CDATA[*/
+
         var map = new kakao.maps.Map(mapContainer, mapOption);
+
+        var sx, sy, ex, ey;
+        //장소 검색 객체
         var ps = new kakao.maps.services.Places(map);
+        //주소-좌표 변환객체
         var geocoder = new kakao.maps.services.Geocoder();
 
+        function searchAddressToCoords() {
+            var startAddress = document.getElementById('start').value;
+            var endAddress = document.getElementById('end').value;
+            if (!startAddress || !endAddress) {
+                alert("출발지와 도착지를 입력하세요.");
+                return;
+            }
+            // 출발지 좌표 변환
+            ps.keywordSearch(startAddress, function(data, status, pagination) {
+                if (status === kakao.maps.services.Status.OK) {
+                    displayResult(data, '출발지');
+                } else {
+                    alert("출발지 검색 결과가 없습니다.");
+                }
+            });
+
+            // 도착지 검색
+            ps.keywordSearch(endAddress, function(data, status, pagination) {
+                if (status === kakao.maps.services.Status.OK) {
+                    displayResult(data, '도착지');
+                } else {
+                    alert("도착지 검색 결과가 없습니다.");
+                }
+            });
+            geocoder.addressSearch(startAddress, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    sx = result[0].x;
+                    sy = result[0].y;
+                    drawKakaoMarker(sx, sy); // 출발지 마커 표시
+
+                    // 도착지 좌표 변환
+                    geocoder.addressSearch(endAddress, function(result, status) {
+                        if (status === kakao.maps.services.Status.OK) {
+                            ex = result[0].x;
+                            ey = result[0].y;
+                            drawKakaoMarker(ex, ey); // 도착지 마커 표시
+
+                            // 길찾기 API 호출
+                            searchPubTransPathAJAX();
+                        } else {
+                            alert("도착지 주소 변환 실패");
+                        }
+                    });
+                } else {
+                    alert("출발지 주소 변환 실패");
+                }
+            });
+        }
+        function searchPubTransPathAJAX() {
+            var xhr = new XMLHttpRequest();
+            // ODsay apiKey 입력
+            var url = "https://api.odsay.com/v1/api/searchPubTransPathT?SX=" + sx + "&SY=" + sy + "&EX=" + ex + "&EY=" + ey + "&apiKey=ifTb4R5OBm3XVuhV1sv6kQ";
+            xhr.open("GET", url, true);
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    displayResponse(response);
+                    callMapObjApiAJAX(response.result.path[0].info.mapObj, sx, sy, ex, ey);
+                }
+            }
+        }
+        function setStart(roadAddressName) {
+            document.getElementById('start').value = roadAddressName;
+        }
+        function setEnd(roadAddressName) {
+            document.getElementById('end').value = roadAddressName;
+        }
+        function displayResponse(response) {
+            var outputElement = document.getElementById('output');
+            outputElement.innerHTML = '';
+
+            response.result.path.slice(0, 5).forEach(function(path, index) {
+                var routeDiv = document.createElement('div');
+                routeDiv.classList.add('route');
+
+                var routeSummary = `
+            <h3>경로 ${index + 1}</h3>
+            <p>총 소요시간: ${path.info.totalTime}분, 요금: ${path.info.payment}원
+            <i class="bi bi-caret-down-fill" onclick="toggleDetails(${index})"></i></p>
+        `;
+
+                var routeDetails = `
+            <div id="details-${index}" class="route-details" ${index === 0 ? 'style="display: block;"' : 'style="display: none;"'}>
+                <ul>
+                    ${path.subPath.map(function(subPath) {
+                    var detail = `<li><strong>${getTrafficType(subPath.trafficType)}</strong> ${subPath.sectionTime}분, ${subPath.distance}m`;
+                    if (subPath.trafficType == 2) { // 버스일 경우
+                        detail += ` (${subPath.lane[0].busNo})`;
+                    } else if (subPath.trafficType == 1) { // 지하철일 경우
+                        detail += ` (${subPath.lane[0].name})`;
+                    }
+                    detail += ` ${subPath.startName && subPath.endName ? `(${subPath.startName} -> ${subPath.endName})` : ''}</li>`;
+                    return detail;
+                }).join('')}
+                </ul>
+            </div>
+        `;
+
+                routeDiv.innerHTML = routeSummary + routeDetails;
+                outputElement.appendChild(routeDiv);
+            });
+        }
+        function toggleDetails(index) {
+            var details = document.getElementById('details-' + index);
+            if (details.style.display === 'none' || details.style.display === '') {
+                details.style.display = 'block';
+            } else {
+                details.style.display = 'none';
+            }
+        }
+
+        function getTrafficType(type) {
+            switch (type) {
+                case 1:
+                    return '지하철';
+                case 2:
+                    return '버스';
+                case 3:
+                    return '도보';
+                default:
+                    return '기타';
+            }
+        }
+
+
+        function callMapObjApiAJAX(mapObj) {
+            var xhr = new XMLHttpRequest();
+            // ODsay apiKey 입력
+            var url = "https://api.odsay.com/v1/api/loadLane?mapObject=0:0@" + mapObj + "&apiKey=ifTb4R5OBm3XVuhV1sv6kQ";
+            console.log(url);
+            xhr.open("GET", url, true);
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var resultJsonData = JSON.parse(xhr.responseText);
+                    drawKakaoMarker(sx, sy);
+                    drawKakaoMarker(ex, ey);
+                    drawKakaoPolyLine(resultJsonData);
+                }
+            }
+        }
+
+
+        // 지도위 마커 표시해주는 함수
+        function drawKakaoMarker(x, y) {
+            var markerPosition = new kakao.maps.LatLng(y, x);
+            var marker = new kakao.maps.Marker({
+                position: markerPosition
+            });
+            marker.setMap(map);
+        }
+        // 노선그래픽 데이터를 이용하여 지도위 폴리라인 그려주는 함수
+        function drawKakaoPolyLine(data) {
+            for (var i = 0; i < data.result.lane.length; i++) {
+                for (var j = 0; j < data.result.lane[i].section.length; j++) {
+                    var linePath = [];
+                    for (var k = 0; k < data.result.lane[i].section[j].graphPos.length; k++) {
+                        linePath.push(new kakao.maps.LatLng(data.result.lane[i].section[j].graphPos[k].y, data.result.lane[i].section[j].graphPos[k].x));
+                    }
+
+                    var polyline = new kakao.maps.Polyline({
+                        path: linePath,
+                        strokeWeight: 3,
+                        strokeColor: '#003499'
+                    });
+                    var subwayColors = {
+                        "1호선": "#0052A4",
+                        "2호선": "#009D3E",
+                        "3호선": "#EF7C1C",
+                        "4호선": "#00A5DE",
+                        "5호선": "#996CAC",
+                        "6호선": "#CD7C2F",
+                        "7호선": "#747F00",
+                        "8호선": "#E6186C",
+                        "9호선": "#BDB092",
+                        "경의중앙선": "#86d3d3"
+                        // 추가로 필요한 호선 색상을 여기에 정의하세요
+                    };
+
+                    if (data.result.lane[i].type == 1) {
+                        polyline.setOptions({strokeColor: '#0052A4'});
+                    } else if (data.result.lane[i].type == 2) {
+                        polyline.setOptions({strokeColor: '#009D3E'});
+                    }else if (data.result.lane[i].type == 3) {
+                        polyline.setOptions({strokeColor: '#EF7C1C'});
+                    }else if (data.result.lane[i].type == 4) {
+                        polyline.setOptions({strokeColor: '#00A5DE'});
+                    }else if (data.result.lane[i].type == 5) {
+                        polyline.setOptions({strokeColor: '#996CAC'});
+                    }else if (data.result.lane[i].type == 6) {
+                        polyline.setOptions({strokeColor: '#CD7C2F'});
+                    }else if (data.result.lane[i].type == 7) {
+                        polyline.setOptions({strokeColor: '#747F00'});
+                    }else if (data.result.lane[i].type == 8) {
+                        polyline.setOptions({strokeColor: '#E6186C'});
+                    }else if (data.result.lane[i].type == 9) {
+                        polyline.setOptions({strokeColor: '#BDB092'});
+                    }else if (data.result.lane[i].type == "경의중앙") {
+                        polyline.setOptions({strokeColor: '#86d3d3'});
+                    }
+
+                    polyline.setMap(map);
+                }
+            }
+        }
         kakao.maps.event.addListener(map, 'idle', searchPlaces);
         contentNode.className = 'placeinfo_wrap';
         addEventHandle(contentNode, 'mousedown', kakao.maps.event.preventMap);
@@ -154,7 +425,7 @@
             }
             markers = [];
         }
-
+        //마커 정보
         function displayPlaceInfo(place) {
             var content = '<div class="placeinfo">' +
                 '   <a class="title" href="' + place.place_url + '" target="_blank" title="' + place.place_name + '">' + place.place_name + '</a>';
@@ -167,9 +438,10 @@
             }
 
             content += '    <span class="tel">' + place.phone + '</span>' +
-                '</div>' +
+                '<button type="button" class="btn btn-outline-danger btn-sm" onclick="setStart(\'' + place.road_address_name + '\')">출발지</button>' +
+                '<button type="button" class="btn btn-outline-danger btn-sm" onclick="setEnd(\'' + place.road_address_name + '\')">도착지</button>'+
+            '</div>' +
                 '<div class="after"></div>';
-
             contentNode.innerHTML = content;
             placeOverlay.setPosition(new kakao.maps.LatLng(place.y, place.x));
             placeOverlay.setMap(map);
@@ -183,7 +455,7 @@
                 children[i].onclick = onClickCategory;
             }
         }
-
+        //카테고리 탭 변화모습
         function onClickCategory() {
             var id = this.id,
                 className = this.className;
@@ -200,7 +472,7 @@
                 searchPlaces();
             }
         }
-
+        //카테고리탭 변화 옮기는 것
         function changeCategoryClass(el) {
             var category = document.getElementById('category'),
                 children = category.children,
@@ -215,10 +487,28 @@
             }
         }
 
+
+        // 페이지가 로드될 때 호출되어 특정 주소로 지도의 중심을 맞추는 함수 호출
+        document.addEventListener('DOMContentLoaded', function () {
+            var eventAddress = "서울특별시 중구 세종대로 39";
+            //var eventAddress = /*[[${event.addr}]]*/ '';
+            setMapByAddress(eventAddress);
+        });
+
+        function setMapByAddress(address) {
+            // 주소로 좌표를 검색합니다
+            geocoder.addressSearch(address, function(result, status) {
+                // 정상적으로 검색이 완료됐으면
+                if (status === kakao.maps.services.Status.OK) {
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    // 결과값으로 받은 위치를 지도의 중심으로 설정합니다
+                    map.setCenter(coords);
+                }
+            });
+        }
         // 주소로 지도 중심 설정 및 마커 표시 함수
         function setMapByAddress(address) {
             geocoder.addressSearch(address, function (result, status) {
-            //정상적으로 검색이 완료
                 if (status === kakao.maps.services.Status.OK) {
                     var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
                     map.setCenter(coords);
@@ -227,17 +517,13 @@
                         map: map,
                         position: coords
                     });
-                    // 인포윈도우로 장소에 대한 설명을 표시합니다
-                    var infowindow = new kakao.maps.InfoWindow({
-                        content: '<div style="width:150px;text-align:center;padding:6px 0;">행사 위치</div>'
-                    });
-                    infowindow.open(map, marker);
 
                     var content = '<div class="placeinfo">' +
                         '   <span class="title">' + address + '</span>' +
+                        '<button type="button" class="btn btn-outline-danger btn-sm" onclick="setStart(\'' + address + '\')">출발지</button>' +
+                        '<button type="button" class="btn btn-outline-danger btn-sm" onclick="setEnd(\'' + address + '\')">도착지</button>'+
                         '</div>' +
                         '<div class="after"></div>';
-
                     contentNode.innerHTML = content;
                     placeOverlay.setPosition(coords);
                     placeOverlay.setMap(map);
@@ -245,14 +531,9 @@
             });
         }
 
-        // 페이지가 로드될 때 호출되어 특정 주소로 지도의 중심을 맞추는 함수 호출
-        document.addEventListener('DOMContentLoaded', function () {
-            var eventAddress = /*[[${event.addr}]]*/ '';
-            setMapByAddress(eventAddress);
-        });
-        /*]]>*/
-    </script>
 
+    </script>
 </div>
+
 </body>
 </html>

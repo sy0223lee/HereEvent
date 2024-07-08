@@ -135,6 +135,12 @@ public class EventServiceImpl implements EventService {
         return eventDAO.getEventImage(event_no);
     }
 
+    //이벤트 관심숫자 가져오기
+    @Override
+    public int getEventInterest(int event_no) {
+        return eventDAO.getEventInterest(event_no);
+    }
+
     // 리뷰 관련
     @Override
     public int insertReserve(ReserveDTO reservation) {
@@ -184,9 +190,9 @@ public class EventServiceImpl implements EventService {
 
         if (page.getSort().isSorted()) {
             String sort = page.getSort().iterator().next().getProperty();
-            System.out.println("sort==>"+sort);
+//            System.out.println("sort==>"+sort);
             String direction = page.getSort().iterator().next().getDirection().name();
-            System.out.println("direction===>"+direction);
+//            System.out.println("direction===>"+direction);
             params.put("sort", sort);
             params.put("direction", direction);
         }

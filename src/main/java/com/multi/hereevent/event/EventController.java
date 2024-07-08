@@ -126,12 +126,13 @@ public class EventController {
         List<ReviewDTO> reviewList = reviewService.selectReviewByEventNo(event_no);
 //         System.out.println(eventTime);
         List<String> closedDays = eventTimeService.getHolidayDays(event_no);
-
+        int eventInterest = eventService.getEventInterest(event_no);
         model.addAttribute("event", eventDetails);
         model.addAttribute("eventtime",eventTime);
         model.addAttribute("category",category);
         model.addAttribute("reviewList", reviewList);
         model.addAttribute("closedDays", closedDays);
+        model.addAttribute("eventInterest", eventInterest);
 
         return "detailedPage/detailedPage";
     }
@@ -146,36 +147,7 @@ public class EventController {
         model.addAttribute("event", eventDetails);
         return "detailedPage/waitDetailedPage";
     }
-    // 예약기능
-    @PostMapping("/event/reservation")
-    @ResponseBody
-    @SuppressWarnings("unchecked")
-    public String reservation(@RequestBody Map<String, String> data, Model model) {
-        MemberDTO member = (MemberDTO) model.getAttribute("member");
-        if (member == null) {
-            JSONObject json = new JSONObject();
-            json.put("message", "로그인을 해주세요.");
-            return json.toJSONString();
-        }
-        System.out.println("Request Data: " + data);
 
-        int event_no = Integer.parseInt(data.get("eventNo"));
-        int member_no = member.getMember_no();
-        data.put("memberNo", String.valueOf(member_no));
-        String reserve_date = data.get("reserveDate");
-        String reserve_time = data.get("reserveTime");
-
-//        System.out.println("[reserve] " + event_no + ", " + date + ", " + time);
-        model.addAttribute("memberNo", member_no);
-        model.addAttribute("eventNo", event_no);
-        model.addAttribute("reserveDate", reserve_date);
-        model.addAttribute("reserveTime", reserve_time);
-        String message = eventTimeService.makeReservation(event_no, member_no, reserve_date, reserve_time);
-        JSONObject json = new JSONObject();
-        json.put("message", message);
-
-        return json.toJSONString();
-    }
 
 
 //    @PostMapping("/event/reservation")

@@ -56,13 +56,13 @@ public class MailService {
         sb.append("<html><body>")
                 .append("<meta http-equiv='Content-Type' content='text/html; charset=euc-kr'>")
                 .append("<h2>").append(member.getNick()).append("님 새로운 이벤트 예약이 등록되었습니다.</h2>")
-                .append("<img style='margin: 10px; width:200px; height:200px; margin:10px 10px 10px 0;' src='http://localhost:9090/hereevent/download/event/").append(event.getImg_path()).append("'/>")
+                .append("<img style='margin: 10px; width:200px; height:200px; margin:10px 10px 10px 0;' src='http://223.130.158.5:9090/hereevent/download/event/").append(event.getImg_path()).append("'/>")
                 .append("<p style='margin: 10px;'>이벤트명 : <strong>").append(event.getName()).append("</strong></p>")
                 .append("<p style='margin: 10px;'>기간 : <strong>").append(event.getStart_date()).append("~").append(event.getEnd_date()).append("</strong></p>")
                 .append("<p style='margin: 10px;'>위치 : <strong>").append(event.getAddr()).append("</strong></p>")
                 .append("<h3 style='margin: 10px; color: #E14533'>예약 날짜 : ").append(reserve.getReserve_date()).append("</h3>")
                 .append("<h3 style='margin: 10px; color: #E14533'>예약 시간 : ").append(reserve.getReserve_time()).append("</h3>")
-                .append("<a href='http://localhost:9090/hereevent/main' style='margin: 10px;'>이벤트 예약 내역 보러가기</a>")
+                .append("<a href='http://223.130.158.5:9090/hereevent/main' style='margin: 10px;'>이벤트 예약 내역 보러가기</a>")
                 .append("</body></html>");
         return sb.toString();
     }
@@ -102,8 +102,8 @@ public class MailService {
         sb.append("<html><body>")
             .append("<meta http-equiv='Content-Type' content='text/html; charset=euc-kr'>")
             .append("<h2>새로운 이벤트 대기가 등록되었습니다.</h2>")
-            .append("<p style='margin: 10px;'><strong>").append(sdf.format(new Date())).append("에 작성된 내용이며 실시간 현황 확인은 <a href=href='http://localhost:9090/hereevent/wait/login'>HereEvent</a>에서 해주시길 바랍니다.</strong></p>")
-            .append("<img style='margin: 10px; width:200px; height:200px; margin:10px 10px 10px 0;' src='http://localhost:9090/hereevent/download/event/").append(wait.getImg_path()).append("'/>")
+            .append("<p style='margin: 10px;'><strong>").append(sdf.format(new Date())).append("에 작성된 내용이며 실시간 현황 확인은 <a href=href='http://223.130.158.5:9090/hereevent/wait/login'>HereEvent</a>에서 해주시길 바랍니다.</strong></p>")
+            .append("<img style='margin: 10px; width:200px; height:200px; margin:10px 10px 10px 0;' src='http://223.130.158.5:9090/hereevent/download/event/").append(wait.getImg_path()).append("'/>")
             .append("<p style='margin: 10px;'>이벤트명 : <strong>").append(wait.getName()).append("</strong></p>")
             .append("<p style='margin: 10px;'>위치 : <strong>").append(wait.getAddr()).append("</strong></p>")
             .append("<p style='margin: 10px;'>대기번호 : <strong>").append(wait.getWait_no()).append("</strong></p>")
@@ -147,8 +147,8 @@ public class MailService {
                 "<td>이미지</td><td>이벤트명</td><td>기간</td><td>위치</td>" +
                 "</tr></thead><tbody>");
         for (EventDTO event : eventList) {
-            sb.append("<tr><td><img style='width:100px; height:100px; margin:10px 10px 10px 0;' src='http://localhost:9090/hereevent/download/event/")
-                .append(event.getImg_path()).append("'></td><td><a style='margin-right:10px;' href='http://localhost:9090/hereevent/event/")
+            sb.append("<tr><td><img style='width:100px; height:100px; margin:10px 10px 10px 0;' src='http://223.130.158.5:9090/hereevent/download/event/")
+                .append(event.getImg_path()).append("'></td><td><a style='margin-right:10px;' href='http://223.130.158.5:9090/hereevent/event/")
                 .append(event.getEvent_no()).append("'>")
                 .append(event.getName()).append("</a></td><td><p style='margin-right:10px;'>")
                 .append(event.getStart_date()).append("~")

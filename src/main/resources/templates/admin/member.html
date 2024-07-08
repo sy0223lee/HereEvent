@@ -6,12 +6,12 @@
     <meta charset="UTF-8">
     <title>HereEvent-Admin</title>
     <!-- CSS File -->
-    <link href="/hereevent/common/css/adminMember.css" rel="stylesheet">
+    <link href="/hereevent/common/css/admin.css" rel="stylesheet">
     <!-- js File -->
-    <script type="text/javascript" src="/hereevent/common/js/adminMember.js"></script>
+    <script type="text/javascript" src="/hereevent/common/js/admin.js"></script>
     <script type="text/javascript" th:inline="javascript">
         $(document).ready(function() {
-            pageBtn([[${totalPages}]], [[${pageNumber}]], [[${totalElements}]]);
+            memberPageBtn([[${totalPages}]], [[${pageNumber}]], [[${totalElements}]]);
 
             $(".delete-btn").each(function (){
                 $(this).click(function () {
@@ -51,17 +51,17 @@
                         <li class="current">회원</li>
                     </ol>
                 </nav>
-                <h1>회원관리</h1>
+                <h1>회원 관리</h1>
             </div>
         </div>
         <!-- End Page Title -->
 
-        <!-- Review Section -->
-        <section id="review-section" class="section">
+        <!-- member Section -->
+        <section id="member-section" class="section">
 
             <div class="container member-container">
 
-                <div class="d-flex align-items-center justify-content-between member-search">
+                <div class="d-flex align-items-center justify-content-between admin-search">
                   
                     <button class="btn btn-primary" onclick="submitDeleteForm()">선택 삭제</button>
               
@@ -82,7 +82,7 @@
                 </div>
 
                 <div class="member-table container">
-                    <form id="deleteForm" action="/hereevent/admin/member/deletelist" method="post">
+                    <form id="deleteForm" action="/hereevent/admin/member/delete-select" method="post">
                         <div class="row align-items-center text-center table-title">
                             <div class="select">
                                 <input type="checkbox" name="select-all" onclick="selectAll(this)">
@@ -93,14 +93,14 @@
                             <div class="email">이메일</div>
                             <div class="tel">전화번호</div>
                             <div class="reg-date">가입날짜</div>
-                            <div class="cor">수정</div>
+                            <div class="update">수정</div>
                             <div class="delete">삭제</div>
                         </div>
 
                         <div class="table-row" th:each="member : ${memberList}">
                             <div class="row align-items-center">
                                 <div class="select text-center">
-                                    <input type="checkbox" name="memberNo" th:value="${member.member_no}" onclick="checkSelectAll()">
+                                    <input type="checkbox" name="select" th:value="${member.member_no}" onclick="checkSelectAll()">
                                 </div>
                                 <div class="member-image img_path text-center">
                                     <img th:if="${member.img_path != null}" th:src="|@{/download/profile/}${member.img_path}|" th:alt="${member.img_path}">
@@ -111,11 +111,11 @@
                                 <div class="email" th:text="${member.email}"></div>
                                 <div class="tel text-center" th:text="${member.tel}"></div>
                                 <div class="reg-date text-center" th:text="${member.reg_date}"></div>
-                                <div class="c-btn">
-                                    <button type="button" class="cor-btn btn btn-primary" th:value="${member.member_no}"
+                                <div class="update">
+                                    <button type="button" class="update-btn btn btn-secondary" th:value="${member.member_no}"
                                             th:onclick="|location.href='@{/admin/member/update/}${member.member_no}'|">수정</button>
                                 </div>
-                                <div class="d-btn">
+                                <div class="delete">
                                     <button type="button" class="delete-btn btn btn-primary" th:value="${member.member_no}">삭제</button>
                                 </div>
 
@@ -129,7 +129,7 @@
                     <ul class="pagination justify-content-center"></ul>
                 </nav>
             </div>
-        </section><!-- End Review Section -->
+        </section><!-- End member Section -->
     </main>
 </body>
 </html>

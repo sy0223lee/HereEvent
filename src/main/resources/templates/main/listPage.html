@@ -17,14 +17,14 @@
                         <li><a href="/hereevent/main">Home</a></li>
                         <li th:if="${type == 'star'}" class="current">별점 순</li>
                         <li th:if="${type == 'popular'}" class="current">인기 순</li>
-                        <li th:if="${type == 'open'}" class="current">오픈 예정 이벤트</li>
-                        <li th:if="${type == 'all'}" class="current">전체 이벤트</li>
+                        <li th:if="${type == 'open'}" class="current">오픈 예정</li>
+                        <li th:if="${type == 'all'}" class="current">전체</li>
                     </ol>
                 </nav>
-                <h1 th:if="${type == 'star'}">별점 순 이벤트 목록</h1>
-                <h1 th:if="${type == 'popular'}">인기 순 이벤트 목록</h1>
-                <h1 th:if="${type == 'open'}">오픈 예정 이벤트 목록</h1>
-                <h1 th:if="${type == 'all'}">전체 이벤트 목록</h1>
+                <h1 th:if="${type == 'star'}">별점 순 이벤트</h1>
+                <h1 th:if="${type == 'popular'}">인기 순 이벤트</h1>
+                <h1 th:if="${type == 'open'}">오픈 예정 이벤트</h1>
+                <h1 th:if="${type == 'all'}">전체 이벤트</h1>
             </div>
         </div>
         <!-- End Page Title -->

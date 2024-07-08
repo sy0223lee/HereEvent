@@ -93,8 +93,8 @@
         <div class="container">
             <nav class="breadcrumbs">
                 <ol>
-                    <li><a href="/hereevent">Home</a></li>
-                    <li class="current">Event Details</li>
+                    <li><a href="/hereevent/main">Home</a></li>
+                    <li class="current">이벤트</li>
                 </ol>
             </nav>
             <h1>이벤트 상세정보</h1>
@@ -126,8 +126,11 @@
 
                         <div>
                             <h2 class="title"><span th:text="${event.name}"></span>
-                                <button type="button" class="default interest-btn" th:if="${event.event_interest_no == 0}" th:value="${event.event_no}">♡</button>
-                                <button type="button" class="picked interest-btn" th:unless="${event.event_interest_no == 0}" th:value="${event.event_no}">♥</button>
+                                <div id="eventInterest">
+                                    <button type="button" class="default interest-btn row" th:if="${event.event_interest_no == 0}" th:value="${event.event_no}">♡</button>
+                                    <button type="button" class="picked interest-btn row" th:unless="${event.event_interest_no == 0}" th:value="${event.event_no}">♥</button>
+                                    <div class="interest-cnt row" th:text="${eventInterest}"></div>
+                                </div>
 
                             </h2>
 
@@ -135,7 +138,7 @@
                         <div class="submenu">
                             <a href="javascript:void(0);" class="on" onclick="scrollToSection('content-section');activateTab(event)" th:classappend="${tab == 'content'} ? 'active' : ''" data-tab="content">상세정보</a>
                             <a href="javascript:void(0);" onclick="scrollToSection('navigation-section');activateTab(event)" th:classappend="${tab == 'map'} ? 'active' : ''" data-tab="map">길찾기</a>
-                            <a href="javascript:void(0);" onclick="scrollToSection('reservation-section');activateTab(event)" th:classappend="${tab == 'reservation'} ? 'active' : ''" data-tab="reservation">예약</a>
+                            <a href="javascript:void(0);" onclick="scrollToSection('reservation-section');activateTab(event)" th:classappend="${tab == 'reservation'} ? 'active' : ''" th:if="${event.type != 'wait'}" data-tab="reservation">예약</a>
                             <a href="javascript:void(0);" onclick="scrollToSection('reviews-section');activateTab(event)" th:classappend="${tab == 'reviews'} ? 'active' : ''" data-tab="reviews">후기</a>
                         </div>
 
@@ -149,9 +152,9 @@
                             <th:block th:replace="~{detailedPage/navigation :: navigation}"></th:block>
                         </article>
 
-                        <article id="reservation-section" class="article">
+                        <article id="reservation-section" class="article" th:if="${event.type != 'wait'}">
                             <!-- 예약 내용 -->
-                            <th:block th:replace="~{detailedPage/reservation :: reservation}"></th:block>
+                            <th:block th:replace="~{detailedPage/reservation :: reservation}" ></th:block>
                         </article>
 
                         <article id="reviews-section" class="article">
@@ -168,16 +171,20 @@
                 <div class="widgets-container fixed">
 
                     <!-- Search Widget -->
-                    <div class="search-widget widget-item">
+                    <div class="search-widget widget-item" th:if="${event.type != 'reserve'}">
 
-                        <h3 class="widget-title">현재 대기 현황</h3>
+                        <h3 class="widget-title">대기</h3>
 
 
                         <button type="submit" class="widget-button"
                                 th:onclick="|location.href='@{/event/waitSituation(event_no=${event_no})}'|">
-                            대기 현황 click
+                            대기 현황
                         </button>
 
+                        <button type="submit" class="widget-button"
+                                th:onclick="|location.href='@{/wait/register/event/{event_no}(event_no=${event_no})}'|">
+                            대기 등록
+                        </button>
 
                     </div><!--/Search Widget -->
 
