@@ -190,9 +190,9 @@ public class EventServiceImpl implements EventService {
 
         if (page.getSort().isSorted()) {
             String sort = page.getSort().iterator().next().getProperty();
-            System.out.println("sort==>"+sort);
+//            System.out.println("sort==>"+sort);
             String direction = page.getSort().iterator().next().getDirection().name();
-            System.out.println("direction===>"+direction);
+//            System.out.println("direction===>"+direction);
             params.put("sort", sort);
             params.put("direction", direction);
         }

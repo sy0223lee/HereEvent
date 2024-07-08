@@ -33,7 +33,7 @@
 
                     <div class="event-type">
                         <span th:if="${event.type == 'reserve' or event.type == 'both'}">사전예약</span>
-                        <span th:if="${event.type == 'wait' or event.type == 'both'}">사전예약</span>
+                        <span th:if="${event.type == 'wait' or event.type == 'both'}">현장대기</span>
                     </div>
 
                     <div class="card-text"><span th:text="${event.start_date}"/> ~ <span th:text="${event.end_date}"/></div>

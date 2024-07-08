@@ -14,7 +14,8 @@
     <script type="text/javascript" src="/hereevent/common/js/admin.js"></script>
     <script type="text/javascript" th:inline="javascript">
         $(document).ready(function() {
-            pageBtn([[${totalPages}]], [[${pageNumber}]], [[${totalElements}]]);
+            reviewPageBtn([[${totalPages}]], [[${pageNumber}]], [[${totalElements}]]);
+
             // 상세보기 버튼
             $('.review-detail-btn').each(function(){
                 $(this).click(function(){
@@ -42,7 +43,7 @@
 
                         form.appendChild(obj);
                         form.setAttribute("method", "post");
-                        form.setAttribute("action", "/hereevent/admin/review/deleteOne");
+                        form.setAttribute("action", "/hereevent/admin/review/delete");
                         document.body.appendChild(form);
                         form.submit();
                         alert("삭제되었습니다!");
@@ -69,7 +70,7 @@
                     <li class="current">후기</li>
                 </ol>
             </nav>
-            <h1>후기</h1>
+            <h1>후기 관리</h1>
         </div>
     </div><!-- End Page Title -->
 
@@ -78,9 +79,9 @@
 
         <div class="container review-container">
 
-            <div class="d-flex align-items-center justify-content-between review-search">
+            <div class="d-flex align-items-center justify-content-between admin-search">
 
-                <button type="button" class="btn-primary" onclick="submitDeleteForm()">선택 삭제</button>
+                <button type="button" class="btn btn-primary" onclick="submitDeleteForm()">선택 삭제</button>
 
                 <div class="search-widget">
                     <form action="/hereevent/admin/review" method="get" class="d-flex justify-content-start">
@@ -99,120 +100,120 @@
             </div>
 
             <div class="review-table container">
-                <form id="deleteForm" action="/hereevent/admin/review/delete" method="post">
-                <div class="row align-items-center text-center table-title">
-                    <div class="select">
-                        <input type="checkbox" name="select-all" onclick="selectAll(this)">
+                <form id="deleteForm" action="/hereevent/admin/review/delete-select" method="post">
+                    <div class="row align-items-center text-center table-title">
+                        <div class="select">
+                            <input type="checkbox" name="select-all" onclick="selectAll(this)">
+                        </div>
+                        <div class="event-img">사진</div>
+                        <div class="event-name">이벤트명</div>
+                        <div class="writer">작성자</div>
+                        <div class="star">별점</div>
+                        <div class="write-date">작성일</div>
+                        <div class="update-date">수정일</div>
+                        <div class="show-detail">상세보기</div>
                     </div>
-                    <div class="event-img">사진</div>
-                    <div class="event-name">이벤트명</div>
-                    <div class="writer">작성자</div>
-                    <div class="star">별점</div>
-                    <div class="write-date">작성일</div>
-                    <div class="update-date">수정일</div>
-                    <div class="show-detail">상세보기</div>
-                </div>
 
-                <div class="table-row" th:each="review : ${reviewList}">
+                    <div class="table-row" th:each="review : ${reviewList}">
 
-                    <!-- 이벤트 정보, 후기 작성 정보 -->
-                    <div class="row align-items-center">
-                        <div class="select text-center">
-                            <input type="checkbox" name="reviewNo" th:value="${review.review_no}" onclick="checkSelectAll()">
-                        </div>
-                        <div class="event-img text-center event-image">
-                            <a th:href="|@{/event/}${review.event_no}|">
-                                <img th:if="${review.img_path != null}" th:src="|@{/download/event/}${review.img_path}|" th:alt="${review.img_path}">
-                                <img th:unless="${review.img_path != null}" th:src="@{/images/default_img.png}" th:alt="default_img">
-                            </a>
-                        </div>
-                        <div class="event-name">
-                            <a th:href="|@{/event/}${review.event_no}|">
-                                [[${review.name}]]</a>
-                        </div>
-                        <div class="writer text-center" th:text="${review.nick}"></div>
-                        <div class="star">
-                            <div class="justify-content-center rating readonly">
-                                <label class="rating-label rating-label-half">
-                                    <input type="radio" class="rating-input" th:name="${review.review_no}"
-                                           th:checked="${review.star == 0.5} ? true : false">
-                                    <span class="star-icon"></span>
-                                </label>
-                                <label class="rating-label rating-label-full">
-                                    <input type="radio" class="rating-input" th:name="${review.review_no}"
-                                           th:checked="${review.star == 1.0} ? true : false">
-                                    <span class="star-icon"></span>
-                                </label>
-                                <label class="rating-label rating-label-half">
-                                    <input type="radio" class="rating-input" th:name="${review.review_no}"
-                                           th:checked="${review.star == 1.5} ? true : false">
-                                    <span class="star-icon"></span>
-                                </label>
-                                <label class="rating-label rating-label-full">
-                                    <input type="radio" class="rating-input" th:name="${review.review_no}"
-                                           th:checked="${review.star == 2.0} ? true : false">
-                                    <span class="star-icon"></span>
-                                </label>
-                                <label class="rating-label rating-label-half">
-                                    <input type="radio" class="rating-input" th:name="${review.review_no}"
-                                           th:checked="${review.star == 2.5} ? true : false">
-                                    <span class="star-icon"></span>
-                                </label>
-                                <label class="rating-label rating-label-full">
-                                    <input type="radio" class="rating-input" th:name="${review.review_no}"
-                                           th:checked="${review.star == 3.0} ? true : false">
-                                    <span class="star-icon"></span>
-                                </label>
-                                <label class="rating-label rating-label-half">
-                                    <input type="radio" class="rating-input" th:name="${review.review_no}"
-                                           th:checked="${review.star == 3.5} ? true : false">
-                                    <span class="star-icon"></span>
-                                </label>
-                                <label class="rating-label rating-label-full">
-                                    <input type="radio" class="rating-input" th:name="${review.review_no}"
-                                           th:checked="${review.star == 4.0} ? true : false">
-                                    <span class="star-icon"></span>
-                                </label>
-                                <label class="rating-label rating-label-half">
-                                    <input type="radio" class="rating-input" th:name="${review.review_no}"
-                                           th:checked="${review.star == 4.5} ? true : false">
-                                    <span class="star-icon"></span>
-                                </label>
-                                <label class="rating-label rating-label-full">
-                                    <input type="radio" class="rating-input" th:name="${review.review_no}"
-                                           th:checked="${review.star == 5.0} ? true : false">
-                                    <span class="star-icon"></span>
-                                </label>
+                        <!-- 이벤트 정보, 후기 작성 정보 -->
+                        <div class="row align-items-center">
+                            <div class="select text-center">
+                                <input type="checkbox" name="select" th:value="${review.review_no}" onclick="checkSelectAll()">
+                            </div>
+                            <div class="event-img text-center event-image">
+                                <a th:href="|@{/event/}${review.event_no}|">
+                                    <img th:if="${review.img_path != null}" th:src="|@{/download/event/}${review.img_path}|" th:alt="${review.img_path}">
+                                    <img th:unless="${review.img_path != null}" th:src="@{/images/default_img.png}" th:alt="default_img">
+                                </a>
+                            </div>
+                            <div class="event-name">
+                                <a th:href="|@{/event/}${review.event_no}|">
+                                    [[${review.name}]]</a>
+                            </div>
+                            <div class="writer text-center" th:text="${review.nick}"></div>
+                            <div class="star">
+                                <div class="justify-content-center rating readonly">
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input" th:name="${review.review_no}"
+                                               th:checked="${review.star == 0.5} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input" th:name="${review.review_no}"
+                                               th:checked="${review.star == 1.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input" th:name="${review.review_no}"
+                                               th:checked="${review.star == 1.5} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input" th:name="${review.review_no}"
+                                               th:checked="${review.star == 2.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input" th:name="${review.review_no}"
+                                               th:checked="${review.star == 2.5} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input" th:name="${review.review_no}"
+                                               th:checked="${review.star == 3.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input" th:name="${review.review_no}"
+                                               th:checked="${review.star == 3.5} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input" th:name="${review.review_no}"
+                                               th:checked="${review.star == 4.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-half">
+                                        <input type="radio" class="rating-input" th:name="${review.review_no}"
+                                               th:checked="${review.star == 4.5} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                    <label class="rating-label rating-label-full">
+                                        <input type="radio" class="rating-input" th:name="${review.review_no}"
+                                               th:checked="${review.star == 5.0} ? true : false">
+                                        <span class="star-icon"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="write-date text-center" th:text="${review.write_date}"></div>
+                            <div class="update-date text-center" th:text="${review.update_date}"></div>
+                            <div class="show-detail text-center">
+                                <!-- 후기 상세보기 버튼 -->
+                                <button type="button" class="review-detail-btn btn btn-secondary default" th:value="${review.review_no}">상세보기</button>
                             </div>
                         </div>
-                        <div class="write-date text-center" th:text="${review.write_date}"></div>
-                        <div class="update-date text-center" th:text="${review.update_date}"></div>
-                        <div class="show-detail text-center">
-                            <!-- 후기 상세보기 버튼 -->
-                            <button type="button" class="review-detail-btn btn btn-secondary default" th:value="${review.review_no}">상세보기</button>
-                        </div>
-                    </div>
 
-                    <!-- 후기 이미지, 내용 -->
-                    <div class="review-detail container" th:id="${review.review_no}" style="display: none">
-                        <div class="review-img row justify-content-center" th:if="${review.review_imgs.size() != 0}">
-                            <label>후기 사진</label>
-                            <div>
-                                <img th:each="image : ${review.review_imgs}"
-                                     th:src="|@{/download/review/}${image.img_path}|" th:alt="${image.img_path}">
+                        <!-- 후기 이미지, 내용 -->
+                        <div class="review-detail container" th:id="${review.review_no}" style="display: none">
+                            <div class="review-img row justify-content-center" th:if="${review.review_imgs.size() != 0}">
+                                <label>후기 사진</label>
+                                <div>
+                                    <img th:each="image : ${review.review_imgs}"
+                                         th:src="|@{/download/review/}${image.img_path}|" th:alt="${image.img_path}">
+                                </div>
+                            </div>
+                            <div class="review-content row">
+                                <label>후기 내용</label>
+                                <p th:text="${review.content}"></p>
+                            </div>
+                            <div class="review-btn text-end">
+                                <button type="button" id="deleteOne" class="btn btn-primary" th:value="${review.review_no}">삭제</button>
                             </div>
                         </div>
-                        <div class="review-content row">
-                            <label>후기 내용</label>
-                            <p th:text="${review.content}"></p>
-                        </div>
-                        <div class="review-btn text-end">
-                            <button type="button" id="deleteOne" class="btn-primary" th:value="${review.review_no}">삭제</button>
-                        </div>
+
                     </div>
-                
-                </div>
-            </form>
+                </form>
             </div>
 
             <!-- 페이지네이션-->

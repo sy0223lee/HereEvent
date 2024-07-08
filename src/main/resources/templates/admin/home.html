@@ -5,10 +5,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HereEvent-Admin</title>
     <!-- CSS File -->
-    <link href="/hereevent/common/css/mypage.css" rel="stylesheet">
+    <link href="/hereevent/common/css/admin.css" rel="stylesheet">
+    <!-- JS File -->
+    <script type="text/javascript" src="/hereevent/common/js/chart.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> <!-- google chart -->
+    <script th:inline="javascript">
+        google.charts.load('current', {packages: ['corechart']});
 
-    <title>HereEvent-MyPage</title>
+        $(document).ready(function (){
+            let eventList = [[${eventList}]];
+            let categoryList = [[${categoryList}]];
+            let memberList = [[${memberList}]];
+            let reserveList = [[${reserveList}]];
+            let waitList = [[${waitList}]];
+            drawStartEndEvent(eventList);
+            drawCategoryRate(categoryList);
+            drawNewMember(memberList);
+            drawTopEvent(reserveList, waitList);
+        });
+    </script>
 </head>
 <body>
 <main layout:fragment="main" class="main">
@@ -18,7 +35,7 @@
         <div class="container">
             <nav class="breadcrumbs">
                 <ol>
-                    <li><a href="/hereevent">Home</a></li>
+                    <li><a href="/hereevent/main">Home</a></li>
                     <li class="current">관리</li>
                 </ol>
             </nav>
@@ -26,13 +43,34 @@
         </div>
     </div><!-- End Page Title -->
 
-    <!-- Starter Section Section -->
+    <!-- Starter Section -->
     <section id="starter-section" class="starter-section section">
-        <div class="container">
-            <h3><a href="/hereevent/crawling">크롤링</a></h3>
-            <h3><a href="/hereevent/admin/review">후기 관리</a></h3>
-            <h3><a href="/hereevent/admin/event">이벤트 관리</a></h3>
-            <h3><a href="/hereevent/admin/member">회원 관리</a></h3>
+        <div class="container d-flex">
+            <div class="menu col-2">
+                <h3 class="pb-2">관리 메뉴</h3>
+                <h4 class="py-1"><a href="/hereevent/admin/event">이벤트 관리</a></h4>
+                <h4 class="py-1"><a href="/hereevent/admin/member">회원 관리</a></h4>
+                <h4 class="py-1"><a href="/hereevent/admin/review">후기 관리</a></h4>
+                <h4 class="py-1"><a href="/hereevent/crawling">크롤링</a></h4>
+            </div>
+            <div class="chart col-10">
+                <div class="row justify-content-evenly">
+                    <div id="start_end_chart">
+                        <!--날짜별 시작/종료 이벤트 수-->
+                    </div>
+                    <div id="category_rate_chart">
+                        <!--이벤트 카테고리 비율-->
+                    </div>
+                </div>
+                <div class="row justify-content-evenly">
+                    <div id="new_member_chart">
+                        <!--날짜별 신규 회원 가입 수-->
+                    </div>
+                    <div id="top_event_chart">
+                        <!--예약/대기 상위 이벤트-->
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
