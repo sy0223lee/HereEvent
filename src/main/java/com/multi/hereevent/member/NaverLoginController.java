@@ -33,7 +33,7 @@ public class NaverLoginController {
 
         // 네이버 로그인 인증 요청문 생성
         String url = "https://nid.naver.com/oauth2.0/authorize?client_id=" + "08J45Bf5olDzizmNsIcJ" +
-                    "&response_type=code&redirect_uri=http://localhost:9090/hereevent/login/naver/callback" +
+                    "&response_type=code&redirect_uri=http://223.130.158.5:9090/hereevent/login/naver/callback" +
                     "&state=" + state;
 
         System.out.println("===== 네이버 로그인 인증 요청 =====");
