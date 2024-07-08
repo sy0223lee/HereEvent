@@ -12,52 +12,47 @@
         <div class="row gy-4">
             <div class="col-lg-4 col-md-6 footer-about">
                 <a href="/hereevent/main" class="logo d-flex align-items-center">
-                    <span class="sitename">HereEvent</span>
+                    <span class="sitename" >📍HereEvent</span>
                 </a>
                 <div class="footer-contact pt-3">
-                    <p>A108 Adam Street</p>
-                    <p>New York, NY 535022</p>
-                    <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-                    <p><strong>Email:</strong> <span>info@example.com</span></p>
-                </div>
-                <div class="social-links d-flex mt-4">
-                    <a href=""><i class="bi bi-twitter-x"></i></a>
-                    <a href=""><i class="bi bi-facebook"></i></a>
-                    <a href=""><i class="bi bi-instagram"></i></a>
-                    <a href=""><i class="bi bi-linkedin"></i></a>
+                    <p><strong>📤메일</strong></p>
+                    <p><span>sy0223lee@gmail.com</span></p>
+                    <p><span>byu1118@gmail.com</span></p>
+                    <p><span>cjh980315@gmail.com</span></p>
+                    <p><span>parkson0408@gmail.com</span></p>
+                    <p><span>ju417@hanmail.net</span></p>
                 </div>
             </div>
 
             <div class="col-lg-2 col-md-3 footer-links">
-                <h4>Useful Links</h4>
+                <h4>ℹ️링크</h4>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About us</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Terms of service</a></li>
-                    <li><a href="#">Privacy policy</a></li>
+                    <li><a href="/hereevent/main">Home</a></li>
+                    <li><a href="/hereevent/list?type=all">Event List</a></li>
+                    <li><a href="/kakaomap/map">Map</a></li>
+                    <li><a href="https://www.multicampus.com/main">MultiCampus</a></li>
                 </ul>
             </div>
 
             <div class="col-lg-2 col-md-3 footer-links">
-                <h4>Our Services</h4>
+                <h4>✒️주요 기능</h4>
                 <ul>
-                    <li><a href="#">Web Design</a></li>
-                    <li><a href="#">Web Development</a></li>
-                    <li><a href="#">Product Management</a></li>
-                    <li><a href="#">Marketing</a></li>
-                    <li><a href="#">Graphic Design</a></li>
+                    <li>예약</li>
+                    <li>대기</li>
+                    <li>지도</li>
+                    <li>🎀</li>
                 </ul>
             </div>
-
-            <div class="col-lg-4 col-md-12 footer-newsletter">
-                <h4>Our Newsletter</h4>
-                <p>Subscribe to our newsletter and receive the latest news about our products and services!</p>
-                <form action="forms/newsletter.php" method="post" class="php-email-form">
-                    <div class="newsletter-form"><input type="email" name="email"><input type="submit" value="Subscribe"></div>
-                    <div class="loading">Loading</div>
-                    <div class="error-message"></div>
-                    <div class="sent-message">Your subscription request has been sent. Thank you!</div>
+<!--
+            <div class="col-lg-2 col-md-3 footer-links">
+                <img src="/hereevent/images/logo/logo2.png" alt="HereEvent">
+            </div>-->
+            <div class="col-lg-2 col-md-3 search-widget flex-fill">
+                <h4>🔎Search</h4>
+                <form action="/hereevent/search" method="get" class="form-inline p-2 bd-highlight">
+                    <input type="text" name="keyword" class="form-control" placeholder="검색어" required>
+                    <button type="submit"><i class="bi bi-search"></i>
+                    </button>
                 </form>
             </div>
 
