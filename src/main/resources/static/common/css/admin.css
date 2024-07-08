@@ -80,6 +80,8 @@ svg > g:nth-child(3) > text{
 .member-container .member-image img{
     width: 80px;
     height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
 .review-table .table-title, .review-detail label,
