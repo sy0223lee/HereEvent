@@ -40,4 +40,8 @@ public class MapController {
     public String route(){
         return "kakaomap/findrouteEX";
     }
+    @GetMapping("/test")
+    public String test(){
+        return "kakaomap/test";
+    }
 }
