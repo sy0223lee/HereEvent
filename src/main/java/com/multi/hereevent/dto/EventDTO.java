@@ -36,6 +36,8 @@ public class EventDTO {
     //상세주소와 참고항목을 위한 변수
     private String detailAddress;
     private String extraAddress;
+    //요일별 행사시간을 위한 변수
+    private String event_time;
 
     // 이벤트 크롤링 결과 insert 하기 위한 생성자
     public EventDTO(String name, Date start_date, Date end_date, String addr, String info) {

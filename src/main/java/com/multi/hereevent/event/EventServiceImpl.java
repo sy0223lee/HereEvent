@@ -25,6 +25,8 @@ public class EventServiceImpl implements EventService {
     public int insertEvent(EventDTO event) {
         return eventDAO.insertEvent(event);
     }
+
+
     @Override
     public int updateEvent(EventDTO event) {
         return eventDAO.updateEvent(event);
@@ -129,6 +131,12 @@ public class EventServiceImpl implements EventService {
     public EventDTO getEventDetails(int event_no, int category_no) {
         return eventDAO.getEventDetails(event_no, category_no);
     }
+
+    @Override
+    public EventDTO getEventDetail(String name) {
+        return eventDAO.getEventDetail(name);
+    }
+
     //사진 가져오기
     @Override
     public EventDTO getEventImage(int event_no) {
