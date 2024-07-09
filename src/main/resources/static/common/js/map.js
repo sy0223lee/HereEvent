@@ -112,25 +112,7 @@ function printMapList(map, markers, markerImg){
                             '    </div>' +
                             '</div>';
 
-                        // 마커 위에 커스텀오버레이를 표시합니다
-                        // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS 를 이용해 위치를 설정했습니다
-                        let overlay = new kakao.maps.CustomOverlay({
-                            content: content,
-                            position: marker.getPosition()
-                        });
 
-                        // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다
-                        function closeOverlay() {
-                            overlay.setMap(null);
-                        }
-
-                        // 닫기 버튼에 클릭 이벤트를 추가합니다
-                        $(document).on('click', '.close', closeOverlay);
-
-                        // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
-                        kakao.maps.event.addListener(marker, 'click', function () {
-                            overlay.setMap(map);
-                        });
                     }
                 });
             });
