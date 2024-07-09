@@ -1,5 +1,6 @@
 package com.multi.hereevent.reserve;
 
+import com.multi.hereevent.dto.ReserveDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,4 +37,34 @@ public class ReserveServiceImpl implements ReserveService{
         dao.insertReservation(reservationInfo);
         return "예약되었습니다.";
     }
+
+    @Override
+    public int deleteReservation(Map<String, Object> params) {
+        // String 타입의 날짜와 시간을 java.sql.Date와 java.sql.Time으로 변환
+        String reserveDateStr = (String) params.get("reserve_date");
+        String reserveTimeStr = (String) params.get("reserve_time");
+
+        java.sql.Date reserveDate = java.sql.Date.valueOf(reserveDateStr);
+        java.sql.Time reserveTime = java.sql.Time.valueOf(reserveTimeStr);
+
+        params.put("reserve_date", reserveDate);
+        params.put("reserve_time", reserveTime);
+        return dao.deleteReservation(params);
+    }
+
+    @Override
+    public void updateReservation(Map<String, Object> params) {
+        String reserveDateStr = (String) params.get("reserve_date");
+        String reserveTimeStr = (String) params.get("reserve_time");
+
+        java.sql.Date reserveDate = java.sql.Date.valueOf(reserveDateStr);
+        java.sql.Time reserveTime = java.sql.Time.valueOf(reserveTimeStr);
+
+        params.put("reserve_date", reserveDate);
+        params.put("reserve_time", reserveTime);
+        dao.updateReservation(params);
+
+    }
+
+
 }

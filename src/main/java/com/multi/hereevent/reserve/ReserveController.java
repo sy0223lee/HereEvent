@@ -5,11 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
+import java.sql.Time;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -46,4 +46,55 @@ public class ReserveController {
         json.put("message", message);
 
         return json.toJSONString();
-    }}
+    }
+    @GetMapping("/reservation/delete")
+    public String deleteReservation(@RequestParam("event_no") int event_no,
+                                    @RequestParam("reserve_date") String reserve_date,
+                                    @RequestParam("reserve_time") String reserve_time,
+                                    Model model) {
+        /*
+        System.out.println("event_no: " + event_no);
+        System.out.println("reserve_date: " + reserve_date);
+        System.out.println("reserve_time: " + reserve_time);*/
+
+        MemberDTO member = (MemberDTO) model.getAttribute("member");
+        if (member != null) {
+            Map<String, Object> params = new HashMap<>();
+            int member_no = member.getMember_no();
+            params.put("event_no", event_no);
+            params.put("member_no", member_no);
+            params.put("reserve_date", reserve_date);
+            params.put("reserve_time", reserve_time);
+
+            // 예약 삭제 서비스 호출
+            reserveService.deleteReservation(params);
+        } else {
+            // 회원 정보가 세션에 없는 경우, 예외 처리
+            throw new IllegalStateException("Member not found in session");
+        }
+        return "redirect:/myevent";
+    }
+
+    @GetMapping("/reservation/update")
+    public String updateReservation(@RequestParam("event_no") int event_no,
+                                    @RequestParam("reserve_date") String reserve_date,
+                                    @RequestParam("reserve_time") String reserve_time,
+                                    Model model) {
+        MemberDTO member = (MemberDTO) model.getAttribute("member");
+        if (member != null) {
+            Map<String, Object> params = new HashMap<>();
+            int member_no = member.getMember_no();
+            params.put("event_no", event_no);
+            params.put("member_no", member_no);
+            params.put("reserve_date", reserve_date);
+            params.put("reserve_time", reserve_time);
+
+            // 예약 삭제 서비스 호출
+            reserveService.updateReservation(params);
+        } else {
+            // 회원 정보가 세션에 없는 경우, 예외 처리
+            throw new IllegalStateException("Member not found in session");
+        }
+        return "redirect:/myevent";
+    }
+}

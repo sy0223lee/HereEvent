@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.multi.hereevent.event.reserve">
+<mapper namespace="com.multi.hereevent.reserve">
 
 	<select id="getEventTimeByEventNoAndDay" resultType="com.multi.hereevent.dto.EventTimeDTO">
 		select *
@@ -28,5 +28,14 @@
 		INSERT INTO reserve (event_no, member_no, reserve_date, reserve_time)
 		VALUES (#{event_no}, #{member_no}, #{reserve_date}, #{reserve_time})
 	</insert>
-
+	<!-- 예약 취소 -->
+	<delete id="deleteReservation" parameterType="map">
+		delete from reserve
+		where event_no = #{event_no} and member_no = #{member_no} AND reserve_date=#{reserve_date} AND reserve_time=#{reserve_time}
+	</delete>
+	<update id="updateReservation" parameterType="map">
+		update reserve
+		set state = "visit"
+		where event_no = #{event_no} and member_no = #{member_no} AND reserve_date=#{reserve_date} AND reserve_time=#{reserve_time}
+	</update>
 </mapper>
