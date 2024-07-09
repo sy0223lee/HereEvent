@@ -827,12 +827,17 @@ ul.runningtime{
   text-align: center;
   position: relative;
 }
+#btnAll{
 
+}
 .section-title h2 {
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 20px;
-  padding: 20px 0;
+  padding-top: 30px;
+  padding-right: 0px;
+  padding-bottom: 20px;
+  padding-left: 0px;
   position: relative;
   text-transform: uppercase;
 }
@@ -2767,5 +2772,16 @@ ul.runningtime{
 }
 .slider__dot .dot.active {
   background-color: #fff;
+}
+
+.btn-getstarted,
+.btn-getstarted:focus {
+  color: var(--contrast-color);
+  background: var(--accent-color);
+  font-size: 14px;
+  padding: 8px 25px;
+  margin: 0 0 0 30px;
+  border-radius: 4px;
+  transition: 0.3s;
 }
 

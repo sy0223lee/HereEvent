@@ -149,7 +149,7 @@
 
                         <article id="navigation-section" class="article">
                             <!-- 길찾기 내용 -->
-                            <th:block th:replace="~{detailedPage/navigation :: navigation}"></th:block>
+                            <th:block th:replace="~{detailedPage/navigation :: navigation(${event.addr})}"></th:block>
                         </article>
 
                         <article id="reservation-section" class="article" th:if="${event.type != 'wait'}">
