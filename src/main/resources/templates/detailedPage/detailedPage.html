@@ -195,7 +195,7 @@
                         <h3 class="widget-title">Category</h3>
                         <ul>
                             <li th:each="category : ${category}">
-                                <a class="category" th:onclick="|location.href='@{/list/category/{category_no}(category_no=${category.category_no})}'|" th:text="${category.name}"></a>
+                                <a class="category-btn" th:onclick="|location.href='@{/list/category/{category_no}(category_no=${category.category_no})}'|" th:text="${category.name}"></a>
                             </li>
                         </ul>
 

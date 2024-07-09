@@ -121,6 +121,11 @@
     color: var(--accent-color);
     text-align: right;
 }
+/* 사이드 메뉴 카테고리 이동 버튼 */
+.category-btn{
+    cursor: pointer;
+}
+
 /* 상세페이지 - 리뷰 */
 .comment-content{
     width: 100%;
