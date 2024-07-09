@@ -46,7 +46,7 @@
                      th:src="|@{/download/profile/}${session.member.img_path}|" th:alt="${session.member.img_path}">
             </div>
             <button type="button" onclick="location.href='/hereevent/mypage/edit-profile-img'"
-                    class="edit-img-btn btn-primary">수정</button>
+                    class="edit-img-btn btn btn-primary">수정</button>
         </div><!-- End Section Title -->
 
         <div class="container">
@@ -57,7 +57,7 @@
                 <li><span>닉네임</span>
                     <p>[[${session.member.nick}]]
                         <button type="button" onclick="location.href='/hereevent/mypage/edit-nick'"
-                                class="edit-btn btn-primary">수정</button></p></li>
+                                class="edit-btn btn btn-primary">수정</button></p></li>
                 <li><span>이메일</span>
                     <p th:text="${session.member.email}"></p></li>
                 <li><span>연락처</span>
@@ -65,16 +65,16 @@
                 <li><span>생일</span>
                     <p th:if="${session.member.birth != null}">[[${session.member.birth}]]
                         <button type="button" onclick="location.href='/hereevent/mypage/edit-birth'"
-                                class="edit-btn btn-primary">수정</button></p>
+                                class="edit-btn btn btn-primary">수정</button></p>
                     <p th:unless="${session.member.birth != null}">&nbsp
                         <button type="button" onclick="location.href='/hereevent/mypage/edit-birth'"
-                                class="edit-btn btn-primary">등록</button></p>
+                                class="edit-btn btn btn-primary">등록</button></p>
                 </li>
             </ul>
 
             <div class="profile-btn-area d-flex justify-content-end">
-                <button type="button" class="edit-btn edit-btn btn-primary">비밀번호 변경</button>
-                <button type="button" class="edit-btn btn-secondary">회원 탈퇴</button>
+                <button type="button" class="edit-btn edit-btn btn btn-primary">비밀번호 변경</button>
+                <button type="button" class="edit-btn btn btn-secondary">회원 탈퇴</button>
             </div>
         </div>
 

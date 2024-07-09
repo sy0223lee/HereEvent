@@ -180,7 +180,9 @@
         <option th:each="i : ${#numbers.sequence(10, 100, 10)}" th:value="${i}" th:text="${i} + '명'"></option>
     </select>
 
-    <button class="form-button" type="submit">행사 등록</button>
+    <div class="d-flex justify-content-center">
+        <button class="btn btn-primary" type="submit">이벤트 등록</button>
+    </div>
 </form>
 </main>
 </body>
