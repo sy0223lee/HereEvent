@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ODsay API 테스트</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h2>ODsay API 테스트</h2>
+<button id="test-button">ODsay API 호출</button>
+
+<script>
+    $(document).ready(function() {
+        $('#test-button').click(function() {
+            var sx = 126.9786567;  // 예시 출발지 경도
+            var sy = 37.566826;    // 예시 출발지 위도
+            var ex = 127.028600;   // 예시 도착지 경도
+            var ey = 37.497942;    // 예시 도착지 위도
+            var apiKey = 'ifTb4R5OBm3XVuhV1sv6kQ';
+
+            var url = `https://api.odsay.com/v1/api/searchPubTransPathT?SX=${sx}&SY=${sy}&EX=${ex}&EY=${ey}&apiKey=${apiKey}`;
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(response) {
+                    console.log(response);
+                    alert('API 호출 성공! 콘솔을 확인하세요.');
+                },
+                error: function() {
+                    alert('API 호출 실패');
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
