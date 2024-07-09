@@ -274,23 +274,21 @@
 
 /* 상세페이지 - 길찾기 */
 .map_wrap, .map_wrap * {
-    margin:0; padding:0;font-family:sans-serif;font-size:12px;
+    margin:0; padding:0;font-family:var(--default-font),sans-serif;font-size:12px;
 }
 .map_wrap {position:relative;width:100%;height:350px;}
 #category {position:absolute;top:10px;left:10px;border-radius: 5px; border:1px solid #909090;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);background: #fff;overflow: hidden;z-index: 2;}
 #category li {float:left;list-style: none;width:50px;border-right:1px solid #acacac;padding:6px 0;text-align: center; cursor: pointer;}
-#category li.on {background: #eee;}
-ul :hover {color: white;margin-left: -1px;}
+#category li.on {color: var(--accent-color);}
+#category :hover {color: var(--accent-color);}
 #category li:last-child{margin-right:0;border-right:0;}
-#category li span {display: block;margin:0 auto 3px;width:27px;height: 28px;}
-#category li .category_bg {background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png) no-repeat;}
-#category li .bank {background-position: -10px 0;}
-#category li .mart {background-position: -10px -36px;}
-#category li .pharmacy {background-position: -10px -72px;}
-#category li .oil {background-position: -10px -108px;}
-#category li .cafe {background-position: -10px -144px;}
-#category li .store {background-position: -10px -180px;}
-#category li.on .category_bg {background-position-x:-46px;}
+#category li span {display: block;margin:0 auto 3px;width:45px;height: 30px;}
+#category li .category_bg.cultural {background:url('/hereevent/images/map/cultural.svg') no-repeat; background-size:25px;background-position: center;}
+#category li .category_bg.parking {background:url('/hereevent/images/map/parking.svg') no-repeat; background-size:25px;background-position: center;}
+#category li .category_bg.tour {background:url('/hereevent/images/map/tour.svg') no-repeat; background-size:25px;background-position: center;}
+#category li .category_bg.restaurant {background:url('/hereevent/images/map/restaurant.png') no-repeat; background-size:25px;background-position: center;}
+#category li .category_bg.cafe {background:url('/hereevent/images/map/cafe.svg') no-repeat; background-size:25px;background-position: center;}
+#category li .category_bg.store {background:url('/hereevent/images/map/store.svg') no-repeat; background-size:25px;background-position: center;}
 .placeinfo_wrap {position:absolute;bottom:28px;left:-150px;width:300px;}
 .placeinfo {position:relative;width:100%;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;padding-bottom: 10px;background: #fff;}
 .placeinfo:nth-of-type(n) {border:0; box-shadow:0 1px 2px #888;}
@@ -303,3 +301,14 @@ ul :hover {color: white;margin-left: -1px;}
     white-space: nowrap;background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
 .placeinfo .tel {color:#0f7833;}
 .placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
+
+#output { width: 30%; float: left; overflow-y: auto; height: 100vh; border-left: 1px solid #ccc; }
+.route { padding: 10px; border-bottom: 1px solid #eee; }
+.route h3 { margin: 0; }
+.route-details { display: none; }
+.route-details ul { padding: 0; list-style-type: none; }
+.route-details li {
+    list-style-type: none; /* li에 직접 스타일 적용 */
+    padding: 0;
+    margin: 0;
+}
