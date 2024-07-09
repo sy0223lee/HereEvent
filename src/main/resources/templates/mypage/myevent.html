@@ -14,11 +14,44 @@
         $(document).ready(function() {
             // 예약 취소 버튼
             $('.cancel-btn').click(function () {
-                confirm("정말 예약을 취소하시겠습니까?")
+                if (confirm("정말 예약을 취소하시겠습니까?")) {
+                    var eventNo = $(this).closest('#reserve').attr("data-my-value");
+                    var reserveDate = $(this).closest('#myevent').find("#enterdate").attr("data-my-value");
+                    var reserveTime = $(this).closest('#myevent').find("#entertime").attr("data-my-value");
+
+                    console.log("eventNo:", eventNo);
+                    console.log("reserveDate:", reserveDate);
+                    console.log("reserveTime:", reserveTime);
+
+                    var encodedReserveDate = encodeURIComponent(reserveDate.trim());
+                    var encodedReserveTime = encodeURIComponent(reserveTime.trim());
+
+                    var url = "/hereevent/reservation/delete?event_no=" + eventNo
+                                        + "&reserve_date=" + encodedReserveDate + "&reserve_time=" + encodedReserveTime;
+
+                    <!--console.log("Encoded URL:", url);-->
+                    location.href = url;
+                }
             });
-            // 예약 입장 버튼
             $('.visit-btn').click(function () {
-               confirm("직원의 안내에 따라 입장 버튼을 눌러주시기 바랍니다.\n방문 완료 처리가 되면 다시 입장하실 수 없습니다.\n그래도 진행 하시겠습니까?")
+                if (confirm("직원의 안내에 따라 입장 버튼을 눌러주시기 바랍니다.\n방문 완료 처리가 되면 다시 입장하실 수 없습니다.\n그래도 진행 하시겠습니까?")) {
+                    var eventNo = $(this).closest('#reserve').attr("data-my-value");
+                    var reserveDate = $(this).closest('#myevent').find("#enterdate").attr("data-my-value");
+                    var reserveTime = $(this).closest('#myevent').find("#entertime").attr("data-my-value");
+
+                    console.log("eventNo:", eventNo);
+                    console.log("reserveDate:", reserveDate);
+                    console.log("reserveTime:", reserveTime);
+
+                    var encodedReserveDate = encodeURIComponent(reserveDate.trim());
+                    var encodedReserveTime = encodeURIComponent(reserveTime.trim());
+
+                    var url = "/hereevent/reservation/update?event_no=" + eventNo
+                                        + "&reserve_date=" + encodedReserveDate + "&reserve_time=" + encodedReserveTime;
+
+                    <!--console.log("Encoded URL:", url);-->
+                    location.href = url;
+                }
             });
         });
     </script>
@@ -56,8 +89,8 @@
 
         <div class="container">
 
-            <div th:each="event : ${eventList}" class="event-container">
-                <div class="row">
+            <div th:each="event : ${eventList}" class="event-container" id="myevent">
+                <div class="row" id="info">
                     <div class="event-img col-3 align-self-start">
                         <img th:if="${event.img_path == null}"
                              th:src="@{/images/default_img.png}" alt="default_event">
@@ -80,9 +113,9 @@
                             <th:block th:switch="${event.state}">
                                 <div th:case="reserve">
                                     <div class="event-info title">예약일</div>
-                                    <div class="d-flex">
-                                        <div class="enter-date" th:text="${event.enter_date}"></div>
-                                        <div class="enter-time" th:text="${event.enter_time}"></div>
+                                    <div class="d-flex" >
+                                        <div id="enterdate" th:text="${event.enter_date}" th:data-my-value="${event.enter_date}"></div>
+                                        <div id="entertime" th:text="${event.enter_time}" th:data-my-value="${event.enter_time}"></div>
                                     </div>
                                 </div>
                                 <div th:case="wait">
@@ -113,8 +146,8 @@
                 </div>
 
                 <th:block th:switch="${event.state}">
-                    <div th:case="reserve" class="event-btn d-flex justify-content-center">
-                            <button type="button" class="col-3 btn-primary cancel-btn">에약 취소</button>
+                    <div th:case="reserve" class="event-btn d-flex justify-content-center" id="reserve" th:data-my-value="${event.event_no}">
+                            <button type="button" class="col-3 btn-primary cancel-btn">예약 취소</button>
                             <button type="button" class="col-3 btn-secondary visit-btn">입장</button>
                     </div>
                     <div th:case="wait" class="event-btn d-flex justify-content-center">
