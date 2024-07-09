@@ -33,7 +33,7 @@ public class KakaoLoginController {
 
         // 네이버 로그인 인증 요청문 생성
         String url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+
-                "798073a2ccc2f0cb985ac0f4f178f563&redirect_uri=http://127.0.0.1:9090/hereevent/login/kakao/callback";
+                "798073a2ccc2f0cb985ac0f4f178f563&redirect_uri=http://223.130.158.5/hereevent/login/kakao/callback";
         //https://kauth.kakao.com/oauth/authorize
 
         System.out.println("===== 카카오 로그인 인증 요청 =====");
@@ -52,7 +52,7 @@ public class KakaoLoginController {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", "798073a2ccc2f0cb985ac0f4f178f563");
-        params.add("redirect_uri", "http://127.0.0.1:9090/hereevent/login/kakao/callback");
+        params.add("redirect_uri", "http://223.130.158.5:9090/hereevent/login/kakao/callback");
         params.add("code", code);
         // Http Header 와 Http Body params 를 가진 엔티티
         HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
@@ -69,7 +69,7 @@ public class KakaoLoginController {
         System.out.println("===카카오 토큰 발급==="+accessToken);
         getUserInfo(accessToken, model);
 
-        return "main/mainPage";
+        return "redirect:/main";
     }
 
     public void getUserInfo(String accessToken, Model model) throws ParseException {
