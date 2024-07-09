@@ -54,6 +54,15 @@
     margin-right: 10px;
 }
 
+/* 프로필 정보 수정 페이지 빈 상자 추가해서 footer 가 밑에 출력되도록 */
+.empty-div{
+    height: 400px;
+}
+
+.nick-info{
+    margin-bottom: 20px;
+}
+
 /* myinterest.html 관심 내역 */
 .interest-category {
     padding-bottom: 40px;
