@@ -25,7 +25,7 @@
                         <img th:unless="${review.img_path == null}"
                              th:src="|@{/download/profile/}${review.img_path}|" th:alt="${review.img_path}">
                     </div>
-                    <div class="flex-grow-1">
+                    <div class="comment-content flex-grow-1">
                         <div class="d-flex justify-content-between">
                             <input type="hidden" class="write-member-no" th:value="${review.member_no}">
                             <input type="hidden" class="write-event-no" th:value="${review.event_no}">
