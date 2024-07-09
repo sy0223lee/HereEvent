@@ -39,6 +39,8 @@ public interface EventDAO {
     EventDTO getEventDetail(String name);
     //사진 가져오기
     EventDTO getEventImage(int event_no);
+    //이벤트 관심 숫자표시
+    int getEventInterest(int event_no);
 
     //예약하기
     int insertReserve(ReserveDTO reservation);

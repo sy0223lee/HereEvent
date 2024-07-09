@@ -295,7 +295,12 @@
         FROM events
         WHERE event_no = #{eventNo}
     </select>
-
+    <!-- 이벤트 관심 갯수 가져오기-->
+    <select id="getEventInterest" resultType="int">
+        SELECT count(member_no)
+        FROM event_interest
+        WHERE event_no = #{event_no}
+    </select>
     <!-- 크롤링 -->
     <!-- 기존 테이블에 존재하지 않은 이벤트이면 삽입 -->
     <insert id="insertCrawlingEvent" parameterType="event">

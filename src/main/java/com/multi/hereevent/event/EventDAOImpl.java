@@ -123,6 +123,11 @@ public class EventDAOImpl implements EventDAO{
         return sqlSession.selectOne("com.multi.hereevent.event.getEventImage", event_no);
     }
 
+    @Override
+    public int getEventInterest(int event_no) {
+        return sqlSession.selectOne("com.multi.hereevent.event.getEventInterest", event_no);
+    }
+
     //예약하기
     @Override
     public int insertReserve(ReserveDTO reservation) {

@@ -126,12 +126,13 @@ public class EventController {
         List<ReviewDTO> reviewList = reviewService.selectReviewByEventNo(event_no);
 //         System.out.println(eventTime);
         List<String> closedDays = eventTimeService.getHolidayDays(event_no);
-
+        int eventInterest = eventService.getEventInterest(event_no);
         model.addAttribute("event", eventDetails);
         model.addAttribute("eventtime",eventTime);
         model.addAttribute("category",category);
         model.addAttribute("reviewList", reviewList);
         model.addAttribute("closedDays", closedDays);
+        model.addAttribute("eventInterest", eventInterest);
 
         return "detailedPage/detailedPage";
     }

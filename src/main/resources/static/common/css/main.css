@@ -2228,6 +2228,8 @@ ul.runningtime{
 .comment-img img {
   width: 60px;
   height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .blog-comments .comment h5 {

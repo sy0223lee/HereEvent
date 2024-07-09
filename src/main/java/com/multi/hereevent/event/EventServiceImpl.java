@@ -143,6 +143,12 @@ public class EventServiceImpl implements EventService {
         return eventDAO.getEventImage(event_no);
     }
 
+    //이벤트 관심숫자 가져오기
+    @Override
+    public int getEventInterest(int event_no) {
+        return eventDAO.getEventInterest(event_no);
+    }
+
     // 리뷰 관련
     @Override
     public int insertReserve(ReserveDTO reservation) {
