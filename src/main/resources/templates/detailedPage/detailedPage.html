@@ -176,12 +176,12 @@
                         <h3 class="widget-title">대기</h3>
 
 
-                        <button type="submit" class="widget-button"
+                        <button type="submit" class="btn btn-secondary"
                                 th:onclick="|location.href='@{/event/waitSituation(event_no=${event_no})}'|">
                             대기 현황
                         </button>
 
-                        <button type="submit" class="widget-button"
+                        <button type="submit" class="btn btn-primary"
                                 th:onclick="|location.href='@{/wait/register/event/{event_no}(event_no=${event_no})}'|">
                             대기 등록
                         </button>
@@ -195,7 +195,7 @@
                         <h3 class="widget-title">Category</h3>
                         <ul>
                             <li th:each="category : ${category}">
-                                <a th:onclick="|location.href='@{/list/category/{category_no}(category_no=${category.category_no})}'|" th:text="${category.name}"></a>
+                                <a class="category" th:onclick="|location.href='@{/list/category/{category_no}(category_no=${category.category_no})}'|" th:text="${category.name}"></a>
                             </li>
                         </ul>
 

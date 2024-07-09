@@ -40,10 +40,10 @@
             </li>
         </ul>
     </div>
-    <div>
-        <input type="text" id="start" placeholder="출발지 입력">
-        <input type="text" id="end" placeholder="도착지 입력">
-        <i class="bi bi-sign-turn-right-fill" onclick="searchAddressToCoords()"></i>
+    <div class="d-flex align-items-center">
+        <input class="m-1" type="text" id="start" placeholder="출발지 입력">
+        <input class="m-1" type="text" id="end" placeholder="도착지 입력">
+        <button class="btn btn-outline-primary" onclick="searchAddressToCoords()"><i class="bi bi-sign-turn-right-fill"></i> 길찾기</button>
 
     </div>
 
@@ -217,7 +217,7 @@
         // 지도위 마커 표시해주는 함수
         function drawKakaoMarker(x, y) {
             // 마커 이미지 생성
-            const imgSrc = "http://223.130.158.5:9090/hereevent/images/map/icon-location.png";
+            const imgSrc = "http://223.130.158.5:9090/hereevent/images/map/navi-location.png";
             const imgSize = new kakao.maps.Size(35, 35);
             let markerImg = new kakao.maps.MarkerImage(imgSrc, imgSize);
 
@@ -360,8 +360,8 @@
             }
 
             content += '    <span class="tel">' + place.phone + '</span>' +
-                '<button type="button" class="btn btn-outline-danger btn-sm" onclick="setStart(\'' + place.road_address_name + '\')">출발지</button>' +
-                '<button type="button" class="btn btn-outline-danger btn-sm" onclick="setEnd(\'' + place.road_address_name + '\')">도착지</button>'+
+                '<button type="button" class="btn btn-outline-primary btn-sm" onclick="setStart(\'' + place.road_address_name + '\')">출발지</button>' +
+                '<button type="button" class="btn btn-outline-primary btn-sm" onclick="setEnd(\'' + place.road_address_name + '\')">도착지</button>'+
                 '</div>' +
                 '<div class="after"></div>';
             contentNode.innerHTML = content;
@@ -431,7 +431,7 @@
             geocoder.addressSearch(address, function (result, status) {
                 if (status === kakao.maps.services.Status.OK) {
                     // 마커 이미지 생성
-                    const imgSrc = "http://223.130.158.5:9090/hereevent/images/map/navi-location.png";
+                    const imgSrc = "http://223.130.158.5:9090/hereevent/images/map/icon-location.png";
                     const imgSize = new kakao.maps.Size(38, 38);
                     let markerImg = new kakao.maps.MarkerImage(imgSrc, imgSize);
 
@@ -446,8 +446,8 @@
 
                     var content = '<div class="placeinfo">' +
                         '   <span class="title">' + address + '</span>' +
-                        '<button type="button" class="btn btn-outline-danger btn-sm" onclick="setStart(\'' + address + '\')">출발지</button>' +
-                        '<button type="button" class="btn btn-outline-danger btn-sm" onclick="setEnd(\'' + address + '\')">도착지</button>'+
+                        '<button type="button" class="btn btn-outline-primary btn-sm" onclick="setStart(\'' + address + '\')">출발지</button>' +
+                        '<button type="button" class="btn btn-outline-primary btn-sm" onclick="setEnd(\'' + address + '\')">도착지</button>'+
                         '</div>' +
                         '<div class="after"></div>';
                     contentNode.innerHTML = content;

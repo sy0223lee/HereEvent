@@ -39,8 +39,9 @@
     cursor: pointer;
     margin-bottom: 10px;
 }
-
-
+.wait{
+    background-color: var(--default-color);
+}
 
 .social-login {
     display: flex;

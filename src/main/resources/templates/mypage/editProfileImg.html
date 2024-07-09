@@ -41,12 +41,12 @@
                              th:src="|@{/download/profile/}${session.member.img_path}|" th:alt="${session.member.img_path}">
                     </div>
                 </div>
-                <label class="edit-img-btn btn-secondary" for="select-img">
+                <label class="edit-img-btn btn btn-secondary" for="select-img">
                     이미지 선택
                     <input type="file" name="profile_img" id="select-img" accept="image/*"
                            onchange="document.querySelector('#profile-img img').src = window.URL.createObjectURL(this.files[0])">
                 </label>
-                <button type="submit" class="edit-img-btn btn-primary">수정</button>
+                <button type="submit" class="edit-img-btn btn btn-primary">수정</button>
             </div>
         </form>
     </section><!-- End Section -->
