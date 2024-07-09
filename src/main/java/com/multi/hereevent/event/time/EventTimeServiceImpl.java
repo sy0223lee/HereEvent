@@ -21,6 +21,11 @@ public class EventTimeServiceImpl implements EventTimeService{
     }
 
     @Override
+    public int updateEventTImeList(List<EventTimeDTO> eventTimeList) {
+        return dao.updateEventTimeList(eventTimeList);
+    }
+
+    @Override
     public List<String> getOperTime(int event_no, String day) {
         EventTimeDTO eventTime = dao.getEventTimeByEventNoAndDay(event_no,day);
 

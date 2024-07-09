@@ -12,23 +12,33 @@
     <script type="text/javascript" src="/hereevent/common/js/chart.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> <!-- google chart -->
     <script th:inline="javascript">
-        google.charts.load('current', {packages: ['corechart']});
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawStartEndEvent);
+        google.charts.setOnLoadCallback(drawCategoryRate);
+        google.charts.setOnLoadCallback(drawNewMember);
+        google.charts.setOnLoadCallback(drawTopEvent);
 
-        $(document).ready(function (){
-            let eventList = [[${eventList}]];
-            let categoryList = [[${categoryList}]];
-            let memberList = [[${memberList}]];
-            let reserveList = [[${reserveList}]];
-            let waitList = [[${waitList}]];
-            drawStartEndEvent(eventList);
-            drawCategoryRate(categoryList);
-            drawNewMember(memberList);
-            drawTopEvent(reserveList, waitList);
-        });
+        // $(document).ready(function (){
+        //     let eventList = [[${eventList}]];
+        //     let categoryList = [[${categoryList}]];
+        //     let memberList = [[${memberList}]];
+        //     let reserveList = [[${reserveList}]];
+        //     let waitList = [[${waitList}]];
+        //     drawStartEndEvent(eventList);
+        //     drawCategoryRate(categoryList);
+        //     drawNewMember(memberList);
+        //     drawTopEvent(reserveList, waitList);
+        // });
     </script>
 </head>
 <body>
 <main layout:fragment="main" class="main">
+    <!-- google chart 를 위한 데이터 -->
+    <input type="hidden" name="eventList" th:value="${eventList}">
+    <input type="hidden" name="categoryList" th:value="${categoryList}">
+    <input type="hidden" name="memberList" th:value="${memberList}">
+    <input type="hidden" name="reserveList" th:value="${reserveList}">
+    <input type="hidden" name="waitList" th:value="${waitList}">
 
     <!-- Page Title -->
     <div class="page-title">

@@ -36,13 +36,11 @@ public class NaverLoginController {
                     "&response_type=code&redirect_uri=http://223.130.158.5:9090/hereevent/login/naver/callback" +
                     "&state=" + state;
 
-        System.out.println("===== 네이버 로그인 인증 요청 =====");
         return "redirect:" + url;
     }
 
     @GetMapping("/login/naver/callback")
     public String naverLogin(@RequestParam("code") String code, @RequestParam("state") String state, Model model) throws ParseException {
-        System.out.println("===== 네이버 로그인 접근 토큰 요청 =====");
         String url = "https://nid.naver.com/oauth2.0/token";
         RestTemplate restTemplate = new RestTemplate();
 
@@ -70,7 +68,7 @@ public class NaverLoginController {
 
         getUserInfo(accessToken, model);
 
-        return "mypage/mypage"; // 나중에 메인 페이지로 갈 수 있도록 수정
+        return "redirect:/main";
     }
 
     public void getUserInfo(String accessToken, Model model) throws ParseException {

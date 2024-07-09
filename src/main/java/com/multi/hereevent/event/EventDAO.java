@@ -1,9 +1,6 @@
 package com.multi.hereevent.event;
 
-import com.multi.hereevent.dto.EventDTO;
-import com.multi.hereevent.dto.MemberEventDTO;
-import com.multi.hereevent.dto.ReserveDTO;
-import com.multi.hereevent.dto.ReviewDTO;
+import com.multi.hereevent.dto.*;
 
 
 import java.sql.Date;
@@ -38,6 +35,8 @@ public interface EventDAO {
     //세부페이지
     EventDTO getEventDetails(int event_no);  // 전체 데이터 조회
     EventDTO getEventDetails(int event_no, int category_no); // 이벤트 상세 정보 + 회원 관심 여부 조회
+    //이름으로 조회
+    EventDTO getEventDetail(String name);
     //사진 가져오기
     EventDTO getEventImage(int event_no);
     //이벤트 관심 숫자표시

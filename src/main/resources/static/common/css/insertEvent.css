@@ -46,15 +46,6 @@
 .radio-group label {
     margin-right: 10px;
 }
-#btn1, #btn2 {
-    width: 150px;
-    padding: 10px;
-    background-color: #e14533;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-}
 #btn-box {
     text-align:center;
 }

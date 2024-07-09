@@ -1,62 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        .map_wrap, .map_wrap * {margin:0; padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
-        .map_wrap {position:relative;width:100%;height:350px;}
-        #category {position:absolute;top:10px;left:10px;border-radius: 5px; border:1px solid #909090;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);background: #fff;overflow: hidden;z-index: 2;}
-        #category li {float:left;list-style: none;width:50px;border-right:1px solid #acacac;padding:6px 0;text-align: center; cursor: pointer;}
-        #category li.on {background: #eee;}
-        #category li:hover {background: #ffe6e6;border-left:1px solid #acacac;margin-left: -1px;}
-        #category li:last-child{margin-right:0;border-right:0;}
-        #category li span {display: block;margin:0 auto 3px;width:27px;height: 28px;}
-        #category li .category_bg {background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png) no-repeat;}
-        #category li .bank {background-position: -10px 0;}
-        #category li .mart {background-position: -10px -36px;}
-        #category li .pharmacy {background-position: -10px -72px;}
-        #category li .oil {background-position: -10px -108px;}
-        #category li .cafe {background-position: -10px -144px;}
-        #category li .store {background-position: -10px -180px;}
-        #category li.on .category_bg {background-position-x:-46px;}
-        .placeinfo_wrap {position:absolute;bottom:28px;left:-150px;width:300px;}
-        .placeinfo {position:relative;width:100%;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;padding-bottom: 10px;background: #fff;}
-        .placeinfo:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
-        .placeinfo_wrap .after {content:'';position:relative;margin-left:-12px;left:50%;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
-        .placeinfo a, .placeinfo a:hover, .placeinfo a:active{color:#fff;text-decoration: none;}
-        .placeinfo a, .placeinfo span {display: block;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-        .placeinfo span {margin:5px 5px 0 5px;cursor: default;font-size:13px;}
-        .placeinfo .title {font-weight: bold; font-size:14px;border-radius: 6px 6px 0 0;margin: -1px -1px 0 -1px;padding:10px; color: #fff;background: #d95050;background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
-        .placeinfo .tel {color:#0f7833;}
-        .placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
-        #output { width: 30%; float: left; overflow-y: auto; height: 100vh; border-left: 1px solid #ccc; }
-        .route { padding: 10px; border-bottom: 1px solid #eee; }
-        .route h3 { margin: 0; }
-        .route-details { display: none; }
-        .route-details ul { padding: 0; list-style-type: none; }
-
-        .route-details li {
-            list-style-type: none; /* li에 직접 스타일 적용 */
-            padding: 0;
-            margin: 0;
-        }
-
-    </style>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
     <title>HereEvent-EventDetail</title>
 </head>
 
 <body>
-<div th:fragment="navigation">
+<div th:fragment="navigation(addr)">
     <h2 class="title">길찾기</h2>
     <div class="map_wrap">
         <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
         <ul id="category">
             <li id="CT1" data-order="0">
-                <span class="category_bg Cultural"></span>
+                <span class="category_bg cultural"></span>
                 문화시설
             </li>
             <li id="PK6" data-order="1">
@@ -81,55 +40,17 @@
             </li>
         </ul>
     </div>
-    <div>
-        <input type="text" id="start" placeholder="출발지 입력">
-        <input type="button" onclick="sample6_execDaumPostcode('start')" value="주소 찾기"><br>
-        <input type="text" id="end" placeholder="도착지 입력">
-        <input type="button" onclick="sample6_execDaumPostcode('end')" value="주소 찾기"><br>
-
-        <i class="bi bi-sign-turn-right-fill" onclick="searchAddressToCoords()"></i>
+    <div class="d-flex align-items-center">
+        <input class="m-1" type="text" id="start" placeholder="출발지 입력">
+        <input class="m-1" type="text" id="end" placeholder="도착지 입력">
+        <button class="btn btn-outline-primary" onclick="searchAddressToCoords()"><i class="bi bi-sign-turn-right-fill"></i> 길찾기</button>
 
     </div>
 
 
-    <script>
-        function sample6_execDaumPostcode(type) {
-            new daum.Postcode({
-                oncomplete: function(data) {
-                    var addr = '';
-                    var extraAddr = '';
-
-                    if (data.userSelectedType === 'R') {
-                        addr = data.roadAddress;
-                    } else {
-                        addr = data.jibunAddress;
-                    }
-
-                    if(data.userSelectedType === 'R'){
-                        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-                            extraAddr += data.bname;
-                        }
-                        if(data.buildingName !== '' && data.apartment === 'Y'){
-                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                        }
-                        if(extraAddr !== ''){
-                            extraAddr = ' (' + extraAddr + ')';
-                        }
-                    }
-
-                    if (type === 'start') {
-                        document.getElementById('start').value = addr + extraAddr;
-                    } else if (type === 'end') {
-                        document.getElementById('end').value = addr + extraAddr;
-                    }
-                }
-            }).open();
-        }
-    </script>
-
     <div id="output"></div>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1c7411c7e9cd13cdaac33d749ab11436&libraries=services"></script>
-    <script>
+    <script th:inline="javascript">
         var placeOverlay = new kakao.maps.CustomOverlay({zIndex: 1}),
             contentNode = document.createElement('div'),
             markers = [],
@@ -295,9 +216,15 @@
 
         // 지도위 마커 표시해주는 함수
         function drawKakaoMarker(x, y) {
+            // 마커 이미지 생성
+            const imgSrc = "http://223.130.158.5:9090/hereevent/images/map/navi-location.png";
+            const imgSize = new kakao.maps.Size(35, 35);
+            let markerImg = new kakao.maps.MarkerImage(imgSrc, imgSize);
+
             var markerPosition = new kakao.maps.LatLng(y, x);
             var marker = new kakao.maps.Marker({
-                position: markerPosition
+                position: markerPosition,
+                image: markerImg
             });
             marker.setMap(map);
         }
@@ -400,14 +327,9 @@
         }
 
         function addMarker(position, order) {
-            var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png',
-                imageSize = new kakao.maps.Size(36, 37),
-                imgOptions = {
-                    spriteSize: new kakao.maps.Size(36, 691),
-                    spriteOrigin: new kakao.maps.Point(0, (order * 46) + 10),
-                    offset: new kakao.maps.Point(13, 37)
-                },
-                markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+            var imageSrc = 'http://223.130.158.5:9090/hereevent/images/map/icon-location.png',
+                imageSize = new kakao.maps.Size(35, 35),
+                markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize),
                 marker = new kakao.maps.Marker({
                     position: position,
                     image: markerImage
@@ -438,9 +360,9 @@
             }
 
             content += '    <span class="tel">' + place.phone + '</span>' +
-                '<button type="button" class="btn btn-outline-danger btn-sm" onclick="setStart(\'' + place.road_address_name + '\')">출발지</button>' +
-                '<button type="button" class="btn btn-outline-danger btn-sm" onclick="setEnd(\'' + place.road_address_name + '\')">도착지</button>'+
-            '</div>' +
+                '<button type="button" class="btn btn-outline-primary btn-sm" onclick="setStart(\'' + place.road_address_name + '\')">출발지</button>' +
+                '<button type="button" class="btn btn-outline-primary btn-sm" onclick="setEnd(\'' + place.road_address_name + '\')">도착지</button>'+
+                '</div>' +
                 '<div class="after"></div>';
             contentNode.innerHTML = content;
             placeOverlay.setPosition(new kakao.maps.LatLng(place.y, place.x));
@@ -487,11 +409,9 @@
             }
         }
 
-
         // 페이지가 로드될 때 호출되어 특정 주소로 지도의 중심을 맞추는 함수 호출
         document.addEventListener('DOMContentLoaded', function () {
-            var eventAddress = "서울특별시 중구 세종대로 39";
-            //var eventAddress = /*[[${event.addr}]]*/ '';
+            var eventAddress = [[${event.addr}]];
             setMapByAddress(eventAddress);
         });
 
@@ -510,18 +430,24 @@
         function setMapByAddress(address) {
             geocoder.addressSearch(address, function (result, status) {
                 if (status === kakao.maps.services.Status.OK) {
+                    // 마커 이미지 생성
+                    const imgSrc = "http://223.130.158.5:9090/hereevent/images/map/icon-location.png";
+                    const imgSize = new kakao.maps.Size(38, 38);
+                    let markerImg = new kakao.maps.MarkerImage(imgSrc, imgSize);
+
                     var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
                     map.setCenter(coords);
 
                     var marker = new kakao.maps.Marker({
                         map: map,
-                        position: coords
+                        position: coords,
+                        image: markerImg
                     });
 
                     var content = '<div class="placeinfo">' +
                         '   <span class="title">' + address + '</span>' +
-                        '<button type="button" class="btn btn-outline-danger btn-sm" onclick="setStart(\'' + address + '\')">출발지</button>' +
-                        '<button type="button" class="btn btn-outline-danger btn-sm" onclick="setEnd(\'' + address + '\')">도착지</button>'+
+                        '<button type="button" class="btn btn-outline-primary btn-sm" onclick="setStart(\'' + address + '\')">출발지</button>' +
+                        '<button type="button" class="btn btn-outline-primary btn-sm" onclick="setEnd(\'' + address + '\')">도착지</button>'+
                         '</div>' +
                         '<div class="after"></div>';
                     contentNode.innerHTML = content;

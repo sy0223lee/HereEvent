@@ -64,7 +64,7 @@ function printMapList(map, markers, markerImg){
 
                 printData += "           <div class='card-text'><span>" + event.start_date + "</span> ~ <span>" + event.end_date + "</span></div>" +
                     "                    <div class='card-text'>" + event.addr + "</div>" +
-                    "                    <div class='card-btn'><a href='/hereevent/event/" + event.event_no + "' class='btn-primary'>상세보기</a></div>" +
+                    "                    <div class='card-btn'><a href='/hereevent/event/" + event.event_no + "' class='btn btn-primary'>상세보기</a></div>" +
                     "                </div>" +
                     "            </div>";
 

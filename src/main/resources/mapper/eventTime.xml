@@ -7,6 +7,16 @@
 			(#{item.event_no}, #{item.day}, #{item.open_time}, #{item.close_time})
 		</foreach>
 	</insert>
+	<update id="updateEventTimeList" parameterType="List">
+		<foreach collection="list" item="item" separator=";">
+			UPDATE event_time
+			<set>
+				open_time = #{item.open_time}, close_time = #{item.close_time}
+
+			</set>
+			WHERE event_no = #{item.event_no} AND day = #{item.day}
+		</foreach>
+	</update>
 	<select id="getEventTimeByEventNoAndDay" resultType="com.multi.hereevent.dto.EventTimeDTO">
 		select *
 		from event_time

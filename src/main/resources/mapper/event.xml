@@ -284,6 +284,11 @@
         select e.*, i.event_interest_no
         from e left join i on e.event_no = i.event_no
     </select>
+    <select id="getEventDetailWithName" resultType="event">
+        select *
+        from event
+        where name = #{name}
+    </select>
     <!--  event photo 가져오기  -->
     <select id="getEventImage" resultType="event">
         SELECT event_no, image_path

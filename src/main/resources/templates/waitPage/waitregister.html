@@ -1,5 +1,7 @@
 <!DOCTYPE html >
-<html lang="UTF-8" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mainLayout}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,31 +11,46 @@
 
 </head>
 <body>
-<div class="signup-container">
-    <h2>대기 등록</h2>
-    <form id="waitForm"  action="/hereevent/wait/insert" method="post">
+<main layout:fragment="main" class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="/hereevent/main">Home</a></li>
+                    <li class="current">대기 등록</li>
+                </ol>
+            </nav>
+            <h1>대기 등록</h1>
+        </div>
+    </div>
+    <!-- End Page Title -->
+    <div class="signup-container">
+        <h2>대기 등록</h2>
+        <form id="waitForm"  action="/hereevent/wait/insert" method="post">
 
-        <div class="post-img">
-            <div th:each="imgPath : ${event.img_path}">
-                <img th:if="${imgPath != null}" th:src="|@{/download/event/}${imgPath}|" th:alt="${imgPath}"/>
-                <img th:unless="${imgPath != null}" th:src="@{/images/default_img.png}" alt="default_img"/>
+            <div class="post-img">
+                <div th:each="imgPath : ${event.img_path}">
+                    <img th:if="${imgPath != null}" th:src="|@{/download/event/}${imgPath}|" th:alt="${imgPath}"/>
+                    <img th:unless="${imgPath != null}" th:src="@{/images/default_img.png}" alt="default_img"/>
+                </div>
             </div>
-        </div>
-        <h2 class="title"><span th:text="${event.name}"></span></h2>
-        <input type="hidden" id="event_no" name="event_no" th:value="${event.event_no}">
-        <input type="tel" id="wait_tel" name="wait_tel" placeholder="전화번호를 입력하세요  ex)010-1234-5678">
-        <input type="email" id="email" name="email" placeholder="이메일을 입력하세요">
-        <div class="extra-options">
-            <label>
-                <input type="checkbox" name="agree"> 이용약관에 동의합니다.
-            </label>
-        </div>
-        <h3 id="warning">※다른 팝업스토어를 대기 등록을 한 경우 대기 불가※</h3>
+            <h2 class="title"><span th:text="${event.name}"></span></h2>
+            <input type="hidden" id="event_no" name="event_no" th:value="${event.event_no}">
+            <input type="tel" id="wait_tel" name="wait_tel" placeholder="전화번호를 입력하세요  ex)010-1234-5678">
+            <input type="email" id="email" name="email" placeholder="이메일을 입력하세요">
+            <div class="extra-options">
+                <label>
+                    <input type="checkbox" name="agree"> 이용약관에 동의합니다.
+                </label>
+            </div>
+            <h3 id="warning">※다른 팝업스토어를 대기 등록을 한 경우 대기 불가※</h3>
 
-        <button type="submit">확인</button>
-    </form>
+            <button type="submit">확인</button>
+        </form>
 
-</div>
+    </div>
+</main>
 </body>
 <script>
     document.getElementById("waitForm").addEventListener("submit", function(event) {

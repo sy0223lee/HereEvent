@@ -1,5 +1,6 @@
 /*날짜별 시작/종료 이벤트 수*/
-function drawStartEndEvent(eventList) {
+function drawStartEndEvent() {
+    let eventList = $('input[name=eventList]').val();
     let data = new google.visualization.DataTable();
     data.addColumn('string', '날짜');
     data.addColumn('number', '시작');
@@ -22,7 +23,8 @@ function drawStartEndEvent(eventList) {
 }
 
 /*이벤트 카테고리 비율*/
-function drawCategoryRate(categoryList) {
+function drawCategoryRate() {
+    let categoryList = $('input[name=categoryList]').val();
     let data = new google.visualization.DataTable();
     data.addColumn('string', '카테고리');
     data.addColumn('number', '개수');
@@ -44,7 +46,8 @@ function drawCategoryRate(categoryList) {
 }
 
 /*날짜별 신규 회원 가입 수*/
-function drawNewMember(memberList) {
+function drawNewMember() {
+    let memberList = $('input[name=memberList]').val();
     let data = new google.visualization.DataTable();
     data.addColumn('string', '날짜');
     data.addColumn('number', '회원');
@@ -67,7 +70,9 @@ function drawNewMember(memberList) {
 }
 
 /*예약/대기 상위 이벤트*/
-function drawTopEvent(reserveList, waitList) {
+function drawTopEvent() {
+    let reserveList = $('input[name=reserveList]').val();
+    let waitList = $('input[name=waitList]').val();
     if(reserveList.length < 5){
         for(let i=reserveList.length; i<5; i++){
             reserveList[i] = {cnt: 0, name: null};

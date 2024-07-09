@@ -15,7 +15,7 @@
 
         <div class="container">
 
-            <h4 class="comments-count">[[${reviewList.size()}]] Reviews</h4>
+            <h5 class="comments-count">후기 [[${reviewList.size()}]]개</h5>
 
             <div th:id="|comment-${i.count}|" class="comment" th:each="review, i : ${reviewList}">
                 <div class="d-flex">
@@ -106,8 +106,6 @@
 
             <div class="reply-form" th:if="${session.member != null}">
 
-                <h4>Leave a Review</h4>
-                <p>Required fields are marked * </p>
                 <form action="/hereevent/review/insert" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="event_no" th:value="${event.event_no}">
                     <input type="hidden" name="member_no" th:value="${session.member.member_no}">
@@ -176,12 +174,12 @@
 
                     <div class="row">
                         <div class="col form-group">
-                            <textarea name="content" class="form-control" placeholder="Your Review*"></textarea>
+                            <textarea name="content" class="form-control" placeholder="후기를 입력해주세요"></textarea>
                         </div>
                     </div>
 
                     <div class="text-center">
-                        <button type="submit" class="btn-primary">Post Review</button>
+                        <button type="submit" class="btn btn-primary">후기 등록</button>
                     </div>
 
                 </form>

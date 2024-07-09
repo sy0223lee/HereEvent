@@ -73,7 +73,20 @@
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <body>
 <main layout:fragment="main" class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="/hereevent/main">Home</a></li>
+                    <li class="current">이벤트</li>
+                </ol>
+            </nav>
+            <h1>이벤트 상세정보</h1>
+        </div>
+    </div><!-- End Page Title -->
 <div class="login-container">
+
     <h2>로그인</h2>
     <form action="/hereevent/login" method="post" onsubmit="handleLogin(event)">
         <label for="email">이메일</label>
@@ -90,7 +103,7 @@
         <button type="submit" class="login">로그인</button>
 
     </form>
-        <button class="login"
+        <button class="wait"
                 th:onclick="|location.href='@{/wait/login}'|">
             본인 대기 확인</button>
     <div class="links">
