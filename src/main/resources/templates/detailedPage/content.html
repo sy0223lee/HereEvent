@@ -25,7 +25,7 @@
                 </li>
             </ul>
         </div><br>
-        <p><strong>설명</strong></p><p> <span style="white-space:pre;" th:utext="${#strings.replace(event.info, '\n', '<br/>')}"></span></p>
+        <p><strong>설명</strong></p><p> <span style="white-space:pre-wrap;" th:utext="${#strings.replace(event.info, '\n', '<br/>')}"></span></p>
     </div>
 </div>
 </body>

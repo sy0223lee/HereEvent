@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="UTF-8" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+       layout:decorate="~{layout/mainLayout}">
 
 <head>
     <meta charset="UTF-8">
@@ -12,20 +14,30 @@
 </head>
 
 <body>
-    <main class="main">
-    <div class="login-container">
-        <h2>대기 신청 확인</h2>
-        <form action="/hereevent/wait/login" method="post">
-            <label for="wait_tel">전화번호</label>
-            <input type="text" id="wait_tel" name="wait_tel" placeholder="전화번호를 입력하세요 (ex)010-0000-0000)">
+    <main layout:fragment="main" class="main">
+        <!-- Page Title -->
+        <div class="page-title">
+            <div class="container">
+                <nav class="breadcrumbs">
+                    <ol>
+                        <li><a href="/hereevent/login">로그인페이지</a></li>
+                        <li class="current">본인 대기 확인</li>
+                    </ol>
+                </nav>
+                <h1>본인 대기 확인</h1>
+            </div>
+        </div>
+        <!-- End Page Title -->
 
+        <div class="login-container">
+            <h2>대기 신청 확인</h2>
+            <form action="/hereevent/wait/login" method="post">
+                <label for="wait_tel">전화번호</label>
+                <input type="text" id="wait_tel" name="wait_tel" placeholder="전화번호를 입력하세요 (ex)010-0000-0000)">
 
-
-            <button type="submit" class="login">로그인</button>
-        </form>
-
-
-    </div>
+                <button type="submit" class="login">로그인</button>
+            </form>
+        </div>
     </main>
     <script>
         window.onload = function() {

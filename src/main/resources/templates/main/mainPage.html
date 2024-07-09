@@ -50,7 +50,7 @@
                     <div class="overlay" th:onclick="|location.href='@{/event/}${banner.event_no}'|">
                         <h5 th:text="${banner.name}" class="overlay-text name"></h5>
                         <p class="overlay-text date"><span th:text="${banner.start_date}"/> ~ <span th:text="${banner.end_date}"/></p>
-                        <div class="overlay-text star">
+                        <div class="overlay-text star" th:if="${banner.avg_star != null && banner.avg_star > 0}">
                             <div class="justify-content-center rating readonly">
                                 <label class="rating-label rating-label-half">
                                     <input type="radio" class="rating-input"
@@ -220,7 +220,7 @@
                         <div class="overlay" th:onclick="|location.href='@{/event/}${star.event_no}'|">
                                 <h5 th:text="${star.name}" class="overlay-text name"></h5>
                                 <p class="overlay-text date"><span th:text="${star.start_date}"/> ~ <span th:text="${star.end_date}"/></p>
-                                <div class="overlay-text star">
+                                <div class="overlay-text star" th:if="${star.avg_star != null && star.avg_star > 0}">
                                     <div class="justify-content-center rating readonly">
                                         <label class="rating-label rating-label-half">
                                             <input type="radio" class="rating-input"
@@ -336,7 +336,7 @@
                         <div class="overlay" th:onclick="|location.href='@{/event/}${popular.event_no}'|">
                             <h5 th:text="${popular.name}" class="overlay-text name"></h5>
                             <p class="overlay-text date"><span th:text="${popular.start_date}"/> ~ <span th:text="${popular.end_date}"/></p>
-                            <div class="overlay-text star">
+                            <div class="overlay-text star" th:if="${popular.avg_star != null && popular.avg_star > 0}">
                                 <div class="justify-content-center rating readonly">
                                     <label class="rating-label rating-label-half">
                                         <input type="radio" class="rating-input"
@@ -451,7 +451,7 @@
                         <div class="overlay" th:onclick="|location.href='@{/event/}${open.event_no}'|">
                             <h5 th:text="${open.name}" class="overlay-text name"></h5>
                             <p class="overlay-text date"><span th:text="${open.start_date}"/> ~ <span th:text="${open.end_date}"/></p>
-                            <div class="overlay-text star">
+                            <div class="overlay-text star" th:if="${open.avg_star != null && open.avg_star > 0}">
                                 <div class="justify-content-center rating readonly">
                                     <label class="rating-label rating-label-half">
                                         <input type="radio" class="rating-input"
@@ -567,7 +567,7 @@
                         <div class="overlay" th:onclick="|location.href='@{/event/}${all.event_no}'|">
                             <h5 th:text="${all.name}" class="overlay-text name"></h5>
                             <p class="overlay-text date"><span th:text="${all.start_date}"/> ~ <span th:text="${all.end_date}"/></p>
-                            <div class="overlay-text star">
+                            <div class="overlay-text star" th:if="${all.avg_star != null && all.avg_star > 0}">
                                 <div class="justify-content-center rating readonly">
                                     <label class="rating-label rating-label-half">
                                         <input type="radio" class="rating-input"
