@@ -30,7 +30,8 @@ public class CrawlingService {
     @Scheduled(cron = "0 0 7 * * *") // 매일 오전 7시마다 실행
     public void insertEventInfo() {
         // WebDriver 경로 설정
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/driver/chromedriver.exe");
+//        System.setProperty("webdriver.chrome.driver", "src/main/resources/driver/chromedriver_windows.exe"); // 윈도우 용
+        System.setProperty("webdriver.chrome.driver", "src/main/resources/driver/chromedriver_linux"); // 리눅스 용
 
         // WebDriver option 설정
         ChromeOptions options = new ChromeOptions();

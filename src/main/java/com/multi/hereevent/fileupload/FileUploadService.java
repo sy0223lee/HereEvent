@@ -20,6 +20,7 @@ public class FileUploadService {
     // 파일 업로드 경로
     // Naver Cloud 서버 이용하는 경우 해당 서버에 저장될 수 있도록 변경하기 !!
     @Value("/root/upload/")
+//    @Value("C:/hereevent_upload/")
     private String filePath;
 
     // 파일 경로

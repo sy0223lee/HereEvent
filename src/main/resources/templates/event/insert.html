@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>이벤트 등록</title>
+    <title>HereEvent-Admin</title>
     <link href="/hereevent/common/css/admin.css" rel="stylesheet">
     <link href="/hereevent/common/css/insertEvent.css" rel="stylesheet">
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -58,7 +58,7 @@
     <label class="form-label" for="end_date">*종료 날짜:</label>
     <input class="form-input" type="date" id="end_date" name="end_date" required onchange="updateDateRange()">
     <p id="dateRange" class="date-range"></p>
-    <label class="form-label">*행사 시간:</label>
+    <label class="form-label">*이벤트 시간:</label>
     <label class="form-label">월요일:</label>
     <input type="hidden" th:value="월" name="event_time">
     <select id="mon_start" name="event_time">
