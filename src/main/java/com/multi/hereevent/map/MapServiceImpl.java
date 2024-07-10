@@ -17,8 +17,12 @@ public class MapServiceImpl implements MapService{
     }
 
     @Override
-    public String getApiResponse() throws IOException {
-        return dao.fetchData();
+    public String searchPath(double sx, double sy, double ex, double ey) throws IOException {
+        return dao.fetchPathData(sx, sy, ex, ey);
     }
-}
+
+    @Override
+    public String loadLane(String mapObj) throws IOException {
+        return dao.fetchLaneData(mapObj);
+    }}
 

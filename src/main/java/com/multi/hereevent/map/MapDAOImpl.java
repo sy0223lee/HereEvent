@@ -29,11 +29,23 @@ public class MapDAOImpl implements MapDAO{
         params.put("type", type);
         return sqlSession.selectList("com.multi.hereevent.map.selectEventWithMap", params);
     }
-    @Override
-    public String fetchData() throws IOException {
-        String apiKey = "EAjsfQjX+4g3aWV+jGpR3ITd/hhxlaqly0wDShrjoFE";
-        String urlInfo = "https://api.odsay.com/v1/api/searchPubTransPathT?SX=126.9027279&SY=37.5349277&EX=126.9145430&EY=37.5499421&apiKey=" + URLEncoder.encode(apiKey, "UTF-8");
+    private final String apiKey = "EAjsfQjX+4g3aWV+jGpR3ITd/hhxlaqly0wDShrjoFE";
 
+    @Override
+    public String fetchPathData(double sx, double sy, double ex, double ey) throws IOException {
+        String urlInfo = "https://api.odsay.com/v1/api/searchPubTransPathT?SX=" + sx + "&SY=" + sy + "&EX=" + ex + "&EY=" + ey + "&apiKey=" + URLEncoder.encode(apiKey, "UTF-8");
+
+        return fetchData(urlInfo);
+    }
+
+    @Override
+    public String fetchLaneData(String mapObj) throws IOException {
+        String urlInfo = "https://api.odsay.com/v1/api/loadLane?mapObject=0:0@" + mapObj + "&apiKey=" + URLEncoder.encode(apiKey, "UTF-8");
+
+        return fetchData(urlInfo);
+    }
+
+    private String fetchData(String urlInfo) throws IOException {
         URL url = new URL(urlInfo);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -50,5 +62,4 @@ public class MapDAOImpl implements MapDAO{
 
         return sb.toString();
     }
-
 }
