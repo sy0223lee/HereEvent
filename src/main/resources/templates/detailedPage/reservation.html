@@ -8,8 +8,8 @@
 <body>
 <div th:fragment="reservation">
     <h2 class="title">예약</h2>
-    <div>※ 오늘로부터 3일 이후의 일정에 대해서만 사전 예약이 가능합니다.</div>
-    <div class="reservation">
+    <div class="mb-2">※ 오늘로부터 3일 이후의 일정에 대해서만 사전 예약이 가능합니다.</div>
+    <div class="reservation" th:if="event.end_date >= #dates.createToday()">
         <input type="hidden" name="event_no" th:value="${event.event_no}">
         <input type="hidden" name="member_no" th:value="${session.member != null ? session.member.member_no : ''}">
         <input type="date" id="reserve_date" name="reserve_date" placeholder="예약날짜를 입력하세요">
