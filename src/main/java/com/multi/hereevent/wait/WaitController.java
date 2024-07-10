@@ -5,6 +5,7 @@ import com.multi.hereevent.dto.WaitDTO;
 import com.multi.hereevent.event.EventService;
 import com.multi.hereevent.mail.MailService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class WaitController {
@@ -61,7 +63,7 @@ public class WaitController {
     public String mywait(@PathVariable("wait_no") int wait_no,@PathVariable("event_no") int event_no, Model model) {
         WaitDTO eventDetail = waitService.eventDetail(wait_no);
         model.addAttribute("event", eventDetail);
-//        System.out.println(eventDetail);
+//        log.info(String.valueOf(eventDetail));
         int position = waitService.getWaitingPosition(event_no, wait_no);
         int waitingCount = waitService.getWaitingCount(event_no);
         String waitTime = waitService.getEntranceWaitTime(event_no, wait_no);
@@ -87,14 +89,14 @@ public class WaitController {
         model.addAttribute("event_no", eventDetail.getEvent_no());
 
         waitService.updateState(eventDetail);
-        System.out.println(eventDetail);
+//        log.info(String.valueOf(eventDetail));
 
         return "redirect:/main?status=" + statusMessage;
     }
 
     @GetMapping("/wait/delete")
     public String delete(@RequestParam("wait_no") int wait_no) {
-        System.out.println(wait_no);
+        log.info(String.valueOf(wait_no));
         waitService.waitDelete(wait_no);
         return "redirect:/main";
     }

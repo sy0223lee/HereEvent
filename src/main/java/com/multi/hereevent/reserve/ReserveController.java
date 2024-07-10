@@ -4,6 +4,7 @@ import com.multi.hereevent.dto.MemberDTO;
 import com.multi.hereevent.dto.ReserveDTO;
 import com.multi.hereevent.mail.MailService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @SessionAttributes("member")
@@ -29,7 +31,7 @@ public class ReserveController {
             json.put("message", "로그인을 해주세요.");
             return json.toJSONString();
         }
-        System.out.println("Request Data: " + data);
+        log.info("Request Data: " + data);
 
         int event_no = Integer.parseInt(data.get("eventNo"));
         int member_no = member.getMember_no();
@@ -37,7 +39,7 @@ public class ReserveController {
         String reserve_date = data.get("reserveDate");
         String reserve_time = data.get("reserveTime");
 
-//        System.out.println("[reserve] " + event_no + ", " + date + ", " + time);
+        log.info("[reserve] " + event_no + ", " + reserve_date + ", " + reserve_time);
         model.addAttribute("memberNo", member_no);
         model.addAttribute("eventNo", event_no);
         model.addAttribute("reserveDate", reserve_date);
@@ -61,9 +63,9 @@ public class ReserveController {
                                     @RequestParam("reserve_time") String reserve_time,
                                     Model model) {
         /*
-        System.out.println("event_no: " + event_no);
-        System.out.println("reserve_date: " + reserve_date);
-        System.out.println("reserve_time: " + reserve_time);*/
+        log.info("event_no: " + event_no);
+        log.info("reserve_date: " + reserve_date);
+        log.info("reserve_time: " + reserve_time);*/
 
         MemberDTO member = (MemberDTO) model.getAttribute("member");
         if (member != null) {

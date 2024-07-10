@@ -11,6 +11,7 @@ import com.multi.hereevent.review.ReviewService;
 import com.multi.hereevent.wait.WaitService;
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @SessionAttributes("member")
@@ -115,9 +117,9 @@ public class EventController {
 
         List<EventTimeDTO> eventTime = eventTimeService.getEventTime(event_no);
         List<CategoryDTO> category = categoryService.getListCategory();
-//         System.out.println("시작일===>"+eventDetails.getStart_date());
+        log.info("시작일===>"+eventDetails.getStart_date());
         List<ReviewDTO> reviewList = reviewService.selectReviewByEventNo(event_no);
-//         System.out.println(eventTime);
+        log.info(eventTime.toString());
         List<String> closedDays = eventTimeService.getHolidayDays(event_no);
         int eventInterest = eventService.getEventInterest(event_no);
         model.addAttribute("event", eventDetails);
@@ -140,30 +142,12 @@ public class EventController {
         model.addAttribute("event", eventDetails);
         return "detailedPage/waitDetailedPage";
     }
-
-
-
-//    @PostMapping("/event/reservation")
-//    public String reservation(@PathVariable int event_no, ReserveDTO reserve,Model model){
-//        if(eventService.checkReserveOrder(reserve.getEvent_no(),
-//                reserve.getReserve_date(),reserve.getReserve_time())==null){
-//            reserve.setReserve_order(1);
-//        }else{
-//            int order = reserve.getReserve_order();
-//            order++;
-//            reserve.setReserve_order(order);
-//        }
-//        MemberDTO member = (MemberDTO) model.getAttribute("member");
-//        reserve.setReserve_no(member.getMember_no());
-//        eventService.insertReserve(reserve);
-//        return "redirect:/main";
-//    }
-
+    
     @PostMapping("/reservation/times")
     public ResponseEntity<Map<String, List<String>>> getEventTimes(@RequestBody Map<String, Object> request) {
         int event_no = (Integer) request.get("eventNo");
         String day = (String) request.get("day");
-        System.out.println(event_no+":"+day);
+        log.info(event_no+":"+day);
         // 행사 번호와 요일에 따른 운영 시간을 가져오는 로직 (예시)
         List<String> times = eventTimeService.getOperTime(event_no, day);
         Map<String, List<String>> response = new HashMap<>();

@@ -7,6 +7,7 @@ import com.multi.hereevent.fileupload.FileUploadService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @SessionAttributes("member")
@@ -42,15 +44,15 @@ public class MemberController {
             // 쿠키 생성: 'savedEmail'이라는 이름으로 이메일 저장
             if(remember){
                 Cookie cookie = new Cookie("savedEmail", member.getEmail());
-                System.out.println("cookie===>"+cookie);
+                log.info("cookie===>{}", cookie);
                 cookie.setMaxAge(7 * 24 * 60 * 60); // 쿠키 유효 기간을 7일로 설정
                 cookie.setPath("/"); // 쿠키의 유효 경로 설정
                 response.addCookie(cookie);
             }
             return "redirect:/main";
         }else{
-            System.out.println("로그인 실패");
-            model.addAttribute("msg","로그인 실패");
+            log.info("로그인 실패");
+            model.addAttribute("msg","사용자 아이디 또는 비밀번호가 일치하지 않습니다.");
             return "login/login";
         }
     }
@@ -78,7 +80,7 @@ public class MemberController {
         try {
             storeFilename = fileService.uploadProfileImg(profileImg);
             member.setImg_path(storeFilename);
-            System.out.println(member);
+            log.info(String.valueOf(member));
             memberService.insertMember(member);
 
             MemberDTO findmem = memberService.findMemberByEmail(member.getEmail());
@@ -203,7 +205,7 @@ public class MemberController {
     // 프로필 사진 수정
     @PostMapping("/mypage/edit-profile-img")
     public String editProfileImg(MemberDTO member, Model model) {
-        System.out.println("[editProfileImg] member = " + member);
+//        log.info("[editProfileImg] member = " + member);
         MultipartFile profileImg = member.getProfile_img();
         String storeFilename = null;
         try {

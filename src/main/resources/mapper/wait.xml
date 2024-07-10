@@ -9,7 +9,7 @@
     <select id="getWaitInfo" parameterType="wait" resultType="wait">
         select *
         from wait
-        where wait_tel = #{wait_tel} and state ='wait'
+        where wait_tel = #{wait_tel} and state in ("wait", "able")
     </select>
 
     <!-- waitDTO 가져오기 -->

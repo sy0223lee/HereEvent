@@ -149,21 +149,21 @@
                 <th:block th:switch="${event.state}">
                     <div th:case="reserve" class="event-btn d-flex justify-content-center" id="reserve" th:data-my-value="${event.event_no}">
                         <button type="button" class="col-3 btn btn-primary cancel-btn">예약 취소</button>
-                        <button type="button" class="col-3 btn btn-secondary visit-btn">입장</button>
-                        <script th:inline="javascript">
-                            let date = new Date();
-                            let year = date.getFullYear();
-                            let month = date.getMonth() + 1;
-                            month = month >= 10 ? month : '0' + month;
-                            let day = date.getDate();
-                            day = day >= 10 ? day : '0' + day;
-                            let today = year + '-' + month + '-' + day;
-                            let enterDate = [[${event.enter_date}]];
+                        <button type="button" class="col-3 btn btn-secondary visit-btn" th:if="${event.enter_date == #dates.createToday()}">입장</button>
+<!--                        <script th:inline="javascript">-->
+<!--                            let date = new Date();-->
+<!--                            let year = date.getFullYear();-->
+<!--                            let month = date.getMonth() + 1;-->
+<!--                            month = month >= 10 ? month : '0' + month;-->
+<!--                            let day = date.getDate();-->
+<!--                            day = day >= 10 ? day : '0' + day;-->
+<!--                            let today = year + '-' + month + '-' + day;-->
+<!--                            let enterDate = [[${event.enter_date}]];-->
 
-                            if(today != enterDate){
-                                $('.visit-btn').hide();
-                            }
-                        </script>
+<!--                            if(today != enterDate){-->
+<!--                                $('.visit-btn').hide();-->
+<!--                            }-->
+<!--                        </script>-->
                     </div>
                     <div th:case="wait" class="event-btn d-flex justify-content-center">
                         <button type="button" th:onclick="|location.href='@{/wait/mywait/{event_no}/{wait_no}(event_no=${event.event_no},wait_no=${event.index_no})}'|"
