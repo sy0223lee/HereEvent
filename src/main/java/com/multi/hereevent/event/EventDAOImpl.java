@@ -193,4 +193,10 @@ public class EventDAOImpl implements EventDAO{
     public List<EventDTO> selectEventWithPage(Map<String, Object> params) {
         return sqlSession.selectList("com.multi.hereevent.event.selectEventWithPage", params);
     }
+
+
+    @Override
+    public int getWaitLimit(int event_no) {
+        return sqlSession.selectOne("com.multi.hereevent.event.getWaitLimit", event_no);
+    }
 }

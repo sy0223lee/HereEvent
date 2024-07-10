@@ -27,18 +27,22 @@ public class WaitController {
         model.addAttribute("event", eventDetails);
         return "waitPage/waitregister";
     }
-    @PostMapping("/wait/insert")
-    public String register(WaitDTO wait, RedirectAttributes redirectAttributes, @RequestParam("wait_tel") String waitTel){
-        if(!waitService.canInsert(waitTel)){
-            redirectAttributes.addAttribute("error", "이미 다른 이벤트에 대기 중 입니다.");
 
-        }else {
-            waitService.waitInsert(wait);
-            // 대기 등록 성공 시 메일 전송
-            mailService.sendWaitSuccessEmail(wait);
+    @PostMapping("/wait/insert")
+    public String register(WaitDTO wait, RedirectAttributes redirectAttributes, @RequestParam("wait_tel") String waitTel) {
+        if (!waitService.canInsert(waitTel)) {
+            redirectAttributes.addAttribute("error", "이미 다른 이벤트에 대기 중 입니다.");
+        } else {
+            boolean inserted = waitService.registerWait(wait);
+            if (inserted) {
+                // 대기 등록 성공 시 메일 전송
+                mailService.sendWaitSuccessEmail(wait);
+                redirectAttributes.addAttribute("success", "true");
+            } else {
+                redirectAttributes.addAttribute("error", "일일 대기 입장 인원이 초과되었습니다.");
+            }
         }
         redirectAttributes.addAttribute("event_no", wait.getEvent_no());
-        redirectAttributes.addAttribute("success", "true");
         return "redirect:/wait/register/event/{event_no}";
     }
 

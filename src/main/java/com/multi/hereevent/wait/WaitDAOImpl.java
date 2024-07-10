@@ -17,6 +17,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WaitDAOImpl implements WaitDAO {
     private final SqlSession sqlSession;
+    @Override
+    public int checkWaitLimit(int event_no) {
+        return sqlSession.selectOne("com.multi.hereevent.wait.checkWaitLimit", event_no);
+    }
+
 
     @Override
     public WaitDTO getWaitInfo(String wait_tel) {
