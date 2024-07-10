@@ -2,14 +2,13 @@ package com.multi.hereevent.event.time;
 
 import com.multi.hereevent.dto.EventTimeDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EventTimeServiceImpl implements EventTimeService{
@@ -36,14 +35,14 @@ public class EventTimeServiceImpl implements EventTimeService{
         String[] openTime = eventTime.getOpen_time().split(":");
         String[] closeTime = eventTime.getClose_time().split(":");
 
-        System.out.println(openTime[0]);
+        log.info(openTime[0]);
         List<String> timeList = new ArrayList<>();
         int openTimeInt = Integer.parseInt(openTime[0]);
         int closeTimeInt = Integer.parseInt(closeTime[0]);
         for(int i=openTimeInt;i<=closeTimeInt;i++){
             timeList.add(String.valueOf(i)+":"+openTime[1]+":"+openTime[2]);
         }
-        System.out.println("timeList===>"+timeList);
+//        log.info("timeList===>{}", timeList);
         return timeList;
     }
 

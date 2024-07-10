@@ -8,6 +8,7 @@ import com.multi.hereevent.fileupload.FileUploadService;
 import com.multi.hereevent.member.MemberService;
 import com.multi.hereevent.review.ReviewService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @SessionAttributes("member")
@@ -181,11 +183,11 @@ public class AdminController {
             event.setImg_path(storeFilename);
             //DB에 삽입
             eventService.insertEvent(event);
-            System.out.println("+++++"+event);
+//            log.info("+++++"+event);
             EventDTO regievent = eventService.getEventDetail(event.getName());
-            System.out.println("register event::"+regievent);
+//            log.info("register event::"+regievent);
             List<EventTimeDTO> eventTimeList = parseEventTimes(regievent.getEvent_no(),event.getEvent_time());
-            System.out.println("timeList::>>"+eventTimeList);
+//            log.info("timeList::>>"+eventTimeList);
             eventTimeService.insertEventTimeList(eventTimeList);
             return "redirect:/admin/event";
         } catch (IOException e) {
@@ -216,7 +218,7 @@ public class AdminController {
         EventDTO event = eventService.getEventDetails(event_no);
         model.addAttribute("event",event);
         List<EventTimeDTO> eventTimeList = eventTimeService.getEventTime(event_no);
-        System.out.println(eventTimeList);
+//        log.info(eventTimeList.toString());
         model.addAttribute("eventTimeList",eventTimeList);
         // 시간을 나타내는 문자열 리스트 생성
         List<String> hours = new ArrayList<>();
@@ -228,9 +230,9 @@ public class AdminController {
     }
     @PostMapping("/admin/event/update")
     public String updateEvent(EventDTO event) {
-        System.out.println("event::>>"+event);
+//        log.info("event::>>"+event);
         List<EventTimeDTO> eventTimeList = parseEventTimes(event.getEvent_no(),event.getEvent_time());
-        System.out.println("eventTimeList::>>"+eventTimeList);
+//        log.info("eventTimeList::>>"+eventTimeList);
         eventTimeService.updateEventTImeList(eventTimeList);
         MultipartFile eventImg = event.getEvent_img();
         String storeFilename = null;

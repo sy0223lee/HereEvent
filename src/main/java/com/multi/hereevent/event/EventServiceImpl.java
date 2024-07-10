@@ -3,6 +3,7 @@ package com.multi.hereevent.event;
 import com.multi.hereevent.category.CategoryDAO;
 import com.multi.hereevent.dto.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -11,10 +12,10 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
@@ -54,15 +55,12 @@ public class EventServiceImpl implements EventService {
     public List<EventDTO> getListByStarRank() {
         return eventDAO.getListStarRank();
     }
-//    @Override
-//    public List<EventDTO> selectEventByCategoryNo(int category_no) {
-//        return eventDAO.selectEventByCategoryNo(category_no);
-//    }
+
     @Override
     public List<FourEventByCategoryDTO> selectFourEventByCategory() {
         // list로 카테고리번호를 가져옴
         List<CategoryDTO> categoryList = categoryDAO.getListCategory();
-        //System.out.println("catelist=====>"+categoryList);
+//        log.info("catelist=====>{}", categoryList);
 
         List<FourEventByCategoryDTO> fourList = new ArrayList<>();
 
@@ -72,7 +70,7 @@ public class EventServiceImpl implements EventService {
             List<EventDTO> eventlist = new ArrayList<>();
             // sql문으로 가져온 fourEventCategoryDTO를 저장
             eventlist = eventDAO.selectFourEventByCategory(category.getCategory_no());
-            //System.out.println("eventlist=====>"+eventlist.size());
+//            log.info("eventlist=====>{}", eventlist.size());
             // category_no로 event 4개 조회해서 fourEventCategoryDTO에 저장
             if(!eventlist.isEmpty()){
                 fourEventDTO.setCategory_no(category.getCategory_no());
@@ -81,7 +79,7 @@ public class EventServiceImpl implements EventService {
                 fourList.add(fourEventDTO);
             }
 
-            //System.out.println("service::fourList=====>"+fourList);
+//            log.info("service::fourList=====>{}", fourList);
         }
 
         return fourList;
@@ -198,9 +196,9 @@ public class EventServiceImpl implements EventService {
 
         if (page.getSort().isSorted()) {
             String sort = page.getSort().iterator().next().getProperty();
-//            System.out.println("sort==>"+sort);
+            log.info("sort==>{}", sort);
             String direction = page.getSort().iterator().next().getDirection().name();
-//            System.out.println("direction===>"+direction);
+            log.info("direction===>{}", direction);
             params.put("sort", sort);
             params.put("direction", direction);
         }

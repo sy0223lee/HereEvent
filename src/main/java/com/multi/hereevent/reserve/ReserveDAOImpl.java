@@ -35,4 +35,9 @@ public class ReserveDAOImpl implements ReserveDAO{
     public void updateReservation(Map<String, Object> params) {
         sqlSession.update("com.multi.hereevent.reserve.updateReservation", params);
     }
+
+    @Override
+    public ReserveDTO selectReserve(Map<String, Object> params) {
+        return sqlSession.selectOne("com.multi.hereevent.reserve.selectReserve", params);
+    }
 }

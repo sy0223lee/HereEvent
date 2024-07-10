@@ -1,22 +1,25 @@
 package com.multi.hereevent.reserve;
 
 import com.multi.hereevent.dto.MemberDTO;
+import com.multi.hereevent.dto.ReserveDTO;
+import com.multi.hereevent.mail.MailService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Time;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @SessionAttributes("member")
 public class ReserveController {
     private final ReserveService reserveService;
+    private final MailService mailService;
     // 예약기능
     @PostMapping("/event/reservation")
     @ResponseBody
@@ -28,7 +31,7 @@ public class ReserveController {
             json.put("message", "로그인을 해주세요.");
             return json.toJSONString();
         }
-        System.out.println("Request Data: " + data);
+        log.info("Request Data: " + data);
 
         int event_no = Integer.parseInt(data.get("eventNo"));
         int member_no = member.getMember_no();
@@ -36,12 +39,19 @@ public class ReserveController {
         String reserve_date = data.get("reserveDate");
         String reserve_time = data.get("reserveTime");
 
-//        System.out.println("[reserve] " + event_no + ", " + date + ", " + time);
+        log.info("[reserve] " + event_no + ", " + reserve_date + ", " + reserve_time);
         model.addAttribute("memberNo", member_no);
         model.addAttribute("eventNo", event_no);
         model.addAttribute("reserveDate", reserve_date);
         model.addAttribute("reserveTime", reserve_time);
         String message = reserveService.makeReservation(event_no, member_no, reserve_date, reserve_time);
+
+        // 예약 성공 시 이메일 전송
+        if(message.equals("예약되었습니다.")){
+            ReserveDTO reserve = reserveService.selectReserve(event_no, member_no, reserve_date, reserve_time);
+            mailService.sendReserveSuccessEmail(reserve);
+        }
+
         JSONObject json = new JSONObject();
         json.put("message", message);
 
@@ -53,9 +63,9 @@ public class ReserveController {
                                     @RequestParam("reserve_time") String reserve_time,
                                     Model model) {
         /*
-        System.out.println("event_no: " + event_no);
-        System.out.println("reserve_date: " + reserve_date);
-        System.out.println("reserve_time: " + reserve_time);*/
+        log.info("event_no: " + event_no);
+        log.info("reserve_date: " + reserve_date);
+        log.info("reserve_time: " + reserve_time);*/
 
         MemberDTO member = (MemberDTO) model.getAttribute("member");
         if (member != null) {

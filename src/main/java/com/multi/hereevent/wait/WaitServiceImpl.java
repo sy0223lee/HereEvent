@@ -91,7 +91,7 @@ public class WaitServiceImpl implements WaitService {
     @Override
     public String getEntranceWaitTime(int event_no, int wait_no) {
         List<WaitDTO> waitingList = waitDAO.getWaitingListByEventNo(event_no);
-        waitingList.removeIf(wait -> !"wait".equals(wait.getState()));
+        waitingList.removeIf(wait -> (!wait.getState().equals("wait") && !wait.getState().equals("able")));
         waitingList.sort((w1, w2) -> Integer.compare(w1.getWait_no(), w2.getWait_no()));
 
         int position = -1;

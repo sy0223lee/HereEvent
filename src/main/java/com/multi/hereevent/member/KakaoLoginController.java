@@ -2,6 +2,7 @@ package com.multi.hereevent.member;
 
 import com.multi.hereevent.dto.MemberDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -18,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.client.RestTemplate;
 
-
-
-
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @SessionAttributes("member")
@@ -34,15 +33,14 @@ public class KakaoLoginController {
         // 네이버 로그인 인증 요청문 생성
         String url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+
                 "798073a2ccc2f0cb985ac0f4f178f563&redirect_uri=http://223.130.158.5/hereevent/login/kakao/callback";
-        //https://kauth.kakao.com/oauth/authorize
 
-        // System.out.println("===== 카카오 로그인 인증 요청 =====");
+        log.info("===== 카카오 로그인 인증 요청 =====");
         return "redirect:" + url;
     }
 
     @GetMapping("/login/kakao/callback")
     public String kakaoLogin(@RequestParam("code") String code, Model model) throws ParseException {
-        // System.out.println("===== 카카오 로그인 접근 토큰 요청 =====");
+        log.info("===== 카카오 로그인 접근 토큰 요청 =====");
         String url = "https://kauth.kakao.com/oauth/token";
         RestTemplate restTemplate = new RestTemplate();
 
@@ -66,7 +64,7 @@ public class KakaoLoginController {
         JSONParser parser = new JSONParser();
         JSONObject object = (JSONObject) parser.parse(responseBody);
         String accessToken = (String) object.get("access_token");
-        // System.out.println("===카카오 토큰 발급==="+accessToken);
+        log.info("===카카오 토큰 발급==="+accessToken);
         getUserInfo(accessToken, model);
 
         return "redirect:/main";
@@ -89,21 +87,21 @@ public class KakaoLoginController {
 
         // 출력
         String responseBody = response.getBody();
-        // System.out.println("responseBody=========>"+responseBody);
+        log.info("responseBody=========>"+responseBody);
         JSONParser parser = new JSONParser();
         JSONObject root = (JSONObject) parser.parse(responseBody);
         JSONObject properties = (JSONObject) root.get("properties");
         JSONObject kakaoAccount = (JSONObject) root.get("kakao_account");
-        // System.out.println("root===>"+root);
-        // System.out.println("properties===>"+properties);
-        // System.out.println("kakaoAccount===>"+kakaoAccount);
+        log.info("root===>"+root);
+        log.info("properties===>"+properties);
+        log.info("kakaoAccount===>"+kakaoAccount);
 
         String email = (String) kakaoAccount.get("email");
-        // System.out.println("email===>"+email);
+        log.info("email===>"+email);
         String pass = "kakao"; // 소셜 로그인의 경우 패스워드를 따로 저장하지 않으므로 어느 사이트 로그인인지 저장
         String name = "kakao";
         String nick = (String) properties.get("nickname");
-        // System.out.println("nick===>"+nick);
+        log.info("nick===>"+nick);
         String tel = "kakao";
 
         MemberDTO member = service.findMemberByEmail(email);

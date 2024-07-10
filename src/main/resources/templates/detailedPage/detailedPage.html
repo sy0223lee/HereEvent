@@ -152,7 +152,7 @@
                             <th:block th:replace="~{detailedPage/navigation :: navigation(${event.addr})}"></th:block>
                         </article>
 
-                        <article id="reservation-section" class="article" th:if="${event.type != 'wait'}">
+                        <article id="reservation-section" class="article" th:if="${event.type != 'wait' && event.end_date >= #dates.createToday()}">
                             <!-- 예약 내용 -->
                             <th:block th:replace="~{detailedPage/reservation :: reservation}" ></th:block>
                         </article>
@@ -171,7 +171,7 @@
                 <div class="widgets-container fixed">
 
                     <!-- Search Widget -->
-                    <div class="search-widget widget-item" th:if="${event.type != 'reserve'}">
+                    <div class="search-widget widget-item" th:if="${event.type != 'reserve' && event.end_date >= #dates.createToday()}">
 
                         <h3 class="widget-title">대기</h3>
 
