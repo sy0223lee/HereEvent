@@ -2,9 +2,7 @@ package com.multi.hereevent.map;
 
 import com.multi.hereevent.dto.EventDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -43,6 +41,9 @@ public class MapController {
 
         return "kakaomap/findrouteEX";
     }
+
+
+
     @GetMapping("/searchpath")
     @ResponseBody
     public String searchPath(@RequestParam double sx, @RequestParam double sy, @RequestParam double ex, @RequestParam double ey) throws IOException {

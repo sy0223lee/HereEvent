@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
-       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-       layout:decorate="~{layout/mainLayout}">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mainLayout}">
 
 <head>
     <meta charset="UTF-8">
@@ -14,32 +14,31 @@
 </head>
 
 <body>
-    <main layout:fragment="main" class="main">
-        <!-- Page Title -->
-        <div class="page-title">
-            <div class="container">
-                <nav class="breadcrumbs">
-                    <ol>
-                        <li><a href="/hereevent/main">Home</a></li>
-                        <li><a href="/hereevent/login">로그인</a></li>
-                        <li class="current">대기</li>
-                    </ol>
-                </nav>
-                <h1>본인 대기 확인</h1>
-            </div>
+<main layout:fragment="main" class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="/hereevent/main">Home</a></li>
+                    <li><a href="/hereevent/login">로그인</a></li>
+                    <li class="current">대기</li>
+                </ol>
+            </nav>
+            <h1>본인 대기 확인</h1>
         </div>
-        <!-- End Page Title -->
+    </div>
+    <!-- End Page Title -->
 
-        <div class="login-container">
-            <h2>대기 신청 확인</h2>
-            <form action="/hereevent/wait/login" method="post">
-                <label for="wait_tel">전화번호</label>
-                <input type="text" id="wait_tel" name="wait_tel" placeholder="전화번호를 입력하세요 (ex)010-0000-0000)">
+    <div class="login-container">
+        <h2>대기 신청 확인</h2>
+        <form action="/hereevent/wait/login" method="post">
+            <label for="wait_tel">전화번호</label>
+            <input type="text" id="wait_tel" name="wait_tel" placeholder="전화번호를 입력하세요 (ex)010-0000-0000)">
 
-                <button type="submit" class="login">로그인</button>
-            </form>
-        </div>
-    </main>
+            <button type="submit" class="login">로그인</button>
+        </form>
+    </div>
     <script>
         window.onload = function() {
 
@@ -50,5 +49,7 @@
             }
         }
     </script>
+</main>
+
 </body>
 </html>

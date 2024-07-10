@@ -45,7 +45,8 @@
         <button class="btn btn-outline-primary" onclick="searchAddressToCoords()"><i class="bi bi-sign-turn-right-fill"></i> 길찾기</button>
     </div>
 
-    <div id="output"></div>
+    <div id="view"></div>
+
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1c7411c7e9cd13cdaac33d749ab11436&libraries=services"></script>
     <script th:inline="javascript">
         var placeOverlay = new kakao.maps.CustomOverlay({zIndex: 1}),
@@ -138,7 +139,12 @@
             });
             marker.setMap(map);
         }
-
+        function setStart(roadAddressName) {
+            document.getElementById('start').value = roadAddressName;
+        }
+        function setEnd(roadAddressName) {
+            document.getElementById('end').value = roadAddressName;
+        }
         function drawKakaoPolyLine(data) {
             for (var i = 0; i < data.result.lane.length; i++) {
                 for (var j = 0; j < data.result.lane[i].section.length; j++) {
@@ -193,7 +199,7 @@
         }
 
         function displayResponse(response) {
-            var outputElement = document.getElementById('output');
+            var outputElement = document.getElementById('view');
             outputElement.innerHTML = '';
 
             response.result.path.slice(0, 5).forEach(function (path, index) {
