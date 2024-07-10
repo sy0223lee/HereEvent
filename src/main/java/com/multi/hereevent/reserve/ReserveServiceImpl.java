@@ -11,6 +11,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ReserveServiceImpl implements ReserveService{
     private final ReserveDAO dao;
+
     @Override
     public String makeReservation(int event_no, int member_no, String reserve_date, String reserve_time) {
         // 예약 가능 여부 확인
@@ -69,5 +70,14 @@ public class ReserveServiceImpl implements ReserveService{
 
     }
 
+    @Override
+    public ReserveDTO selectReserve(int event_no, int member_no, String reserve_date, String reserve_time) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("event_no", event_no);
+        params.put("member_no", member_no);
+        params.put("reserve_date", reserve_date);
+        params.put("reserve_time", reserve_time);
+        return dao.selectReserve(params);
+    }
 
 }

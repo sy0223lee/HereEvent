@@ -1,14 +1,14 @@
 package com.multi.hereevent.reserve;
 
 import com.multi.hereevent.dto.MemberDTO;
+import com.multi.hereevent.dto.ReserveDTO;
+import com.multi.hereevent.mail.MailService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Time;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +17,7 @@ import java.util.Map;
 @SessionAttributes("member")
 public class ReserveController {
     private final ReserveService reserveService;
+    private final MailService mailService;
     // 예약기능
     @PostMapping("/event/reservation")
     @ResponseBody
@@ -42,6 +43,13 @@ public class ReserveController {
         model.addAttribute("reserveDate", reserve_date);
         model.addAttribute("reserveTime", reserve_time);
         String message = reserveService.makeReservation(event_no, member_no, reserve_date, reserve_time);
+
+        // 예약 성공 시 이메일 전송
+        if(message.equals("예약되었습니다.")){
+            ReserveDTO reserve = reserveService.selectReserve(event_no, member_no, reserve_date, reserve_time);
+            mailService.sendReserveSuccessEmail(reserve);
+        }
+
         JSONObject json = new JSONObject();
         json.put("message", message);
 
