@@ -30,13 +30,16 @@ public class CrawlingService {
     @Scheduled(cron = "0 0 7 * * *") // 매일 오전 7시마다 실행
     public void insertEventInfo() {
         // WebDriver 경로 설정
-//        System.setProperty("webdriver.chrome.driver", "src/main/resources/driver/chromedriver_windows.exe"); // 윈도우 용
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/driver/chromedriver_linux"); // 리눅스 용
+//        System.setProperty("webdriver.chrome.driver", "src/main/resources/driver/chromedriver.exe"); // 윈도우 용
+        System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver"); // 리눅스 용
 
         // WebDriver option 설정
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("headless"); // 브라우저 띄우지 않기
+        options.addArguments("--headless"); // 브라우저 띄우지 않기
         options.addArguments("--disable-popup-blocking"); // 팝업창 무시
+        // 리눅스에서 사용할 수 있도록 옵션 추가
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
 
         WebDriver driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
