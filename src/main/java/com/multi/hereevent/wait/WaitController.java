@@ -28,7 +28,7 @@ public class WaitController {
     @PostMapping("/wait/insert")
     public String register(WaitDTO wait, RedirectAttributes redirectAttributes, @RequestParam("wait_tel") String waitTel){
         if(!waitService.canInsert(waitTel)){
-            redirectAttributes.addAttribute("error", "이미 다른 팝업스토어에 대기 중 입니다.");
+            redirectAttributes.addAttribute("error", "이미 다른 이벤트에 대기 중 입니다.");
 
         }else {
             waitService.waitInsert(wait);

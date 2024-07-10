@@ -23,7 +23,7 @@
                 location.href = "/hereevent/event/myinterest/insert?event_no=" + $(this).val();
             });
             $(".interest-btn.picked").click(function () {
-                if(confirm("관심 팝업에서 삭제하시겠습니다까?") === true) {
+                if(confirm("관심 이벤트에서 삭제하시겠습니다까?") === true) {
                     location.href = "/hereevent/myinterest/delete?event_no=" + $(this).val();
                 }
             });
@@ -91,7 +91,7 @@
                                 <div class="row justify-content-between">
                                     <h5 class="event-name col-6 align-self-center">[[${event.name}]]</h5>
                                     <h6 class="col-6 d-flex justify-content-end"><a th:href="|@{/event/}${event.event_no}|" class="reply align-self-center">
-                                        <i class="bi bi-reply-fill"></i>팝업 상세보기</a>
+                                        <i class="bi bi-reply-fill"></i>이벤트 상세보기</a>
                                         <input type="hidden" class="member" th:value="${session.member}">
                                         <button type="button" class="default interest-btn" th:if="${event.event_interest_no == 0}" th:value="${event.event_no}">♡</button>
                                         <button type="button" class="picked interest-btn" th:unless="${event.event_interest_no == 0}" th:value="${event.event_no}">♥</button>
