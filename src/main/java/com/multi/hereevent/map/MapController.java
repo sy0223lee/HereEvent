@@ -2,10 +2,12 @@ package com.multi.hereevent.map;
 
 import com.multi.hereevent.dto.EventDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,10 +40,18 @@ public class MapController {
     }
     @GetMapping("/route")
     public String route(){
+
         return "kakaomap/findrouteEX";
     }
     @GetMapping("/test")
     public String test(){
         return "kakaomap/test";
+
     }
+    @GetMapping("/searchpath")
+    public ResponseEntity<String> searchPubTransPath() throws IOException {
+        String response = mapService.getApiResponse();
+        return ResponseEntity.ok(response);
+    }
+
 }

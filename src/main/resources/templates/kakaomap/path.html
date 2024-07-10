@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ODsay API Example</title>
+    <script>
+        async function fetchData() {
+            const response = await fetch('/hereevent/searchpath');
+            const data = await response.json();
+            document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchData);
+    </script>
+</head>
+<body>
+<h1>ODsay API Result</h1>
+<pre id="result">Loading...</pre>
+</body>
+</html>
