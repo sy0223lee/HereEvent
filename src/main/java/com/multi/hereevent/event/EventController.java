@@ -147,7 +147,7 @@ public class EventController {
     public ResponseEntity<Map<String, List<String>>> getEventTimes(@RequestBody Map<String, Object> request) {
         int event_no = (Integer) request.get("eventNo");
         String day = (String) request.get("day");
-        log.info(event_no+":"+day);
+//        log.info(event_no+":"+day);
         // 행사 번호와 요일에 따른 운영 시간을 가져오는 로직 (예시)
         List<String> times = eventTimeService.getOperTime(event_no, day);
         Map<String, List<String>> response = new HashMap<>();

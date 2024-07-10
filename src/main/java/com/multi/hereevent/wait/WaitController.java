@@ -60,7 +60,8 @@ public class WaitController {
     }
 
     @GetMapping("/wait/mywait/{event_no}/{wait_no}")
-    public String mywait(@PathVariable("wait_no") int wait_no,@PathVariable("event_no") int event_no, Model model) {
+    public String mywait(@PathVariable("event_no") int event_no, @PathVariable("wait_no") int wait_no, Model model) {
+        log.info("[wait_no] {}", wait_no);
         WaitDTO eventDetail = waitService.eventDetail(wait_no);
         model.addAttribute("event", eventDetail);
 //        log.info(String.valueOf(eventDetail));

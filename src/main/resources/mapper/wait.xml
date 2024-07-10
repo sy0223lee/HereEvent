@@ -44,7 +44,7 @@
     <select id="whenIgetInNo" parameterType="int" resultType="wait">
         select *
         from wait
-        where event_no = #{event_no} AND state = 'wait'
+        where event_no = #{event_no} AND state in ("wait", "able")
         order by wait_no
     </select>
 
