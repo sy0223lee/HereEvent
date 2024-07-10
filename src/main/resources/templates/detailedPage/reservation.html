@@ -47,7 +47,9 @@
 
         let lastDate = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         let today = new Date();
-        today.setHours(0, 0, 0, 0);
+        let threeDaysLater = new Date();
+        threeDaysLater.setDate(today.getDate() + 3);
+        threeDaysLater.setHours(0, 0, 0, 0);
         let year = today.getFullYear();
         let month = today.getMonth();
         let date = today.getDate();
@@ -97,8 +99,8 @@
                             if (currentDate >= eventStartDate && currentDate <= eventEndDate) {
                                 newTd.classList.add("within-event");
 
-                                // 현재 날짜 이전은 disabled 처리
-                                if (currentDate < today) {
+                                // 현재 날짜에서 3일 뒤 날짜의 전은 disabled 처리
+                                if (currentDate < threeDaysLater) {
                                     newTd.classList.add("disabled");
                                 } else {
                                     newTd.addEventListener("click", function() {
