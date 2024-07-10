@@ -315,6 +315,7 @@
 .placeinfo .tel {color:#0f7833;}
 .placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
 
+
 #output { width: 30%; float: left; overflow-y: auto; height: 100vh; border-left: 1px solid #ccc; }
 .route { padding: 10px; border-bottom: 1px solid #eee; }
 .route h3 { margin: 0; }

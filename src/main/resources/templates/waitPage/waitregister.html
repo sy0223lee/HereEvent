@@ -49,31 +49,32 @@
         </form>
 
     </div>
+    <script>
+        document.getElementById("waitForm").addEventListener("submit", function(event) {
+            var tel = document.getElementById("wait_tel").value.trim();
+            var email = document.getElementById("email").value.trim();
+
+            if (tel === "" || email === "") {
+                event.preventDefault();
+                alert("빈칸이 있습니다. 확인 후 다시 제출해주세요.");
+            }
+        });
+
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const errorMessage = params.get('error');
+            if (errorMessage) {
+                alert('오류: ' + errorMessage);
+            } else {
+                const successMessage = params.get('success');
+                if (successMessage) {
+                    alert('대기에 등록되었습니다.');
+                }
+            }
+        };
+
+    </script>
 </main>
 </body>
-<script>
-    document.getElementById("waitForm").addEventListener("submit", function(event) {
-        var tel = document.getElementById("wait_tel").value.trim();
-        var email = document.getElementById("email").value.trim();
 
-        if (tel === "" || email === "") {
-            event.preventDefault();
-            alert("빈칸이 있습니다. 확인 후 다시 제출해주세요.");
-        }
-    });
-
-    window.onload = function() {
-        const params = new URLSearchParams(window.location.search);
-        const errorMessage = params.get('error');
-        if (errorMessage) {
-            alert('오류: ' + errorMessage);
-        } else {
-            const successMessage = params.get('success');
-            if (successMessage) {
-                alert('대기에 등록되었습니다.');
-            }
-        }
-    };
-
-</script>
 </html>
