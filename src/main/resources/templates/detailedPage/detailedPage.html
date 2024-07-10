@@ -192,7 +192,7 @@
                     <!-- Tags Widget -->
                     <div class="tags-widget widget-item">
 
-                        <h3 class="widget-title">Category</h3>
+                        <h3 class="widget-title">카테고리</h3>
                         <ul>
                             <li th:each="category : ${category}">
                                 <a class="category-btn" th:onclick="|location.href='@{/list/category/{category_no}(category_no=${category.category_no})}'|" th:text="${category.name}"></a>

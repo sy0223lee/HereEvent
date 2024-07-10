@@ -19,10 +19,11 @@
             <nav class="breadcrumbs">
                 <ol>
                     <li><a href="/hereevent/main">Home</a></li>
-                    <li class="current">마이페이지</li>
+                    <li><a href="/hereevent/mypage">마이페이지</a></li>
+                    <li class="current">프로필 사진</li>
                 </ol>
             </nav>
-            <h1>마이페이지</h1>
+            <h1>프로필 사진 수정</h1>
         </div>
     </div><!-- End Page Title -->
 
@@ -31,7 +32,7 @@
         <form method="post" action="/hereevent/mypage/edit-profile-img" enctype="multipart/form-data">
             <!-- Section Title -->
             <div class="container section-title">
-                <h2>프로필 사진 수정</h2>
+                <h2>프로필사진 수정</h2>
                 <div class="profile-img-area">
                     <input type="hidden" th:name="member_no" th:value="${session.member.member_no}">
                     <div id="profile-img">
@@ -50,7 +51,7 @@
             </div>
         </form>
     </section><!-- End Section -->
-
+    <div class="empty-div"></div>
 </main>
 </body>
 </html>

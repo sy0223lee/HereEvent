@@ -3,22 +3,15 @@ package com.multi.hereevent.review;
 import com.multi.hereevent.dto.MemberDTO;
 import com.multi.hereevent.dto.ReviewDTO;
 import com.multi.hereevent.dto.ReviewImgDTO;
-import com.multi.hereevent.event.EventService;
 import com.multi.hereevent.fileupload.FileUploadService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,8 +20,7 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final FileUploadService fileUploadService;
 
-    // 이벤트 상세페이지에서 리뷰 조회
-    // EventController에 작성
+    // 이벤트 상세페이지에서 리뷰 조회 - EventController
 
     // 이벤트 상세페이지에서 리뷰 작성
     @PostMapping("/review/insert")

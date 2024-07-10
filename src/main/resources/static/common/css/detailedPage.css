@@ -130,6 +130,11 @@
 .comment-content{
     width: 100%;
 }
+.comment-content div,
+.comment-content span,
+.comment-content p{
+    margin: 5px 0;
+}
 .review-img {
     overflow: hidden;
     margin: 0;

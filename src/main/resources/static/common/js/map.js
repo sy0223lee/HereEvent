@@ -93,11 +93,19 @@ function printMapList(map, markers, markerImg){
                         // 커스텀 오버레이에 표시할 컨텐츠 입니다
                         // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
                         // 별도의 이벤트 메소드를 제공하지 않습니다
+                        let eventType = '';
+                        if(event.type === 'both'){
+                            eventType = '사전예약, 현장대기';
+                        }else if(event.type === 'reserve'){
+                            eventType = '사전예약';
+                        }else{
+                            eventType = '현장대기';
+                        }
                         let content = '<div class="wrap">' +
                             '    <div class="info">' +
-                            '        <div class="title">' +
+                            '        <div class="title"><a href="/hereevent/event/' + event.event_no + '" class="link">' +
                             event.name +
-                            '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
+                            '            </a><div class="close" onclick="closeOverlay()" title="닫기"></div>' +
                             '        </div>' +
                             '        <div class="body">' +
                             '            <div class="img">' +
@@ -105,8 +113,8 @@ function printMapList(map, markers, markerImg){
                             '           </div>' +
                             '            <div class="desc">' +
                             '                <div class="ellipsis">' + event.addr + '</div>' +
-                            '                <div><a href="/hereevent/event/' + event.event_no + '" class="link"> 상세보기 </a></div>' +
-                            '                <div>' + event.type + '</div>' +
+                            '                <div>' + event.start_date + ' ~ ' + event.end_date +'</div>' +
+                            '                <div>' + eventType  + '</div>' +
                             '            </div>' +
                             '        </div>' +
                             '    </div>' +
