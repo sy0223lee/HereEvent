@@ -22,8 +22,15 @@
             var url = `https://api.odsay.com/v1/api/searchPubTransPathT?SX=${sx}&SY=${sy}&EX=${ex}&EY=${ey}&apiKey=${apiKey}`;
 
             $.ajax({
-                url: url,
-                method: 'GET',
+                url: 'https://api.odsay.com/v1/api/searchPubTransPathT',
+                type: 'GET',
+                data: {
+                    SX: sx,
+                    SY: sy,
+                    EX: ex,
+                    EY: ey,
+                    apiKey: apiKey
+                },
                 success: function(response) {
                     console.log(response);
                     alert('API 호출 성공! 콘솔을 확인하세요.');
