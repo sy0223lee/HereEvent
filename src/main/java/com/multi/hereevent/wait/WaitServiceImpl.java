@@ -34,7 +34,18 @@ public class WaitServiceImpl implements WaitService {
     public int waitInsert(WaitDTO wait) {
         return waitDAO.waitInsert(wait);
     }
+    @Override
+    public boolean registerWait(WaitDTO wait) {
+        int currentWaitCount = waitDAO.checkWaitLimit(wait.getEvent_no());
+        int waitLimit = eventDAO.getWaitLimit(wait.getEvent_no());
 
+        if (currentWaitCount < waitLimit) {
+            waitDAO.waitInsert(wait);
+            return true;
+        } else {
+            return false;
+        }
+    }
     @Override
     public List<WaitDTO> getWaitList() {
         return waitDAO.getWaitList();

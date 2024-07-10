@@ -11,6 +11,7 @@ public interface WaitService {
     //대기 추가
     int waitInsert(WaitDTO wait);
 
+    boolean registerWait(WaitDTO wait);
     //대기리스트
     List<WaitDTO> getWaitList();
 
