@@ -18,10 +18,13 @@ public class ReserveServiceImpl implements ReserveService{
         if (reserveLimit == 0) {
             return "예약을 할 수 없는 이벤트입니다.";
         }
-
+        Map<String, Object> params = new HashMap<>();
+        params.put("event_no", event_no);
+        params.put("reserve_date", reserve_date);
+        params.put("reserve_time", reserve_time);
         // 현재 예약된 인원 수 조회
         // 해당 날짜, 시간에 총 몇 명이 예약했는지 확인해야 하므로 date와 time 도 넘겨줘야함
-        int currentReservationCount = dao.getReservedCountByEventId(event_no, reserve_date, reserve_time);
+        int currentReservationCount = dao.getReservedCountByEventId(params);
 
         if (currentReservationCount >= reserveLimit) {
             return "예약 인원이 초과되었습니다.";

@@ -17,8 +17,8 @@ public class ReserveDAOImpl implements ReserveDAO{
     }
 
     @Override
-    public int getReservedCountByEventId(int event_no, String reserve_date, String reserve_time) {
-        return sqlSession.selectOne("com.multi.hereevent.reserve.getReservedCountByEventId", event_no);
+    public int getReservedCountByEventId(Map<String, Object> params) {
+        return sqlSession.selectOne("com.multi.hereevent.reserve.getReservedCountByEventId", params);
     }
 
     @Override
