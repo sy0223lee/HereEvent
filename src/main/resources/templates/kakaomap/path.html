@@ -1,21 +1,416 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ODsay API Example</title>
-    <script>
-        async function fetchData() {
-            const response = await fetch('/hereevent/searchpath');
-            const data = await response.json();
-            document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <title>HereEvent-EventDetail</title>
+</head>
+
+<body>
+<div th:fragment="navigation(addr)">
+    <h2 class="title">길찾기</h2>
+    <div class="map_wrap">
+        <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+        <ul id="category">
+            <li id="CT1" data-order="0">
+                <span class="category_bg cultural"></span>
+                문화시설
+            </li>
+            <li id="PK6" data-order="1">
+                <span class="category_bg parking"></span>
+                주차장
+            </li>
+            <li id="AT4" data-order="2">
+                <span class="category_bg tour"></span>
+                관광명소
+            </li>
+            <li id="FD6" data-order="3">
+                <span class="category_bg restaurant"></span>
+                음식점
+            </li>
+            <li id="CE7" data-order="4">
+                <span class="category_bg cafe"></span>
+                카페
+            </li>
+            <li id="CS2" data-order="5">
+                <span class="category_bg store"></span>
+                편의점
+            </li>
+        </ul>
+    </div>
+    <div class="d-flex align-items-center">
+        <input class="m-1" type="text" id="start" placeholder="출발지 입력">
+        <input class="m-1" type="text" id="end" placeholder="도착지 입력">
+        <button class="btn btn-outline-primary" onclick="searchAddressToCoords()"><i class="bi bi-sign-turn-right-fill"></i> 길찾기</button>
+    </div>
+
+    <div id="output"></div>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1c7411c7e9cd13cdaac33d749ab11436&libraries=services"></script>
+    <script th:inline="javascript">
+        var placeOverlay = new kakao.maps.CustomOverlay({zIndex: 1}),
+            contentNode = document.createElement('div'),
+            markers = [],
+            currCategory = '';
+
+        var mapContainer = document.getElementById('map'),
+            mapOption = {
+                center: new kakao.maps.LatLng(37.566826, 126.9786567),
+                level: 5
+            };
+
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+
+        var sx, sy, ex, ey;
+        var ps = new kakao.maps.services.Places(map);
+        var geocoder = new kakao.maps.services.Geocoder();
+
+        function searchAddressToCoords() {
+            var startAddress = document.getElementById('start').value;
+            var endAddress = document.getElementById('end').value;
+            if (!startAddress || !endAddress) {
+                alert("출발지와 도착지를 입력하세요.");
+                return;
+            }
+            ps.keywordSearch(startAddress, function(data, status, pagination) {
+                if (status === kakao.maps.services.Status.OK) {
+                    displayResult(data, '출발지');
+                } else {
+                    alert("출발지 검색 결과가 없습니다.");
+                }
+            });
+
+            ps.keywordSearch(endAddress, function(data, status, pagination) {
+                if (status === kakao.maps.services.Status.OK) {
+                    displayResult(data, '도착지');
+                } else {
+                    alert("도착지 검색 결과가 없습니다.");
+                }
+            });
+            geocoder.addressSearch(startAddress, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    sx = result[0].x;
+                    sy = result[0].y;
+                    drawKakaoMarker(sx, sy);
+
+                    geocoder.addressSearch(endAddress, function(result, status) {
+                        if (status === kakao.maps.services.Status.OK) {
+                            ex = result[0].x;
+                            ey = result[0].y;
+                            drawKakaoMarker(ex, ey);
+                            searchPubTransPathAJAX();
+                        } else {
+                            alert("도착지 주소 변환 실패");
+                        }
+                    });
+                } else {
+                    alert("출발지 주소 변환 실패");
+                }
+            });
         }
 
-        document.addEventListener('DOMContentLoaded', fetchData);
+        async function searchPubTransPathAJAX() {
+            const response = await fetch('/hereevent/searchpath?sx=' + sx + '&sy=' + sy + '&ex=' + ex + '&ey=' + ey);
+            const data = await response.json();
+            displayResponse(data);
+            callMapObjApiAJAX(data.result.path[0].info.mapObj, sx, sy, ex, ey);
+        }
+
+        function callMapObjApiAJAX(mapObj) {
+            fetch('/hereevent/loadLane?mapObj=' + mapObj)
+                .then(response => response.json())
+                .then(data => {
+                    drawKakaoMarker(sx, sy);
+                    drawKakaoMarker(ex, ey);
+                    drawKakaoPolyLine(data);
+                });
+        }
+
+        function drawKakaoMarker(x, y) {
+            const imgSrc = "http://223.130.158.5:9090/hereevent/images/map/navi-location.png";
+            const imgSize = new kakao.maps.Size(35, 35);
+            let markerImg = new kakao.maps.MarkerImage(imgSrc, imgSize);
+
+            var markerPosition = new kakao.maps.LatLng(y, x);
+            var marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImg
+            });
+            marker.setMap(map);
+        }
+
+        function drawKakaoPolyLine(data) {
+            for (var i = 0; i < data.result.lane.length; i++) {
+                for (var j = 0; j < data.result.lane[i].section.length; j++) {
+                    var linePath = [];
+                    for (var k = 0; k < data.result.lane[i].section[j].graphPos.length; k++) {
+                        linePath.push(new kakao.maps.LatLng(data.result.lane[i].section[j].graphPos[k].y, data.result.lane[i].section[j].graphPos[k].x));
+                    }
+
+                    var polyline = new kakao.maps.Polyline({
+                        path: linePath,
+                        strokeWeight: 3,
+                        strokeColor: '#003499'
+                    });
+                    var subwayColors = {
+                        "1호선": "#0052A4",
+                        "2호선": "#009D3E",
+                        "3호선": "#EF7C1C",
+                        "4호선": "#00A5DE",
+                        "5호선": "#996CAC",
+                        "6호선": "#CD7C2F",
+                        "7호선": "#747F00",
+                        "8호선": "#E6186C",
+                        "9호선": "#BDB092",
+                        "경의중앙선": "#86d3d3"
+                    };
+
+                    if (data.result.lane[i].type == 1) {
+                        polyline.setOptions({ strokeColor: '#0052A4' });
+                    } else if (data.result.lane[i].type == 2) {
+                        polyline.setOptions({ strokeColor: '#009D3E' });
+                    } else if (data.result.lane[i].type == 3) {
+                        polyline.setOptions({ strokeColor: '#EF7C1C' });
+                    } else if (data.result.lane[i].type == 4) {
+                        polyline.setOptions({ strokeColor: '#00A5DE' });
+                    } else if (data.result.lane[i].type == 5) {
+                        polyline.setOptions({ strokeColor: '#996CAC' });
+                    } else if (data.result.lane[i].type == 6) {
+                        polyline.setOptions({ strokeColor: '#CD7C2F' });
+                    } else if (data.result.lane[i].type == 7) {
+                        polyline.setOptions({ strokeColor: '#747F00' });
+                    } else if (data.result.lane[i].type == 8) {
+                        polyline.setOptions({ strokeColor: '#E6186C' });
+                    } else if (data.result.lane[i].type == 9) {
+                        polyline.setOptions({ strokeColor: '#BDB092' });
+                    } else if (data.result.lane[i].type == "경의중앙") {
+                        polyline.setOptions({ strokeColor: '#86d3d3' });
+                    }
+
+                    polyline.setMap(map);
+                }
+            }
+        }
+
+        function displayResponse(response) {
+            var outputElement = document.getElementById('output');
+            outputElement.innerHTML = '';
+
+            response.result.path.slice(0, 5).forEach(function (path, index) {
+                var routeDiv = document.createElement('div');
+                routeDiv.classList.add('route');
+
+                var routeSummary = `
+                    <h3>경로 ${index + 1}</h3>
+                    <p>총 소요시간: ${path.info.totalTime}분, 요금: ${path.info.payment}원
+                    <i class="bi bi-caret-down-fill" onclick="toggleDetails(${index})"></i></p>
+                `;
+
+                var routeDetails = `
+                    <div id="details-${index}" class="route-details" ${index === 0 ? 'style="display: block;"' : 'style="display: none;"'}>
+                        <ul>
+                            ${path.subPath.map(function (subPath) {
+                    var detail = `<li><strong>${getTrafficType(subPath.trafficType)}</strong> ${subPath.sectionTime}분, ${subPath.distance}m`;
+                    if (subPath.trafficType == 2) {
+                        detail += ` (${subPath.lane[0].busNo})`;
+                    } else if (subPath.trafficType == 1) {
+                        detail += ` (${subPath.lane[0].name})`;
+                    }
+                    detail += ` ${subPath.startName && subPath.endName ? `(${subPath.startName} -> ${subPath.endName})` : ''}</li>`;
+                    return detail;
+                }).join('')}
+                        </ul>
+                    </div>
+                `;
+
+                routeDiv.innerHTML = routeSummary + routeDetails;
+                outputElement.appendChild(routeDiv);
+            });
+        }
+
+        function toggleDetails(index) {
+            var details = document.getElementById('details-' + index);
+            if (details.style.display === 'none' || details.style.display === '') {
+                details.style.display = 'block';
+            } else {
+                details.style.display = 'none';
+            }
+        }
+
+        function getTrafficType(type) {
+            switch (type) {
+                case 1:
+                    return '지하철';
+                case 2:
+                    return '버스';
+                case 3:
+                    return '도보';
+                default:
+                    return '기타';
+            }
+        }
+
+        kakao.maps.event.addListener(map, 'idle', searchPlaces);
+        contentNode.className = 'placeinfo_wrap';
+        addEventHandle(contentNode, 'mousedown', kakao.maps.event.preventMap);
+        addEventHandle(contentNode, 'touchstart', kakao.maps.event.preventMap);
+        placeOverlay.setContent(contentNode);
+        addCategoryClickEvent();
+
+        function addEventHandle(target, type, callback) {
+            if (target.addEventListener) {
+                target.addEventListener(type, callback);
+            } else {
+                target.attachEvent('on' + type, callback);
+            }
+        }
+
+        function searchPlaces() {
+            if (!currCategory) {
+                return;
+            }
+
+            placeOverlay.setMap(null);
+            removeMarker();
+            ps.categorySearch(currCategory, placesSearchCB, { useMapBounds: true });
+        }
+
+        function placesSearchCB(data, status, pagination) {
+            if (status === kakao.maps.services.Status.OK) {
+                displayPlaces(data);
+            }
+        }
+
+        function displayPlaces(places) {
+            var order = document.getElementById(currCategory).getAttribute('data-order');
+
+            for (var i = 0; i < places.length; i++) {
+                var marker = addMarker(new kakao.maps.LatLng(places[i].y, places[i].x), order);
+                (function (marker, place) {
+                    kakao.maps.event.addListener(marker, 'click', function () {
+                        displayPlaceInfo(place);
+                    });
+                })(marker, places[i]);
+            }
+        }
+
+        function addMarker(position, order) {
+            var imageSrc = 'http://223.130.158.5:9090/hereevent/images/map/icon-location.png',
+                imageSize = new kakao.maps.Size(35, 35),
+                markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize),
+                marker = new kakao.maps.Marker({
+                    position: position,
+                    image: markerImage
+                });
+
+            marker.setMap(map);
+            markers.push(marker);
+
+            return marker;
+        }
+
+        function removeMarker() {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+        }
+
+        function displayPlaceInfo(place) {
+            var content = '<div class="placeinfo">' +
+                '   <a class="title" href="' + place.place_url + '" target="_blank" title="' + place.place_name + '">' + place.place_name + '</a>';
+
+            if (place.road_address_name) {
+                content += '    <span title="' + place.road_address_name + '">' + place.road_address_name + '</span>' +
+                    '   <span class="jibun" title="' + place.address_name + '">(지번 : ' + place.address_name + ')</span>';
+            } else {
+                content += '    <span title="' + place.address_name + '">' + place.address_name + '</span>';
+            }
+
+            content += '    <span class="tel">' + place.phone + '</span>' +
+                '<button type="button" class="btn btn-outline-primary btn-sm" onclick="setStart(\'' + place.road_address_name + '\')">출발지</button>' +
+                '<button type="button" class="btn btn-outline-primary btn-sm" onclick="setEnd(\'' + place.road_address_name + '\')">도착지</button>' +
+                '</div>' +
+                '<div class="after"></div>';
+            contentNode.innerHTML = content;
+            placeOverlay.setPosition(new kakao.maps.LatLng(place.y, place.x));
+            placeOverlay.setMap(map);
+        }
+
+        function addCategoryClickEvent() {
+            var category = document.getElementById('category'),
+                children = category.children;
+
+            for (var i = 0; i < children.length; i++) {
+                children[i].onclick = onClickCategory;
+            }
+        }
+
+        function onClickCategory() {
+            var id = this.id,
+                className = this.className;
+
+            placeOverlay.setMap(null);
+
+            if (className === 'on') {
+                currCategory = '';
+                changeCategoryClass();
+                removeMarker();
+            } else {
+                currCategory = id;
+                changeCategoryClass(this);
+                searchPlaces();
+            }
+        }
+
+        function changeCategoryClass(el) {
+            var category = document.getElementById('category'),
+                children = category.children,
+                i;
+
+            for (i = 0; i < children.length; i++) {
+                children[i].className = '';
+            }
+
+            if (el) {
+                el.className = 'on';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var eventAddress = [[${event.addr}]];
+            setMapByAddress(eventAddress);
+        });
+
+        function setMapByAddress(address) {
+            geocoder.addressSearch(address, function (result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    const imgSrc = "http://223.130.158.5:9090/hereevent/images/map/icon-location.png";
+                    const imgSize = new kakao.maps.Size(38, 38);
+                    let markerImg = new kakao.maps.MarkerImage(imgSrc, imgSize);
+
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    map.setCenter(coords);
+
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords,
+                        image: markerImg
+                    });
+
+                    var content = '<div class="placeinfo">' +
+                        '   <span class="title">' + address + '</span>' +
+                        '<button type="button" class="btn btn-outline-primary btn-sm" onclick="setStart(\'' + address + '\')">출발지</button>' +
+                        '<button type="button" class="btn btn-outline-primary btn-sm" onclick="setEnd(\'' + address + '\')">도착지</button>' +
+                        '</div>' +
+                        '<div class="after"></div>';
+                    contentNode.innerHTML = content;
+                    placeOverlay.setPosition(coords);
+                    placeOverlay.setMap(map);
+                }
+            });
+        }
     </script>
-</head>
-<body>
-<h1>ODsay API Result</h1>
-<pre id="result">Loading...</pre>
+</div>
 </body>
 </html>

@@ -43,15 +43,16 @@ public class MapController {
 
         return "kakaomap/findrouteEX";
     }
-    @GetMapping("/test")
-    public String test(){
-        return "kakaomap/test";
-
-    }
     @GetMapping("/searchpath")
-    public ResponseEntity<String> searchPubTransPath() throws IOException {
-        String response = mapService.getApiResponse();
-        return ResponseEntity.ok(response);
+    @ResponseBody
+    public String searchPath(@RequestParam double sx, @RequestParam double sy, @RequestParam double ex, @RequestParam double ey) throws IOException {
+        return mapService.searchPath(sx, sy, ex, ey);
+    }
+
+    @GetMapping("/loadLane")
+    @ResponseBody
+    public String loadLane(@RequestParam String mapObj) throws IOException {
+        return mapService.loadLane(mapObj);
     }
 
 }
