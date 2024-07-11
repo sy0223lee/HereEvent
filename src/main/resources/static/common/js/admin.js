@@ -91,7 +91,7 @@ function reviewPageBtn(totalPages, pageNumber, totalElements) {
 function moveReviewPage(pageNumber){
     // 컨트롤러에게 전해줄 파라미터
     let type = $("select[name='type']").val();
-    let keyword = $('input[name="keyword"]').val();
+    let keyword = $("#keyword").val();
 
     // 경로 이동
     location.href = "/hereevent/admin/review?type=" + type + "&keyword=" + keyword + "&page=" + pageNumber;
@@ -159,7 +159,7 @@ function eventPageBtn(totalPages, pageNumber, totalElements) {
 function moveEventPage(pageNumber){
     // 컨트롤러에게 전해줄 파라미터
     let type = $("select[name='type']").val();
-    let keyword = $('input[name="keyword"]').val();
+    let keyword = $('#keyword').val();
 
     // 경로 이동
     location.href = "/hereevent/admin/event?type=" + type + "&keyword=" + keyword + "&page=" + pageNumber;
@@ -227,7 +227,7 @@ function memberPageBtn(totalPages, pageNumber, totalElements) {
 function moveMemberPage(pageNumber){
     // 컨트롤러에게 전해줄 파라미터
     let type = $("select[name='type']").val();
-    let keyword = $('input[name="keyword"]').val();
+    let keyword = $('#keyword').val();
 
     // 경로 이동
     location.href = "/hereevent/admin/member?type=" + type + "&keyword=" + keyword + "&page=" + pageNumber;
