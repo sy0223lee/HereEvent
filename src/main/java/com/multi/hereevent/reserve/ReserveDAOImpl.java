@@ -45,4 +45,9 @@ public class ReserveDAOImpl implements ReserveDAO{
         params.put("reserve_time", reserve_time);
         return sqlSession.selectOne("com.multi.hereevent.reserve.checkDuplicateReservation", params);
     }
+  
+    @Override
+    public ReserveDTO selectReserve(Map<String, Object> params) {
+        return sqlSession.selectOne("com.multi.hereevent.reserve.selectReserve", params);
+    }
 }

@@ -2,9 +2,8 @@ package com.multi.hereevent.map;
 
 import com.multi.hereevent.dto.EventDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -12,16 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class MapController {
     private final MapService mapService;
-
-    @GetMapping("/map/kakaomap.html")
-    public String address(){
-        System.out.println("카카오지도");
-        return "kakaomap/kakaomap";
-    }
 
     @GetMapping("/map")
     public String mapPage(){
@@ -40,9 +34,9 @@ public class MapController {
     }
     @GetMapping("/route")
     public String route(){
-
         return "kakaomap/findrouteEX";
     }
+
     @GetMapping("/searchpath")
     @ResponseBody
     public String searchPath(@RequestParam double sx, @RequestParam double sy, @RequestParam double ex, @RequestParam double ey) throws IOException {

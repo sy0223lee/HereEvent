@@ -34,7 +34,18 @@ public class WaitServiceImpl implements WaitService {
     public int waitInsert(WaitDTO wait) {
         return waitDAO.waitInsert(wait);
     }
+    @Override
+    public boolean registerWait(WaitDTO wait) {
+        int currentWaitCount = waitDAO.checkWaitLimit(wait.getEvent_no());
+        int waitLimit = eventDAO.getWaitLimit(wait.getEvent_no());
 
+        if (currentWaitCount < waitLimit) {
+            waitDAO.waitInsert(wait);
+            return true;
+        } else {
+            return false;
+        }
+    }
     @Override
     public List<WaitDTO> getWaitList() {
         return waitDAO.getWaitList();
@@ -91,7 +102,7 @@ public class WaitServiceImpl implements WaitService {
     @Override
     public String getEntranceWaitTime(int event_no, int wait_no) {
         List<WaitDTO> waitingList = waitDAO.getWaitingListByEventNo(event_no);
-        waitingList.removeIf(wait -> !"wait".equals(wait.getState()));
+        waitingList.removeIf(wait -> (!wait.getState().equals("wait") && !wait.getState().equals("able")));
         waitingList.sort((w1, w2) -> Integer.compare(w1.getWait_no(), w2.getWait_no()));
 
         int position = -1;

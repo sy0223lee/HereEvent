@@ -78,7 +78,7 @@
                             <h5 class="col event-name">[[${review.name}]]</h5>
                             <h6 class="col text-md-end buttons">
                                 <a th:href="|@{/event/}${review.event_no}|" class="reply">
-                                    <i class="bi bi-reply-fill"></i>팝업 상세보기</a>
+                                    <i class="bi bi-reply-fill"></i>이벤트 상세보기</a>
                                 <button type="button" th:onclick="|location.href='@{/myreview/update(review_no=${review.review_no})}'|" class="reply edit-review-btn">
                                     <i class="bi bi-pencil"></i>후기 수정하기</button>
                                 <button type="button" class="reply delete-review-btn" th:value="${review.review_no}">

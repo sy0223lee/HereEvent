@@ -2,14 +2,13 @@ package com.multi.hereevent.event.time;
 
 import com.multi.hereevent.dto.EventTimeDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EventTimeServiceImpl implements EventTimeService{
@@ -42,6 +41,7 @@ public class EventTimeServiceImpl implements EventTimeService{
         for(int i=openTimeInt;i<=closeTimeInt;i++){
             timeList.add(String.valueOf(i)+":"+openTime[1]+":"+openTime[2]);
         }
+
         return timeList;
     }
 

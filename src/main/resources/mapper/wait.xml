@@ -5,11 +5,24 @@
         insert into wait (event_no, wait_tel, email)
         values(#{event_no}, #{wait_tel},#{email})
     </select>
+    <select id="checkWaitLimit" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM wait
+        WHERE event_no = #{event_no}
+        and wait_date >= curdate()
+    </select>
+
+
+    <select id="isWaiting" parameterType="String" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM wait
+        WHERE wait_tel = #{waitTel}
+    </select>
     <!-- 로그인 -->
     <select id="getWaitInfo" parameterType="wait" resultType="wait">
         select *
         from wait
-        where wait_tel = #{wait_tel} and state ='wait'
+        where wait_tel = #{wait_tel} and state in ("wait", "able")
     </select>
 
     <!-- waitDTO 가져오기 -->
@@ -44,7 +57,7 @@
     <select id="whenIgetInNo" parameterType="int" resultType="wait">
         select *
         from wait
-        where event_no = #{event_no} AND state = 'wait'
+        where event_no = #{event_no} AND state in ("wait", "able")
         order by wait_no
     </select>
 

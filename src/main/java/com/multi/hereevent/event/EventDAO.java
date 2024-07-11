@@ -65,4 +65,8 @@ public interface EventDAO {
     // 페이징 처리
     int countEventWithPage(Map<String, Object> params);
     List<EventDTO> selectEventWithPage(Map<String, Object> params);
+
+
+    int getWaitLimit(int event_no);
+
 }

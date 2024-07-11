@@ -11,4 +11,5 @@ public interface ReserveDAO {
     int deleteReservation(Map<String, Object> params);
     void updateReservation(Map<String, Object> params);
     int checkDuplicateReservation(int event_no, int member_no, String reserve_date, String reserve_time);
+    ReserveDTO selectReserve(Map<String, Object> params);
 }
