@@ -18,6 +18,10 @@ public class ReserveServiceImpl implements ReserveService{
         if (reserveLimit == 0) {
             return "예약을 할 수 없는 이벤트입니다.";
         }
+        int count = dao.checkDuplicateReservation(event_no, member_no, reserve_date, reserve_time);
+        if (count > 0) {
+            return "이미 예약되었습니다.";
+        }
         Map<String, Object> params = new HashMap<>();
         params.put("event_no", event_no);
         params.put("reserve_date", reserve_date);

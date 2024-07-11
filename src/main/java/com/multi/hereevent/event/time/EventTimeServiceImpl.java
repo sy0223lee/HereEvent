@@ -36,14 +36,12 @@ public class EventTimeServiceImpl implements EventTimeService{
         String[] openTime = eventTime.getOpen_time().split(":");
         String[] closeTime = eventTime.getClose_time().split(":");
 
-        System.out.println(openTime[0]);
         List<String> timeList = new ArrayList<>();
         int openTimeInt = Integer.parseInt(openTime[0]);
         int closeTimeInt = Integer.parseInt(closeTime[0]);
         for(int i=openTimeInt;i<=closeTimeInt;i++){
             timeList.add(String.valueOf(i)+":"+openTime[1]+":"+openTime[2]);
         }
-        System.out.println("timeList===>"+timeList);
         return timeList;
     }
 

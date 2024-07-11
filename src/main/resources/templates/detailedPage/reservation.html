@@ -177,14 +177,12 @@
                     td.classList.add("disabled");
                     alert("해당 날짜는 예약이 불가능합니다.");
                 } else {
-                    // 서버에서 받은 운영 시간을 'select' 옵션으로 업데이트
                     createButtons(data.times);
                 }
             }).catch(error => {
                 console.error('Error:', error);
             });
         }
-
         function createButtons(times) {
             const container = document.getElementById('eventTimesContainer');
             container.innerHTML = ''; // 기존 내용을 지움
@@ -194,7 +192,7 @@
                 button.textContent = time;
                 button.classList.add('time-button');
                 button.onclick = (event) => {
-                    event.preventDefault(); // 페이지 이동 방지
+                event.preventDefault(); // 페이지 이동 방지
 
                     // 모든 버튼의 선택 상태 해제
                     const allButtons = container.querySelectorAll('.time-button');
@@ -240,8 +238,11 @@
                     window.location.href = "/hereevent/login"; // 로그인 페이지로 이동
                 } else if (data.message === "예약 인원이 초과되었습니다.") {
                     alert(data.message);
-                    location.reload(); // 페이지 새로고침
-                } else if (data.message === "예약되었습니다.") {
+                    location.reload();
+                } else if (data.message === "이미 예약되었습니다.") {
+                    alert(data.message);
+                    location.reload();
+                }  else if (data.message === "예약되었습니다.") {
                     alert(data.message);
                     window.location.href = "/hereevent/myevent"; // 예약 확인 페이지로 이동
                 } else if (data.message === "예약을 할 수 없는 이벤트입니다.") {

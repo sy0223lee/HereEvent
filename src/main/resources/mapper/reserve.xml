@@ -38,4 +38,12 @@
 		set state = "visit"
 		where event_no = #{event_no} and member_no = #{member_no} AND reserve_date=#{reserve_date} AND reserve_time=#{reserve_time}
 	</update>
+	<select id="checkDuplicateReservation" resultType="int">
+		SELECT COUNT(*)
+		FROM reserve
+		WHERE event_no = #{event_no}
+		AND member_no = #{member_no}
+		AND reserve_date = #{reserve_date}
+		AND reserve_time = #{reserve_time}
+	</select>
 </mapper>
