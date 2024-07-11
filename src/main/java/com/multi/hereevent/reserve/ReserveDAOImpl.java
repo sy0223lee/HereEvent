@@ -37,6 +37,16 @@ public class ReserveDAOImpl implements ReserveDAO{
     }
 
     @Override
+    public int checkDuplicateReservation(int event_no, int member_no, String reserve_date, String reserve_time) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("event_no", event_no);
+        params.put("member_no", member_no);
+        params.put("reserve_date", reserve_date);
+        params.put("reserve_time", reserve_time);
+        return sqlSession.selectOne("com.multi.hereevent.reserve.checkDuplicateReservation", params);
+    }
+  
+    @Override
     public ReserveDTO selectReserve(Map<String, Object> params) {
         return sqlSession.selectOne("com.multi.hereevent.reserve.selectReserve", params);
     }
