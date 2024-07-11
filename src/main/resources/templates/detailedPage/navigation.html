@@ -76,16 +76,12 @@
             ps.keywordSearch(startAddress, function(data, status, pagination) {
                 if (status === kakao.maps.services.Status.OK) {
                     displayResult(data, '출발지');
-                } else {
-                    alert("출발지 검색 결과가 없습니다.");
                 }
             });
 
             ps.keywordSearch(endAddress, function(data, status, pagination) {
                 if (status === kakao.maps.services.Status.OK) {
                     displayResult(data, '도착지');
-                } else {
-                    alert("도착지 검색 결과가 없습니다.");
                 }
             });
             geocoder.addressSearch(startAddress, function(result, status) {
