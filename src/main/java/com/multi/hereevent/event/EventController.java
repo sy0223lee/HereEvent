@@ -119,7 +119,7 @@ public class EventController {
         List<CategoryDTO> category = categoryService.getListCategory();
         log.info("시작일===>"+eventDetails.getStart_date());
         List<ReviewDTO> reviewList = reviewService.selectReviewByEventNo(event_no);
-        log.info(eventTime.toString());
+//        log.info(eventTime.toString());
         List<String> closedDays = eventTimeService.getHolidayDays(event_no);
         int eventInterest = eventService.getEventInterest(event_no);
         model.addAttribute("event", eventDetails);
