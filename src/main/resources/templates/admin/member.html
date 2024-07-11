@@ -74,8 +74,7 @@
                                 <option value="email" th:selected="${type == 'email'}">이메일</option>
                                 <option value="tel" th:selected="${type == 'tel'}">전화번호</option>
                             </select>
-                            <input type="text" name="keyword" placeholder="검색어를 입력하세요" th:if="${keyword == null}">
-                            <input type="text" name="keyword" placeholder="검색어를 입력하세요" th:unless="${keyword == null}" th:value="${keyword}">
+                            <input type="text" name="keyword" placeholder="검색어를 입력하세요" id="keyword" th:value="${keyword}">
                             <button type="submit"><i class="bi bi-search"></i></button>
                         </form>
                     </div>
