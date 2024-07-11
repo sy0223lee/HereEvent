@@ -423,7 +423,7 @@
                 where e.event_no in (
                     select e.event_no
                     from event e left join category c on e.category_no = c.category_no
-                    where c.name like concat('%', #{keyword}, '%') or c.value like concat('%', #{keyword}, '%'))
+                    where c.name like concat('%', #{keyword}, '%'))
             </when>
         </choose>
     </select>
@@ -441,7 +441,7 @@
                 where e.addr like concat('%', #{keyword}, '%')
             </when>
             <when test='type == "category"'>
-                where c.name like concat('%', #{keyword}, '%') or c.value like concat('%', #{keyword}, '%'))
+                where c.name like concat('%', #{keyword}, '%')
             </when>
         </choose>
         ORDER BY
