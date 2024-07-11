@@ -266,11 +266,9 @@ public class AdminController {
     }
     /************** 예약관리 ************/
     @GetMapping("/admin/reserve")
-    public String selectReservewWithPage(@RequestParam Map<String, Object> params,
+    public String selectReserveWithPage(@RequestParam Map<String, Object> params,
                                        @PageableDefault(value = 10) Pageable page, Model model){
         Page<ReserveDTO> result = reserveService.selectReserveWithPage(params, page);
-        System.out.println(result);
-        System.out.println(result.getContent());
         model.addAttribute("type", params.get("type"));
         model.addAttribute("keyword", params.get("keyword"));
         model.addAttribute("reserveList", result.getContent());

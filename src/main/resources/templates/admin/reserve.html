@@ -89,18 +89,18 @@
 
             </div>
             <div class="event-table container">
-                <form id="deleteForm" action="/hereevent/admin/reserve/cancel" method="post">
+                <form id="deleteForm" action="/hereevent/admin/reserve/cancel-select" method="post">
                     <div class="row align-items-center text-center table-title">
                         <div class="select">
                             <input type="checkbox" name="select-all" onclick="selectAll(this)">
                         </div>
-                        <div class="event-no">번호</div>
+                        <div class="reserve-no">번호</div>
                         <div class="event-img">사진</div>
                         <div class="event-name">이벤트명</div>
-                        <div class="event-date">예약자명</div>
-                        <div class="event-delete">예약일자</div>
-                        <div class="event-delete">상태</div>
-                        <div class="event-delete">취소</div>
+                        <div class="reserve-name">예약자명</div>
+                        <div class="reserve-date">예약일자</div>
+                        <div class="reserve-state">상태</div>
+                        <div class="reserve-delete">취소</div>
                     </div>
 
                     <div class="table-row" th:each="reserve : ${reserveList}">
@@ -108,7 +108,7 @@
                             <div class="select text-center">
                                 <input type="checkbox" name="select" th:value="${reserve.reserve_no}" onclick="checkSelectAll()">
                             </div>
-                            <div class="event-no">[[${reserve.reserve_no}]]</div>
+                            <div class="reserve-no">[[${reserve.reserve_no}]]</div>
                             <div class="event-img text-center event-image">
                                 <a th:href="|@{/event/}${reserve.event_no}|">
                                     <!--th:src="|@{/download/event/}${event.img_path}|"-->
@@ -120,16 +120,16 @@
                                 <a class="my-2" th:href="|@{/event/}${reserve.event_no}|">
                                     [[${reserve.e_name}]]</a>
                             </div>
-                            <div class="event-date">
+                            <div class="reserve-name">
                                 [[${reserve.m_name}]]</a>
                             </div>
-                            <div class="event-date">
-                                [[${reserve.reserve_date}]]/[[${reserve.reserve_time}]]</a>
+                            <div class="reserve-date">
+                                [[${reserve.reserve_date}]]<br>[[${reserve.reserve_time}]]</a>
                             </div>
-                            <div class="event-date">
+                            <div class="reserve-state">
                                 [[${reserve.state}]]</a>
                             </div>
-                            <div class="event-delete text-center">
+                            <div class="reserve-delete text-center">
                                 <button type="button" class="delete-btn btn btn-primary" th:value="${reserve.reserve_no}">취소</button>
                             </div>
                         </div>
