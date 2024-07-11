@@ -6,6 +6,7 @@ import com.multi.hereevent.event.EventService;
 import com.multi.hereevent.event.time.EventTimeService;
 import com.multi.hereevent.fileupload.FileUploadService;
 import com.multi.hereevent.member.MemberService;
+import com.multi.hereevent.reserve.ReserveService;
 import com.multi.hereevent.review.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ public class AdminController {
     private final EventTimeService eventTimeService;
     private final CategoryService categoryService;
     private final ChartService chartService;
+    private final ReserveService reserveService;
 
     /************** 관리 메인페이지 ************/
     @GetMapping("/admin")
@@ -262,4 +264,47 @@ public class AdminController {
         eventService.deleteEvent(eventNo);
         return "redirect:/admin/event";
     }
+    /************** 예약관리 ************/
+    @GetMapping("/admin/reserve")
+    public String selectReservewWithPage(@RequestParam Map<String, Object> params,
+                                       @PageableDefault(value = 10) Pageable page, Model model){
+        Page<ReserveDTO> result = reserveService.selectReserveWithPage(params, page);
+        System.out.println(result);
+        System.out.println(result.getContent());
+        model.addAttribute("type", params.get("type"));
+        model.addAttribute("keyword", params.get("keyword"));
+        model.addAttribute("reserveList", result.getContent());
+        model.addAttribute("totalPages", result.getTotalPages());
+        model.addAttribute("totalElements", result.getTotalElements());
+        model.addAttribute("pageNumber", page.getPageNumber());
+        return "admin/reserve";
+    }
+    @PostMapping("/admin/reserve/cancel")
+    public String cancelOneReserve(@RequestParam("reserve_no") String reserve_no){
+        List<Integer> reserveNo = new ArrayList<>();
+        reserveNo.add(Integer.parseInt(reserve_no));
+        int result = reserveService.cancelReserve(reserveNo);
+        if(result > 0){
+            return "redirect:/admin/reserve";
+        }else {
+            return "common/errorPage";
+        }
+    }
+    @PostMapping("/admin/reserve/cancel-select")
+    public String cancelReserve(@RequestParam("select") List<Integer> reserveNo) {
+        reserveService.cancelReserve(reserveNo);
+        return "redirect:/admin/reserve";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 }

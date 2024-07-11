@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HereEvent-Admin</title>
+    <!-- CSS File -->
+    <link href="/hereevent/common/css/admin.css" rel="stylesheet">
+    <!-- js File -->
+    <script type="text/javascript" src="/hereevent/common/js/admin.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+             eventPageBtn([[${totalPages}]], [[${pageNumber}]], [[${totalElements}]]);
+
+            $(".delete-btn").each(function (){
+                $(this).click(function () {
+                    if (confirm("예약을 취소하시겠습니까?") === true) {
+                        let form = document.createElement("form");
+                        let obj = document.createElement("input");
+                        obj.setAttribute("type", "hidden");
+                        obj.setAttribute("name", "reserve_no");
+                        obj.setAttribute("value", $(this).val());
+
+                        form.appendChild(obj);
+                        form.setAttribute("method", "post");
+                        form.setAttribute("action", "/hereevent/admin/reserve/cancel");
+                        document.body.appendChild(form);
+                        form.submit();
+                        alert("취소되었습니다!");
+                    }
+                });
+            });
+        });
+        function submitDeleteForm() {
+            const form = document.getElementById('deleteForm');
+            form.submit();
+            alert("취소되었습니다!");
+        }
+        function changeSort(sortBy) {
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('sort', sortBy);
+            window.location.href = currentUrl.toString();
+        }
+    </script>
+</head>
+<body>
+<main layout:fragment="main" class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="/hereevent/main">Home</a></li>
+                    <li><a href="/hereevent/admin">관리</a></li>
+                    <li class="current">예약</li>
+                </ol>
+            </nav>
+            <h1>예약 관리</h1>
+        </div>
+    </div>
+    <!-- End Page Title -->
+
+    <!-- Event Section -->
+    <section id="event-section" class="section">
+
+        <div class="container event-container">
+            
+            <div class="d-flex align-items-center justify-content-between admin-search">
+                <div class="d-flex justify-content-start">
+                    <button type='button' class="btn btn-primary me-2" onclick="submitDeleteForm()">선택 취소</button>
+                </div>
+
+                <div  class="d-flex justify-content-end">
+                    <div class="search-widget ms-2">
+                        <form action="/hereevent/admin/reserve" method="get" class="d-flex justify-content-start">
+                            <select name="type">
+                                <option value="all" th:selected="${type == 'all'}">--</option>
+                                <option value="event" th:selected="${type == 'event'}">이벤트명</option>
+                                <option value="name" th:selected="${type == 'name'}">예약자명</option>
+                            </select>
+                            <input type="text" name="keyword" placeholder="검색어를 입력하세요" id="keyword" th:value="${keyword}">
+                            <button type="submit"><i class="bi bi-search"></i></button>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="event-table container">
+                <form id="deleteForm" action="/hereevent/admin/reserve/cancel" method="post">
+                    <div class="row align-items-center text-center table-title">
+                        <div class="select">
+                            <input type="checkbox" name="select-all" onclick="selectAll(this)">
+                        </div>
+                        <div class="event-no">번호</div>
+                        <div class="event-img">사진</div>
+                        <div class="event-name">이벤트명</div>
+                        <div class="event-date">예약자명</div>
+                        <div class="event-delete">예약일자</div>
+                        <div class="event-delete">상태</div>
+                        <div class="event-delete">취소</div>
+                    </div>
+
+                    <div class="table-row" th:each="reserve : ${reserveList}">
+                        <div class="row align-items-center">
+                            <div class="select text-center">
+                                <input type="checkbox" name="select" th:value="${reserve.reserve_no}" onclick="checkSelectAll()">
+                            </div>
+                            <div class="event-no">[[${reserve.reserve_no}]]</div>
+                            <div class="event-img text-center event-image">
+                                <a th:href="|@{/event/}${reserve.event_no}|">
+                                    <!--th:src="|@{/download/event/}${event.img_path}|"-->
+                                    <img th:if="${reserve.img_path != null}" th:src="|@{/download/event/}${reserve.img_path}|" th:alt="${reserve.img_path}">
+                                    <img th:unless="${reserve.img_path != null}" th:src="@{/images/default_img.png}" alt="default_img">
+                                </a>
+                            </div>
+                            <div class="event-name">
+                                <a class="my-2" th:href="|@{/event/}${reserve.event_no}|">
+                                    [[${reserve.e_name}]]</a>
+                            </div>
+                            <div class="event-date">
+                                [[${reserve.m_name}]]</a>
+                            </div>
+                            <div class="event-date">
+                                [[${reserve.reserve_date}]]/[[${reserve.reserve_time}]]</a>
+                            </div>
+                            <div class="event-date">
+                                [[${reserve.state}]]</a>
+                            </div>
+                            <div class="event-delete text-center">
+                                <button type="button" class="delete-btn btn btn-primary" th:value="${reserve.reserve_no}">취소</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- 페이지네이션-->
+            <nav>
+                <ul class="pagination justify-content-center">
+
+                </ul>
+            </nav>
+        </div>
+
+
+    </section><!-- End event Section -->
+    
+</main>
+</body>
+</html>
