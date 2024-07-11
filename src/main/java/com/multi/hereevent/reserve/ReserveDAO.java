@@ -1,7 +1,9 @@
 package com.multi.hereevent.reserve;
 
 import com.multi.hereevent.dto.ReserveDTO;
+import com.multi.hereevent.dto.ReviewDTO;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ReserveDAO {
@@ -12,4 +14,8 @@ public interface ReserveDAO {
     void updateReservation(Map<String, Object> params);
     int checkDuplicateReservation(int event_no, int member_no, String reserve_date, String reserve_time);
     ReserveDTO selectReserve(Map<String, Object> params);
+    // 페이징 처리
+    int countReserveWithPage(Map<String, Object> params);
+    List<ReserveDTO> selectReserveWithPage(Map<String, Object> params);
+    int cancelReserve(List<Integer> reserveNo); // 취소
 }
