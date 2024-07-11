@@ -45,6 +45,7 @@
 		AND member_no = #{member_no}
 		AND reserve_date = #{reserve_date}
 		AND reserve_time = #{reserve_time}
+	</select>
 	<select id="selectReserve" parameterType="map" resultType="reserve">
 		select * from reserve
 		where event_no = #{event_no} and member_no = #{member_no} AND reserve_date=#{reserve_date} AND reserve_time=#{reserve_time}
