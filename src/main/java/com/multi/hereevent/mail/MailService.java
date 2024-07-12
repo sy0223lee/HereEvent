@@ -10,6 +10,7 @@ import com.multi.hereevent.wait.WaitService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -19,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MailService {
@@ -118,8 +120,10 @@ public class MailService {
     @Scheduled(cron = "0 0 9 ? * 1") // 매주 월요일 9시마다 실행
     public void sendRecommendEmail() {
         List<MemberDTO> memberList = memberService.selectAllMember(); // 모든 멤버 조회
+        log.info("[memberList size] {}", memberList.size());
         for (MemberDTO member : memberList) {
             List<EventDTO> eventList = eventService.selectNewEvent(member.getMember_no()); // 관심 카테고리 중 오픈 예정인 이벤트 조회
+            log.info("[eventList size] {} : {}", member.getMember_no(), eventList.size());
 
             if(!eventList.isEmpty()) { // 이벤트 리스트가 비어있지 않은 경우만 이메일 전송
                 try {
