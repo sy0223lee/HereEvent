@@ -100,7 +100,7 @@ public class AdminController {
     public String memberUpdate(MemberDTO member) {
         MultipartFile memberImg = member.getProfile_img();
         if(!memberImg.isEmpty()) {
-            String storeFilename = null;
+            String storeFilename;
             try {
                 storeFilename = fileUploadService.uploadProfileImg(memberImg);
                 member.setImg_path(storeFilename);
@@ -161,8 +161,7 @@ public class AdminController {
     }
     @GetMapping("/admin/event/insert")
     public String createEventPage(Model model){
-        List<CategoryDTO> categoryList = new ArrayList<>();
-        categoryList = categoryService.getListCategory();
+        List<CategoryDTO> categoryList  = categoryService.getListCategory();
         model.addAttribute("categoryList",categoryList);
         // 시간을 나타내는 문자열 리스트 생성
         List<String> hours = new ArrayList<>();
@@ -179,7 +178,7 @@ public class AdminController {
         event.setAddr(event.getAddr()+event.getDetailAddress()+event.getExtraAddress());
         //행사 이미지 등록하기
         MultipartFile eventImg = event.getEvent_img();
-        String storeFilename = null;
+        String storeFilename;
         try {
             storeFilename = fileUploadService.uploadEventImg(eventImg);
             event.setImg_path(storeFilename);
@@ -214,8 +213,7 @@ public class AdminController {
     }
     @GetMapping("/admin/event/update/{event_no}")
     public String updateEventPage(@PathVariable("event_no") int event_no, Model model){
-        List<CategoryDTO> categoryList = new ArrayList<>();
-        categoryList = categoryService.getListCategory();
+        List<CategoryDTO> categoryList  = categoryService.getListCategory();
         model.addAttribute("categoryList",categoryList);
         EventDTO event = eventService.getEventDetails(event_no);
         model.addAttribute("event",event);
@@ -237,7 +235,7 @@ public class AdminController {
 //        log.info("eventTimeList::>>"+eventTimeList);
         eventTimeService.updateEventTImeList(eventTimeList);
         MultipartFile eventImg = event.getEvent_img();
-        String storeFilename = null;
+        String storeFilename;
         try {
             storeFilename = fileUploadService.uploadEventImg(eventImg);
             event.setImg_path(storeFilename);

@@ -1,18 +1,12 @@
 package com.multi.hereevent.wait;
 
-import com.multi.hereevent.dto.EventDTO;
-import com.multi.hereevent.dto.MemberDTO;
 import com.multi.hereevent.dto.WaitDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-
-
 import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class WaitDAOImpl implements WaitDAO {

@@ -29,8 +29,8 @@
 		VALUES (#{event_no}, #{member_no}, #{reserve_date}, #{reserve_time})
 	</insert>
 	<!-- 예약 취소 -->
-	<delete id="deleteReservation" parameterType="map">
-		delete from reserve
+	<delete id="cancelReservation" parameterType="map">
+		update reserve set state='cancel'
 		where event_no = #{event_no} and member_no = #{member_no} AND reserve_date=#{reserve_date} AND reserve_time=#{reserve_time}
 	</delete>
 	<update id="cancelReserve">

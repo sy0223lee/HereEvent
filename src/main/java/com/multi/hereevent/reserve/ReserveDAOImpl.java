@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 @Repository
 @RequiredArgsConstructor
 public class ReserveDAOImpl implements ReserveDAO{
@@ -28,8 +29,8 @@ public class ReserveDAOImpl implements ReserveDAO{
     }
 
     @Override
-    public int deleteReservation(Map<String, Object> params) {
-        return sqlSession.delete("com.multi.hereevent.reserve.deleteReservation", params);
+    public int cancelReservation(Map<String, Object> params) {
+        return sqlSession.delete("com.multi.hereevent.reserve.cancelReservation", params);
     }
 
     @Override

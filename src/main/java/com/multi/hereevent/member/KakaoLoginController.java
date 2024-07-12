@@ -64,7 +64,7 @@ public class KakaoLoginController {
         JSONParser parser = new JSONParser();
         JSONObject object = (JSONObject) parser.parse(responseBody);
         String accessToken = (String) object.get("access_token");
-        log.info("===카카오 토큰 발급==="+accessToken);
+        log.info("===카카오 토큰 발급==={}", accessToken);
         getUserInfo(accessToken, model);
 
         return "redirect:/main";
@@ -87,21 +87,21 @@ public class KakaoLoginController {
 
         // 출력
         String responseBody = response.getBody();
-        log.info("responseBody=========>"+responseBody);
+        log.info("responseBody=========>{}", responseBody);
         JSONParser parser = new JSONParser();
         JSONObject root = (JSONObject) parser.parse(responseBody);
         JSONObject properties = (JSONObject) root.get("properties");
         JSONObject kakaoAccount = (JSONObject) root.get("kakao_account");
-        log.info("root===>"+root);
-        log.info("properties===>"+properties);
-        log.info("kakaoAccount===>"+kakaoAccount);
+        log.info("root===>{}", root);
+        log.info("properties===>{}", properties);
+        log.info("kakaoAccount===>{}", kakaoAccount);
 
         String email = (String) kakaoAccount.get("email");
-        log.info("email===>"+email);
+        log.info("email===>{}", email);
         String pass = "kakao"; // 소셜 로그인의 경우 패스워드를 따로 저장하지 않으므로 어느 사이트 로그인인지 저장
         String name = "kakao";
         String nick = (String) properties.get("nickname");
-        log.info("nick===>"+nick);
+        log.info("nick===>{}", nick);
         String tel = "kakao";
 
         MemberDTO member = service.findMemberByEmail(email);

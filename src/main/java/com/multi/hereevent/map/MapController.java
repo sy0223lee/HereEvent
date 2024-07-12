@@ -32,10 +32,6 @@ public class MapController {
 
         return mapService.selectEventWithMap(location, state, type);
     }
-    @GetMapping("/route")
-    public String route(){
-        return "kakaomap/findrouteEX";
-    }
 
     @GetMapping("/searchpath")
     @ResponseBody

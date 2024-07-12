@@ -2,7 +2,6 @@ package com.multi.hereevent.review;
 
 import com.multi.hereevent.dto.ReviewDTO;
 import com.multi.hereevent.dto.ReviewImgDTO;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Map;
