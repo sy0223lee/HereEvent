@@ -76,7 +76,7 @@
 
             <div class="d-flex align-items-center justify-content-between admin-search">
 
-                <button type="button" class="btn btn-primary" onclick="submitDeleteForm()">선택 삭제</button>
+                <button type="button" class="btn btn-primary" onclick="submitDeleteForm()">선택 취소</button>
 
                 <div class="search-widget">
                     <form action="/hereevent/admin/wait" method="get" class="d-flex justify-content-start">
@@ -107,7 +107,7 @@
                         <div class="state">상태</div>
                         <div class="email">이메일</div>
                         <div class="wait-date">대기일</div>
-                        <div class="show-detail">상세보기</div>
+                        <div class="show-detail">취소</div>
                     </div>
 
                     <div class="table-row" th:each="wait : ${waitList}">
@@ -138,7 +138,7 @@
                                 <!-- 대기자 상세보기 버튼 -->
                                 <th:block th:if="${wait.state} != 'cancel'">
                                     <button type="button" id="deleteOne" class="btn btn-primary" th:value="${wait.wait_no}">
-                                        <input type="hidden" value="cancel" />취소
+                                        <input type="hidden" value="cancel"/>취소
                                     </button>
                                 </th:block>
                             </div>

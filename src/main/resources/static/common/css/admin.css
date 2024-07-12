@@ -78,7 +78,7 @@ svg > g:nth-child(3) > text{
 
 .review-container .event-image img,
 .member-container .member-image img,
-.wait-container .member-image img{
+.wait-container .event-image img{
     width: 80px;
     height: 80px;
     overflow: hidden;
@@ -163,7 +163,10 @@ svg > g:nth-child(3) > text{
 /* 후기 관리 페이지 */
 .review-table .select{width: 5%;}
 .review-table .event-img{width: 8%;}
-.review-table .event-name{width: 37%;}
+.review-table .event-name{width: 37%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;}
 .review-table .writer{width: 10%;}
 .review-table .star{width: 10%;}
 .review-table .write-date{width: 10%;}
@@ -207,20 +210,24 @@ svg > g:nth-child(3) > text{
 /* 대기 관리 페이지 */
 .wait-table .select{width: 5%;}
 .wait-table .event-img{width: 8%;}
-.wait-table .event-name{width: 37%;}
-.wait-table .wait-no{width: 10%;}
-.wait-table .state{width: 10%;}
-.wait-table .email{width: 10%;}
-.wait-table .wait-date{width: 10%;}
+.wait-table .event-name{width: 25%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;}
+.wait-table .wait-no{width: 5%;}
+.wait-table .state{width: 8%;}
+.wait-table .email{width: 22%;}
+.wait-table .wait-date{width: 17%;}
 .wait-table .show-detail{width: 10%;}
 
 
 /* 예약 관리 페이지 */
 .reserve-no{width: 5%; text-align: center;}
-.event-img{width: 13%; text-align: center;}
-.event-name{width: 37%;}
-.reserve-name{width: 10%; text-align: center;}
+.event-table .event-img{text-align: center;}
+.reserve-name{width: 10%; text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;}
 .reserve-date{width: 10%; text-align: center;}
 .reserve-state{width: 10%; text-align: center;}
 .reserve-delete{width: 10%;}
-
