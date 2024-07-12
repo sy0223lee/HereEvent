@@ -3,7 +3,6 @@ package com.multi.hereevent.wait;
 import com.multi.hereevent.dto.WaitDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
-import org.openqa.selenium.support.ui.Wait;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
