@@ -30,7 +30,7 @@ public class ReserveDAOImpl implements ReserveDAO{
 
     @Override
     public int cancelReservation(Map<String, Object> params) {
-        return sqlSession.delete("com.multi.hereevent.reserve.cancelReservation", params);
+        return sqlSession.update("com.multi.hereevent.reserve.cancelReservation", params);
     }
 
     @Override
