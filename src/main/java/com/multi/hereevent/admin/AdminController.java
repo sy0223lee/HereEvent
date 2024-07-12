@@ -256,23 +256,22 @@ public class AdminController {
     }
     @PostMapping("/admin/event/update")
     public String updateEvent(EventDTO event) {
-        System.out.println("event::>>"+event);
-//        log.info("event::>>"+event);
-        List<EventTimeDTO> eventTimeList = parseEventTimes(event.getEvent_no(),event.getEvent_time());
-//        log.info("eventTimeList::>>"+eventTimeList);
+        List<EventTimeDTO> eventTimeList = parseEventTimes(event.getEvent_no(), event.getEvent_time());
         eventTimeService.updateEventTImeList(eventTimeList);
         MultipartFile eventImg = event.getEvent_img();
-        String storeFilename;
-        try {
-            storeFilename = fileUploadService.uploadEventImg(eventImg);
-            event.setImg_path(storeFilename);
-            event.setAddr(event.getAddr()+event.getDetailAddress()+event.getExtraAddress());
-            eventService.updateEvent(event);
-            System.out.println("eventupdate::>>"+event);
-            return "redirect:/admin/event";
-        } catch (IOException e) {
-            return "common/errorPage";
+        if (!eventImg.isEmpty()) {
+            String storeFilename;
+            try {
+                storeFilename = fileUploadService.uploadEventImg(eventImg);
+                event.setImg_path(storeFilename);
+                event.setAddr(event.getAddr() + event.getDetailAddress() + event.getExtraAddress());
+
+            } catch (IOException e) {
+                return "common/errorPage";
+            }
         }
+        eventService.updateEvent(event);
+        return "redirect:/admin/event";
     }
     @PostMapping("/admin/event/delete")
     public String deleteOneEvent(@RequestParam("event_no") String event_no){
