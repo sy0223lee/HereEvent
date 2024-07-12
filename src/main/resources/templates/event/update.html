@@ -43,7 +43,8 @@
         <label class="form-label" for="category">*카테고리:</label>
         <select class="form-select" id="category" name="category_no">
             <!-- DB에서 카테고리 목록을 가져와서 option으로 지정 -->
-            <option th:each="category : ${categoryList}" th:value="${category.category_no}" th:text="${category.name}"></option>
+            <option th:each="category : ${categoryList}" th:value="${category.category_no}" th:text="${category.name}"
+                    th:selected="${category.category_no}==${event.category_no}"></option>
             <!-- 예시: 실제 데이터는 서버에서 동적으로 추가 -->
         </select>
         <input class="form-input" type="hidden" id="event_no" name="event_no" th:value="${event.event_no}">
@@ -62,78 +63,92 @@
         <input type="hidden" th:value="월" name="event_time">
         <select id="mon_start" name="event_time">
             <option>휴무</option>
-            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}" ></option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"
+                    th:selected="${hour} == ${openTimes[0]}"></option>
         </select>
         ~
         <select id="mon_end" name="event_time">
             <option>휴무</option>
-            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"
+                    th:selected="${hour} == ${closeTimes[0]}"></option>
         </select><br>
         <input type="hidden" th:value="화" name="event_time">
         <label class="form-label">화요일:</label>
         <select id="tue_start" name="event_time">
             <option>휴무</option>
-            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"
+                    th:selected="${hour} == ${openTimes[1]}"></option>
         </select>
         ~
         <select id="tue_end" name="event_time">
             <option>휴무</option>
-            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"
+                    th:selected="${hour} == ${closeTimes[1]}"></option>
         </select><br>
         <input type="hidden" th:value="수" name="event_time">
         <label class="form-label">수요일:</label>
         <select id="wed_start" name="event_time">
             <option>휴무</option>
-            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"
+                    th:selected="${hour} == ${openTimes[2]}"></option>
         </select>
         ~
         <select id="wed_end" name="event_time">
             <option>휴무</option>
-            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"
+                    th:selected="${hour} == ${closeTimes[2]}"></option>
         </select><br>
         <input type="hidden" th:value="목" name="event_time">
         <label class="form-label">목요일:</label>
         <select id="thu_start" name="event_time">
             <option>휴무</option>
-            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"
+                    th:selected="${hour} == ${openTimes[3]}"></option>
         </select>
         ~
         <select id="thu_end" name="event_time">
             <option>휴무</option>
-            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"
+                    th:selected="${hour} == ${closeTimes[3]}"></option>
         </select><br>
         <input type="hidden" th:value="금" name="event_time">
         <label class="form-label">금요일:</label>
         <select id="fri_start" name="event_time">
             <option>휴무</option>
-            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"
+                    th:selected="${hour} == ${openTimes[4]}"></option>
         </select>
         ~
         <select id="fri_end" name="event_time">
             <option>휴무</option>
-            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"
+                    th:selected="${hour} == ${closeTimes[4]}"></option>
         </select><br>
         <input type="hidden" th:value="토" name="event_time">
         <label class="form-label">토요일:</label>
         <select id="sat_start" name="event_time">
             <option>휴무</option>
-            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"
+                    th:selected="${hour} == ${openTimes[5]}"></option>
         </select>
         ~
         <select id="sat_end" name="event_time">
             <option>휴무</option>
-            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"
+                    th:selected="${hour} == ${closeTimes[5]}"></option>
         </select><br>
         <input type="hidden" th:value="일" name="event_time">
         <label class="form-label">일요일:</label>
         <select id="sun_start" name="event_time">
             <option>휴무</option>
-            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"
+                    th:selected="${hour} == ${openTimes[6]}"></option>
         </select>
         ~
         <select id="sun_end" name="event_time">
             <option>휴무</option>
-            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"></option>
+            <option th:each="hour : ${hours}" th:value="${hour}" th:text="${hour}"
+                    th:selected="${hour} == ${closeTimes[6]}"></option>
         </select><br>
         <div class="addr-place">
             <label class="form-label" for="address">*주소:</label>
@@ -160,7 +175,7 @@
                  th:src="|@{/download/event/}${event.img_path}|">
         </div>
         <label class="form-label" for="image">*대표 이미지:</label>
-        <input class="form-input" type="file" id="image" name="event_img" accept="image/*" required>
+        <input class="form-input" type="file" id="image" name="event_img" accept="image/*">
 
         <label class="form-label">참여 방식:</label>
         <div class="radio-group">
@@ -174,12 +189,14 @@
 
         <label class="form-label" for="reserve_limit">예약 제한 인원:</label>
         <select class="form-select" id="reserve_limit" name="reserve_limit">
-            <option th:each="i : ${#numbers.sequence(10, 100, 10)}" th:value="${i}" th:text="${i} + '명'"></option>
+            <option th:each="i : ${#numbers.sequence(0, 100, 10)}" th:value="${i}" th:text="${i} + '명'"
+                    th:selected="${i} == ${event.reserve_limit}"></option>
         </select>
 
         <label class="form-label" for="wait_limit">대기 제한 인원:</label>
         <select class="form-select" id="wait_limit" name="wait_limit">
-            <option th:each="i : ${#numbers.sequence(10, 100, 10)}" th:value="${i}" th:text="${i} + '명'"></option>
+            <option th:each="i : ${#numbers.sequence(0, 100, 10)}" th:value="${i}" th:text="${i} + '명'"
+                    th:selected="${i} == ${event.wait_limit}"></option>
         </select>
 
         <div id="btn-box">

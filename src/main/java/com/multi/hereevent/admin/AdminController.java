@@ -218,20 +218,44 @@ public class AdminController {
         categoryList = categoryService.getListCategory();
         model.addAttribute("categoryList",categoryList);
         EventDTO event = eventService.getEventDetails(event_no);
+        System.out.println("event::"+event);
         model.addAttribute("event",event);
         List<EventTimeDTO> eventTimeList = eventTimeService.getEventTime(event_no);
+        System.out.println("eventTimeList::"+eventTimeList);
+        List<String> openTimes = new ArrayList<>();
+        List<String> closeTimes = new ArrayList<>();
+        for (EventTimeDTO eventTime : eventTimeList) {
+            String openTime = eventTime.getOpen_time();
+            String closeTime = eventTime.getClose_time();
+            if (openTime != null) {
+                openTimes.add(openTime.substring(0, 5));
+            } else {
+                openTimes.add("휴무"); // 기본값을 설정하거나 빈 값 추가
+            }
+            if (closeTime != null) {
+                closeTimes.add(closeTime.substring(0, 5));
+            } else {
+                closeTimes.add("휴무"); // 기본값을 설정하거나 빈 값 추가
+            }
+        }
+        model.addAttribute("openTimes", openTimes);
+        System.out.println("opentimes:::"+openTimes);
+        model.addAttribute("closeTimes", closeTimes);
+        System.out.println("closetimes:::"+closeTimes);
 //        log.info(eventTimeList.toString());
         model.addAttribute("eventTimeList",eventTimeList);
         // 시간을 나타내는 문자열 리스트 생성
         List<String> hours = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
             hours.add(String.format("%02d:00", i));
+            hours.add(String.format("%02d:30", i));
         }
         model.addAttribute("hours", hours);
         return "event/update";
     }
     @PostMapping("/admin/event/update")
     public String updateEvent(EventDTO event) {
+        System.out.println("event::>>"+event);
 //        log.info("event::>>"+event);
         List<EventTimeDTO> eventTimeList = parseEventTimes(event.getEvent_no(),event.getEvent_time());
 //        log.info("eventTimeList::>>"+eventTimeList);
@@ -243,6 +267,7 @@ public class AdminController {
             event.setImg_path(storeFilename);
             event.setAddr(event.getAddr()+event.getDetailAddress()+event.getExtraAddress());
             eventService.updateEvent(event);
+            System.out.println("eventupdate::>>"+event);
             return "redirect:/admin/event";
         } catch (IOException e) {
             return "common/errorPage";
