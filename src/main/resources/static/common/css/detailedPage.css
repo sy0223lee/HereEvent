@@ -276,6 +276,12 @@
         margin: 0 auto;
     }
 }
+@media (max-width: 767px) {
+    .event-time-container {
+        width: 157px;
+        margin: 0 auto;
+    }
+}
 
 .event-time{
     display: flex;
