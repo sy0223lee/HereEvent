@@ -77,6 +77,19 @@
         WHERE wait_no = #{wait_no}
     </update>
 
+    <!-- 선택 업데이트    -->
+    <!-- updateStateSelect -->
+    <update id="updateStateSelect" parameterType="wait">
+        <foreach item="item" index="index" collection="list" open="" separator=";" close="">
+            UPDATE wait
+            <set>
+            state = #{item.state},
+            wait_date = #{item.wait_date},
+            send_mail = #{item.send_mail}
+            </set>
+            WHERE wait_no = #{item.wait_no}
+        </foreach>
+    </update>
     <!-- 1번 대기와 4번 대기 조회, wait_date 와 send_mail 수정하기 위해 조회 -->
     <select id="selectWaitToUpdate" resultType="wait">
         select *
@@ -85,5 +98,52 @@
             where event_no = #{event_no} and state in ("wait", "able")) w
         where num in (1, 4)
         order by num
+    </select>
+
+    <select id="countWaitWithPage" parameterType="map" resultType="int">
+        select count(w.wait_no)
+        from wait w
+        <choose>
+            <when test="type == null">
+            </when>
+            <when test='type == "event"'>
+                where w.event_no in (
+                select e.event_no
+                from event e
+                where e.name like concat('%', #{keyword}, '%'))
+            </when>
+            <when test='type == "state"'>
+                where w.state like concat('%', #{keyword}, '%')
+            </when>
+
+            <when test='type == "wait_date"'>
+                where wait_date >= #{keyword} and wait_date &lt; date_add(#{keyword}, interval 1 day)
+            </when>
+        </choose>
+    </select>
+
+    <select id="selectWaitWithPage" parameterType="map" resultType="wait">
+        select w.*, e.name, e.img_path
+        from wait w
+        inner join event e on w.event_no = e.event_no
+        <choose>
+            <when test="type == null">
+            </when>
+            <when test='type == "event"'>
+                where w.event_no in (
+                select e.event_no
+                from event e
+                where e.name like concat('%', #{keyword}, '%'))
+            </when>
+            <when test='type == "state"'>
+                where w.state like concat('%', #{keyword}, '%')
+            </when>
+
+            <when test='type == "wait_date"'>
+                where wait_date >= #{keyword} and wait_date &lt; date_add(#{keyword}, interval 1 day)
+            </when>
+        </choose>
+        order by w.wait_no desc
+        limit ${offset}, ${pageSize}
     </select>
 </mapper>
