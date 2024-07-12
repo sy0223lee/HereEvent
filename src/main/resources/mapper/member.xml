@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.multi.hereevent.member">
 	<select id="selectAllMember" resultType="member">
-		select * from member where mgr = 0
+		select * from member
 	</select>
 	<insert id="insert" parameterType="member" >
 		insert into member (email, pass, name, nick, tel, birth,img_path, mgr)
