@@ -40,9 +40,9 @@
         <div class="container section-title">
             <h2>프로필 수정</h2>
             <div class="profile-img-area" id="profile-img">
-                <img th:if="${session.member.img_path == null}"
+                <img th:if="${session.member.img_path == null || session.member.img_path == ''}"
                      th:src="@{/images/default_img.png}" alt="default_profile">
-                <img th:unless="${session.member.img_path == null}"
+                <img th:unless="${session.member.img_path == null || session.member.img_path == ''}"
                      th:src="|@{/download/profile/}${session.member.img_path}|" th:alt="${session.member.img_path}">
             </div>
             <button type="button" onclick="location.href='/hereevent/mypage/edit-profile-img'"

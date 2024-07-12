@@ -50,9 +50,9 @@
 
 
         <div id="profile-img">
-            <img th:if="${editMember.img_path == null}"
+            <img th:if="${editMember.img_path == null || editMember.img_path == ''}"
                  th:src="@{/images/default_img.png}" alt="default_profile">
-            <img th:unless="${editMember.img_path == null}"
+            <img th:unless="${editMember.img_path == null || editMember.img_path == ''}"
                  th:src="|@{/download/profile/}${editMember.img_path}|">
             <input type="hidden" name="img_path" th:value="${editMember.img_path}">
         </div>
