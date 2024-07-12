@@ -1,7 +1,6 @@
 package com.multi.hereevent.wait;
 
 import com.multi.hereevent.dto.WaitDTO;
-import org.openqa.selenium.support.ui.Wait;
 
 import java.util.List;
 import java.util.Map;
