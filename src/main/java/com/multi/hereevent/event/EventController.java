@@ -4,8 +4,6 @@ import com.multi.hereevent.category.CategoryService;
 import com.multi.hereevent.dto.*;
 import com.multi.hereevent.event.interest.EventInterestService;
 import com.multi.hereevent.event.time.EventTimeService;
-import com.multi.hereevent.fileupload.FileUploadService;
-import com.multi.hereevent.mail.MailService;
 import com.multi.hereevent.review.ReviewService;
 
 import com.multi.hereevent.wait.WaitService;
@@ -34,8 +32,6 @@ public class EventController {
     private final EventTimeService eventTimeService;
     private final CategoryService categoryService;
     private final WaitService waitService;
-    private final FileUploadService fileUploadService;
-    private final MailService mailService;
 
     @GetMapping("/main")
     public String mainPage(Model model) {
@@ -117,9 +113,9 @@ public class EventController {
 
         List<EventTimeDTO> eventTime = eventTimeService.getEventTime(event_no);
         List<CategoryDTO> category = categoryService.getListCategory();
-        log.info("시작일===>"+eventDetails.getStart_date());
+        log.info("시작일===>{}", eventDetails.getStart_date());
         List<ReviewDTO> reviewList = reviewService.selectReviewByEventNo(event_no);
-        log.info(eventTime.toString());
+//        log.info(eventTime.toString());
         List<String> closedDays = eventTimeService.getHolidayDays(event_no);
         int eventInterest = eventService.getEventInterest(event_no);
         model.addAttribute("event", eventDetails);

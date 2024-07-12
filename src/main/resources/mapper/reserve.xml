@@ -29,10 +29,18 @@
 		VALUES (#{event_no}, #{member_no}, #{reserve_date}, #{reserve_time})
 	</insert>
 	<!-- 예약 취소 -->
-	<delete id="deleteReservation" parameterType="map">
-		delete from reserve
+	<update id="cancelReservation" parameterType="map">
+		update reserve set state='cancel'
 		where event_no = #{event_no} and member_no = #{member_no} AND reserve_date=#{reserve_date} AND reserve_time=#{reserve_time}
-	</delete>
+	</update>
+	<update id="cancelReserve">
+		UPDATE reserve
+		SET state = 'cancel'
+		WHERE reserve_no IN
+		<foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
 	<update id="updateReservation" parameterType="map">
 		update reserve
 		set state = "visit"
@@ -49,5 +57,51 @@
 	<select id="selectReserve" parameterType="map" resultType="reserve">
 		select * from reserve
 		where event_no = #{event_no} and member_no = #{member_no} AND reserve_date=#{reserve_date} AND reserve_time=#{reserve_time}
+	</select>
+	<select id="countReserveWithPage" parameterType="map" resultType="int">
+		select count(r.reserve_no)
+		from reserve r
+		<choose>
+			<when test="type == all">
+				where r.state="reserve"
+			</when>
+			<when test='type == "event"'>
+				where r.event_no in (
+				select e.event_no
+				from event e
+				where e.name like concat('%', #{keyword}, '%')) AND  r.state = "reserve"
+			</when>
+			<when test='type == "name"'>
+				where r.member_no in (
+				select m.member_no
+				from member m
+				where m.name like concat('%', #{keyword}, '%')) AND  r.state = "reserve"
+			</when>
+		</choose>
+	</select>
+	<select id="selectReserveWithPage" parameterType="map" resultType="reserve">
+		select r.*, e.img_path, e.name as e_name, m.name as m_name
+		from reserve r
+		inner join member m on r.member_no = m.member_no
+		inner join event e on r.event_no = e.event_no
+		<choose>
+			<when test="type == all">
+				where r.state="reserve"
+			</when>
+			<when test='type == "event"'>
+				where r.event_no in (
+				select e.event_no
+				from event e
+				where e.name like concat('%', #{keyword}, '%')) AND  r.state = "reserve"
+			</when>
+			<when test='type == "name"'>
+				where r.member_no in (
+				select m.member_no
+				from member m
+				where m.name like concat('%', #{keyword}, '%')) AND  r.state = "reserve"
+			</when>
+		</choose>
+		order by r.reserve_no desc
+		limit ${offset}, ${pageSize}
 	</select>
 </mapper>

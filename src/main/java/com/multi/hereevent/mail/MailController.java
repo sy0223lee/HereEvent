@@ -1,4 +1,4 @@
-package com.multi.hereevent.event.crawling;
+package com.multi.hereevent.mail;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class CrawlingController {
-    private final CrawlingService service;
+public class MailController {
+    private final MailService mailService;
 
-    @GetMapping("/crawling")
-    public String crawling(){
-        log.info("crawling");
-        service.insertEventInfo();
+    @GetMapping("/send-mail")
+    public String SendRecommend(){
+        log.info("send-mail");
+        mailService.sendRecommendEmail();
         return "redirect:/admin";
     }
 }

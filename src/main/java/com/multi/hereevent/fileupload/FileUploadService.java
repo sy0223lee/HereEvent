@@ -36,7 +36,7 @@ public class FileUploadService {
 
     // 리뷰 사진 저장
     public List<ReviewImgDTO> uploadReviewImg(List<MultipartFile> multipartFiles) throws IOException {
-        List<ReviewImgDTO> imgList = new ArrayList<ReviewImgDTO>();
+        List<ReviewImgDTO> imgList = new ArrayList<>();
         for(MultipartFile multipartFile : multipartFiles) {
             if(!multipartFile.isEmpty()) {
                 String storeFilename = "";

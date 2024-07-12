@@ -58,7 +58,7 @@ public class ReserveController {
         return json.toJSONString();
     }
     @GetMapping("/reservation/delete")
-    public String deleteReservation(@RequestParam("event_no") int event_no,
+    public String cancelReservation(@RequestParam("event_no") int event_no,
                                     @RequestParam("reserve_date") String reserve_date,
                                     @RequestParam("reserve_time") String reserve_time,
                                     Model model) {
@@ -77,7 +77,7 @@ public class ReserveController {
             params.put("reserve_time", reserve_time);
 
             // 예약 삭제 서비스 호출
-            reserveService.deleteReservation(params);
+            reserveService.cancelReservation(params);
         } else {
             // 회원 정보가 세션에 없는 경우, 예외 처리
             throw new IllegalStateException("Member not found in session");

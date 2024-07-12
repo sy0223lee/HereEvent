@@ -85,10 +85,12 @@
     </div>
     <div id="map-box">
         <div id="map">
-            <div id="my-loc">
-                <input type="button" class="btn-check" name="my-location" id="my-location" value="my-location">
-                <label class="btn btn-success" for="my-location"><i class="bi bi-crosshair"></i> 내 위치</label>
-            </div>
+            <!-- localhost 에서는 잘 동작했지만 서버에 배포 하면서
+                 http 사용으로 인한 보안 문제로 내 위치를 가져올 수 없게 됨... -->
+<!--            <div id="my-loc">-->
+<!--                <input type="button" class="btn-check" name="my-location" id="my-location" value="my-location">-->
+<!--                <label class="btn btn-success" for="my-location"><i class="bi bi-crosshair"></i> 내 위치</label>-->
+<!--            </div>-->
         </div>
     </div>
     <div id="list-box" class="event-list container">

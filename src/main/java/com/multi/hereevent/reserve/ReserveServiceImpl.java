@@ -2,9 +2,13 @@ package com.multi.hereevent.reserve;
 
 import com.multi.hereevent.dto.ReserveDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -47,7 +51,7 @@ public class ReserveServiceImpl implements ReserveService{
     }
 
     @Override
-    public int deleteReservation(Map<String, Object> params) {
+    public void cancelReservation(Map<String, Object> params) {
         // String 타입의 날짜와 시간을 java.sql.Date와 java.sql.Time으로 변환
         String reserveDateStr = (String) params.get("reserve_date");
         String reserveTimeStr = (String) params.get("reserve_time");
@@ -57,7 +61,7 @@ public class ReserveServiceImpl implements ReserveService{
 
         params.put("reserve_date", reserveDate);
         params.put("reserve_time", reserveTime);
-        return dao.deleteReservation(params);
+        dao.cancelReservation(params);
     }
 
     @Override
@@ -82,6 +86,20 @@ public class ReserveServiceImpl implements ReserveService{
         params.put("reserve_date", reserve_date);
         params.put("reserve_time", reserve_time);
         return dao.selectReserve(params);
+    }
+
+    @Override
+    public Page<ReserveDTO> selectReserveWithPage(Map<String, Object> params, Pageable page) {
+        int count = dao.countReserveWithPage(params);
+        params.put("offset", page.getOffset());
+        params.put("pageSize", page.getPageSize());
+        List<ReserveDTO> reserveList = dao.selectReserveWithPage(params);
+        return new PageImpl<>(reserveList, page, count);
+    }
+
+    @Override
+    public int cancelReserve(List<Integer> reserveNo) {
+        return dao.cancelReserve(reserveNo);
     }
 
 }

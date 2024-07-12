@@ -162,15 +162,9 @@
 .time-button {
     margin: 5px;
     padding: 10px 20px;
-    background-color: pink;
-    color: black;
-    cursor: pointer;
-}
-.time-button:hover {
-    color: #darkred;
 }
 .selected-button {
-    background-color: pink;
+    background-color: var(--default-color);
     color: white;
 }
 
@@ -239,25 +233,29 @@
     border: 1px solid #ddd;
     transition: background-color 0.3s;
 }
-#calendar td:hover {
-    background-color: #f0f0f0;
+
+#calendar td.within-event:hover {
+    background-color: rgba(225, 69, 51, 0.7);
+    color: white;
 }
-#calendar .selected {
-    background-color: var(--accent-color);
+#calendar .within-event.selected {
+    background-color: rgba(225, 69, 51, 0.7);
     color: white;
 }
 #calendar .disabled {
     background: none;
     color: #aaa;
-    cursor: not-allowed;
+    cursor: default;
 }
-#calendar .within-event.disabled {
+#calendar .within-event.disabled,
+#calendar .within-event.disabled:hover{
     background: none;
     color: #aaa;
-    cursor: not-allowed;
+    cursor: default;
 }
+
 #calendar .within-event {
-    background-color: pink;
+    background-color: rgba(225, 69, 51, 0.3);
     cursor: pointer;
 }
 .reservation form {
@@ -266,21 +264,6 @@
 .reservation input[type="radio"] {
     margin: 0 10px;
 }
-.reservation button[type="submit"], .reservation button[type="button"] {
-    margin-top: 10px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: var(--accent-color);
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-.reservation button[type="submit"]:hover, .reservation button[type="button"]:hover {
-    background-color: darkred;
-}
-
 
 /* 상세페이지 - 길찾기 */
 .map_wrap, .map_wrap * {
@@ -300,20 +283,23 @@
 #category li .category_bg.cafe {background:url('/hereevent/images/map/cafe.svg') no-repeat; background-size:25px;background-position: center;}
 #category li .category_bg.store {background:url('/hereevent/images/map/store.svg') no-repeat; background-size:25px;background-position: center;}
 .placeinfo_wrap {position:absolute;bottom:28px;left:-150px;width:300px;}
-.placeinfo {position:relative;width:100%;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;padding-bottom: 10px;background: #fff;}
+.placeinfo {position:relative;width:100%;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;background: #fff;}
 .placeinfo:nth-of-type(n) {border:0; box-shadow:0 1px 2px #888;}
 .placeinfo_wrap .after {content:'';position:relative;margin-left:-12px;left:50%;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
 .placeinfo a, .placeinfo a:hover, .placeinfo a:active{color:#fff;text-decoration: none;}
 .placeinfo a, .placeinfo span {display: block;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 .placeinfo span {margin:5px 5px 0 5px;cursor: default;font-size:13px;}
-.placeinfo .title {font-weight: bold; font-size:14px;border-radius: 6px 6px 0 0;margin: -1px -1px 0 -1px;    padding-top: 10px;
-    padding-right: 30px;
-    padding-bottom: 10px;
-    padding-left: 10px; display : block; color: #fff;background: #d95050; overflow: hidden;
+.placeinfo .title {font-weight: bold; font-size:14px;border-radius: 6px 6px 0 0;margin: -1px -1px 0 -1px;
+    padding: 10px 30px 10px 10px;
+    display : block; color: #fff;background: #E14533; overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
+    white-space: nowrap;background: #E14533 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
 .placeinfo .tel {color:#0f7833;}
 .placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
+.placeinfo button {
+    margin: 5px 0 5px 5px;
+    padding: 3px;
+}
 
 
 #output { width: 30%; float: left; overflow-y: auto; height: 100vh; border-left: 1px solid #ccc; }

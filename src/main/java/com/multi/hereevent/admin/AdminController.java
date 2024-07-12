@@ -6,6 +6,7 @@ import com.multi.hereevent.event.EventService;
 import com.multi.hereevent.event.time.EventTimeService;
 import com.multi.hereevent.fileupload.FileUploadService;
 import com.multi.hereevent.member.MemberService;
+import com.multi.hereevent.reserve.ReserveService;
 import com.multi.hereevent.review.ReviewService;
 import com.multi.hereevent.wait.WaitService;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,7 @@ public class AdminController {
     private final CategoryService categoryService;
     private final ChartService chartService;
     private final WaitService waitService;
+    private final ReserveService reserveService;
 
     /************** 관리 메인페이지 ************/
     @GetMapping("/admin")
@@ -101,7 +103,7 @@ public class AdminController {
     public String memberUpdate(MemberDTO member) {
         MultipartFile memberImg = member.getProfile_img();
         if(!memberImg.isEmpty()) {
-            String storeFilename = null;
+            String storeFilename;
             try {
                 storeFilename = fileUploadService.uploadProfileImg(memberImg);
                 member.setImg_path(storeFilename);
@@ -162,8 +164,7 @@ public class AdminController {
     }
     @GetMapping("/admin/event/insert")
     public String createEventPage(Model model){
-        List<CategoryDTO> categoryList = new ArrayList<>();
-        categoryList = categoryService.getListCategory();
+        List<CategoryDTO> categoryList  = categoryService.getListCategory();
         model.addAttribute("categoryList",categoryList);
         // 시간을 나타내는 문자열 리스트 생성
         List<String> hours = new ArrayList<>();
@@ -180,7 +181,7 @@ public class AdminController {
         event.setAddr(event.getAddr()+event.getDetailAddress()+event.getExtraAddress());
         //행사 이미지 등록하기
         MultipartFile eventImg = event.getEvent_img();
-        String storeFilename = null;
+        String storeFilename;
         try {
             storeFilename = fileUploadService.uploadEventImg(eventImg);
             event.setImg_path(storeFilename);
@@ -215,8 +216,7 @@ public class AdminController {
     }
     @GetMapping("/admin/event/update/{event_no}")
     public String updateEventPage(@PathVariable("event_no") int event_no, Model model){
-        List<CategoryDTO> categoryList = new ArrayList<>();
-        categoryList = categoryService.getListCategory();
+        List<CategoryDTO> categoryList  = categoryService.getListCategory();
         model.addAttribute("categoryList",categoryList);
         EventDTO event = eventService.getEventDetails(event_no);
         model.addAttribute("event",event);
@@ -238,7 +238,7 @@ public class AdminController {
 //        log.info("eventTimeList::>>"+eventTimeList);
         eventTimeService.updateEventTImeList(eventTimeList);
         MultipartFile eventImg = event.getEvent_img();
-        String storeFilename = null;
+        String storeFilename;
         try {
             storeFilename = fileUploadService.uploadEventImg(eventImg);
             event.setImg_path(storeFilename);
@@ -265,6 +265,7 @@ public class AdminController {
         eventService.deleteEvent(eventNo);
         return "redirect:/admin/event";
     }
+
 
     /************** 대기 ************/
     @GetMapping("/admin/wait")
@@ -310,5 +311,38 @@ public class AdminController {
             return "common/errorPage";
         }
     }
+
+    /************** 예약관리 ************/
+    @GetMapping("/admin/reserve")
+    public String selectReserveWithPage(@RequestParam Map<String, Object> params,
+                                       @PageableDefault(value = 10) Pageable page, Model model){
+        Page<ReserveDTO> result = reserveService.selectReserveWithPage(params, page);
+        model.addAttribute("type", params.get("type"));
+        model.addAttribute("keyword", params.get("keyword"));
+        model.addAttribute("reserveList", result.getContent());
+        model.addAttribute("totalPages", result.getTotalPages());
+        model.addAttribute("totalElements", result.getTotalElements());
+        model.addAttribute("pageNumber", page.getPageNumber());
+        return "admin/reserve";
+    }
+    @PostMapping("/admin/reserve/cancel")
+    public String cancelOneReserve(@RequestParam("reserve_no") String reserve_no){
+        List<Integer> reserveNo = new ArrayList<>();
+        reserveNo.add(Integer.parseInt(reserve_no));
+        int result = reserveService.cancelReserve(reserveNo);
+        if(result > 0){
+            return "redirect:/admin/reserve";
+        }else {
+            return "common/errorPage";
+        }
+    }
+    @PostMapping("/admin/reserve/cancel-select")
+    public String cancelReserve(@RequestParam("select") List<Integer> reserveNo) {
+        reserveService.cancelReserve(reserveNo);
+        return "redirect:/admin/reserve";
+    }
+
+
+
 
 }

@@ -6,7 +6,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 @Repository
 @RequiredArgsConstructor
 public class ReserveDAOImpl implements ReserveDAO{
@@ -27,8 +29,8 @@ public class ReserveDAOImpl implements ReserveDAO{
     }
 
     @Override
-    public int deleteReservation(Map<String, Object> params) {
-        return sqlSession.delete("com.multi.hereevent.reserve.deleteReservation", params);
+    public int cancelReservation(Map<String, Object> params) {
+        return sqlSession.update("com.multi.hereevent.reserve.cancelReservation", params);
     }
 
     @Override
@@ -49,5 +51,20 @@ public class ReserveDAOImpl implements ReserveDAO{
     @Override
     public ReserveDTO selectReserve(Map<String, Object> params) {
         return sqlSession.selectOne("com.multi.hereevent.reserve.selectReserve", params);
+    }
+
+    @Override
+    public int countReserveWithPage(Map<String, Object> params) {
+        return sqlSession.selectOne("com.multi.hereevent.reserve.countReserveWithPage", params);
+    }
+
+    @Override
+    public List<ReserveDTO> selectReserveWithPage(Map<String, Object> params) {
+        return sqlSession.selectList("com.multi.hereevent.reserve.selectReserveWithPage", params);
+    }
+
+    @Override
+    public int cancelReserve(List<Integer> reserveNo) {
+        return sqlSession.update("com.multi.hereevent.reserve.cancelReserve", reserveNo);
     }
 }

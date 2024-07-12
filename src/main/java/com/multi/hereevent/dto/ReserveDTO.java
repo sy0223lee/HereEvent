@@ -19,5 +19,9 @@ public class ReserveDTO {
     private Date reserve_date;
     private Time reserve_time;
     private String state;
+    private String e_name;
+    private String m_name;
+    private String img_path;
+
 
 }
