@@ -1,7 +1,6 @@
 package com.multi.hereevent.wait;
 
 import com.multi.hereevent.dto.WaitDTO;
-import org.openqa.selenium.support.ui.Wait;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
