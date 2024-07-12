@@ -125,18 +125,19 @@ public class MailService {
             List<EventDTO> eventList = eventService.selectNewEvent(member.getMember_no()); // 관심 카테고리 중 오픈 예정인 이벤트 조회
             log.info("[eventList size] {} : {}", member.getMember_no(), eventList.size());
 
-            if(!eventList.isEmpty()) { // 이벤트 리스트가 비어있지 않은 경우만 이메일 전송
+            if(!eventList.isEmpty() && !member.getEmail().contains("@example.com")) { // 이벤트 리스트가 비어있지 않은 경우만 이메일 전송, 더미 회원에겐 이메일 전송 X
                 try {
                     MimeMessage message = mailSender.createMimeMessage();
                     MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
 
                     messageHelper.setFrom("sy0223lee@gmail.com");
                     messageHelper.setTo(member.getEmail());
+                    log.info("[member email] {}", member.getEmail());
                     messageHelper.setSubject("[HereEvent] " + member.getNick() + "님이 관심 있어 하실만한 오픈 예정 이벤트 안내");
                     messageHelper.setText(recommendHtml(eventList), true);
                     mailSender.send(message);
                 } catch (MessagingException e){
-                    e.printStackTrace();
+                    log.error("[send recommend email error] {}, {}", member.getEmail(), e.getMessage());
                 }
             }
         }
