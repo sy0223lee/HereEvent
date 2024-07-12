@@ -207,46 +207,13 @@ svg > g:nth-child(3) > text{
 /* 대기 관리 페이지 */
 .wait-table .select{width: 5%;}
 .wait-table .event-img{width: 8%;}
-.wait-table .event-name{width: 25%;}
+.wait-table .event-name{width: 37%;}
 .wait-table .wait-no{width: 10%;}
 .wait-table .state{width: 10%;}
-.wait-table .email{width: 20%;}
-.wait-table .wait-date{width: 12%;}
+.wait-table .email{width: 10%;}
+.wait-table .wait-date{width: 10%;}
 .wait-table .show-detail{width: 10%;}
 
-.wait-img {
-    width: 87%;
-    overflow: hidden;
-    margin-left: auto;
-    margin-right: 0;
-}
-.wait-img img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    margin: 5px;
-    padding: 0;
-}
-.wait-img div{
-    background-color: var(--background-color);
-    border: 1px solid var(--default-color);
-    border-radius: 4px;
-    padding: 10px 10px;
-}
-.wait-content, .wait-btn{
-    width: 87%;
-    margin-left: auto;
-    margin-right: 0;
-}
-.wait-content p{
-    background-color: var(--background-color);
-    color: var(--default-color);
-    border: 1px solid var(--default-color);
-    border-radius: 4px;
-    padding: 10px 10px;
-    font-size: 14px;
-    height: 120px;
-}
 
 /* 예약 관리 페이지 */
 .reserve-no{width: 5%; text-align: center;}
