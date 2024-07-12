@@ -12,7 +12,7 @@
     <script type="text/javascript" src="/hereevent/common/js/admin.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-             eventPageBtn([[${totalPages}]], [[${pageNumber}]], [[${totalElements}]]);
+            reservePageBtn([[${totalPages}]], [[${pageNumber}]], [[${totalElements}]]);
 
             $(".delete-btn").each(function (){
                 $(this).click(function () {
@@ -37,11 +37,6 @@
             const form = document.getElementById('deleteForm');
             form.submit();
             alert("취소되었습니다!");
-        }
-        function changeSort(sortBy) {
-            const currentUrl = new URL(window.location.href);
-            currentUrl.searchParams.set('sort', sortBy);
-            window.location.href = currentUrl.toString();
         }
     </script>
 </head>
