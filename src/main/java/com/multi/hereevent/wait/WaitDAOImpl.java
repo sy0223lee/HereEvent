@@ -74,5 +74,19 @@ public class WaitDAOImpl implements WaitDAO {
     public List<WaitDTO> selectWaitToUpdate(int event_no) {
         return sqlSession.selectList("com.multi.hereevent.wait.selectWaitToUpdate", event_no);
     }
+    // DAOImpl
+    @Override
+    public int updateStateSelect(List<WaitDTO> waitList) {
+        return sqlSession.update("com.multi.hereevent.wait.updateStateSelect", waitList);
+    }
 
+    @Override
+    public int countWaitWithPage(Map<String, Object> params) {
+        return sqlSession.selectOne("com.multi.hereevent.wait.countWaitWithPage", params);
+    }
+
+    @Override
+    public List<WaitDTO> selectWaitWithPage(Map<String, Object> params) {
+        return sqlSession.selectList("com.multi.hereevent.wait.selectWaitWithPage", params);
+    }
 }

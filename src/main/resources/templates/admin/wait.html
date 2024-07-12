@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HereEvent-Admin</title>
+    <!-- CSS File -->
+    <link href="/hereevent/common/css/admin.css" rel="stylesheet">
+    <link href="/hereevent/common/css/starRate.css" rel="stylesheet">
+    <!-- js File -->
+    <script type="text/javascript" src="/hereevent/common/js/starRate.js"></script>
+    <script type="text/javascript" src="/hereevent/common/js/admin.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        $(document).ready(function() {
+            waitPageBtn([[${totalPages}]], [[${pageNumber}]], [[${totalElements}]]);
+
+
+            $("#deleteOne").click(function () {
+                if (confirm("대기자의 방문을 취소하시겠습니까?") === true) {
+                    let form = document.createElement("form");
+
+                    let waitNoInput = document.createElement("input");
+                    waitNoInput.setAttribute("type", "hidden");
+                    waitNoInput.setAttribute("name", "wait_no");
+                    waitNoInput.setAttribute("value", $(this).val())
+
+                    let actionInput = document.createElement("input");
+                    actionInput.setAttribute("type", "hidden");
+                    actionInput.setAttribute("name", "action");
+                    actionInput.setAttribute("value", "cancel");
+
+                    form.appendChild(waitNoInput);
+                    form.appendChild(actionInput);
+
+                    form.setAttribute("method", "post");
+                    form.setAttribute("action", `/hereevent/admin/wait/updateState`);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                    alert("취소되었습니다!");
+                }
+            });
+        });
+
+        function submitDeleteForm() {
+            const form = document.getElementById('deleteForm');
+
+            form.submit();
+            alert("삭제되었습니다!");
+        }
+    </script>
+</head>
+<body>
+<main layout:fragment="main" class="main">
+
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="/hereevent/main">Home</a></li>
+                    <li><a href="/hereevent/admin">관리</a></li>
+                    <li class="current">대기</li>
+                </ol>
+            </nav>
+            <h1>대기 관리</h1>
+        </div>
+    </div><!-- End Page Title -->
+
+    <!-- Wait Section -->
+    <section id="wait-section" class="section">
+
+        <div class="container wait-container">
+
+            <div class="d-flex align-items-center justify-content-between admin-search">
+
+                <button type="button" class="btn btn-primary" onclick="submitDeleteForm()">선택 삭제</button>
+
+                <div class="search-widget">
+                    <form action="/hereevent/admin/wait" method="get" class="d-flex justify-content-start">
+                        <select name="type">
+                            <option value="all" th:selected="${type == 'all'}">--</option>
+                            <option value="event" th:selected="${type == 'event'}">이벤트</option>
+                            <option value="state" th:selected="${type == 'state'}">대기상태</option>
+                            <option value="wait_date" th:selected="${type == 'wait_date'}">대기일</option>
+                        </select>
+                        <input type="text" name="keyword" placeholder="검색어를 입력하세요" id="keyword" th:value="${keyword}">
+                        <button type="submit"><i class="bi bi-search"></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="wait-table container">
+                <form id="deleteForm" action="/hereevent/admin/wait/update-select" method="post">
+                    <div class="row align-items-center text-center table-title">
+                        <div class="select">
+
+                                <input type="checkbox" name="select-all" onclick="selectAll(this)">
+
+                        </div>
+
+                        <div class="event-img">사진</div>
+                        <div class="event-name">이벤트명</div>
+                        <div class="wait-no">번호</div>
+                        <div class="state">상태</div>
+                        <div class="email">이메일</div>
+                        <div class="wait-date">대기일</div>
+                        <div class="show-detail">상세보기</div>
+                    </div>
+
+                    <div class="table-row" th:each="wait : ${waitList}">
+
+                        <!-- 대기자 정보 -->
+                        <div class="row align-items-center">
+                            <div class="select text-center">
+                                <th:block th:if="${wait.state} != 'cancel'">
+                                    <input type="checkbox" name="select" th:value="${wait.wait_no}" onclick="checkSelectAll()">
+                                </th:block>
+                            </div>
+                            <div class="event-img text-center event-image">
+                                <a th:href="|@{/event/}${wait.event_no}|">
+                                    <img th:if="${wait.img_path != null}" th:src="|@{/download/event/}${wait.img_path}|" th:alt="${wait.img_path}">
+                                    <img th:unless="${wait.img_path != null}" th:src="@{/images/default_img.png}" th:alt="default_img">
+                                </a>
+                            </div>
+                            <div class="event-name">
+                                <a th:href="|@{/event/}${wait.event_no}|">[[${wait.name}]]</a>
+                            </div>
+                            <div class="wait-no text-center" th:text="${wait.wait_no}"></div>
+                            <div class="state text-center" th:text="${wait.state}">
+                                <input type="hidden" name="action" value="cancel">
+                            </div>
+                            <div class="email text-center" th:text="${wait.email}"></div>
+                            <div class="wait-date text-center" th:text="${wait.wait_date}"></div>
+                            <div class="show-detail text-center">
+                                <!-- 대기자 상세보기 버튼 -->
+                                <th:block th:if="${wait.state} != 'cancel'">
+                                    <button type="button" id="deleteOne" class="btn btn-primary" th:value="${wait.wait_no}">
+                                        <input type="hidden" value="cancel" />취소
+                                    </button>
+                                </th:block>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <!-- 페이지네이션-->
+            <nav>
+                <ul class="pagination justify-content-center">
+                </ul>
+            </nav>
+
+        </div>
+
+    </section><!-- End Wait Section -->
+
+</main>
+</body>
+</html>

@@ -1,8 +1,11 @@
 package com.multi.hereevent.wait;
 
 import com.multi.hereevent.dto.WaitDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 
 public interface WaitService {
     //대기 로그인, 대기 상세정보 불러오기
@@ -34,5 +37,9 @@ public interface WaitService {
     void checkAndUpdateWaitStatus();
     //입장 가능시간
     String getEntranceWaitTime(int event_no, int wait_no);
+
+    //선택업데이트
+    int updateStateSelect(List<WaitDTO> waitList);
+    Page<WaitDTO> selectWaitWithPage(Map<String, Object> params, Pageable page);
 
 }

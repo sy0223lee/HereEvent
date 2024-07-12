@@ -77,7 +77,8 @@ svg > g:nth-child(3) > text{
 }
 
 .review-container .event-image img,
-.member-container .member-image img{
+.member-container .member-image img,
+.wait-container .member-image img{
     width: 80px;
     height: 80px;
     overflow: hidden;
@@ -87,17 +88,20 @@ svg > g:nth-child(3) > text{
 }
 
 .review-table .table-title, .review-detail label,
+.wait-table .table-title, .wait-detail label,
 .event-table .table-title, .member-table .table-title{
     font-size: 16px;
     font-weight: 600;
     padding: 10px 0;
 }
 .review-table .table-title,
+.wait-table .table-title,
 .event-table .table-title,
 .member-table .table-title{
     border-bottom: 1px solid var(--default-color);
 }
 .review-table .table-row,
+.wait-table .table-row,
 .event-table .table-row,
 .member-table .table-row{
     padding: 10px 0;
@@ -105,6 +109,7 @@ svg > g:nth-child(3) > text{
 }
 
 .review-table a,
+.wait-table a,
 .event-table a,
 .member-table a{
     color: var(--default-color);
@@ -116,6 +121,7 @@ svg > g:nth-child(3) > text{
 }
 
 .review-table a:hover,
+.wait-table a:hover,
 .event-table a:hover,
 .member-table a:hover{
     color: var(--accent-color);
@@ -198,6 +204,50 @@ svg > g:nth-child(3) > text{
     height: 120px;
 }
 
+/* 대기 관리 페이지 */
+.wait-table .select{width: 5%;}
+.wait-table .event-img{width: 8%;}
+.wait-table .event-name{width: 25%;}
+.wait-table .wait-no{width: 10%;}
+.wait-table .state{width: 10%;}
+.wait-table .email{width: 20%;}
+.wait-table .wait-date{width: 12%;}
+.wait-table .show-detail{width: 10%;}
+
+.wait-img {
+    width: 87%;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: 0;
+}
+.wait-img img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin: 5px;
+    padding: 0;
+}
+.wait-img div{
+    background-color: var(--background-color);
+    border: 1px solid var(--default-color);
+    border-radius: 4px;
+    padding: 10px 10px;
+}
+.wait-content, .wait-btn{
+    width: 87%;
+    margin-left: auto;
+    margin-right: 0;
+}
+.wait-content p{
+    background-color: var(--background-color);
+    color: var(--default-color);
+    border: 1px solid var(--default-color);
+    border-radius: 4px;
+    padding: 10px 10px;
+    font-size: 14px;
+    height: 120px;
+}
+
 /* 예약 관리 페이지 */
 .reserve-no{width: 5%; text-align: center;}
 .event-img{width: 13%; text-align: center;}
@@ -206,3 +256,4 @@ svg > g:nth-child(3) > text{
 .reserve-date{width: 10%; text-align: center;}
 .reserve-state{width: 10%; text-align: center;}
 .reserve-delete{width: 10%;}
+

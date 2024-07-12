@@ -8,6 +8,7 @@ import com.multi.hereevent.fileupload.FileUploadService;
 import com.multi.hereevent.member.MemberService;
 import com.multi.hereevent.reserve.ReserveService;
 import com.multi.hereevent.review.ReviewService;
+import com.multi.hereevent.wait.WaitService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +38,7 @@ public class AdminController {
     private final EventTimeService eventTimeService;
     private final CategoryService categoryService;
     private final ChartService chartService;
+    private final WaitService waitService;
     private final ReserveService reserveService;
 
     /************** 관리 메인페이지 ************/
@@ -262,6 +265,53 @@ public class AdminController {
         eventService.deleteEvent(eventNo);
         return "redirect:/admin/event";
     }
+
+
+    /************** 대기 ************/
+    @GetMapping("/admin/wait")
+    public String selectWaitWithPage(@RequestParam Map<String, Object> params,
+                                     @PageableDefault(value = 10) Pageable page, Model model){
+        Page<WaitDTO> result = waitService.selectWaitWithPage(params, page);
+
+        model.addAttribute("type", params.get("type"));
+        model.addAttribute("keyword", params.get("keyword"));
+        model.addAttribute("waitList", result.getContent());
+        model.addAttribute("totalPages", result.getTotalPages());
+        model.addAttribute("totalElements", result.getTotalElements());
+        model.addAttribute("pageNumber", page.getPageNumber());
+        return "admin/wait";
+    }
+    @PostMapping("/admin/wait/updateState")
+    public String updateState(@RequestParam("wait_no") String wait_no, Model model) {
+        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+        WaitDTO eventDetail = waitService.eventDetail(Integer.parseInt(wait_no));
+        eventDetail.setState("cancel");
+
+        eventDetail.setWait_date(LocalDateTime.now());
+        model.addAttribute("event_no", eventDetail.getEvent_no());
+        waitService.updateState(eventDetail);
+
+        return "redirect:/admin/wait";
+    }
+
+    @PostMapping("/admin/wait/update-select")
+    public String updateStateSelect(@RequestParam("select") List<Integer> waitNos) {
+        List<WaitDTO> waitList = new ArrayList<>();
+
+        for (int i = 0; i < waitNos.size(); i++) {
+            WaitDTO eventDetail = waitService.eventDetail(waitNos.get(i));
+            eventDetail.setState("cancel");
+            eventDetail.setWait_date(LocalDateTime.now());
+            waitList.add(eventDetail);
+        }
+        int result = waitService.updateStateSelect(waitList);
+        if(result > 0){
+            return "redirect:/admin/wait";
+        } else {
+            return "common/errorPage";
+        }
+    }
+
     /************** 예약관리 ************/
     @GetMapping("/admin/reserve")
     public String selectReserveWithPage(@RequestParam Map<String, Object> params,
@@ -291,14 +341,6 @@ public class AdminController {
         reserveService.cancelReserve(reserveNo);
         return "redirect:/admin/reserve";
     }
-
-
-
-
-
-
-
-
 
 
 

@@ -6,6 +6,9 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,6 +19,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -214,4 +218,23 @@ public class WaitServiceImpl implements WaitService {
                 .append("</body></html>");
         return sb.toString();
     }
+
+    // 서비스Impl
+    @Override
+    public int updateStateSelect(List<WaitDTO> waitList) {
+        return waitDAO.updateStateSelect(waitList);
+
+
+    }
+    @Override
+    public Page<WaitDTO> selectWaitWithPage(Map<String, Object> params, Pageable page) {
+        int count = waitDAO.countWaitWithPage(params);
+        params.put("offset", page.getOffset());
+        params.put("pageSize", page.getPageSize());
+        List<WaitDTO> waitList = waitDAO.selectWaitWithPage(params);
+        return new PageImpl<>(waitList, page, count);
+    }
+
+
+
 }

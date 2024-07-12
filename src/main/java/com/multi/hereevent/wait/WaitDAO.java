@@ -3,6 +3,7 @@ package com.multi.hereevent.wait;
 import com.multi.hereevent.dto.WaitDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface WaitDAO {
     //대기 확인을 위한 로그인, wait_tel 로 세부정보 가져오기, 기존 레코드 확인
@@ -23,4 +24,9 @@ public interface WaitDAO {
     List<WaitDTO> getWaitingListByEventNo(int event_no);
 
     List<WaitDTO> selectWaitToUpdate(int event_no); // wait_date 수정해야 하는 대기와 메일을 보내야하는 대기 조회
+    int updateStateSelect(List<WaitDTO> waitList);
+
+    // DAO
+    int countWaitWithPage(Map<String, Object> params);
+    List<WaitDTO> selectWaitWithPage(Map<String, Object> params);
 }
