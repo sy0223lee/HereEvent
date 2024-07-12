@@ -9,12 +9,14 @@
 <div th:fragment="reservation">
     <h2 class="title">예약</h2>
     <div class="mb-3">※ 오늘로부터 3일 이후의 일정에 대해서만 사전 예약이 가능합니다.</div>
-    <div class="reservation" th:if="${event.end_date >= #dates.createToday()}">
+    <div class="reservation text-center" th:if="${event.end_date >= #dates.createToday()}">
         <input type="hidden" name="event_no" th:value="${event.event_no}">
         <input type="hidden" name="member_no" th:value="${session.member != null ? session.member.member_no : ''}">
-        <input type="date" id="reserve_date" name="reserve_date" placeholder="예약날짜를 입력하세요">
+        <div class="text-center">
+            <input type="date" id="reserve_date" name="reserve_date" placeholder="예약날짜를 입력하세요" class="text-center">
+        </div>
 
-        <div class="calendar-container">
+        <div class="calendar-container align-items-center">
             <div class="nav">
                 <button type="button" onclick="prevMonth()">&#9664;</button>
                 <span id="yearmonth"></span>
@@ -34,10 +36,16 @@
                 </thead>
                 <tbody id="calBody"></tbody>
             </table>
-            <div id="eventTimesContainer">
-                <!-- 버튼이 여기에 추가될 예정 -->
+
+            <div class="event-time-container">
+                <div id="eventTimesContainer" class="event-time">
+                    <!-- 버튼이 여기에 추가될 예정 -->
+                </div>
             </div>
-            <button type="button" class="btn btn-primary" onclick="reserve()">예약</button>
+
+            <div class="text-end">
+                <button type="button" class="btn btn-primary" onclick="reserve()">예약</button>
+            </div>
 
         </div>
         <!--        </form>-->

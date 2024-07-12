@@ -168,9 +168,6 @@
     color: white;
 }
 
-.reservation{
-    text-align: center;
-}
 .title {
     color: var(--accent-color);
     font-size: 24px;
@@ -178,7 +175,6 @@
 }
 .calendar-container {
     display: block;
-    text-align: center;
     margin-top: 20px;
 }
 
@@ -263,6 +259,33 @@
 }
 .reservation input[type="radio"] {
     margin: 0 10px;
+}
+.event-time-container {
+    width: 642px;
+    margin: 0 auto;
+}
+@media (max-width: 1400px) {
+    .event-time-container {
+        width: 514px;
+        margin: 0 auto;
+    }
+}
+@media (max-width: 1200px) {
+    .event-time-container {
+        width: 385px;
+        margin: 0 auto;
+    }
+}
+@media (max-width: 767px) {
+    .event-time-container {
+        width: 157px;
+        margin: 0 auto;
+    }
+}
+
+.event-time{
+    display: flex;
+    flex-wrap: wrap;
 }
 
 /* 상세페이지 - 길찾기 */
