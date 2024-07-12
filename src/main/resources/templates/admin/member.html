@@ -102,8 +102,8 @@
                                     <input type="checkbox" name="select" th:value="${member.member_no}" onclick="checkSelectAll()">
                                 </div>
                                 <div class="member-image img_path text-center">
-                                    <img th:if="${member.img_path != null}" th:src="|@{/download/profile/}${member.img_path}|" th:alt="${member.img_path}">
-                                    <img th:unless="${member.img_path != null}" th:src="@{/images/default_img.png}" th:alt="default_img">
+                                    <img th:if="${member.img_path != null || member.img_path != ''}" th:src="|@{/download/profile/}${member.img_path}|" th:alt="${member.img_path}">
+                                    <img th:unless="${member.img_path != null || member.img_path != ''}" th:src="@{/images/default_img.png}" th:alt="default_img">
                                 </div>
                                 <div class="name" th:text="${member.name}"></div>
                                 <div class="nick text-center" th:text="${member.nick}"></div>
