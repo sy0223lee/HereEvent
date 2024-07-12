@@ -279,9 +279,9 @@
 
     <!-- 이벤트 상세 조회 -->
     <select id="getEventDetails" resultType="event">
-        SELECT *
-        FROM event
-        WHERE event_no = #{event_no}
+        select e.*, c.name as category_name
+        from event e left join category c on e.category_no = c.category_no
+        where e.event_no = #{event_no}
     </select>
     <!-- 멤버 관심 이벤트 여부 조회 -->
     <select id="getEventDetailsWithInterest" parameterType="Map" resultType="event">
