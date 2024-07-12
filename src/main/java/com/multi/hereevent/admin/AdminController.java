@@ -103,7 +103,7 @@ public class AdminController {
     public String memberUpdate(MemberDTO member) {
         MultipartFile memberImg = member.getProfile_img();
         if(!memberImg.isEmpty()) {
-            String storeFilename;
+            String storeFilename = null;
             try {
                 storeFilename = fileUploadService.uploadProfileImg(memberImg);
                 member.setImg_path(storeFilename);
@@ -181,7 +181,7 @@ public class AdminController {
         event.setAddr(event.getAddr()+event.getDetailAddress()+event.getExtraAddress());
         //행사 이미지 등록하기
         MultipartFile eventImg = event.getEvent_img();
-        String storeFilename;
+        String storeFilename = null;
         try {
             storeFilename = fileUploadService.uploadEventImg(eventImg);
             event.setImg_path(storeFilename);
@@ -262,7 +262,7 @@ public class AdminController {
 //        log.info("eventTimeList::>>"+eventTimeList);
         eventTimeService.updateEventTImeList(eventTimeList);
         MultipartFile eventImg = event.getEvent_img();
-        String storeFilename;
+        String storeFilename = null;
         try {
             storeFilename = fileUploadService.uploadEventImg(eventImg);
             event.setImg_path(storeFilename);

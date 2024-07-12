@@ -39,7 +39,7 @@ public class FileUploadService {
         List<ReviewImgDTO> imgList = new ArrayList<>();
         for(MultipartFile multipartFile : multipartFiles) {
             if(!multipartFile.isEmpty()) {
-                String storeFilename = "";
+                String storeFilename = null;
 
                 if(!multipartFile.isEmpty()) {
                     String originalFilename = multipartFile.getOriginalFilename();
@@ -57,7 +57,7 @@ public class FileUploadService {
 
     // 프로필 사진 저장
     public String uploadProfileImg(MultipartFile multipartFile) throws IOException {
-        String storeFilename = "";
+        String storeFilename = null;
 
         if(!multipartFile.isEmpty()) {
             String originalFilename = multipartFile.getOriginalFilename();
@@ -70,7 +70,7 @@ public class FileUploadService {
     }
     // 이벤트사진 저장
     public String uploadEventImg(MultipartFile multipartFile) throws IOException {
-        String storeFilename = "";
+        String storeFilename = null;
 
         if(!multipartFile.isEmpty()) {
             String originalFilename = multipartFile.getOriginalFilename();

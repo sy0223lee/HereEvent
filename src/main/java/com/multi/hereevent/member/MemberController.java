@@ -76,7 +76,7 @@ public class MemberController {
     public String register(MemberDTO member, Model model){
 
         MultipartFile profileImg = member.getProfile_img();
-        String storeFilename;
+        String storeFilename = null;
         try {
             storeFilename = fileService.uploadProfileImg(profileImg);
             member.setImg_path(storeFilename);
@@ -207,7 +207,7 @@ public class MemberController {
     public String editProfileImg(MemberDTO member, Model model) {
 //        log.info("[editProfileImg] member = " + member);
         MultipartFile profileImg = member.getProfile_img();
-        String storeFilename;
+        String storeFilename = null;
         try {
             storeFilename = fileService.uploadProfileImg(profileImg);
             member.setImg_path(storeFilename);
