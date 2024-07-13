@@ -115,7 +115,7 @@
                                     <div class="event-info title">예약일</div>
                                     <div class="d-flex" >
                                         <div id="enterdate" class="enter-date" th:text="${event.enter_date}" th:data-my-value="${event.enter_date}"></div>
-                                        <div id="entertime" class="enter-time" th:text="${event.enter_time}" th:data-my-value="${event.enter_time}"></div>
+                                        <div id="entertime" class="enter-time" th:text="${#strings.substring(event.enter_time,0,5)}" th:data-my-value="${event.enter_time}"></div>
                                     </div>
                                 </div>
                                 <div th:case="wait">
@@ -126,7 +126,7 @@
                                     <div class="event-info title">방문일</div>
                                     <div class="d-flex">
                                         <div class="enter-date" th:text="${event.enter_date}"></div>
-                                        <div class="enter-time" th:if="${event.enter_time != null}" th:text="${event.enter_time}"></div>
+                                        <div class="enter-time" th:if="${event.enter_time != null}" th:text="${#strings.substring(event.enter_time,0,5)}"></div>
                                     </div>
                                 </div>
                             </th:block>
