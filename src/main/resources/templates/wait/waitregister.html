@@ -32,10 +32,10 @@
         <form id="waitForm"  action="/hereevent/wait/insert" method="post">
 
             <div class="post-img">
-                <div th:each="imgPath : ${event.img_path}">
-                    <img th:if="${imgPath != null}" th:src="|@{/download/event/}${imgPath}|" th:alt="${imgPath}"/>
-                    <img th:unless="${imgPath != null}" th:src="@{/images/default_img.png}" alt="default_img"/>
-                </div>
+                <img th:if="${event.img_path == null || event.img_path == ''}"
+                     th:src="@{/images/default_img.png}" alt="default_event">
+                <img th:unless="${event.img_path == null || event.img_path == ''}"
+                     th:src="|@{/download/event/}${event.img_path}|" th:alt="${event.img_path}">
             </div>
             <h2 class="title"><span th:text="${event.name}"></span></h2>
             <input type="hidden" id="event_no" name="event_no" th:value="${event.event_no}">

@@ -34,7 +34,10 @@
         <section class="event-details">
             <div class="event-info">
                 <div class="event-image">
-                    <img th:src="@{'/download/event/' + ${event.img_path}}" th:alt="${firstImgPath}" alt="Event Image" />
+                    <img th:if="${event.img_path == null || event.img_path == ''}"
+                         th:src="@{/images/default_img.png}" alt="default_event">
+                    <img th:unless="${event.img_path == null || event.img_path == ''}"
+                         th:src="|@{/download/event/}${event.img_path}|" th:alt="${event.img_path}">
                 </div>
                 <div class="event-details-text">
                     <p><strong>이벤트 제목</strong> <span th:text="${event.name}"></span></p>

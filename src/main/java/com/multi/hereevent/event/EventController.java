@@ -127,17 +127,6 @@ public class EventController {
 
         return "detail/detailedPage";
     }
-
-    //대기 현황 확인 페이지
-    @GetMapping("/event/waitSituation")
-    public String waitSituation(@RequestParam("event_no") int event_no, Model model) {
-
-        int waitingCount = waitService.getWaitingCount(event_no);
-        EventDTO eventDetails = eventService.getEventDetails(event_no);
-        model.addAttribute("waitingCount", waitingCount);
-        model.addAttribute("event", eventDetails);
-        return "wait/waitDetail";
-    }
     
     @PostMapping("/reservation/times")
     public ResponseEntity<Map<String, List<String>>> getEventTimes(@RequestBody Map<String, Object> request) {

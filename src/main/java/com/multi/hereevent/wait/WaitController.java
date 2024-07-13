@@ -22,6 +22,17 @@ public class WaitController {
     private final EventService eventService;
     private final MailService mailService;
 
+    //대기 현황 확인 페이지
+    @GetMapping("/event/waitSituation")
+    public String waitSituation(@RequestParam("event_no") int event_no, Model model) {
+
+        int waitingCount = waitService.getWaitingCount(event_no);
+        EventDTO eventDetails = eventService.getEventDetails(event_no);
+        model.addAttribute("waitingCount", waitingCount);
+        model.addAttribute("event", eventDetails);
+        return "wait/waitDetail";
+    }
+
     @GetMapping("/wait/register/event/{event_no}")
     public String register(@PathVariable("event_no") int event_no, Model model) {
         EventDTO eventDetails = eventService.getEventDetails(event_no);

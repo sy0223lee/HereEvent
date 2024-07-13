@@ -121,8 +121,8 @@
                             </div>
                             <div class="event-img text-center event-image">
                                 <a th:href="|@{/event/}${wait.event_no}|">
-                                    <img th:if="${wait.img_path != null}" th:src="|@{/download/event/}${wait.img_path}|" th:alt="${wait.img_path}">
-                                    <img th:unless="${wait.img_path != null}" th:src="@{/images/default_img.png}" th:alt="default_img">
+                                    <img th:if="${wait.img_path == null || wait.img_path == ''}" th:src="@{/images/default_img.png}" th:alt="default_img">
+                                    <img th:unless="${wait.img_path == null || wait.img_path == ''}" th:src="|@{/download/event/}${wait.img_path}|" th:alt="${wait.img_path}">
                                 </a>
                             </div>
                             <div class="event-name">

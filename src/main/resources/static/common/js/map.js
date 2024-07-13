@@ -93,6 +93,8 @@ function printMapList(map, markers, markerImg){
                         // 커스텀 오버레이에 표시할 컨텐츠 입니다
                         // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
                         // 별도의 이벤트 메소드를 제공하지 않습니다
+
+                        // 사전 예약, 현장 대기
                         let eventType = '';
                         if(event.type === 'both'){
                             eventType = '<span class="reserve">사전예약</span><span class="wait">현장대기</span>';
@@ -101,6 +103,15 @@ function printMapList(map, markers, markerImg){
                         }else{
                             eventType = '<span class="wait">현장대기</span>';
                         }
+
+                        // 이벤트 이미지
+                        let eventImg = '';
+                        if(event.img_path == null){
+                            eventImg = '<img src="/hereevent/images/default_img.png" width="73" height="70" alt="default_img">';
+                        }else{
+                            eventImg = '<img src="/hereevent/download/event/' + event.img_path + '" width="73" height="70" alt="'+  event.img_path +'">';
+                        }
+
                         let content = '<div class="wrap">' +
                             '    <div class="info">' +
                             '        <div class="title"><a href="/hereevent/event/' + event.event_no + '" class="link">' +
@@ -108,8 +119,7 @@ function printMapList(map, markers, markerImg){
                             '            </a><div class="close" onclick="closeOverlay()" title="닫기"></div>' +
                             '        </div>' +
                             '        <div class="body">' +
-                            '            <div class="img">' +
-                            '                <img src="/hereevent/download/event/' + event.img_path + '" width="73" height="70">' +
+                            '            <div class="img">' + eventImg +
                             '           </div>' +
                             '            <div class="desc">' +
                             '                <div class="ellipsis">' + event.addr + '</div>' +
