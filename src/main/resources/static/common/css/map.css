@@ -50,3 +50,20 @@
 .info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
 .info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
 .info .link {color: #5085BB;}
+.info .desc div{
+    margin: 2px 0;
+}
+.event-type span.reserve{
+    border-radius: 40px;
+    background: rgb(225, 69, 51, 0.8);
+    color: white;
+    padding: 2px 3px;
+    margin: 4px 1px;
+}
+.event-type span.wait{
+    border-radius: 40px;
+    background: rgb(42, 46, 68, 0.8);
+    color: white;
+    padding: 2px 3px;
+    margin: 4px 1px;
+}

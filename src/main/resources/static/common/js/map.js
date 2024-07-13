@@ -55,11 +55,11 @@ function printMapList(map, markers, markerImg){
 
                 /* 예약 방식 */
                 if(event.type === "reserve"){
-                    printData += "<div class='event-type'><span>사전에약</span></div>";
+                    printData += "<div class='event-type'><span class='reserve'>사전예약</span></div>";
                 }else if((event.type === "wait")){
-                    printData += "<div class='event-type'><span>현장대기</span></div>";
+                    printData += "<div class='event-type'><span class='wait'>현장대기</span></div>";
                 }else{
-                    printData += "<div class='event-type'><span>사전에약</span><span>현장대기</span></div>";
+                    printData += "<div class='event-type'><span class='reserve'>사전예약</span><span class='wait'>현장대기</span></div>";
                 }
 
                 printData += "           <div class='card-text'><span>" + event.start_date + "</span> ~ <span>" + event.end_date + "</span></div>" +
@@ -95,11 +95,11 @@ function printMapList(map, markers, markerImg){
                         // 별도의 이벤트 메소드를 제공하지 않습니다
                         let eventType = '';
                         if(event.type === 'both'){
-                            eventType = '사전예약, 현장대기';
+                            eventType = '<span class="reserve">사전예약</span><span class="wait">현장대기</span>';
                         }else if(event.type === 'reserve'){
-                            eventType = '사전예약';
+                            eventType = '<span class="reserve">사전예약</span>';
                         }else{
-                            eventType = '현장대기';
+                            eventType = '<span class="wait">현장대기</span>';
                         }
                         let content = '<div class="wrap">' +
                             '    <div class="info">' +
@@ -114,7 +114,7 @@ function printMapList(map, markers, markerImg){
                             '            <div class="desc">' +
                             '                <div class="ellipsis">' + event.addr + '</div>' +
                             '                <div>' + event.start_date + ' ~ ' + event.end_date +'</div>' +
-                            '                <div>' + eventType  + '</div>' +
+                            '                <div class="event-type">' + eventType  + '</div>' +
                             '            </div>' +
                             '        </div>' +
                             '    </div>' +

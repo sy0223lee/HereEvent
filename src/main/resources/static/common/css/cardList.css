@@ -66,7 +66,15 @@
     margin: 14px 0;
     text-align: left;
 }
-.card .event-type span{
+.card .event-type span.reserve{
+    border-radius: 40px;
+    border: 1px solid rgb(225, 69, 51, 0.8);
+    background: rgb(225, 69, 51, 0.8);
+    color: white;
+    padding: 2px 8px;
+    margin-right: 5px;
+}
+.card .event-type span.wait{
     border-radius: 40px;
     border: 1px solid rgb(42, 46, 68, 0.8);
     background: rgb(42, 46, 68, 0.8);
