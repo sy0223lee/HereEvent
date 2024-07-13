@@ -1,88 +1,4 @@
-.submenu {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin: 15px 0 20px;
-    padding-bottom: 10px;
-}
-.submenu > a {
-    display: block;
-    width: 20%;
-    text-align: center;
-    border-bottom: 1px solid #2c2c2c;
-    padding: 10px 0;
-    flex: 1 1 auto;
-}
-.submenu > a.on {
-    color: #e14533;
-    border-bottom: 2px solid #e14533;
-    font-weight: 900;
-}
-.submenu > a h2 {
-    font-size: 16px;
-    margin: 0;
-    font-weight: 600;
-}
-
-/* 내 정보 */
-.profile-img-area img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-}
-.edit-img-btn input{
-    display: none;
-}
-.profile-text-area {
-    display: flex;
-    width: 100%;
-    margin: 10px auto 50px;
-    padding: 0 20px;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-.profile-text-area li {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding: 10px 0;
-}
-.profile-text-area li span {
-    font-size: 12px;
-    color: #999;
-    margin-bottom: 4px;
-}
-.profile-text-area li p {
-    width: 100%;
-    padding: 5px 0 8px;
-    border-bottom: 2px solid #2c2c2c;
-    font-size: 14px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-.edit-btn {
-    border: 1px solid #767676;
-    background: none;
-    color: #000000;
-    font-size: 15px;
-    padding: 4px 10px;
-    border-radius: 5px;
-}
-.edit-img-btn, .edit-nick-btn, .edit-birth-btn {
-    border: 1px solid #767676;
-    background: none;
-    color: #000000;
-    font-size: 15px;
-    padding: 4px 10px;
-    margin: 10px 4px;
-    border-radius: 5px;
-}
-
+/* waitDetail.html, mywait.html */
 .post-img {
     margin: 0 auto 20px auto; /* 상단 마진 10px 추가 */
     overflow: hidden;
@@ -94,30 +10,23 @@
     height: auto;
     object-fit: contain;
 }
-
-/* 이벤트 상세 섹션 */
 .event-details {
-    margin-bottom: 50px; /* footer와의 간격을 충분히 확보 */
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    width:500px;
-    align-items: center;
-    text-align: center;
     margin: 0 auto;
+    width: 500px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
 }
 .waitperson{
     display: inline;
     margin-left: 10px;
     font-size: 30px;
-
 }
 .event-info {
     display: flex;
     margin-bottom: 20px;
 }
-
 .event-image {
     flex: 0 0 180px;
     height: 240px;
@@ -173,7 +82,7 @@
     font-size: 24px;
 }
 
-/* 대기 등록 */
+/* waitregister.html 대기 등록 */
 .title{
     white-space: nowrap;
     overflow: hidden;
