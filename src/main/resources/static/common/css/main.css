@@ -1012,7 +1012,7 @@ ul.runningtime{
 }
 
 .banner .swiper-slide {
-  height: 550px;
+  height: 320px;
 }
 
 .banner .swiper-slide img {
@@ -1028,24 +1028,8 @@ ul.runningtime{
 }
 
 .banner .swiper-wrapper {
-  height: 550px;
+  height: 320px;
 }
-
-/*.clients .swiper-pagination {*/
-/*  margin-top: 20px;*/
-/*  position: relative;*/
-/*}*/
-
-/*.clients .swiper-pagination .swiper-pagination-bullet {*/
-/*  width: 12px;*/
-/*  height: 12px;*/
-/*  opacity: 1;*/
-/*  background-color: color-mix(in srgb, var(--default-color), transparent 80%);*/
-/*}*/
-
-/*.clients .swiper-pagination .swiper-pagination-bullet-active {*/
-/*  background-color: var(--accent-color);*/
-/*}*/
 
 /*--------------------------------------------------------------
 # About Section
