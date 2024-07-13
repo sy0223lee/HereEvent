@@ -144,22 +144,22 @@
 
                         <article id="content-section" class="article">
                             <!-- 상세 정보 -->
-                            <th:block th:replace="~{detailedPage/content :: content(${eventtime},'test')}"></th:block>
+                            <th:block th:replace="~{detail/content :: content(${eventtime},'test')}"></th:block>
                         </article>
 
                         <article id="navigation-section" class="article">
                             <!-- 길찾기 내용 -->
-                            <th:block th:replace="~{detailedPage/navigation :: navigation(${event.addr})}"></th:block>
+                            <th:block th:replace="~{detail/navigation :: navigation(${event.addr})}"></th:block>
                         </article>
 
                         <article id="reservation-section" class="article" th:if="${event.type != 'wait' && event.end_date >= #dates.createToday()}">
                             <!-- 예약 내용 -->
-                            <th:block th:replace="~{detailedPage/reservation :: reservation}" ></th:block>
+                            <th:block th:replace="~{detail/reservation :: reservation}" ></th:block>
                         </article>
 
                         <article id="reviews-section" class="article">
                             <!-- 후기 내용 -->
-                            <th:block th:replace="~{detailedPage/review :: review}"></th:block>
+                            <th:block th:replace="~{detail/review :: review}"></th:block>
                         </article>
 
                     </article>

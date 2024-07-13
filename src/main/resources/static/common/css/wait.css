@@ -84,7 +84,7 @@
 }
 
 .post-img {
-    margin: 0px auto 20px auto; /* 상단 마진 10px 추가 */
+    margin: 0 auto 20px auto; /* 상단 마진 10px 추가 */
     overflow: hidden;
     display: block;
     max-width: 100%;
@@ -141,6 +141,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: left;
 }
 
 .event-details-text span {
@@ -161,34 +162,25 @@
 .waiting-count {
     font-size: 36px;
     font-weight: bold;
+    color: var(--accent-color);
 }
-
-.actions {
-    text-align: center;
-    margin-bottom: 20px;
-}
-#btn1 {
-    background-color: #ddd;
-    color: black;
-    border: 2px solid #ddd;
-}
-.action-button {
-    background-color: #ddd;
-    border: none;
-    padding: 10px 20px;
-    margin: 0 10px;
-    border-radius: 8px;
-    font-size: 18px;
-    cursor: pointer;
-    width: 71.09px;
-    height: 47px;
-}
-
-.waiting-number {
-
+.waiting-time{
+    color: var(--accent-color);
 }
 
 .waiting-number span {
     display: block;
     font-size: 24px;
+}
+
+/* 대기 등록 */
+.title{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#warning{
+    text-align: center;
+    font-weight: bold;
+    color: gray;
 }

@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
+@SessionAttributes("member")
 public class WaitController {
     private final WaitService waitService;
     private final EventService eventService;
@@ -25,7 +26,7 @@ public class WaitController {
     public String register(@PathVariable("event_no") int event_no, Model model) {
         EventDTO eventDetails = eventService.getEventDetails(event_no);
         model.addAttribute("event", eventDetails);
-        return "waitPage/waitregister";
+        return "wait/waitregister";
     }
 
     @PostMapping("/wait/insert")
@@ -48,7 +49,7 @@ public class WaitController {
 
     @GetMapping("/wait/login")
     public String loginPage(){
-        return "waitPage/waitlogin";
+        return "wait/waitlogin";
     }
     @PostMapping("/wait/login")
     public String login(WaitDTO wait, Model model, RedirectAttributes redirectAttributes) {
@@ -76,7 +77,7 @@ public class WaitController {
         model.addAttribute("waitTime", waitTime);
         model.addAttribute("position", position);
         model.addAttribute("waitingCount", waitingCount);
-        return "waitPage/mywait";
+        return "wait/mywait";
     }
     @PostMapping("/wait/updateState")
     public String updateState(@RequestParam("wait_no") String wait_no, @RequestParam("action") String action, Model model) {

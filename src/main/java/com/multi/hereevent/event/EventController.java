@@ -125,7 +125,7 @@ public class EventController {
         model.addAttribute("closedDays", closedDays);
         model.addAttribute("eventInterest", eventInterest);
 
-        return "detailedPage/detailedPage";
+        return "detail/detailedPage";
     }
 
     //대기 현황 확인 페이지
@@ -136,7 +136,7 @@ public class EventController {
         EventDTO eventDetails = eventService.getEventDetails(event_no);
         model.addAttribute("waitingCount", waitingCount);
         model.addAttribute("event", eventDetails);
-        return "detailedPage/waitDetailedPage";
+        return "wait/waitDetail";
     }
     
     @PostMapping("/reservation/times")

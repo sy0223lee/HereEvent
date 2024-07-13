@@ -32,22 +32,6 @@
     background-color: #f8f8f8;
 }
 
-.signup-container button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #e14533;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.signup-container button:hover {
-    background-color: #2a2e44;
-}
-
 .extra-options {
     display: flex;
     justify-content: space-between;
@@ -77,20 +61,4 @@
 
 .links a:hover {
     text-decoration: underline;
-}
-.post-img {
-    margin: 0px auto 20px auto; /* 상단 마진 10px 추가 */
-    overflow: hidden;
-    display: block;
-    max-width: 100%;
-}
-
-.post-img img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-}
-#warning{
-    text-align: center;
-    font-weight: bold;
 }
