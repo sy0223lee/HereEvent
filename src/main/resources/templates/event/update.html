@@ -180,11 +180,14 @@
 
         <label class="form-label">참여 방식:</label>
         <div class="radio-group">
-            <input type="radio" id="reserve" name="type" value="reserve" required>
+            <input type="radio" id="reserve" name="type" value="reserve"
+                   th:checked="${event.type == 'reserve'} ? true : false" required>
             <label class="form-label" for="reserve">사전예약</label>
-            <input type="radio" id="wait" name="type" value="wait" required>
+            <input type="radio" id="wait" name="type" value="wait"
+                   th:checked="${event.type == 'wait'} ? true : false" required>
             <label class="form-label" for="wait">현장대기</label>
-            <input type="radio" id="both" name="type" value="both" required>
+            <input type="radio" id="both" name="type" value="both"
+                   th:checked="${event.type == 'both'} ? true : false" required>
             <label class="form-label" for="both">전체</label>
         </div>
 
