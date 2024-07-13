@@ -32,16 +32,18 @@
 
     <div class="container section-title">
         <h2>대기 확인 로그인</h2>
-        <section class="login-container">
-            <form action="/hereevent/wait/login" method="post">
-                <label for="wait_tel">전화번호</label>
-                <input type="text" id="wait_tel" name="wait_tel" placeholder="전화번호를 입력하세요 (ex)010-0000-0000)"
-                        th:value="${session.member != null} ? ${session.member.tel} : ''"> <!--로그인 되어있으면 전화번호 자동 입력-->
-
-                <button type="submit" class="login">로그인</button>
-        </form>
-        </section>
     </div>
+
+    <div class="login-container">
+        <form action="/hereevent/wait/login" method="post">
+            <label for="wait_tel">전화번호</label>
+            <input type="text" id="wait_tel" name="wait_tel" placeholder="전화번호를 입력하세요 (ex)010-0000-0000)"
+                   th:value="${session.member != null} ? ${session.member.tel} : ''"> <!--로그인 되어있으면 전화번호 자동 입력-->
+
+            <button type="submit" class="btn btn-primary w-100">로그인</button>
+        </form>
+    </div>
+
     <script>
         window.onload = function() {
 

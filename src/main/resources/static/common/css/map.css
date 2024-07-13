@@ -67,3 +67,27 @@
     padding: 2px 3px;
     margin: 4px 1px;
 }
+
+/* 번호 매기기 */
+h2.overlay-text.rank{
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 12px;
+    width: 40px;
+    background: rgb(42, 46, 68, 0.5);
+    z-index: 3;
+}
+div.overlay-text.rank{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    background: rgb(42, 46, 68, 0.5);
+    z-index: 3;
+}
+.overlay-text{
+    color: white; /* 텍스트 색상 */
+    font-weight: bold; /* 텍스트 두께 */
+    text-align: center;
+}

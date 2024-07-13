@@ -37,7 +37,7 @@ function printMapList(map, markers, markerImg){
             // 카드 리스트 html 문자열
             let printData = "";
 
-            result.forEach(event => {
+            result.forEach((event, i) => {
                 /* 문자열이 <,> 로 싸여 있는 경우 태그로 인식하므로 정규식으로 대체 */
                 event.name = event.name.replace(/</g,"&lt;");
                 event.name = event.name.replace(/>/g,"&gt;");
@@ -46,9 +46,9 @@ function printMapList(map, markers, markerImg){
                 printData += "<div class='card'>";
 
                 if(event.img_path == null){
-                    printData += "<img src='/hereevent/images/default_img.png' class='card-img-top' alt='default_img'>";
+                    printData += "<img src='/hereevent/images/default_img.png' class='card-img-top' alt='default_img'><h2 class='overlay-text rank'>" + (i+1) + "</h2>";
                 }else {
-                    printData += "<img src='/hereevent/download/event/" + event.img_path + "' class='card-img-top' alt='" + event.img_path + "'>";
+                    printData += "<img src='/hereevent/download/event/" + event.img_path + "' class='card-img-top' alt='" + event.img_path + "'><h2 class='overlay-text rank'>" + (i+1) + "</h2>";
                 }
                 printData += "<div class='card-body'>" +
                     "             <h5 class='card-title'>" + event.name + "</h5>";
@@ -107,9 +107,9 @@ function printMapList(map, markers, markerImg){
                         // 이벤트 이미지
                         let eventImg = '';
                         if(event.img_path == null){
-                            eventImg = '<img src="/hereevent/images/default_img.png" width="73" height="70" alt="default_img">';
+                            eventImg = '<img src="/hereevent/images/default_img.png" width="73" height="70" alt="default_img"><div class="overlay-text rank">' + (i+1) + '</div>';
                         }else{
-                            eventImg = '<img src="/hereevent/download/event/' + event.img_path + '" width="73" height="70" alt="'+  event.img_path +'">';
+                            eventImg = '<img src="/hereevent/download/event/' + event.img_path + '" width="73" height="70" alt="'+  event.img_path +'"><div class="overlay-text rank">' + (i+1) + '</div>';
                         }
 
                         let content = '<div class="wrap">' +
