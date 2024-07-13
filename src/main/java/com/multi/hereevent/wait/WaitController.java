@@ -81,23 +81,21 @@ public class WaitController {
     }
     @PostMapping("/wait/updateState")
     public String updateState(@RequestParam("wait_no") String wait_no, @RequestParam("action") String action, Model model) {
-
         WaitDTO eventDetail = waitService.eventDetail(Integer.parseInt(wait_no));
-        String statusMessage = "";
         if ("visit".equals(action)) {
             eventDetail.setState("visit");
-            statusMessage = "visit";
         } else if ("cancel".equals(action)) {
             eventDetail.setState("cancel");
-            statusMessage = "cancel";
         }
         eventDetail.setWait_date(LocalDateTime.now());
-        model.addAttribute("event_no", eventDetail.getEvent_no());
-
         waitService.updateState(eventDetail);
 //        log.info(String.valueOf(eventDetail));
 
-        return "redirect:/main?status=" + statusMessage;
+        if(model.getAttribute("member") == null) {
+            return "redirect:/event/" + eventDetail.getEvent_no();
+        }else{
+            return "redirect:/myevent";
+        }
     }
 
     @GetMapping("/wait/delete")
