@@ -1,0 +1,94 @@
+<!DOCTYPE html >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HereEvent-Wait</title>
+    <link href="/hereevent/common/css/register.css" rel="stylesheet">
+    <link href="/hereevent/common/css/wait.css" rel="stylesheet">
+
+</head>
+<body>
+<main layout:fragment="main" class="main">
+    <!-- Page Title -->
+    <div class="page-title">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="/hereevent/main">Home</a></li>
+                    <li class="current">대기</li>
+                </ol>
+            </nav>
+            <h1>대기 등록</h1>
+        </div>
+    </div>
+    <!-- End Page Title -->
+    <div class="container section-title">
+        <h2>대기 등록</h2>
+    </div>
+    <div class="signup-container">
+        <form id="waitForm"  action="/hereevent/wait/insert" method="post">
+
+            <div class="post-img text-center">
+                <img th:if="${event.img_path == null || event.img_path == ''}"
+                     th:src="@{/images/default_img.png}" alt="default_event">
+                <img th:unless="${event.img_path == null || event.img_path == ''}"
+                     th:src="|@{/download/event/}${event.img_path}|" th:alt="${event.img_path}">
+            </div>
+            <h2 class="title text-center"><span th:text="${event.name}"></span></h2>
+            <input type="hidden" id="event_no" name="event_no" th:value="${event.event_no}">
+            <label for="wait_tel">전화번호</label>
+            <input type="tel" id="wait_tel" name="wait_tel" placeholder="전화번호를 입력하세요  ex)010-1234-5678"
+                   th:value="${session.member != null ? session.member.tel : ''}"> <!--로그인 되어있으면 전화번호 자동 입력-->
+            <label for="email">이메일</label>
+            <input type="email" id="email" name="email" placeholder="이메일을 입력하세요"
+                   th:value="${session.member != null ? session.member.email : ''}"> <!--로그인 되어있으면 이메일 자동 입력-->
+            <div class="extra-options">
+                <label>
+                    <input type="checkbox" name="agree"> 이용약관에 동의합니다.
+                </label>
+            </div>
+            <div id="warning" class="text-center">※ 다른 이벤트에 대기 등록을 한 경우 대기 불가 ※</div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary m-3 col-11">확인</button>
+            </div>
+        </form>
+    </div>
+
+    <script th:inline="javascript">
+        document.getElementById("waitForm").addEventListener("submit", function(event) {
+            var tel = document.getElementById("wait_tel").value.trim();
+            var email = document.getElementById("email").value.trim();
+
+            if (tel === "" || email === "") {
+                event.preventDefault();
+                alert("빈칸이 있습니다. 확인 후 다시 제출해주세요.");
+            }
+        });
+
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const errorMessage = params.get('error');
+            if (errorMessage) {
+                alert(errorMessage);
+            } else {
+                if(params.get('success')) {
+                    let urlPath = window.location.pathname;
+                    let eventNo = urlPath.substring(urlPath.lastIndexOf('/') + 1)
+                    alert('대기에 등록되었습니다.\n대기 등록 안내 이메일이 전송되었습니다.');
+                    if([[${member}]] != null) {
+                        location.href = "/hereevent/myevent"; // 회원이면 마이페이지로 이동
+                    }else{
+                        location.href = "/hereevent/event/" + eventNo; // 비회원이면 해당 이벤트 페이지로 이동
+                    }
+                }
+            }
+        };
+
+    </script>
+</main>
+</body>
+
+</html>

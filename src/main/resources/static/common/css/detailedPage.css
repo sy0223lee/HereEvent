@@ -261,18 +261,30 @@
     margin: 0 10px;
 }
 .event-time-container {
-    width: 515px;
+    width: 630px;
     margin: 0 auto;
+}
+@media (max-width: 1400px) {
+    .event-time-container {
+        width: 525px;
+        margin: 0 auto;
+    }
 }
 @media (max-width: 1200px) {
     .event-time-container {
-        width: 386px;
+        width: 419px;
         margin: 0 auto;
     }
 }
 @media (max-width: 767px) {
     .event-time-container {
-        width: 257px;
+        width: 315px;
+        margin: 0 auto;
+    }
+}
+@media (max-width: 500px) {
+    .event-time-container {
+        width: 210px;
         margin: 0 auto;
     }
 }

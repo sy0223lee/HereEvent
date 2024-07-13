@@ -19,7 +19,7 @@ public class MapController {
 
     @GetMapping("/map")
     public String mapPage(){
-        return "kakaomap/map";
+        return "map/map";
     }
 
     // 지도 조건에 맞는 이벤트 조회해서 JSON 으로 넘기기

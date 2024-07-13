@@ -39,11 +39,11 @@ function printCategoryList(categoryNo){
 
                 /* 예약 방식 */
                 if(event.type === "reserve"){
-                    printData += "<div class='event-type'><span>사전예약</span></div>";
+                    printData += "<div class='event-type'><span class='reserve'>사전예약</span></div>";
                 }else if((event.type === "wait")){
-                    printData += "<div class='event-type'><span>현장대기</span></div>";
+                    printData += "<div class='event-type'><span class='wait'>현장대기</span></div>";
                 }else{
-                    printData += "<div class='event-type'><span>사전에약</span><span>현장대기</span></div>";
+                    printData += "<div class='event-type'><span class='reserve'>사전예약</span><span class='wait'>현장대기</span></div>";
                 }
 
                 printData += "           <div class='card-text'><span>" + event.start_date + "</span> ~ <span>" + event.end_date + "</span></div>" +
@@ -109,11 +109,11 @@ function printEventList(tag){
 
                 /* 예약 방식 */
                 if(event.type === "reserve"){
-                    printData += "<div class='event-type'><span>사전에약</span></div>";
+                    printData += "<div class='event-type'><span class='reserve'>사전예약</span></div>";
                 }else if((event.type === "wait")){
-                    printData += "<div class='event-type'><span>현장대기</span></div>";
+                    printData += "<div class='event-type'><span class='wait'>현장대기</span></div>";
                 }else{
-                    printData += "<div class='event-type'><span>사전에약</span><span>현장대기</span></div>";
+                    printData += "<div class='event-type'><span class='reserve'>사전예약</span><span class='wait'>현장대기</span></div>";
                 }
 
                 printData += "           <div class='card-text'><span>" + event.start_date + "</span> ~ <span>" + event.end_date + "</span></div>" +

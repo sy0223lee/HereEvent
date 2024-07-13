@@ -19,7 +19,11 @@
                     data: data,
                     dataType: 'text',
                     success: function(result){
-                        $("#check-duplicate").text(result);
+                        if(result === '사용 불가능한 닉네임') {
+                            $("#check-duplicate").text(result).css('color', 'red');
+                        }else {
+                            $("#check-duplicate").text(result).css('color', 'green');
+                        }
                     },
                     error: function(){
                         alert("요청 실패");
@@ -61,7 +65,7 @@
                     <button type="submit" class="edit-nick-btn btn btn-primary">수정</button>
                 </form>
             </div>
-            <span id="check-duplicate"></span>
+            <div id="check-duplicate" class="m-3"></div>
         </div><!-- End Section Title -->
 
     </section>

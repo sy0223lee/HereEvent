@@ -1,0 +1,95 @@
+/* waitDetail.html, mywait.html */
+.post-img {
+    margin: 0 auto 20px auto; /* 상단 마진 10px 추가 */
+    overflow: hidden;
+    display: block;
+    max-width: 100%;
+}
+.post-img img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+.event-details {
+    margin: 0 auto;
+    width: 500px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+.waitperson{
+    display: inline;
+    margin-left: 10px;
+    font-size: 30px;
+}
+.event-info {
+    display: flex;
+    margin-bottom: 20px;
+}
+.event-image {
+    flex: 0 0 180px;
+    height: 240px;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+}
+
+.event-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.event-details-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+}
+
+.event-details-text span {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.waiting-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.waiting-label {
+    font-size: 24px;
+}
+
+.waiting-count {
+    font-size: 36px;
+    font-weight: bold;
+    color: var(--accent-color);
+}
+.waiting-time{
+    color: var(--accent-color);
+}
+
+.waiting-number span {
+    display: block;
+    font-size: 24px;
+}
+
+/* waitregister.html 대기 등록 */
+.title{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#warning{
+    text-align: center;
+    font-weight: bold;
+    color: gray;
+}

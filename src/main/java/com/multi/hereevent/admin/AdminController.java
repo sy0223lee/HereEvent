@@ -173,7 +173,7 @@ public class AdminController {
         }
         model.addAttribute("hours", hours);
 
-        return "event/insert";
+        return "admin/insertEvent";
     }
     @PostMapping("/admin/event/insert")
     public String createEvent(EventDTO event) {
@@ -252,7 +252,7 @@ public class AdminController {
             hours.add(String.format("%02d:30", i));
         }
         model.addAttribute("hours", hours);
-        return "event/update";
+        return "admin/updateEvent";
     }
     @PostMapping("/admin/event/update")
     public String updateEvent(EventDTO event) {

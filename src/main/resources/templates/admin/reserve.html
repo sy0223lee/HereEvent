@@ -106,9 +106,8 @@
                             <div class="reserve-no">[[${reserve.reserve_no}]]</div>
                             <div class="event-img text-center event-image">
                                 <a th:href="|@{/event/}${reserve.event_no}|">
-                                    <!--th:src="|@{/download/event/}${event.img_path}|"-->
-                                    <img th:if="${reserve.img_path != null}" th:src="|@{/download/event/}${reserve.img_path}|" th:alt="${reserve.img_path}">
-                                    <img th:unless="${reserve.img_path != null}" th:src="@{/images/default_img.png}" alt="default_img">
+                                    <img th:if="${reserve.img_path == null || reserve.img_path == ''}" th:src="@{/images/default_img.png}" alt="default_img">
+                                    <img th:unless="${reserve.img_path == null || reserve.img_path == ''}" th:src="|@{/download/event/}${reserve.img_path}|" th:alt="${reserve.img_path}">
                                 </a>
                             </div>
                             <div class="event-name">

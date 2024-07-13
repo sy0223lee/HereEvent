@@ -16,16 +16,28 @@ import java.time.LocalDateTime;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
+@SessionAttributes("member")
 public class WaitController {
     private final WaitService waitService;
     private final EventService eventService;
     private final MailService mailService;
 
+    //대기 현황 확인 페이지
+    @GetMapping("/event/waitSituation")
+    public String waitSituation(@RequestParam("event_no") int event_no, Model model) {
+
+        int waitingCount = waitService.getWaitingCount(event_no);
+        EventDTO eventDetails = eventService.getEventDetails(event_no);
+        model.addAttribute("waitingCount", waitingCount);
+        model.addAttribute("event", eventDetails);
+        return "wait/waitDetail";
+    }
+
     @GetMapping("/wait/register/event/{event_no}")
     public String register(@PathVariable("event_no") int event_no, Model model) {
         EventDTO eventDetails = eventService.getEventDetails(event_no);
         model.addAttribute("event", eventDetails);
-        return "waitPage/waitregister";
+        return "wait/waitregister";
     }
 
     @PostMapping("/wait/insert")
@@ -48,7 +60,7 @@ public class WaitController {
 
     @GetMapping("/wait/login")
     public String loginPage(){
-        return "waitPage/waitlogin";
+        return "wait/waitlogin";
     }
     @PostMapping("/wait/login")
     public String login(WaitDTO wait, Model model, RedirectAttributes redirectAttributes) {
@@ -76,27 +88,25 @@ public class WaitController {
         model.addAttribute("waitTime", waitTime);
         model.addAttribute("position", position);
         model.addAttribute("waitingCount", waitingCount);
-        return "waitPage/mywait";
+        return "wait/mywait";
     }
     @PostMapping("/wait/updateState")
     public String updateState(@RequestParam("wait_no") String wait_no, @RequestParam("action") String action, Model model) {
-
         WaitDTO eventDetail = waitService.eventDetail(Integer.parseInt(wait_no));
-        String statusMessage = "";
         if ("visit".equals(action)) {
             eventDetail.setState("visit");
-            statusMessage = "visit";
         } else if ("cancel".equals(action)) {
             eventDetail.setState("cancel");
-            statusMessage = "cancel";
         }
         eventDetail.setWait_date(LocalDateTime.now());
-        model.addAttribute("event_no", eventDetail.getEvent_no());
-
         waitService.updateState(eventDetail);
 //        log.info(String.valueOf(eventDetail));
 
-        return "redirect:/main?status=" + statusMessage;
+        if(model.getAttribute("member") == null) {
+            return "redirect:/event/" + eventDetail.getEvent_no();
+        }else{
+            return "redirect:/myevent";
+        }
     }
 
     @GetMapping("/wait/delete")

@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HereEvent-Login</title>
-    <link href="/hereevent/common/css/login.css" rel="stylesheet">
+    <link href="/hereevent/common/css/register.css" rel="stylesheet">
     <script>
         var msg;
         if ('[[${msg}]]') {
@@ -55,7 +55,7 @@
         });
 
         // 폼 제출 시 호출되는 함수
-        function handleLogin(event) {
+        function handleLogin() {
             var remember = document.querySelector('input[name="remember"]').checked;
             var email = document.getElementById('email').value;
             if (remember) {
@@ -85,36 +85,40 @@
             <h1>로그인</h1>
         </div>
     </div><!-- End Page Title -->
-<div class="login-container">
 
-    <h2>로그인</h2>
-    <form action="/hereevent/login" method="post" onsubmit="handleLogin(event)">
-        <label for="email">이메일</label>
-        <input type="text" id="email" name="email" placeholder="이메일을 입력하세요">
+    <div class="container section-title">
+        <h2>로그인</h2>
+    </div>
 
-        <label for="pass">비밀번호</label>
-        <input type="password" id="pass" name="pass" placeholder="비밀번호를 입력하세요">
+    <div class="login-container">
 
-        <div class="extra-options">
-            <label>
-                <input type="checkbox" name="remember"> 아이디 저장
-            </label>
+        <form action="/hereevent/login" method="post" onsubmit="handleLogin()">
+            <label for="email">이메일</label>
+            <input type="text" id="email" name="email" placeholder="이메일을 입력하세요">
+
+            <label for="pass">비밀번호</label>
+            <input type="password" id="pass" name="pass" placeholder="비밀번호를 입력하세요">
+
+            <div class="extra-options">
+                <label>
+                    <input type="checkbox" name="remember"> 아이디 저장
+                </label>
+            </div>
+            <button type="submit" class="login btn btn-primary w-100">로그인</button>
+
+        </form>
+            <button class="btn btn-secondary w-100"
+                    th:onclick="|location.href='@{/wait/login}'|">
+                본인 대기 확인</button>
+        <div class="links">
+            <a href="/hereevent/register">회원가입</a>
+            <a href="#">아이디/비밀번호 찾기</a>
         </div>
-        <button type="submit" class="login">로그인</button>
-
-    </form>
-        <button class="wait"
-                th:onclick="|location.href='@{/wait/login}'|">
-            본인 대기 확인</button>
-    <div class="links">
-        <a href="/hereevent/register">회원가입</a>
-        <a href="#">아이디/비밀번호 찾기</a>
+        <div class="social-login">
+            <button type="button" class="kakao-login" onclick="location.href='/hereevent/login/kakao'" title="카카오 로그인"></button>
+            <button type="button" class="naver-login" onclick="location.href='/hereevent/login/naver'" title="네이버 로그인"></button>
+        </div>
     </div>
-    <div class="social-login">
-        <button type="button" class="kakao-login" onclick="location.href='/hereevent/login/kakao'" title="카카오 로그인"></button>
-        <button type="button" class="naver-login" onclick="location.href='/hereevent/login/naver'" title="네이버 로그인"></button>
-    </div>
-</div>
 </main>
 </body>
 </html>

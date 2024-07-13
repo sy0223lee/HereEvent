@@ -125,18 +125,7 @@ public class EventController {
         model.addAttribute("closedDays", closedDays);
         model.addAttribute("eventInterest", eventInterest);
 
-        return "detailedPage/detailedPage";
-    }
-
-    //대기 현황 확인 페이지
-    @GetMapping("/event/waitSituation")
-    public String waitSituation(@RequestParam("event_no") int event_no, Model model) {
-
-        int waitingCount = waitService.getWaitingCount(event_no);
-        EventDTO eventDetails = eventService.getEventDetails(event_no);
-        model.addAttribute("waitingCount", waitingCount);
-        model.addAttribute("event", eventDetails);
-        return "detailedPage/waitDetailedPage";
+        return "detail/detailedPage";
     }
     
     @PostMapping("/reservation/times")

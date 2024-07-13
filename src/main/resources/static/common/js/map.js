@@ -37,7 +37,7 @@ function printMapList(map, markers, markerImg){
             // 카드 리스트 html 문자열
             let printData = "";
 
-            result.forEach(event => {
+            result.forEach((event, i) => {
                 /* 문자열이 <,> 로 싸여 있는 경우 태그로 인식하므로 정규식으로 대체 */
                 event.name = event.name.replace(/</g,"&lt;");
                 event.name = event.name.replace(/>/g,"&gt;");
@@ -46,20 +46,20 @@ function printMapList(map, markers, markerImg){
                 printData += "<div class='card'>";
 
                 if(event.img_path == null){
-                    printData += "<img src='/hereevent/images/default_img.png' class='card-img-top' alt='default_img'>";
+                    printData += "<img src='/hereevent/images/default_img.png' class='card-img-top' alt='default_img'><h2 class='overlay-text rank'>" + (i+1) + "</h2>";
                 }else {
-                    printData += "<img src='/hereevent/download/event/" + event.img_path + "' class='card-img-top' alt='" + event.img_path + "'>";
+                    printData += "<img src='/hereevent/download/event/" + event.img_path + "' class='card-img-top' alt='" + event.img_path + "'><h2 class='overlay-text rank'>" + (i+1) + "</h2>";
                 }
                 printData += "<div class='card-body'>" +
                     "             <h5 class='card-title'>" + event.name + "</h5>";
 
                 /* 예약 방식 */
                 if(event.type === "reserve"){
-                    printData += "<div class='event-type'><span>사전에약</span></div>";
+                    printData += "<div class='event-type'><span class='reserve'>사전예약</span></div>";
                 }else if((event.type === "wait")){
-                    printData += "<div class='event-type'><span>현장대기</span></div>";
+                    printData += "<div class='event-type'><span class='wait'>현장대기</span></div>";
                 }else{
-                    printData += "<div class='event-type'><span>사전에약</span><span>현장대기</span></div>";
+                    printData += "<div class='event-type'><span class='reserve'>사전예약</span><span class='wait'>현장대기</span></div>";
                 }
 
                 printData += "           <div class='card-text'><span>" + event.start_date + "</span> ~ <span>" + event.end_date + "</span></div>" +
@@ -93,14 +93,25 @@ function printMapList(map, markers, markerImg){
                         // 커스텀 오버레이에 표시할 컨텐츠 입니다
                         // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
                         // 별도의 이벤트 메소드를 제공하지 않습니다
+
+                        // 사전 예약, 현장 대기
                         let eventType = '';
                         if(event.type === 'both'){
-                            eventType = '사전예약, 현장대기';
+                            eventType = '<span class="reserve">사전예약</span><span class="wait">현장대기</span>';
                         }else if(event.type === 'reserve'){
-                            eventType = '사전예약';
+                            eventType = '<span class="reserve">사전예약</span>';
                         }else{
-                            eventType = '현장대기';
+                            eventType = '<span class="wait">현장대기</span>';
                         }
+
+                        // 이벤트 이미지
+                        let eventImg = '';
+                        if(event.img_path == null){
+                            eventImg = '<img src="/hereevent/images/default_img.png" width="73" height="70" alt="default_img"><div class="overlay-text rank">' + (i+1) + '</div>';
+                        }else{
+                            eventImg = '<img src="/hereevent/download/event/' + event.img_path + '" width="73" height="70" alt="'+  event.img_path +'"><div class="overlay-text rank">' + (i+1) + '</div>';
+                        }
+
                         let content = '<div class="wrap">' +
                             '    <div class="info">' +
                             '        <div class="title"><a href="/hereevent/event/' + event.event_no + '" class="link">' +
@@ -108,13 +119,12 @@ function printMapList(map, markers, markerImg){
                             '            </a><div class="close" onclick="closeOverlay()" title="닫기"></div>' +
                             '        </div>' +
                             '        <div class="body">' +
-                            '            <div class="img">' +
-                            '                <img src="/hereevent/download/event/' + event.img_path + '" width="73" height="70">' +
+                            '            <div class="img">' + eventImg +
                             '           </div>' +
                             '            <div class="desc">' +
                             '                <div class="ellipsis">' + event.addr + '</div>' +
                             '                <div>' + event.start_date + ' ~ ' + event.end_date +'</div>' +
-                            '                <div>' + eventType  + '</div>' +
+                            '                <div class="event-type">' + eventType  + '</div>' +
                             '            </div>' +
                             '        </div>' +
                             '    </div>' +

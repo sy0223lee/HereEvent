@@ -1,5 +1,15 @@
+/* 중복 확인, 불일치 text */
+#check-same-password,
+#check-duplicate-nick,
+#check-duplicate-email {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+/* login.html, register.html */
+.login-container,
 .signup-container {
-    margin: 0 auto;
+    margin:0 auto;
     width: 500px;
     padding: 20px;
     border-radius: 10px;
@@ -7,45 +17,27 @@
     background-color: #fff;
 }
 
+.login-container label,
 .signup-container label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
+.login-container input[type="text"],
+.login-container input[type="password"],
 .signup-container input[type="text"],
 .signup-container input[type="email"],
 .signup-container input[type="password"],
 .signup-container input[type="tel"],
+.signup-container input[type="date"],
 .signup-container input[type="number"],
-.signup-container input[type="file"] {
+.signup-container input[type="file"]{
     width: calc(100% - 20px);
     padding: 10px;
-    margin-bottom: 15px;
+    margin: 0 10px 10px 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-}
-
-.signup-container input[type="file"] {
-    padding: 5px;
-    border: none;
-    background-color: #f8f8f8;
-}
-
-.signup-container button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #e14533;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.signup-container button:hover {
-    background-color: #2a2e44;
 }
 
 .extra-options {
@@ -66,31 +58,42 @@
 }
 
 .links {
-    text-align: center;
-}
-
-.links a {
-    color: #007bff;
-    text-decoration: none;
-    margin: 0 10px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .links a:hover {
     text-decoration: underline;
 }
-.post-img {
-    margin: 0px auto 20px auto; /* 상단 마진 10px 추가 */
-    overflow: hidden;
-    display: block;
-    max-width: 100%;
+
+/* login.html */
+.login-container button {
+    margin-bottom: 10px;
+}
+.social-login {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
 }
 
-.post-img img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
+.social-login button {
+    width: 48px;
+    height: 48px;
+    border: none;
+    border-radius: 50%;
+    background-size: cover;
+    cursor: pointer;
+    margin: 0 5px;
 }
-#warning{
-    text-align: center;
-    font-weight: bold;
+.kakao-login {
+    background-image: url('/hereevent/images/login/kakaologin_circle.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.naver-login {
+    background-image: url('/hereevent/images/login/naverlogin_circle.png');
+    background-repeat: no-repeat;
+    background-position: center;
 }
