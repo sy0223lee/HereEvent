@@ -23,11 +23,11 @@
 	</select>
 	<!-- 날짜별 신규 회원 가입 -->
 	<select id="newMemberCount" resultType="chart">
-		select reg_date date, count(member_no) cnt
+		select date(reg_date) date, count(member_no) cnt
 		from member
-		where reg_date between date_sub(curdate(), interval 7 day) and curdate()
-		group by reg_date
-		order by reg_date
+		where date(reg_date) between date_sub(curdate(), interval 7 day) and curdate()
+		group by date(reg_date)
+		order by date(reg_date)
 	</select>
 	<!-- 예약/대기 상위 이벤트 -->
 	<select id="reserveTopEvent" resultType="chart">
