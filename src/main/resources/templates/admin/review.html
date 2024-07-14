@@ -123,7 +123,7 @@
                             <div class="event-img text-center event-image">
                                 <a th:href="|@{/event/}${review.event_no}|">
                                     <img th:if="${review.img_path == null || review.img_path == ''}" th:src="@{/images/default_img.png}" alt="default_img">
-                                    <img th:unless="${review.img_path == null || review.img_path == ''}" th:src="|@{/download/event/}${review.img_path}|" th:alt="${review.img_path}">>
+                                    <img th:unless="${review.img_path == null || review.img_path == ''}" th:src="|@{/download/event/}${review.img_path}|" th:alt="${review.img_path}">
                                 </a>
                             </div>
                             <div class="event-name">
